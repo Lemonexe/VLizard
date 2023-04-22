@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+scipy = "*"
+click = "*"
+
+[dev-packages]
+yapf = "*"
+pylint = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+prettier = "pipenv run yapf -i -r src"
+lint = "echo.> __init__.py & pipenv run pylint %cd%/src --disable=C,R & del __init__.py"
