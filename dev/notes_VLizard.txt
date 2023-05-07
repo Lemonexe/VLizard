@@ -1,0 +1,26 @@
+point to point test
+	tříbodová formula na d ln gamma / dx1
+	graf součtu té rovnice
+
+Redlich-kister [p] apx ~ [p,T]
+	< 10% jako velmi hrubý test
+
+Fredenslund !!!!
+	celková metrika suma,
+	a zobrazit graf distribuce residuálů
+
+Možná long-term: L-W Wisniak
+Van Ness až poté co bych dodělal proložení dat modelem
+
+
+dataset = isobaric table
+system = set of isobaric tables
+
+
+FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metadata as .json
+
+
+
+2C:
+	matematická metoda optimalizace:
+		Belohav, Z., Zamostny, P., Kluson, P., Volf, J., 1997. Can. J. Chem. Engng. 75, 735.

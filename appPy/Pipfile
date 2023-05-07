@@ -7,6 +7,7 @@ name = "pypi"
 numpy = "*"
 scipy = "*"
 click = "*"
+matplotlib = "*"
 
 [dev-packages]
 yapf = "*"
@@ -18,4 +19,4 @@ python_version = "3.11"
 
 [scripts]
 prettier = "pipenv run yapf -i -r src"
-lint = "echo.> __init__.py & pipenv run pylint %cd%/src --disable=C,R & del __init__.py"
+lint = "pipenv run pylint src --disable=C"
