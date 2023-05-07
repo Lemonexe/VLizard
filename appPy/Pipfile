@@ -18,5 +18,5 @@ pytest = "*"
 python_version = "3.11"
 
 [scripts]
-prettier = "pipenv run yapf -i -r src"
-lint = "pipenv run pylint src --disable=C"
+prettier = "pipenv run yapf -i -r src cli"
+lint = "pipenv run pylint src cli --disable=C"

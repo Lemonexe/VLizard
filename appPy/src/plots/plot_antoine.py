@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from src.TD.get_antoine import get_antoine
+from src.utils.get_antoine import get_antoine
 
 
 # prepare printable plot of Antoine per compound
