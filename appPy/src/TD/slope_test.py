@@ -1,32 +1,41 @@
 import numpy as np
-# from scipy.interpolate import UnivariateSpline
 from matplotlib import pyplot as plt
 from src.TD.analyze_VLE import VLE
 from src.utils.math.diff_noneq import diffs_noneq
 
 
-# todo rewrite as class
-# perform simple point to point slope test
-def slope_test(table, compound1, compound2):
-    res = VLE(table, compound1, compound2)
+# perform simple point to point slope test as object with results, and methods for visualization
+class Slope_test:
 
-    res.plot_gamma()
+    def __init__(self, table, compound1, compound2):
+        vle = VLE(table, compound1, compound2)
+        self.vle = vle
 
-    # spl_1 = UnivariateSpline(res.x_1, res.gamma_1, k=3, s=0)
-    # spl_2 = UnivariateSpline(res.x_1, res.gamma_2, k=3, s=0)
-    # plt.plot(res.x_1, spl_1(res.x_1), '--b')
-    # plt.plot(res.x_1, spl_2(res.x_1), '--r')
-    plt.show()
+        self.d_ln_gamma = diffs_noneq(vle.x_1, np.array([vle.gamma_1, vle.gamma_2]), vle.x_1)
+        d_ln_gamma_1 = self.d_ln_gamma[0, :]
+        d_ln_gamma_2 = self.d_ln_gamma[1, :]
 
-    d_ln_gamma = diffs_noneq(res.x_1, np.array([res.gamma_1, res.gamma_2]), res.x_1)
+        self.P2P_resid = vle.x_1 * d_ln_gamma_1 + vle.x_2 * d_ln_gamma_2
 
-    # d_ln_gamma_1 = spl_1.derivative()(res.x_1)
-    # d_ln_gamma_2 = spl_2.derivative()(res.x_1)
-    d_ln_gamma_1 = d_ln_gamma[0, :]
-    d_ln_gamma_2 = d_ln_gamma[1, :]
-    P2P_resid = res.x_1 * d_ln_gamma_1 + res.x_2 * d_ln_gamma_2
-    plt.plot(res.x_1, d_ln_gamma_1, '^b')
-    plt.plot(res.x_1, d_ln_gamma_2, '^r')
-    plt.plot(res.x_1, P2P_resid, 'sk')
-    plt.axhline(y=0, color='k', linestyle=':')
-    plt.show()
+    def __str__(self):
+        x = self.vle.x_1[:, np.newaxis]
+        R = self.P2P_resid[:, np.newaxis]
+        table = np.concatenate((x, R), axis=1)
+        printed = np.array_str(table, precision=3, suppress_small=True)
+        return f'residuals:\n{printed}'
+
+    def plot_gamma(self):
+        self.vle.plot_gamma()
+
+    def plot_slope(self):
+        x_1 = self.vle.x_1
+        d_ln_gamma_1 = self.d_ln_gamma[0, :]
+        d_ln_gamma_2 = self.d_ln_gamma[1, :]
+        plt.plot(x_1, d_ln_gamma_1, '^b', label='$d$ln$\gamma_1$')
+        plt.plot(x_1, d_ln_gamma_2, 'vr', label='$d$ln$\gamma_2$')
+        plt.plot(x_1, self.P2P_resid, 'sk', label='residual')
+        plt.axhline(y=0, color='k', linestyle=':')
+        plt.xlim(0, 1)
+        plt.xlabel('$x_1$')
+        plt.ylabel('$d$ln$\gamma$')
+        plt.legend()

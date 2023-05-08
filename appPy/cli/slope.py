@@ -3,11 +3,9 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
-# from matplotlib import pyplot as plt
-from src.TD.slope_test import slope_test
+from matplotlib import pyplot as plt
+from src.TD.slope_test import Slope_test
 from src.utils.cli_tests_helper import cli_tests_helper
-# from src.plots.plot_VLE import plot_VLE
-# from src.plots.plot_VLE import plot_slope_test
 
 
 @click.command()
@@ -17,8 +15,13 @@ from src.utils.cli_tests_helper import cli_tests_helper
 def slope(compound1, compound2, dataset):
 
     def test_fn(table, system_name, dataset_name):
-        print(system_name, dataset_name)
-        slope_test(table, compound1, compound2)
+        print(f'Slope test for {system_name}, {dataset_name}')
+        slope_test = Slope_test(table, compound1, compound2)
+        print(slope_test)
+        slope_test.plot_gamma()
+        plt.show()
+        slope_test.plot_slope()
+        plt.show()
 
     cli_tests_helper(compound1, compound2, dataset, test_fn)
 

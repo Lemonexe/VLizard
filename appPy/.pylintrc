@@ -1,5 +1,6 @@
 [MESSAGES CONTROL]
 
-disable=too-many-instance-attributes,
+disable=anomalous-backslash-in-string,
         too-few-public-methods,
+        too-many-instance-attributes,
         too-many-public-methods
