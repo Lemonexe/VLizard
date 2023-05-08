@@ -1,19 +1,29 @@
+import numpy as np
+from matplotlib import pyplot as plt
 from src.utils.get_antoine import get_antoine_and_warn
 
 
-def analyze_VLE(table, compound1, compound2):
-    res = {'warnings': []}
+class VLE:
+    warnings = []
 
-    (res['p'], res['T'], res['x_1'], res['y_1']) = table.T
-    (antoine_fun_1, warnings) = get_antoine_and_warn(compound1, np.min(T), np.max(T))
-    res['warnings'].extend(warnings)
-    (antoine_fun_2, warnings) = get_antoine_and_warn(compound2, np.min(T), np.max(T))
-    res['warnings'].extend(warnings)
+    def __init__(self, table, compound1, compound2):
+        (self.p, self.T, self.x_1, self.y_1) = table.T
+        self.n = len(self.x_1)
+        self.x_2 = 1 - self.x_1
+        self.y_2 = 1 - self.y_1
 
-    res['ps_1'] = antoine_fun_1(T)
-    res['ps_2'] = antoine_fun_2(T)
+        (antoine_fun_1, warnings) = get_antoine_and_warn(compound1, np.min(self.T), np.max(self.T))
+        self.warnings.extend(warnings)
+        (antoine_fun_2, warnings) = get_antoine_and_warn(compound2, np.min(self.T), np.max(self.T))
+        self.warnings.extend(warnings)
 
-    res['gamma_1'] = y_1 * p / x_1 / ps_1
-    res['gamma_2'] = (1-y_1) * p / (1-x_1) / ps_2
+        self.ps_1 = antoine_fun_1(self.T)
+        self.ps_2 = antoine_fun_2(self.T)
 
-    return res
+        self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
+        self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
+
+    def plot_gamma(self):
+        plt.plot(self.x_1, self.gamma_1, 'ob')
+        plt.plot(self.x_1, self.gamma_2, 'or')
+        plt.axhline(y=1, color='k', linestyle=':')
