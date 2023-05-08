@@ -4,7 +4,7 @@ from src.utils.get_VLE_data import get_VLE_data
 # helper to reduce boilerplate for TD test cli
 # the CLI functions wrap this one, passing through args + test_fn callback to do test and parse results
 # test_fn: lambda table, system_name, dataset_name: None
-def test_cli_helper(compound1, compound2, dataset_name, test_fn):
+def cli_tests_helper(compound1, compound2, dataset_name, test_fn):
 
     system_name = f'{compound1}-{compound2}'
     if compound1 > compound2:

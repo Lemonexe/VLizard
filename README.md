@@ -23,5 +23,6 @@ todo
 
 ### Python
 
+Run unit tests: `pipenv run test`  
 Run lint: `pipenv run lint`  
 Run prettier: `pipenv run prettier`
