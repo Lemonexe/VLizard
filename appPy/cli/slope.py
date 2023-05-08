@@ -18,7 +18,7 @@ def slope(compound1, compound2, dataset):
 
     def test_fn(table, system_name, dataset_name):
         print(system_name, dataset_name)
-        slope_test(table)
+        slope_test(table, compound1, compound2)
 
     test_cli_helper(compound1, compound2, dataset, test_fn)
 
