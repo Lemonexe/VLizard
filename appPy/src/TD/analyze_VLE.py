@@ -44,10 +44,10 @@ class VLE:
         plt.legend()
 
     def plot_gamma(self):
-        plt.plot(self.x_1, self.gamma_1, '^b', label='$\gamma_1$')
-        plt.plot(self.x_1, self.gamma_2, 'vr', label='$\gamma_2$')
+        plt.plot(self.x_1, self.gamma_1, '^b', label='$\\gamma_1$')
+        plt.plot(self.x_1, self.gamma_2, 'vr', label='$\\gamma_2$')
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
-        plt.ylabel('$\gamma$')
+        plt.ylabel('$\\gamma$')
         plt.legend()
