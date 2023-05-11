@@ -1,24 +1,37 @@
 import os
 import numpy as np
 from src.utils.open_tsv import open_tsv
+from src.utils.get_system_name import get_system_name
 
 
-# for the given system code, get tuple of list of datasets, and corresponding name map of datasets
-# each dataset is a np matrix with columns p/kPa, T/K, x1, y1
-def get_VLE_data(system):
-    system_dir_path = os.path.join('data', system)
+# helper to get directory path where data is stored for the given compounds system dir, and raise ValueError if not exists
+def get_system_path(compound1, compound2):
+    system_name = get_system_name(compound1, compound2)
+    system_dir_path = os.path.join('data', system_name)
     if not os.path.exists(system_dir_path):
-        raise ValueError(f'the system {system} does not exist in your data!')
+        raise ValueError(f'ERROR: the system {system_name} does not exist in your data!')
+    return system_dir_path
 
-    VLE_data = []
+
+# for the given system code, get collection of available dataset names
+def list_VLE_tables(compound1, compound2):
+    system_dir_path = get_system_path(compound1, compound2)
+
     name_map = []
 
     for filename in os.listdir(system_dir_path):
         if filename.endswith('.tsv'):
-            table = open_tsv(os.path.join(system_dir_path, filename))
-            table = np.array(table[1:], dtype='float64')
-
             name_map.append(filename.replace('.tsv', ''))
-            VLE_data.append(table)
 
-    return (VLE_data, name_map)
+    return name_map
+
+
+# get specific dataset as a np matrix with columns p/kPa, T/K, x1, y1
+def get_VLE_table(compound1, compound2, dataset):
+    system_dir_path = get_system_path(compound1, compound2)
+    filename = dataset + '.tsv'
+
+    table = open_tsv(os.path.join(system_dir_path, filename))
+    table = np.array(table[1:], dtype='float64')
+
+    return table

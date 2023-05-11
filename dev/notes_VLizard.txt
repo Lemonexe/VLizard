@@ -1,6 +1,8 @@
-point to point test
-	tříbodová formula na d ln gamma / dx1
-	graf součtu té rovnice
+CODE:
+	get rid of plt.show()
+	merge_status multiple
+
+
 
 Redlich-kister [p] apx ~ [p,T]
 	< 10% jako velmi hrubý test
