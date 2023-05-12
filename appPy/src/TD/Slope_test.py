@@ -20,9 +20,9 @@ class Slope_test(Result):
         if self.status == 2:
             return
 
-        self.d_gamma = diffs_noneq(vle.x_1, np.array([vle.gamma_1, vle.gamma_2]), vle.x_1)
-        self.d_ln_gamma_1 = self.d_gamma[0, :] / vle.gamma_1
-        self.d_ln_gamma_2 = self.d_gamma[1, :] / vle.gamma_2
+        d_gamma = diffs_noneq(vle.x_1, np.array([np.log(vle.gamma_1), np.log(vle.gamma_2)]), vle.x_1)
+        self.d_ln_gamma_1 = d_gamma[0, :]
+        self.d_ln_gamma_2 = d_gamma[1, :]
 
         self.P2P_resid = vle.x_1 * self.d_ln_gamma_1 + vle.x_2 * self.d_ln_gamma_2
 
