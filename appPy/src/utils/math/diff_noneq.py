@@ -11,7 +11,7 @@ def diff_noneq(x_vec, y_vec, x_query):
     n = x_vec.shape[0]
     nn = (y_vec.shape[0] if y_vec.ndim == 1 else y_vec.shape[1])
     if n != nn:
-        raise ValueError(f'number of columns for x_vec & y_vec must match (got {n}, {y_vec.shape[1]})')
+        raise ValueError(f'number of columns for x_vec & y_vec must match (got {n}, {nn})')
 
     A = np.ones((n, n), dtype='float64')
     b = np.zeros((n, 1), dtype='float64')
