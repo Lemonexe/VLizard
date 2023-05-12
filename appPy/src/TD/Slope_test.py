@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from src.TD.VLE import VLE
+from .VLE import VLE
 from src.utils.Result import Result
 from src.utils.math.diff_noneq import diffs_noneq
 

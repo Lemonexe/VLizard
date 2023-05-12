@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from src.TD.Antoine import Antoine
+from .Antoine import Antoine
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
 from src.utils.get_system_name import get_system_name
@@ -27,14 +27,12 @@ class VLE(Result):
 
         antoine_1 = Antoine(compound1)
         antoine_2 = Antoine(compound2)
-        self.merge_status(antoine_1)
-        self.merge_status(antoine_2)
+        self.merge_status(antoine_1, antoine_2)
         if self.status == 2:
             return
         antoine_1.check_T_bounds(np.min(self.T), np.max(self.T))
         antoine_2.check_T_bounds(np.min(self.T), np.max(self.T))
-        self.merge_status(antoine_1)
-        self.merge_status(antoine_2)
+        self.merge_status(antoine_1, antoine_2)
         self.antoine_fun_1 = antoine_1.antoine_fun
         self.antoine_fun_2 = antoine_2.antoine_fun
 

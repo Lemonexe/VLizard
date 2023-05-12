@@ -1,3 +1,6 @@
+from matplotlib import pyplot as plt
+
+
 # utility class to provide standard interface for results of an operation
 # these shall be used for errors & warnings concerning the calculations
 # while for application errors, raise shall be used
@@ -26,13 +29,14 @@ class Result:
         self.error = message
 
     # take an other Result instance and merge it here
-    def merge_status(self, other_result):
-        if not isinstance(other_result, Result):
-            raise TypeError('other_result must be a Result instance')
+    def merge_status(self, *other_results):
+        for other_result in other_results:
+            if not isinstance(other_result, Result):
+                raise TypeError('other_result must be a Result instance')
 
-        self.status = max(self.status, other_result.status)
-        self.warnings.extend(other_result.warnings)
-        self.error = other_result.error
+            self.status = max(self.status, other_result.status)
+            self.warnings.extend(other_result.warnings)
+            self.error = other_result.error
 
     # report on error || warnings in CLI mode
     def check_status_CLI(self):
@@ -41,3 +45,7 @@ class Result:
         if self.status == 1:
             for message in self.warnings:
                 print(message)
+
+    # finish rendering plot in CLI mode
+    def render_plot_CLI(self):
+        plt.show()

@@ -3,7 +3,6 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
-from matplotlib import pyplot as plt
 from src.TD.Slope_test import Slope_test
 from src.utils.get_VLE_data import list_VLE_tables
 from src.utils.get_system_name import get_system_name
@@ -28,9 +27,9 @@ def cli_slope(compound1, compound2, dataset):
         slope_test.check_status_CLI()
         print(slope_test)
         slope_test.vle.plot_gamma()
-        plt.show()
+        slope_test.render_plot_CLI()
         slope_test.plot_slope()
-        plt.show()
+        slope_test.render_plot_CLI()
 
     if dataset:
         dataset = dataset.strip()

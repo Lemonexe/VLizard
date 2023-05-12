@@ -3,7 +3,6 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
-from matplotlib import pyplot as plt
 from src.TD.Antoine import Antoine
 
 
@@ -14,7 +13,7 @@ def cli_antoine(compound):
     antoine = Antoine(compound)
     antoine.check_status_CLI()
     antoine.plot()
-    plt.show()
+    antoine.render_plot_CLI()
 
 
 # pylint: disable=no-value-for-parameter

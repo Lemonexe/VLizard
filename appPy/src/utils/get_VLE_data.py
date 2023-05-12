@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from src.utils.open_tsv import open_tsv
-from src.utils.get_system_name import get_system_name
+from .open_tsv import open_tsv
+from .get_system_name import get_system_name
 
 
 # helper to get directory path where data is stored for the given compounds system dir, and raise ValueError if not exists
