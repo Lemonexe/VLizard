@@ -17,18 +17,23 @@ class Antoine(Result):
     # for the given compound code, get Antoine function as lambda T, T_min of data, T_max of data
     def get_from_data(self):
         consts = open_tsv('data/Antoine.tsv')
-        matches = list(filter(lambda row: len(row) > 0 and row[0] == self.compound, consts))
+        matches = list(filter(lambda row: row[0].upper() == self.compound.upper(), consts))
 
         if len(matches) == 0:
-            self.err(f'ERROR: Zero matches for compound {self.compound}!')
+            self.err(f'ERROR: No Antoine data found for compound {self.compound}!')
             return
         if len(matches) > 1:
-            self.err(
-                f'ERROR: Multiple matches found for compound {self.compound}, only one Antoine definition is permissible!'
-            )
+            self.err(f'ERROR: Multiple Antoine data found for compound {self.compound}, only one is permissible!')
             return
 
-        C1, C2, C3, self.T_min, self.T_max = map(float, matches[0][1:])
+        cells = list(filter(bool, matches[0]))
+        cells = list(map(float, cells[1:]))
+        if len(cells) != 5:
+            self.err(
+                f'ERROR: Corrupt Antoine data found for compound {self.compound}, there must be 5 columns besides label, but {len(cells)} found:\n{str(cells)}'
+            )
+            return
+        C1, C2, C3, self.T_min, self.T_max = map(float, cells)
 
         self.antoine_fun = lambda T: np.exp(C1 + C2 / (T+C3))
 

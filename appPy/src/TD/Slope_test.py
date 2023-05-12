@@ -17,6 +17,8 @@ class Slope_test(Result):
         vle = VLE(compound1, compound2, dataset_name)
         self.vle = vle
         self.merge_status(vle)
+        if self.status == 2:
+            return
 
         self.d_ln_gamma = diffs_noneq(vle.x_1, np.array([vle.gamma_1, vle.gamma_2]), vle.x_1)
         d_ln_gamma_1 = self.d_ln_gamma[0, :]
@@ -41,6 +43,7 @@ class Slope_test(Result):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'Slope test for {self.vle.get_title()}')
         plt.xlim(0, 1)
+        plt.ylim(np.min(self.P2P_resid) * 1.1, np.max(self.P2P_resid) * 1.1)
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$')
         plt.legend()

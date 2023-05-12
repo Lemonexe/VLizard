@@ -1,6 +1,7 @@
 CODE:
-	get rid of plt.show()
-	merge_status multiple
+	try d gamma/gamma instead of dlngamma
+	try sousední derivace
+	maybe raise instead of Result.err (but Result is great for warnings)
 
 
 

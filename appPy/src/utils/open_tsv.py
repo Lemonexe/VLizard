@@ -7,5 +7,6 @@ def open_tsv(filename):
     with open(filename, encoding='utf-8') as tsvfile:
         reader = csv.reader(tsvfile, delimiter='\t')
         for row in reader:
-            lines.append(row)
+            if len(row) > 0:
+                lines.append(row)
     return lines
