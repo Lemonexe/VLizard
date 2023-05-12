@@ -3,7 +3,6 @@ from matplotlib import pyplot as plt
 from .Antoine import Antoine
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
-from src.utils.get_system_name import get_system_name
 
 
 # unpack the basic necessary data into this object rich with derived physical quantities + metadata
@@ -43,7 +42,7 @@ class VLE(Result):
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
 
     def get_title(self):
-        return f'{get_system_name(self.compound1, self.compound2)}, {self.dataset_name}'
+        return f'{self.compound1}-{self.compound2}, {self.dataset_name}'
 
     def plot_xy(self):
         plt.plot(self.x_1, self.y_1, 'ok')

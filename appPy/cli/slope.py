@@ -5,7 +5,6 @@ sys.path.append(sys.path[0] + '/..')
 import click
 from src.TD.Slope_test import Slope_test
 from src.utils.get_VLE_data import list_VLE_tables
-from src.utils.get_system_name import get_system_name
 
 
 @click.command()
@@ -14,7 +13,7 @@ from src.utils.get_system_name import get_system_name
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
 def cli_slope(compound1, compound2, dataset):
     """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
-    system_name = get_system_name(compound1, compound2)
+    system_name = f'{compound1}-{compound2}'
 
     try:
         dataset_names = list_VLE_tables(compound1, compound2)

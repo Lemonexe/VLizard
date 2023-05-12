@@ -1,12 +1,11 @@
 import os
 import numpy as np
 from .open_tsv import open_tsv
-from .get_system_name import get_system_name
 
 
 # helper to get directory path where data is stored for the given compounds system dir, and raise ValueError if not exists
 def get_system_path(compound1, compound2):
-    system_name = get_system_name(compound1, compound2)
+    system_name = f'{compound1}-{compound2}'
     system_dir_path = os.path.join('data', system_name)
     if not os.path.exists(system_dir_path):
         raise ValueError(f'ERROR: the system {system_name} does not exist in your data!')
