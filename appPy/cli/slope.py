@@ -11,7 +11,8 @@ from src.utils.get_VLE_data import list_VLE_tables
 @click.argument('compound1')
 @click.argument('compound2')
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
-def cli_slope(compound1, compound2, dataset):
+@click.option('--noplot', is_flag=True, help='Suppress rendering of plots')
+def cli_slope(compound1, compound2, dataset, noplot):
     """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
     system_name = f'{compound1}-{compound2}'
 
@@ -25,6 +26,7 @@ def cli_slope(compound1, compound2, dataset):
         slope_test = Slope_test(compound1, compound2, dataset)
         slope_test.check_status_CLI()
         print(slope_test)
+        if noplot: return
         slope_test.vle.plot_gamma()
         slope_test.render_plot_CLI()
         slope_test.plot_slope()

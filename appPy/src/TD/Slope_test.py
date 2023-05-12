@@ -20,25 +20,23 @@ class Slope_test(Result):
         if self.status == 2:
             return
 
-        self.d_ln_gamma = diffs_noneq(vle.x_1, np.array([vle.gamma_1, vle.gamma_2]), vle.x_1)
-        d_ln_gamma_1 = self.d_ln_gamma[0, :]
-        d_ln_gamma_2 = self.d_ln_gamma[1, :]
+        self.d_gamma = diffs_noneq(vle.x_1, np.array([vle.gamma_1, vle.gamma_2]), vle.x_1)
+        self.d_ln_gamma_1 = self.d_gamma[0, :] / vle.gamma_1
+        self.d_ln_gamma_2 = self.d_gamma[1, :] / vle.gamma_2
 
-        self.P2P_resid = vle.x_1 * d_ln_gamma_1 + vle.x_2 * d_ln_gamma_2
+        self.P2P_resid = vle.x_1 * self.d_ln_gamma_1 + vle.x_2 * self.d_ln_gamma_2
 
     def __str__(self):
         x = self.vle.x_1[:, np.newaxis]
         R = self.P2P_resid[:, np.newaxis]
         xR_table = np.concatenate((x, R), axis=1)
         printed = np.array_str(xR_table, precision=3, suppress_small=True)
-        return f'residuals:\n{printed}'
+        return f'residuals:\n{printed}\naverage resid:' + '{:.2e}'.format(np.mean(abs(R)))
 
     def plot_slope(self):
         x_1 = self.vle.x_1
-        d_ln_gamma_1 = self.d_ln_gamma[0, :]
-        d_ln_gamma_2 = self.d_ln_gamma[1, :]
-        plt.plot(x_1, d_ln_gamma_1, '^b', label='$d$ln$\\gamma_1$')
-        plt.plot(x_1, d_ln_gamma_2, 'vr', label='$d$ln$\\gamma_2$')
+        plt.plot(x_1, self.d_ln_gamma_1, '^b', label='$d$ln$\\gamma_1$')
+        plt.plot(x_1, self.d_ln_gamma_2, 'vr', label='$d$ln$\\gamma_2$')
         plt.plot(x_1, self.P2P_resid, 'sk', label='residual')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'Slope test for {self.vle.get_title()}')
