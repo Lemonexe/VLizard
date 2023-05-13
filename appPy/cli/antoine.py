@@ -3,8 +3,8 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
-from src.TD.Antoine import Antoine
 from src.utils.errors import CLI_error_boundary
+from src.TD.Antoine import Antoine
 
 
 @click.command()

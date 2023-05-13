@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from .open_tsv import open_tsv
 from .errors import AppException
+from .open_tsv import open_tsv
 
 
 # helper to get directory path where data is stored for the given compounds system dir, and raise AppException if not exists

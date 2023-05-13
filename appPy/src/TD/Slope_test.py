@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from .VLE import VLE
-from src.utils.Result import Result
-from src.utils.math.diff_noneq import diffs_noneq_3
 from src.utils.array2tsv import array2tsv, vecs2cols
+from src.utils.math.diff_noneq import diffs_noneq_3
+from src.utils.Result import Result
+from .VLE import VLE
 
 
 # perform simple point to point slope test as object with results, and methods for visualization
@@ -38,7 +38,7 @@ class Slope_test(Result):
         table = vecs2cols(self.vle.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_resid)
         print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
         avgR = '{:.3f}'.format(np.mean(abs(self.P2P_resid)))
-        print(f'\naverage abs resid: {avgR}')
+        print(f'\naverage abs resid: {avgR}\n')
 
     def plot_slope(self):
         x_1 = self.vle.x_1

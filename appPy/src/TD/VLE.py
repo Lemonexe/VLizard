@@ -1,8 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from .Antoine import Antoine
+from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
+from .Antoine import Antoine
 
 
 # unpack the basic necessary data into this object rich with derived physical quantities + metadata
@@ -36,6 +37,14 @@ class VLE(Result):
 
         self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
+
+    def report(self):
+        self.report_warnings()
+        print('')
+        headlines = ['  x1', 'γ1', 'γ2']
+        table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
+        print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        print('')
 
     def get_title(self):
         return f'{self.compound1}-{self.compound2}, {self.dataset_name}'
