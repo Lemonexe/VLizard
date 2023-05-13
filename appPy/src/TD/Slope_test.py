@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from .VLE import VLE
 from src.utils.Result import Result
 from src.utils.math.diff_noneq import diffs_noneq_3
+from src.utils.array2tsv import array2tsv, vecs2cols
 
 
 # perform simple point to point slope test as object with results, and methods for visualization
@@ -27,14 +28,16 @@ class Slope_test(Result):
         self.d_ln_gamma_1 = d_gamma[0, :]
         self.d_ln_gamma_2 = d_gamma[1, :]
 
+        # point to point residue of Gibbs-Duhem equation (vector)
         self.P2P_resid = vle.x_1 * self.d_ln_gamma_1 + vle.x_2 * self.d_ln_gamma_2
 
-    def __str__(self):
-        x = self.vle.x_1[:, np.newaxis]
-        R = self.P2P_resid[:, np.newaxis]
-        xR_table = np.concatenate((x, R), axis=1)
-        printed = np.array_str(xR_table, precision=3, suppress_small=True)
-        return f'residuals:\n{printed}\naverage resid:' + '{:.2e}'.format(np.mean(abs(R)))
+    def report(self):
+        print('')
+        headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
+        table = vecs2cols(self.vle.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_resid)
+        print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        avgR = '{:.3f}'.format(np.mean(abs(self.P2P_resid)))
+        print(f'\naverage abs resid: {avgR}')
 
     def plot_slope(self):
         x_1 = self.vle.x_1

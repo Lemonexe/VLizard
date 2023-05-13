@@ -1,8 +1,6 @@
 CODE:
-	try sousední derivace
 	maybe raise instead of Result.err (but Result is great for warnings)
 	did you mean CHOL-CHF?
-	pretty print, save to .tsv
 
 
 

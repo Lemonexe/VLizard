@@ -25,7 +25,7 @@ def cli_slope(compound1, compound2, dataset, noplot):
         print(f'Slope test for {system_name}, {dataset}')
         slope_test = Slope_test(compound1, compound2, dataset)
         slope_test.check_status_CLI()
-        print(slope_test)
+        slope_test.report()
         if noplot: return
         slope_test.vle.plot_gamma()
         slope_test.render_plot_CLI()
