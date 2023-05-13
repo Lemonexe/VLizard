@@ -6,14 +6,11 @@ def get_diff_noneq_consts(x_vec, x_query):
     x_query = np.float64(x_query)
     x_vec = np.array(x_vec)
 
-    if x_vec.ndim != 1:
-        raise ValueError('x_vec must be a vector with only one dimension')
-    if x_query.ndim > 0:
-        raise ValueError('x_query must be a float')
+    if x_vec.ndim != 1: raise TypeError('x_vec must be a vector with only one dimension')
+    if x_query.ndim > 0: raise TypeError('x_query must be a float')
 
     n_x = x_vec.shape[0]
-    if n_x < 2:
-        raise ValueError('x_vec must have at least two members')
+    if n_x < 2: raise ValueError('x_vec must have at least two members')
 
     A = np.ones((n_x, n_x), dtype='float64')
     b = np.zeros((n_x, 1), dtype='float64')
@@ -35,8 +32,7 @@ def diff_noneq(x_vec, y_vec, x_query):
 
     n_x = x_vec.shape[0]
     n_y = y_vec.shape[0] if y_vec.ndim == 1 else y_vec.shape[1]
-    if n_x != n_y:
-        raise ValueError(f'number of members for x_vec & y_vec must match (got {n_x}, {n_y})')
+    if n_x != n_y: raise ValueError(f'number of members for x_vec & y_vec must match (got {n_x}, {n_y})')
 
     return np.sum(C * y_vec, 1)
 
@@ -52,8 +48,7 @@ def diffs_noneq(x_vec, y_vec, x_query_vec):
     if is_y_1dim:
         y_vec = y_vec[:, np.newaxis].T
 
-    if x_query_vec.ndim != 1:
-        raise ValueError('x_query_vec must be a vector with only one dimension')
+    if x_query_vec.ndim != 1: raise TypeError('x_query_vec must be a vector with only one dimension')
     q = x_query_vec.shape[0]
     m = y_vec.shape[0]
 
@@ -80,8 +75,7 @@ def diffs_noneq_3(x_vec, y_vec):
     q = x_vec.shape[0]
     m = y_vec.shape[0]
 
-    if q < 3:
-        raise ValueError('x_vec must have at least 3 members')
+    if q < 3: raise ValueError('x_vec must have at least 3 members')
 
     diffs = np.zeros([m, q], dtype='float64')
 

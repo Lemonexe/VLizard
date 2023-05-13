@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from src.config import antoine_bounds_rel_tol, x_points_smooth_plot
 from src.utils.open_tsv import open_tsv
 from src.utils.Result import Result
+from src.utils.errors import AppException
 
 
 # prepare printable plot of Antoine per compound
@@ -20,19 +21,16 @@ class Antoine(Result):
         matches = list(filter(lambda row: row[0].upper() == self.compound.upper(), consts))
 
         if len(matches) == 0:
-            self.err(f'ERROR: No Antoine data found for compound {self.compound}!')
-            return
+            raise AppException(f'ERROR: No Antoine data for compound {self.compound}!')
         if len(matches) > 1:
-            self.err(f'ERROR: Multiple Antoine data found for compound {self.compound}, only one is permissible!')
-            return
+            raise AppException(f'ERROR: Multiple Antoine data for compound {self.compound}, only one is permissible!')
 
         cells = list(filter(bool, matches[0]))
         cells = list(map(float, cells[1:]))
         if len(cells) != 5:
-            self.err(
-                f'ERROR: Corrupt Antoine data found for compound {self.compound}, there must be 5 columns besides label, but {len(cells)} found:\n{str(cells)}'
+            raise AppException(
+                f'ERROR: Corrupt Antoine data for compound {self.compound}, there must be 5 columns besides label, but {len(cells)} found:\n{str(cells)}'
             )
-            return
         C1, C2, C3, self.T_min, self.T_max = map(float, cells)
 
         self.antoine_fun = lambda T: np.exp(C1 + C2 / (T+C3))
@@ -41,8 +39,10 @@ class Antoine(Result):
     def check_T_bounds(self, T_min_query, T_max_query):
         T_int = self.T_max - self.T_min
         template = 'WARNING: T extrapolation of Antoine function for {compound}: dataset {extrem} T is {T_query}, while Antoine {extrem} T is {T_ant}'
+
         if T_min_query < self.T_min - antoine_bounds_rel_tol*T_int:
             self.warn(template.format(extrem='min', compound=self.compound, T_query=T_min_query, T_ant=self.T_min))
+
         if T_max_query > self.T_max + antoine_bounds_rel_tol*T_int:
             self.warn(template.format(extrem='max', compound=self.compound, T_query=T_max_query, T_ant=self.T_max))
 

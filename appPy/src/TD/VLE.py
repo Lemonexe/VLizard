@@ -14,11 +14,7 @@ class VLE(Result):
         self.compound2 = compound2
         self.dataset_name = dataset_name
 
-        try:
-            table = get_VLE_table(compound1, compound2, dataset_name)
-        except ValueError as err:
-            self.err(str(err))
-            return
+        table = get_VLE_table(compound1, compound2, dataset_name)
 
         (self.p, self.T, self.x_1, self.y_1) = table.T
         self.x_2 = 1 - self.x_1

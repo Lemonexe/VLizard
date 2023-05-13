@@ -32,6 +32,7 @@ class Slope_test(Result):
         self.P2P_resid = vle.x_1 * self.d_ln_gamma_1 + vle.x_2 * self.d_ln_gamma_2
 
     def report(self):
+        self.report_warnings()
         print('')
         headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
         table = vecs2cols(self.vle.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_resid)

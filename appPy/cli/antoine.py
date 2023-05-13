@@ -4,6 +4,7 @@ sys.path.append(sys.path[0] + '/..')
 
 import click
 from src.TD.Antoine import Antoine
+from src.utils.errors import CLI_error_boundary
 
 
 @click.command()
@@ -11,11 +12,11 @@ from src.TD.Antoine import Antoine
 def cli_antoine(compound):
     """Plot Antoine for COMPOUND code."""
     antoine = Antoine(compound)
-    antoine.check_status_CLI()
+    antoine.report_warnings()
     antoine.plot()
     antoine.render_plot_CLI()
 
 
 # pylint: disable=no-value-for-parameter
 if __name__ == '__main__':
-    cli_antoine()
+    CLI_error_boundary(cli_antoine)

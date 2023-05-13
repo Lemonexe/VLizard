@@ -4,7 +4,7 @@ import numpy as np
 # prettyprint numpy array to tsv
 def array2tsv(arr, headlines=None, format_spec=None):
     arr = np.array(arr)
-    if arr.ndim != 2: raise ValueError('arr must be a numpy array of two dimensions')
+    if arr.ndim != 2: raise TypeError('arr must be a numpy array of two dimensions')
 
     lines = []
 
