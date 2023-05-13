@@ -15,10 +15,9 @@ from src.TD.VLE import VLE
 @click.option('--noplot', is_flag=True, help='Suppress rendering of plots')
 def cli_gamma(compound1, compound2, dataset, noplot):
     """Calculate activity coeffs for COMPOUND1 code, COMPOUND2 code."""
-    system_name = f'{compound1}-{compound2}'
 
-    def do_for_dataset(dataset):
-        print(f'Slope test for {system_name}, {dataset}')
+    def do_for_dataset(compound1, compound2, dataset):
+        print(f'Slope test for {compound1}-{compound2}, {dataset}')
         vle = VLE(compound1, compound2, dataset)
         vle.report()
 

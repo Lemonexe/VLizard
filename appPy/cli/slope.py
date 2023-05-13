@@ -15,10 +15,9 @@ from src.TD.Slope_test import Slope_test
 @click.option('--noplot', is_flag=True, help='Suppress rendering of plots')
 def cli_slope(compound1, compound2, dataset, noplot):
     """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
-    system_name = f'{compound1}-{compound2}'
 
-    def do_for_dataset(dataset):
-        print(f'Slope test for {system_name}, {dataset}')
+    def do_for_dataset(compound1, compound2, dataset):
+        print(f'Slope test for {compound1}-{compound2}, {dataset}')
         slope_test = Slope_test(compound1, compound2, dataset)
         slope_test.report()
 
