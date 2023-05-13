@@ -1,11 +1,31 @@
+import pytest
 import numpy as np
 from math import pi
-from src.utils.math.diff_noneq import diff_noneq, diffs_noneq
+from src.utils.math.diff_noneq import diff_noneq, diffs_noneq, get_diff_noneq_consts
 
 # vector of twenty sorted randomly generated numbers from 0 to 1
 # yapf: disable
 x_vec = np.array([0.01915698,0.0525313,0.05380665,0.08390383,0.13675854,0.24116141,0.32488405,0.46236529,0.53792819,0.57528869,0.61502928,0.61511705,0.69676865,0.70628807,0.73710621,0.7431038,0.83997656,0.89478248,0.95892033,0.96238809])
 # yapf: enable
+
+
+# test the formula to get constants, which are dependent only on x_vec grid & x_query point, using known formulae for equidistant
+def test_get_diff_noneq_consts():
+    rel_tol = 1e-6
+
+    err = lambda C1, C2: np.max(abs(C1 - C2))
+
+    C_num = get_diff_noneq_consts([0.2, 0.3, 0.4], 0.3)
+    C_anal = [-5, 0, 5]  # btw they are already divided by (2*h) = 0.2
+    assert err(C_num, C_anal) < rel_tol
+
+    C_num = get_diff_noneq_consts([6.5, 7.0, 7.5], 6.5)
+    C_anal = [-3, 4, -1]
+    assert err(C_num, C_anal) < rel_tol
+
+    C_num = get_diff_noneq_consts([6.5, 7.0, 7.5], 7.5)
+    C_anal = [1, -4, 3]
+    assert err(C_num, C_anal) < rel_tol
 
 
 # on x_vec grid query derivation at single x point
@@ -63,3 +83,7 @@ def test_diffs_noneq_multiple():
 
     assert np.max(err_1) < rel_tol
     assert np.max(err_2) < rel_tol
+
+    # assert error when len(x) != len(y)
+    with pytest.raises(ValueError):
+        diff_noneq(x_vec, np.sin(x_query_vec), 0.5)
