@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from .VLE import VLE
 from src.utils.Result import Result
-from src.utils.math.diff_noneq import diffs_noneq
+from src.utils.math.diff_noneq import diffs_noneq_3
 
 
 # perform simple point to point slope test as object with results, and methods for visualization
@@ -20,7 +20,10 @@ class Slope_test(Result):
         if self.status == 2:
             return
 
-        d_gamma = diffs_noneq(vle.x_1, np.array([np.log(vle.gamma_1), np.log(vle.gamma_2)]), vle.x_1)
+        x_vec = vle.x_1
+        y_vec = np.array([np.log(vle.gamma_1), np.log(vle.gamma_2)])
+        d_gamma = diffs_noneq_3(x_vec, y_vec)
+
         self.d_ln_gamma_1 = d_gamma[0, :]
         self.d_ln_gamma_2 = d_gamma[1, :]
 
@@ -41,7 +44,6 @@ class Slope_test(Result):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'Slope test for {self.vle.get_title()}')
         plt.xlim(0, 1)
-        plt.ylim(np.min(self.P2P_resid) * 1.1, np.max(self.P2P_resid) * 1.1)
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$')
         plt.legend()
