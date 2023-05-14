@@ -1,3 +1,9 @@
+CODE:
+	remove rk brentq PoC
+	hezčí warnings, aby to bylo presentable na FE
+	string format
+
+
 Redlich-kister [p] apx ~ [p,T]
 	< 10% jako velmi hrubý test
 
