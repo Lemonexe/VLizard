@@ -23,11 +23,9 @@ class VLE(Result):
 
         antoine_1 = Antoine(compound1)
         antoine_2 = Antoine(compound2)
-        self.merge_status(antoine_1, antoine_2)
-        if self.status == 2:
-            return
-        antoine_1.check_T_bounds(np.min(self.T), np.max(self.T))
-        antoine_2.check_T_bounds(np.min(self.T), np.max(self.T))
+        T_data_bounds = (np.min(self.T), np.max(self.T))
+        antoine_1.check_T_bounds(*T_data_bounds)
+        antoine_2.check_T_bounds(*T_data_bounds)
         self.merge_status(antoine_1, antoine_2)
         self.antoine_fun_1 = antoine_1.antoine_fun
         self.antoine_fun_2 = antoine_2.antoine_fun
