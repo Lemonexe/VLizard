@@ -17,7 +17,6 @@ def cli_slope(compound1, compound2, dataset, noplot):
     """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        print(f'Slope test for {compound1}-{compound2}, {dataset}')
         slope_test = Slope_test(compound1, compound2, dataset)
         slope_test.report()
 

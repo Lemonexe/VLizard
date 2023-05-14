@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import UnivariateSpline
-# from scipy.optimize import brentq
 from matplotlib import pyplot as plt
+from src.utils.underline import underline
 from src.config import x_points_smooth_plot, rk_D_criterion, rk_quad_rel_tol
 from .VLE import VLE
 
@@ -17,33 +17,35 @@ class Redlich_Kister_test(VLE):
         self.curve = np.log(self.gamma_1) - np.log(self.gamma_2)
         self.curve_spline = UnivariateSpline(self.x_1, self.curve)
 
-        # sol = brentq(self.curve_spline, np.min(self.x_1), np.max(self.x_1))
-        # a, err_a = quad(self.curve_spline, 0, sol)
-        # b, err_b = quad(self.curve_spline, sol, 1)
-        # plt.axvline(x=sol, color='k', linestyle=':')
-        # self.D = (a+b)/(abs(a)+abs(b))*100
-
+        # ||A|-|B|| means integrating the function as it is
         self.curve_diff, err_diff = quad(self.curve_spline, 0, 1)
         self.curve_diff = abs(self.curve_diff)
+
+        # ||A|+|B|| means integrating |function|
         self.curve_sum, err_sum = quad(lambda x: abs(self.curve_spline(x)), 0, 1)
 
+        # warn if scipy declares a large integration error
         rel_err_max = max(abs(err_diff / self.curve_diff), abs(err_sum / self.curve_sum))
         if rel_err_max > rk_quad_rel_tol:
-            msg = f'WARNING: relative error of numerical integration is {rel_err_max:.1e}, limit is {rk_quad_rel_tol:.0e}. Calculation is to be considered unreliable.'
-            self.warn(msg)
+            self.warn(
+                f'WARNING: relative error of numerical integration is {rel_err_max:.1e}, limit is {rk_quad_rel_tol:.0e}. Calculation is to be considered unreliable.'
+            )
 
+        # the test criterion D
         self.D = self.curve_diff / self.curve_sum * 100
         self.is_consistent = self.D <= rk_D_criterion
 
     def report(self):
+        print(underline(f'Redlich-Kister test for {self.compound1}-{self.compound2}, {self.dataset_name}'))
         self.report_warnings()
-        print('')
         print(f'D = {self.D:.1f}')
         if self.is_consistent:
-            print(f'D < {rk_D_criterion} therefore data consistency cannot be determined :-)')
+            print(f'D < {rk_D_criterion:.0f} therefore data consistency cannot be determined :-)')
         else:
-            print(f'D > {rk_D_criterion} therefore data consistency is disproven! :-(')
-        print(f'\ta-b = {self.curve_diff:.4f}\n\ta+b = {self.curve_sum:.4f}\n')
+            print(f'D > {rk_D_criterion:.0f} therefore data consistency is disproven! :-(')
+        print(f'\ta-b = {self.curve_diff:.4f}')
+        print(f'\ta+b = {self.curve_sum:.4f}')
+        print('')
 
     def plot_rk(self):
         x_tab = np.linspace(0, 1, x_points_smooth_plot)

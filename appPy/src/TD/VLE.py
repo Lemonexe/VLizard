@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from src.utils.underline import underline
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
@@ -37,8 +38,8 @@ class VLE(Result):
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
 
     def report(self):
+        print(underline(f'Activity coeffs for {self.compound1}-{self.compound2}, {self.dataset_name}'))
         self.report_warnings()
-        print('')
         headlines = ['  x1', 'γ1', 'γ2']
         table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
         print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))

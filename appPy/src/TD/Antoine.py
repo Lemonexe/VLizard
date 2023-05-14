@@ -38,7 +38,7 @@ class Antoine(Result):
     # checks if queried T_min, T_max fall within the Antoine T_min, T_max (with tolerance)
     def check_T_bounds(self, T_min_query, T_max_query):
         T_int = self.T_max - self.T_min
-        template = 'WARNING: T extrapolation of Antoine function for {compound}: dataset {extrem} T is {T_query}, while Antoine {extrem} T is {T_ant}'
+        template = 'WARNING: Temperature extrapolation of Antoine function for {compound}: queried {extrem} T = {T_query:.1f}, while Antoine {extrem} T = {T_ant:.1f}'
 
         if T_min_query < self.T_min - antoine_bounds_rel_tol*T_int:
             self.warn(template.format(extrem='min', compound=self.compound, T_query=T_min_query, T_ant=self.T_min))

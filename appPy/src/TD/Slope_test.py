@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from src.utils.underline import underline
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
@@ -21,13 +22,14 @@ class Slope_test(VLE):
         self.P2P_resid = self.x_1 * self.d_ln_gamma_1 + self.x_2 * self.d_ln_gamma_2
 
     def report(self):
+        print(underline(f'Slope test for {self.compound1}-{self.compound2}, {self.dataset_name}'))
         self.report_warnings()
-        print('')
         headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
         table = vecs2cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_resid)
         print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
-        avgR = '{:.3f}'.format(np.mean(abs(self.P2P_resid)))
-        print(f'\naverage abs resid: {avgR}\n')
+        avgR = np.mean(abs(self.P2P_resid))
+        print(f'\nMean abs residual = {avgR:.3f}')
+        print('')
 
     def plot_slope(self):
         x_1 = self.x_1

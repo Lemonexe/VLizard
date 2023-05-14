@@ -17,7 +17,6 @@ def cli_rk(compound1, compound2, dataset, noplot):
     """Perform Redlich-Kister test for COMPOUND1 code, COMPOUND2 code."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        print(f'Redlich-Kister test for {compound1}-{compound2}, {dataset}')
         rk_test = Redlich_Kister_test(compound1, compound2, dataset)
         rk_test.report()
 

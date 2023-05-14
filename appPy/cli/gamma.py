@@ -17,7 +17,6 @@ def cli_gamma(compound1, compound2, dataset, noplot):
     """Calculate activity coeffs for COMPOUND1 code, COMPOUND2 code."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        print(f'Slope test for {compound1}-{compound2}, {dataset}')
         vle = VLE(compound1, compound2, dataset)
         vle.report()
 
