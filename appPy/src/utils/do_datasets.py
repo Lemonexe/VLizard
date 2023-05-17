@@ -13,12 +13,13 @@ def do_datasets(compound1, compound2, dataset, do_for_dataset):
         try:
             (compound1, compound2) = (compound2, compound1)
             dataset_names = list_VLE_tables(compound1, compound2)
-            print(f'WARNING: compounds were swapped as {compound1}-{compound2} (that system was found)')
+            print(f'WARNING: compounds were swapped as {compound1}-{compound2} (that system was found)\n')
 
         # but if nothing is found either, throw the original error, not the swapped one
         except AppException as err2:
             raise AppException(err1) from err2
 
+    # do either for one specified dataset, or all found datasets
     if dataset:
         dataset = dataset.strip()
         if not dataset in dataset_names:

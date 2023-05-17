@@ -21,7 +21,7 @@ def cli_rk(compound1, compound2, dataset, noplot):
         rk_test.report()
 
         if noplot: return
-        rk_test.plot_rk()
+        rk_test.plot()
         rk_test.render_plot_CLI()
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)

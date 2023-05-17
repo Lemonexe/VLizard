@@ -33,6 +33,7 @@ class Result:
     def report_warnings(self):
         if self.status > 0:
             print('\n'.join(self.warnings))
+            if len(self.warnings): print('')
 
     # finish rendering plot in CLI mode
     def render_plot_CLI(self):

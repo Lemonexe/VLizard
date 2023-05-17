@@ -1,7 +1,8 @@
 import numpy as np
 
 
-# the pivotal part of diff_noneq, which gets the constants for grid 'x_vec' and queried point 'x_query'
+# the pivotal part of diff_noneq, which gets the constants for n-point differential formula for grid 'x_vec' and queried point 'x_query'
+# there is not much point in calling this function by itself; see the other ones in this file
 def get_diff_noneq_consts(x_vec, x_query):
     x_query = np.float64(x_query)
     x_vec = np.array(x_vec)
@@ -12,15 +13,18 @@ def get_diff_noneq_consts(x_vec, x_query):
     n_x = x_vec.shape[0]
     if n_x < 2: raise ValueError('x_vec must have at least two members')
 
+    # construct the set of n_x linear equations as A @ C = b
     A = np.ones((n_x, n_x), dtype='float64')
     b = np.zeros((n_x, 1), dtype='float64')
     for i in range(1, n_x):
         A[i, :] = x_vec**i
         b[i] = i * x_query**(i - 1)
+
+    # and solve for C, the desired constants
     return np.linalg.solve(A, b).T
 
 
-# get approximate dy/dx at 'x_query' on a non-equidistant grid 'x_vec' (1,n) with y values 'y_vec' (m,n)
+# get approximate dy/dx at 'x_query' point with a non-equidistant grid 'x_vec' (1,n) and y values 'y_vec' (m,n)
 # 'x_vec' is row vector with length 'n' (only one independent variable)
 # 'y_vec' must have same length but can be 'm' rows (each is one dependent variable)
 def diff_noneq(x_vec, y_vec, x_query):
@@ -79,6 +83,7 @@ def diffs_noneq_3(x_vec, y_vec):
 
     diffs = np.zeros([m, q], dtype='float64')
 
+    # foreach point calculate differential using the same method, but always feed a different triplet of points from the grid 'x_vec'
     for (i, x_i) in enumerate(x_vec):
         if i == 0:
             diffs[:, i] = diff_noneq(x_vec[:3], y_vec[:, :3], x_i)

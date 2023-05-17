@@ -38,8 +38,10 @@ class VLE(Result):
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
 
     def report(self):
-        print(underline(f'Activity coeffs for {self.compound1}-{self.compound2}, {self.dataset_name}'))
+        print(underline(f'Activity coeffs for {self.get_title()}'))
         self.report_warnings()
+
+        # pretty-print a table of following vectors
         headlines = ['  x1', 'γ1', 'γ2']
         table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
         print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
@@ -48,6 +50,7 @@ class VLE(Result):
     def get_title(self):
         return f'{self.compound1}-{self.compound2}, {self.dataset_name}'
 
+    # plot x,y diagram
     def plot_xy(self):
         plt.plot(self.x_1, self.y_1, 'ok')
         plt.plot([0, 1], [0, 1], ':k')
@@ -57,6 +60,7 @@ class VLE(Result):
         plt.xlabel('x')
         plt.ylabel('y')
 
+    # plot T,x,y diagram
     def plot_Txy(self):
         plt.plot(self.x_1, self.T, 'ok')
         plt.plot(self.y_1, self.T, 'Dk')
@@ -65,6 +69,7 @@ class VLE(Result):
         plt.xlabel('x, y')
         plt.ylabel('T')
 
+    # plot diagram of activity coeffs per x
     def plot_gamma(self):
         plt.plot(self.x_1, self.gamma_1, '^b', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vr', label='$\\gamma_2$')

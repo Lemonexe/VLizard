@@ -13,7 +13,7 @@ def array2tsv(arr, headlines=None, format_spec=None):
         headline = '\t'.join(map(str, headlines))
         lines.append(headline)
 
-    formatter = str if not format_spec else format_spec.format
+    formatter = str if not format_spec else format_spec.format  # lambda to map each numerical cell into a string
     for i in range(arr.shape[0]):
         row = arr[i, :]
         line = '\t'.join(map(formatter, row))

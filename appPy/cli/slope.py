@@ -21,7 +21,7 @@ def cli_slope(compound1, compound2, dataset, noplot):
         slope_test.report()
 
         if noplot: return
-        slope_test.plot_slope()
+        slope_test.plot()
         slope_test.render_plot_CLI()
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)

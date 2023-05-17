@@ -15,23 +15,25 @@ class Antoine(Result):
         self.compound = compound
         self.get_from_data()
 
-    # for the given compound code, get Antoine function as lambda T, T_min of data, T_max of data
+    # for the given compound code, get Antoine function from tsv file; populate antoine_fun as lambda T: p, T_min, T_max
     def get_from_data(self):
         consts = open_tsv('data/Antoine.tsv')
-        matches = list(filter(lambda row: row[0].upper() == self.compound.upper(), consts))
+        matches = list(filter(lambda row: row[0].upper() == self.compound.upper(),
+                              consts))  # find the appropriate row per compound name
 
         if len(matches) == 0:
             raise AppException(f'ERROR: No Antoine data for compound {self.compound}!')
         if len(matches) > 1:
             raise AppException(f'ERROR: Multiple Antoine data for compound {self.compound}, only one is permissible!')
 
-        cells = list(filter(bool, matches[0]))
-        cells = list(map(float, cells[1:]))
+        row = matches[0]
+        cells = list(filter(bool, row))  # throw out empty cells
+        cells = list(map(float, cells[1:]))  # throw out first cell (compound name), cast the rest of them as float
         if len(cells) != 5:
             raise AppException(
                 f'ERROR: Corrupt Antoine data for compound {self.compound}, there must be 5 columns besides label, but {len(cells)} found:\n{str(cells)}'
             )
-        C1, C2, C3, self.T_min, self.T_max = map(float, cells)
+        C1, C2, C3, self.T_min, self.T_max = map(float, cells)  # unpack the appropriate cells into variables
 
         self.antoine_fun = lambda T: np.exp(C1 + C2 / (T+C3))
 
@@ -46,10 +48,14 @@ class Antoine(Result):
         if T_max_query > self.T_max + antoine_bounds_rel_tol*T_int:
             self.warn(template.format(extrem='max', compound=self.compound, T_query=T_max_query, T_ant=self.T_max))
 
+    def get_title(self):
+        return f'Vapor pressure for {self.compound}'
+
     def plot(self):
+        # smooth tabelation of curve
         T = np.linspace(self.T_min, self.T_max, num=x_points_smooth_plot)
         p = self.antoine_fun(T)
         plt.plot(T, p, '-k')
-        plt.title(f'Vapor pressure for {self.compound}')
+        plt.title(self.get_title())
         plt.xlabel('T [K]')
         plt.ylabel('p [kPa]')

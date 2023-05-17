@@ -13,7 +13,7 @@ class Redlich_Kister_test(VLE):
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
 
-        # function, the curve of which is evaluated
+        # the "curve" is a function which will be integrated
         self.curve = np.log(self.gamma_1) - np.log(self.gamma_2)
         self.curve_spline = UnivariateSpline(self.x_1, self.curve)
 
@@ -32,11 +32,15 @@ class Redlich_Kister_test(VLE):
             )
 
         # the test criterion D
+        self.D_criterion = rk_D_criterion
         self.D = self.curve_diff / self.curve_sum * 100
-        self.is_consistent = self.D <= rk_D_criterion
+        self.is_consistent = self.D <= self.D_criterion
+
+    def get_title(self):
+        return f'Redlich-Kister test for {super().get_title()}'
 
     def report(self):
-        print(underline(f'Redlich-Kister test for {self.compound1}-{self.compound2}, {self.dataset_name}'))
+        print(underline(self.get_title()))
         self.report_warnings()
         print(f'D = {self.D:.1f}')
         if self.is_consistent:
@@ -47,14 +51,15 @@ class Redlich_Kister_test(VLE):
         print(f'\ta+b = {self.curve_sum:.4f}')
         print('')
 
-    def plot_rk(self):
+    def plot(self):
+        # smooth tabelation of curve
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         curve_tab = self.curve_spline(x_tab)
 
         plt.plot(self.x_1, self.curve, 'Dk')
         plt.plot(x_tab, curve_tab, '-k')
         plt.axhline(y=0, color='k', linestyle=':')
-        plt.title(f'Redlich-Kister test for {self.get_title()}')
+        plt.title(self.get_title())
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
         plt.ylabel('ln $\\gamma_1/\\gamma_2$')
