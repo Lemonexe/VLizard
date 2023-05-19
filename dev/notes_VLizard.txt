@@ -1,6 +1,6 @@
-Fredenslund !!!!
-	celková metrika suma,
-	a zobrazit graf distribuce residuálů
+CODE: předělat cli\gamma na cli\vle with options
+
+CHART VISUAL LANGUAGE
 
 Možná long-term: L-W Wisniak
 Van Ness až poté co bych dodělal proložení dat modelem
