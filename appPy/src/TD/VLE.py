@@ -62,12 +62,13 @@ class VLE(Result):
 
     # plot T,x,y diagram
     def plot_Txy(self):
-        plt.plot(self.x_1, self.T, 'Dk', label='boil')
-        plt.plot(self.y_1, self.T, 'ok', label='dew')
+        plt.plot(self.y_1, self.T, 'Dr', label='dew')
+        plt.plot(self.x_1, self.T, 'Db', label='boil')
         plt.xlim(0, 1)
         plt.title(f'Txy diagram for {self.get_title()}')
         plt.xlabel('x, y')
         plt.ylabel('T')
+        plt.legend()
 
     # plot diagram of activity coeffs per x
     def plot_gamma(self):
