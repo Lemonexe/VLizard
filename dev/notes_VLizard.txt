@@ -1,9 +1,11 @@
 Fredenslund
-	a zobrazit graf distribuce residuálů
 	předělat ty polynomy
 		scipy.special.legendre
+		použít jen 3 pokud jsou jen čtyři body, and throw pokud jen tři body
 
 CODE: předělat cli\gamma na cli\vle with options
+
+CHART VISUAL LANGUAGE
 
 Možná long-term: L-W Wisniak
 Van Ness až poté co bych dodělal proložení dat modelem

@@ -45,7 +45,7 @@ class Fredenslund_test(VLE):
         y_2_cal = p_2_cal / p
 
         # calculate y, p residuals
-        self.p_res = p - p_cal
+        self.p_res = (p-p_cal) / p
         self.y_1_res = y_1 - y_1_cal
         self.y_2_res = y_2 - y_2_cal
         self.evaluate()
@@ -56,7 +56,7 @@ class Fredenslund_test(VLE):
         self.y_1_res_avg = np.mean(abs(self.y_1_res)) * 100
         self.y_2_res_avg = np.mean(abs(self.y_2_res)) * 100
 
-        conditions = np.array([self.p_res_avg, self.y_1_res_avg, self.y_2_res_avg]) < fredenslund_criterion
+        conditions = np.array([self.p_res_avg, self.y_1_res_avg, self.y_2_res_avg]) <= fredenslund_criterion
         self.is_consistent = conditions.all()
         self.criterion = fredenslund_criterion
 
@@ -67,9 +67,9 @@ class Fredenslund_test(VLE):
         print(underline(self.get_title()))
         self.report_warnings()
 
-        print(f'p residual = {self.p_res_avg:.1f} %')
-        print(f'y_1 residual = {self.y_1_res_avg:.1f} %')
-        print(f'y_2 residual = {self.y_2_res_avg:.1f} %')
+        print(f'p residual   = {self.p_res_avg:.2f} %')
+        print(f'y_1 residual = {self.y_1_res_avg:.2f} %')
+        print(f'y_2 residual = {self.y_2_res_avg:.2f} %')
         print('')
         if self.is_consistent:
             print(f'residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven :-)')
@@ -84,7 +84,29 @@ class Fredenslund_test(VLE):
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         g_E_tab = self.g_E_fun(x_tab, *self.g_E_fun_params)
         plt.plot(x_tab, g_E_tab, '-g', label='Legendre model')
-        plt.title(self.get_title())
+        plt.title(f'{self.get_title()}\n$g_E$')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
+        plt.legend()
+
+    def plot_p_res(self):
+        plt.plot(self.x_1, self.p_res, 'Dk')
+        plt.axhline(y=0, color='k', linestyle=':')
+        plt.title(f'{self.get_title()}\n$p$ residuals')
+        plt.xlim(0, 1)
+        plt.xlabel('$x_1$')
+
+    def plot_y_1_res(self):
+        plt.plot(self.x_1, self.y_1_res, '^b')
+        plt.axhline(y=0, color='k', linestyle=':')
+        plt.title(f'{self.get_title()}\n$y_1$ residuals')
+        plt.xlim(0, 1)
+        plt.xlabel('$x_1$')
+
+    def plot_y_2_res(self):
+        plt.plot(self.x_1, self.y_2_res, 'vr')
+        plt.axhline(y=0, color='k', linestyle=':')
+        plt.title(f'{self.get_title()}\n$y_2$ residuals')
+        plt.xlim(0, 1)
+        plt.xlabel('$x_1$')
