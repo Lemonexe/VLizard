@@ -2,7 +2,8 @@ import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 from src.utils.underline import underline
-from src.utils.math.legendre import legendre_terms, d_legendre_terms, legendre_order
+from src.utils.errors import AppException
+from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
 from src.config import x_points_smooth_plot, fredenslund_criterion
 from .VLE import VLE
 
@@ -15,13 +16,20 @@ class Fredenslund_test(VLE):
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
+        # number of model params must be greater than number of points
+        n_x = len(x_1)
+        legendre_order = 3 if n_x == 5 else 4  # normally use order 4, only when you have 5 points fallback to 3
+        if n_x < 5:
+            raise AppException(f'ERROR: Fredenslund test must be performed with at least 5 points, got {n_x}')
+
         # note: g_E means dimensionless excess molar Gibbs energy (g_E = G_mE / RT)
 
         # g_E vector from experimental values
         g_E_exp = (x_1 * np.log(gamma_1) + x_2 * np.log(gamma_2))
 
         # parametrized model function to calculate g_E using Legendre polynomials
-        g_E_fun = lambda x, *params: np.sum(params * legendre_terms(x).T, 1)
+        legendre_array_fun = get_ordered_array_fun(legendre_order, get_g_E_poly)
+        g_E_fun = lambda x, *params: np.sum(params * legendre_array_fun(x).T, 1)
 
         # perform non-lin regression to get the multiplying parameters
         params0 = np.ones(legendre_order + 1, dtype='float64')
@@ -31,7 +39,8 @@ class Fredenslund_test(VLE):
         g_E_cal = g_E_fun(x_1, *params)
 
         # d(g_E)/dx vector from Legendre model
-        d_g_E_cal = np.sum(params * d_legendre_terms(x_1).T, 1)
+        legendre_d_array_fun = get_ordered_array_fun(legendre_order, get_d_g_E_poly)
+        d_g_E_cal = np.sum(params * legendre_d_array_fun(x_1).T, 1)
         self.g_E_exp, self.g_E_cal, self.g_E_fun, self.g_E_fun_params = g_E_exp, g_E_cal, g_E_fun, params
 
         # use g_E_cal, d_g_E_cal to calculate gamma, partial pressures and finally y_1, p

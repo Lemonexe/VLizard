@@ -1,22 +1,39 @@
+import math
 import numpy as np
 
-# Functions for Legendre polynomials multiplied by x*(1-x), and their derivations, up to 4th order
-# the polynomials could be inferred from the progression, but it is more practical to have the definitions expanded
 
-legendre_order = 4  # order used in here
+# get polynomial coeffs of shifted Legendre polynomial of order 'n'
+def get_legendre_poly(n):
+    poly = np.zeros(n + 1, dtype='int32')
+    for i in range(n + 1):
+        poly[i] = math.comb(n, i) * math.comb(n + i, i) * (-1)**i
+    poly *= (-1)**n
+    return np.flip(poly)
 
-legendre_terms = lambda x: np.array([
-    -x**2 + x,
-    -2 * x**3 + 3 * x**2 - x,
-    -6 * x**4 + 12 * x**3 - 7 * x**2 + x,
-    -20 * x**5 + 50 * x**4 - 42 * x**3 + 13 * x**2 - x,
-    -70 * x**6 + 210 * x**5 - 230 * x**4 + 110 * x**3 - 21 * x**2 + x,
-])
 
-d_legendre_terms = lambda x: np.array([
-    -2 * x + 1,
-    -6 * x**2 + 6*x - 1,
-    -24 * x**3 + 36 * x**2 - 14*x + 1,
-    -100 * x**4 + 200 * x**3 - 126 * x**2 + 26*x - 1,
-    -420 * x**5 + 1050 * x**4 - 920 * x**3 + 330 * x**2 - 42*x + 1,
-])
+# get polynomial coeffs of derivation of given polynomial coeffs
+def get_d_poly(poly):
+    poly = np.array(poly)
+    n = len(poly) - 1
+    exps = np.arange(n, 0, -1)  # exponents of x^n terms in poly, except x^0 which is eliminated
+    return poly[:-1] * exps
+
+
+# get polynomial coeffs of shifted Legendre polynomial of order 'n' multiplied with x*(1-x)
+# that's useful for Fredenslund test
+def get_g_E_poly(n):
+    poly = get_legendre_poly(n)
+    part1 = np.concatenate((-poly, [0, 0]))  # poly * -x^2
+    part2 = np.concatenate(([0], +poly, [0]))  # poly * x
+    return part1 + part2
+
+
+# derivation of get_g_E_poly
+get_d_g_E_poly = lambda n: get_d_poly(get_g_E_poly(n))
+
+
+# generate a lambda x: array(n+1), where cell 'i' is Legendre polynom of i-th order
+# polynomial functions are generated from 'i' using a fun such as get_legendre_poly; see Fredenslund test
+def get_ordered_array_fun(n, fun):
+    poly_funs = list(map(np.poly1d, map(fun, range(n + 1))))  # generate list of lambda x functions
+    return lambda x: np.array(list(map(lambda fun: fun(x), poly_funs)))  # transform to lambda x: array
