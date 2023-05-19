@@ -21,7 +21,7 @@ def cli_fredenslund(compound1, compound2, dataset, noplot):
         fredenslund_test.report()
 
         if noplot: return
-        fredenslund_test.plot()
+        fredenslund_test.plot_g_E()
         fredenslund_test.render_plot_CLI()
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
