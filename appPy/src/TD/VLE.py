@@ -52,7 +52,7 @@ class VLE(Result):
 
     # plot x,y diagram
     def plot_xy(self):
-        plt.plot(self.x_1, self.y_1, 'ok')
+        plt.plot(self.x_1, self.y_1, 'Dk')
         plt.plot([0, 1], [0, 1], ':k')
         plt.xlim(0, 1)
         plt.ylim(0, 1)
@@ -62,8 +62,8 @@ class VLE(Result):
 
     # plot T,x,y diagram
     def plot_Txy(self):
-        plt.plot(self.x_1, self.T, 'ok')
-        plt.plot(self.y_1, self.T, 'Dk')
+        plt.plot(self.x_1, self.T, 'Dk', label='boil')
+        plt.plot(self.y_1, self.T, 'ok', label='dew')
         plt.xlim(0, 1)
         plt.title(f'Txy diagram for {self.get_title()}')
         plt.xlabel('x, y')
@@ -71,8 +71,8 @@ class VLE(Result):
 
     # plot diagram of activity coeffs per x
     def plot_gamma(self):
-        plt.plot(self.x_1, self.gamma_1, '^b', label='$\\gamma_1$')
-        plt.plot(self.x_1, self.gamma_2, 'vr', label='$\\gamma_2$')
+        plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
+        plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
         plt.title(f'Activity coefficients for {self.get_title()}')

@@ -89,7 +89,7 @@ class Fredenslund_test(VLE):
         print('')
 
     def plot_g_E(self):
-        plt.plot(self.x_1, self.g_E_exp, '^k', label='experimental')
+        plt.plot(self.x_1, self.g_E_exp, 'Dk', label='experimental')
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         g_E_tab = self.g_E_fun(x_tab, *self.g_E_fun_params)
         plt.plot(x_tab, g_E_tab, '-g', label='Legendre model')
@@ -107,14 +107,14 @@ class Fredenslund_test(VLE):
         plt.xlabel('$x_1$')
 
     def plot_y_1_res(self):
-        plt.plot(self.x_1, self.y_1_res, '^b')
+        plt.plot(self.x_1, self.y_1_res, '^r')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$y_1$ residuals')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
 
     def plot_y_2_res(self):
-        plt.plot(self.x_1, self.y_2_res, 'vr')
+        plt.plot(self.x_1, self.y_2_res, 'vb')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$y_2$ residuals')
         plt.xlim(0, 1)
