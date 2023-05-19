@@ -12,29 +12,32 @@ class Redlich_Kister_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
+        gamma_1, gamma_2, x_1 = self.gamma_1, self.gamma_2, self.x_1
 
         # the "curve" is a function which will be integrated
-        self.curve = np.log(self.gamma_1) - np.log(self.gamma_2)
-        self.curve_spline = UnivariateSpline(self.x_1, self.curve)
+        self.curve = np.log(gamma_1) - np.log(gamma_2)
+        self.curve_spline = UnivariateSpline(x_1, self.curve)
 
         # ||A|-|B|| means integrating the function as it is
-        self.curve_diff, err_diff = quad(self.curve_spline, 0, 1)
-        self.curve_diff = abs(self.curve_diff)
+        self.curve_dif, err_dif = quad(self.curve_spline, 0, 1)
+        self.curve_dif = abs(self.curve_dif)
 
         # ||A|+|B|| means integrating |function|
         self.curve_sum, err_sum = quad(lambda x: abs(self.curve_spline(x)), 0, 1)
 
         # warn if scipy declares a large integration error
-        rel_err_max = max(abs(err_diff / self.curve_diff), abs(err_sum / self.curve_sum))
+        rel_err_max = max(abs(err_dif / self.curve_dif), abs(err_sum / self.curve_sum))
         if rel_err_max > rk_quad_rel_tol:
             self.warn(
                 f'WARNING: relative error of numerical integration is {rel_err_max:.1e}, limit is {rk_quad_rel_tol:.0e}. Calculation is to be considered unreliable.'
             )
+        self.evaluate()
 
-        # the test criterion D
-        self.D_criterion = rk_D_criterion
-        self.D = self.curve_diff / self.curve_sum * 100
-        self.is_consistent = self.D <= self.D_criterion
+    def evaluate(self):
+        # the test criterion D [%]
+        self.D = self.curve_dif / self.curve_sum * 100
+        self.is_consistent = self.D <= rk_D_criterion
+        self.criterion = rk_D_criterion
 
     def get_title(self):
         return f'Redlich-Kister test for {super().get_title()}'
@@ -44,10 +47,10 @@ class Redlich_Kister_test(VLE):
         self.report_warnings()
         print(f'D = {self.D:.1f}')
         if self.is_consistent:
-            print(f'D < {rk_D_criterion:.0f} therefore data consistency cannot be determined :-)')
+            print(f'D < {self.criterion:.0f} therefore data consistency cannot be determined :-)')
         else:
-            print(f'D > {rk_D_criterion:.0f} therefore data consistency is disproven! :-(')
-        print(f'\ta-b = {self.curve_diff:.4f}')
+            print(f'D > {self.criterion:.0f} therefore data consistency is disproven! :-(')
+        print(f'\ta-b = {self.curve_dif:.4f}')
         print(f'\ta+b = {self.curve_sum:.4f}')
         print('')
 
