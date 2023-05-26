@@ -44,3 +44,10 @@ Visual language of charts is following: **black** is main data series, **green**
 Diamonds markers and full lines are used primarily. Auxiliary lines are dotted.  
 If dataseries for two components are displayed, then **red** for 1st component, **blue** for 2nd component.
 If those two correspond to more volatile and less volatile (as in case of VLE), then `^` and `v` markers will be used, respectively.
+
+## References
+
+Following literature sources were used for creation of this software:
+
+- dev data from [T. Sommer 2020](https://doi.org/10.1021/acs.jced.9b00746) _(CHOL,CHF,CPOL,CPF)_, [O. Rojas 2016](https://doi.org/10.1021/acs.jced.6b00197) _(Antoine for isoamyl)_
+- thermodynamic consistency tests: slope, Redlich-Kister, Herington, Fredenslund from [J. Wisniak 2017](https://doi.org/10.1016/j.jct.2016.10.038), [A. Fredenslund 1977](https://doi.org/10.1016/B978-0-444-41621-6.X5001-7)
