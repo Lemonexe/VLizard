@@ -4,7 +4,7 @@ sys.path.append(sys.path[0] + '/..')
 
 import click
 from src.utils.errors import CLI_error_boundary
-from src.utils.do_datasets import do_datasets
+from src.utils.do_datasets import do_datasets, pause_to_keep_charts
 from src.TD.Slope_test import Slope_test
 
 
@@ -12,19 +12,18 @@ from src.TD.Slope_test import Slope_test
 @click.argument('compound1')
 @click.argument('compound2')
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
-@click.option('--noplot', is_flag=True, help='Suppress rendering of plots')
-def cli_slope(compound1, compound2, dataset, noplot):
+@click.option('--plot', is_flag=True, help='Plot slope test residual & gamma derivations')
+def cli_slope(compound1, compound2, dataset, plot):
     """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
 
     def do_for_dataset(compound1, compound2, dataset):
         slope_test = Slope_test(compound1, compound2, dataset)
         slope_test.report()
 
-        if noplot: return
-        slope_test.plot()
-        slope_test.render_plot_CLI()
+        if plot: slope_test.plot()
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
+    if plot: pause_to_keep_charts()
 
 
 # pylint: disable=no-value-for-parameter

@@ -45,6 +45,7 @@ class Slope_test(VLE):
 
     def plot(self):
         x_1 = self.x_1
+        plt.figure()
         plt.plot(x_1, self.d_ln_gamma_1, '^r', label='$d$ln$\\gamma_1$')
         plt.plot(x_1, self.d_ln_gamma_2, 'vb', label='$d$ln$\\gamma_2$')
         plt.plot(x_1, self.P2P_res, 'Dk', label='residual')
@@ -54,3 +55,5 @@ class Slope_test(VLE):
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$')
         plt.legend()
+        plt.ion()
+        plt.show()

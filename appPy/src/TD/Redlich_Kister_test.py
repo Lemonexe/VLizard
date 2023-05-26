@@ -39,6 +39,7 @@ class Redlich_Kister_test(Area):
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         curve_tab = self.curve_spline(x_tab)
 
+        plt.figure()
         plt.plot(self.x_1, self.curve, 'Dk')
         plt.plot(x_tab, curve_tab, '-k')
         plt.axhline(y=0, color='k', linestyle=':')
@@ -46,3 +47,5 @@ class Redlich_Kister_test(Area):
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
         plt.ylabel('ln $\\gamma_1/\\gamma_2$')
+        plt.ion()
+        plt.show()

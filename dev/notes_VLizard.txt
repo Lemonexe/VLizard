@@ -1,6 +1,3 @@
-https://stackoverflow.com/questions/5050988/in-matplotlib-is-there-a-way-to-pop-up-a-figure-asynchronously
-
-
 Možná long-term: L-W Wisniak
 Van Ness až poté co bych dodělal proložení dat modelem
 

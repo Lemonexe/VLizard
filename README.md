@@ -21,8 +21,8 @@ pipenv install --dev
 Examples for CLI commands:
 ```
 pipenv run cli\antoine CHOL
-pipenv run cli\rk CHF CHOL -d 25kPa
-pipenv run cli\fredenslund CPF CPOL --noplot
+pipenv run cli\rk CHF CHOL -d 25kPa --plot
+pipenv run cli\fredenslund CPF CPOL --ge --res
 ```
 See [appPy/cli](appPy/cli), where filenames correspond to commands; calling with `--help` will instruct you further.
 

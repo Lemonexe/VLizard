@@ -92,6 +92,7 @@ class Fredenslund_test(VLE):
         click.echo('')
 
     def plot_g_E(self):
+        plt.figure()
         plt.plot(self.x_1, self.g_E_exp, 'Dk', label='experimental')
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         g_E_tab = self.g_E_fun(x_tab, *self.g_E_fun_params)
@@ -101,24 +102,27 @@ class Fredenslund_test(VLE):
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
         plt.legend()
+        plt.ion()
+        plt.show()
 
     def plot_p_res(self):
+        plt.figure()
         plt.plot(self.x_1, self.p_res, 'Dk')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$p$ residuals')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
+        plt.ion()
+        plt.show()
 
     def plot_y_1_res(self):
-        plt.plot(self.x_1, self.y_1_res, '^r')
+        plt.figure()
+        plt.plot(self.x_1, self.y_1_res, '^r', label='$y_1$')
+        plt.plot(self.x_1, self.y_2_res, 'vb', label='$y_2$')
         plt.axhline(y=0, color='k', linestyle=':')
-        plt.title(f'{self.get_title()}\n$y_1$ residuals')
+        plt.title(f'{self.get_title()}\n$y$ residuals')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
-
-    def plot_y_2_res(self):
-        plt.plot(self.x_1, self.y_2_res, 'vb')
-        plt.axhline(y=0, color='k', linestyle=':')
-        plt.title(f'{self.get_title()}\n$y_2$ residuals')
-        plt.xlim(0, 1)
-        plt.xlabel('$x_1$')
+        plt.legend()
+        plt.ion()
+        plt.show()

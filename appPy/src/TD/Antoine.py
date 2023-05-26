@@ -55,7 +55,9 @@ class Antoine(Result):
         # smooth tabelation of curve
         T = np.linspace(self.T_min, self.T_max, num=x_points_smooth_plot)
         p = self.antoine_fun(T)
+        plt.figure()
         plt.plot(T, p, '-k')
         plt.title(self.get_title())
         plt.xlabel('T [K]')
         plt.ylabel('p [kPa]')
+        plt.show()

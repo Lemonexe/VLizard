@@ -14,7 +14,6 @@ def cli_antoine(compound):
     antoine = Antoine(compound)
     antoine.report_warnings()
     antoine.plot()
-    antoine.render_plot_CLI()
 
 
 # pylint: disable=no-value-for-parameter
