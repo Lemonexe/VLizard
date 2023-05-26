@@ -9,7 +9,7 @@ def get_system_path(compound1, compound2):
     system_name = f'{compound1}-{compound2}'
     system_dir_path = os.path.join('data', system_name)
     if not os.path.exists(system_dir_path):
-        raise AppException(f'ERROR: the system {system_name} does not exist in your data!')
+        raise AppException(f'The system {system_name} does not exist in your data!')
     return system_dir_path
 
 

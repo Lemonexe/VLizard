@@ -1,4 +1,6 @@
+import click
 from matplotlib import pyplot as plt
+from src.config import cli_fg_warn
 
 
 # utility class to provide standard interface for results of an operation
@@ -32,8 +34,9 @@ class Result:
     # report on warnings in CLI mode
     def report_warnings(self):
         if self.status > 0:
-            print('\n'.join(self.warnings))
-            if len(self.warnings): print('')
+            messages = list(map(lambda str: f'WARNING: {str}', self.warnings))
+            click.secho('\n'.join(messages), fg=cli_fg_warn)
+            if len(messages): click.echo('')
 
     # finish rendering plot in CLI mode
     def render_plot_CLI(self):

@@ -1,3 +1,4 @@
+import click
 import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.underline import underline
@@ -38,14 +39,14 @@ class VLE(Result):
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
 
     def report(self):
-        print(underline(f'Activity coeffs for {self.get_title()}'))
+        click.echo(underline(f'Activity coeffs for {self.get_title()}'))
         self.report_warnings()
 
         # pretty-print a table of following vectors
         headlines = ['  x1', 'γ1', 'γ2']
         table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
-        print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
-        print('')
+        click.echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        click.echo('')
 
     def get_title(self):
         return f'{self.compound1}-{self.compound2}, {self.dataset_name}'

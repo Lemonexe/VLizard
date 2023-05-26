@@ -1,3 +1,4 @@
+import click
 import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.underline import underline
@@ -6,7 +7,7 @@ from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
 
 
-# perform simple point-to-point slope test as object with results, and methods for visualization
+# perform simple point-to-point slope test as object with results and methods for reporting & visualization
 class Slope_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
@@ -30,17 +31,17 @@ class Slope_test(VLE):
         return f'Slope test for {super().get_title()}'
 
     def report(self):
-        print(underline(self.get_title()))
+        click.echo(underline(self.get_title()))
         self.report_warnings()
 
         # pretty-print a table of following vectors
         headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
         table = vecs2cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_res)
-        print(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        click.echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
 
         avgR = np.mean(abs(self.P2P_res))  # summary characteristic
-        print(f'\nMean abs residual = {avgR:.3f}')
-        print('')
+        click.echo(f'\nMean abs residual = {avgR:.3f}')
+        click.echo('')
 
     def plot(self):
         x_1 = self.x_1

@@ -1,14 +1,15 @@
+import click
 import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 from src.utils.underline import underline
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
-from src.config import x_points_smooth_plot, fredenslund_criterion
+from src.config import cli_fg_ok, cli_fg_err, x_points_smooth_plot, fredenslund_criterion
 from .VLE import VLE
 
 
-# perform Fredenslund test as object with results, and methods for visualization
+# perform Fredenslund test as object with results and methods for reporting & visualization
 class Fredenslund_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
@@ -20,7 +21,7 @@ class Fredenslund_test(VLE):
         n_x = len(x_1)
         legendre_order = 3 if n_x == 5 else 4  # normally use order 4, only when you have 5 points fallback to 3
         if n_x < 5:
-            raise AppException(f'ERROR: Fredenslund test must be performed with at least 5 points, got {n_x}')
+            raise AppException(f'Fredenslund test must be performed with at least 5 points, got {n_x}')
 
         # note: g_E means dimensionless excess molar Gibbs energy (g_E = G_mE / RT)
 
@@ -73,20 +74,22 @@ class Fredenslund_test(VLE):
         return f'Fredenslund test for {super().get_title()}'
 
     def report(self):
-        print(underline(self.get_title()))
+        click.echo(underline(self.get_title()))
         self.report_warnings()
 
-        print(f'p residual   = {self.p_res_avg:.2f} %')
-        print(f'y_1 residual = {self.y_1_res_avg:.2f} %')
-        print(f'y_2 residual = {self.y_2_res_avg:.2f} %')
-        print('')
+        click.echo(f'p residual   = {self.p_res_avg:.2f} %')
+        click.echo(f'y_1 residual = {self.y_1_res_avg:.2f} %')
+        click.echo(f'y_2 residual = {self.y_2_res_avg:.2f} %')
+        click.echo('')
         if self.is_consistent:
-            print(f'residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven :-)')
+            click.secho(
+                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven',
+                fg=cli_fg_ok)
         else:
-            print(
-                f'residuals of p, y_1, y_2 must all be less than {self.criterion:.0f} %, data consistency is disproven! :-('
-            )
-        print('')
+            click.secho(
+                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.0f} %, data consistency is disproven',
+                fg=cli_fg_err)
+        click.echo('')
 
     def plot_g_E(self):
         plt.plot(self.x_1, self.g_E_exp, 'Dk', label='experimental')

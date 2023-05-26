@@ -1,10 +1,5 @@
 https://stackoverflow.com/questions/5050988/in-matplotlib-is-there-a-way-to-pop-up-a-figure-asynchronously
 
-ERROR: WARNING: string prepend at end of program not while throwing
-
-
-click.echo(click.style("Error", fg="red") + ": This error is...")
-
 
 Možná long-term: L-W Wisniak
 Van Ness až poté co bych dodělal proložení dat modelem

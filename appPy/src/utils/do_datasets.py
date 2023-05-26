@@ -1,5 +1,7 @@
+import click
 from src.utils.errors import AppException
 from src.utils.get_VLE_data import list_VLE_tables
+from src.config import cli_fg_warn
 
 
 # helper for those CLI functions which take a binary compounds, and optionally a dataset (otherwise lot of boilerplate)
@@ -13,7 +15,8 @@ def do_datasets(compound1, compound2, dataset, do_for_dataset):
         try:
             (compound1, compound2) = (compound2, compound1)
             dataset_names = list_VLE_tables(compound1, compound2)
-            print(f'WARNING: compounds were swapped as {compound1}-{compound2} (that system was found)\n')
+            click.secho(f'WARNING: compounds were swapped as {compound1}-{compound2} (that system was found)\n',
+                        fg=cli_fg_warn)
 
         # but if nothing is found either, throw the original error, not the swapped one
         except AppException as err2:
@@ -23,7 +26,7 @@ def do_datasets(compound1, compound2, dataset, do_for_dataset):
     if dataset:
         dataset = dataset.strip()
         if not dataset in dataset_names:
-            raise AppException(f'ERROR: the dataset {dataset} was not found in system {compound1}-{compound2}!')
+            raise AppException(f'the dataset {dataset} was not found in system {compound1}-{compound2}!')
         do_for_dataset(compound1, compound2, dataset)
     else:
         for name in dataset_names:

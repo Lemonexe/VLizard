@@ -1,7 +1,8 @@
+import click
 import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.underline import underline
-from src.config import x_points_smooth_plot, rk_D_criterion
+from src.config import cli_fg_ok, cli_fg_err, x_points_smooth_plot, rk_D_criterion
 from .Area import Area
 
 
@@ -20,18 +21,18 @@ class Redlich_Kister_test(Area):
         return f'Redlich-Kister test for {super().get_title()}'
 
     def report(self):
-        print(underline(self.get_title()))
+        click.echo(underline(self.get_title()))
         self.report_warnings()
-        print(f'D = {self.D:.1f}')
+        click.echo(f'D = {self.D:.1f}')
         if self.is_consistent:
-            print(f'D < {self.criterion:.0f} → OK')
-            print('(data consistency is proven)')
+            click.secho(f'D < {self.criterion:.0f}', fg=cli_fg_ok)
+            click.secho('OK, data consistency is proven', fg=cli_fg_ok)
         else:
-            print(f'D > {self.criterion:.0f} → NOT OK')
-            print('(data consistency is disproven)')
-        print(f'\ta-b = {self.curve_dif:.4f}')
-        print(f'\ta+b = {self.curve_sum:.4f}')
-        print('')
+            click.secho(f'D > {self.criterion:.0f}', fg=cli_fg_err)
+            click.secho('NOT OK, data consistency is disproven', fg=cli_fg_err)
+        click.echo(f'\ta-b = {self.curve_dif:.4f}')
+        click.echo(f'\ta+b = {self.curve_sum:.4f}')
+        click.echo('')
 
     def plot(self):
         # smooth tabelation of curve
