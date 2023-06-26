@@ -1,18 +1,22 @@
 import { useState } from 'react';
+import { Box, Button, ThemeProvider } from '@mui/material';
+
+// empty MUI theme object
+const theme = {};
 
 function App() {
     const [count, setCount] = useState(0);
 
     return (
-        <>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-        </>
+        <ThemeProvider theme={theme}>
+            Henlo vlizerd!
+            <Box>
+                <Button variant="contained" color="primary" onClick={() => setCount((prev) => prev + 1)}>
+                    Click me
+                </Button>
+                <Box sx={{ m: 1 }}>{count}</Box>
+            </Box>
+        </ThemeProvider>
     );
 }
 
