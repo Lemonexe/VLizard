@@ -1,5 +1,6 @@
 /**
  * @see https://www.electron.build/configuration/configuration
+ * IS THIS FILE NECESSARY AT ALL..?
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
