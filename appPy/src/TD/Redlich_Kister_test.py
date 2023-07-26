@@ -1,8 +1,8 @@
 import click
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.underline import underline
-from src.config import cli_fg_ok, cli_fg_err, x_points_smooth_plot, rk_D_criterion
+from src.utils.echo import ok_echo, err_echo, underline_echo
+from src.config import x_points_smooth_plot, rk_D_criterion
 from .Area import Area
 
 
@@ -21,15 +21,15 @@ class Redlich_Kister_test(Area):
         return f'Redlich-Kister test for {super().get_title()}'
 
     def report(self):
-        click.echo(underline(self.get_title()))
+        underline_echo(self.get_title())
         self.report_warnings()
         click.echo(f'D = {self.D:.1f}')
         if self.is_consistent:
-            click.secho(f'D < {self.criterion:.0f}', fg=cli_fg_ok)
-            click.secho('OK, data consistency is proven', fg=cli_fg_ok)
+            ok_echo(f'D < {self.criterion:.0f}')
+            ok_echo('OK, data consistency is proven')
         else:
-            click.secho(f'D > {self.criterion:.0f}', fg=cli_fg_err)
-            click.secho('NOT OK, data consistency is disproven', fg=cli_fg_err)
+            err_echo(f'D > {self.criterion:.0f}')
+            err_echo('NOT OK, data consistency is disproven')
         click.echo(f'\ta-b = {self.curve_dif:.4f}')
         click.echo(f'\ta+b = {self.curve_sum:.4f}')
         click.echo('')

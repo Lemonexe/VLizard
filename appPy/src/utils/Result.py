@@ -1,5 +1,5 @@
 import click
-from src.config import cli_fg_warn
+from src.utils.echo import warn_echo
 
 
 # utility class to provide standard interface for results of an operation
@@ -34,5 +34,5 @@ class Result:
     def report_warnings(self):
         if self.status > 0:
             messages = list(map(lambda str: f'WARNING: {str}', self.warnings))
-            click.secho('\n'.join(messages), fg=cli_fg_warn)
+            warn_echo('\n'.join(messages))
             if len(messages): click.echo('')

@@ -1,7 +1,7 @@
 import click
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.underline import underline
+from src.utils.echo import underline_echo
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
@@ -31,7 +31,7 @@ class Slope_test(VLE):
         return f'Slope test for {super().get_title()}'
 
     def report(self):
-        click.echo(underline(self.get_title()))
+        underline_echo(self.get_title())
         self.report_warnings()
 
         # pretty-print a table of following vectors

@@ -2,10 +2,10 @@ import click
 import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
-from src.utils.underline import underline
+from src.utils.echo import ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
-from src.config import cli_fg_ok, cli_fg_err, x_points_smooth_plot, fredenslund_criterion
+from src.config import x_points_smooth_plot, fredenslund_criterion
 from .VLE import VLE
 
 
@@ -74,7 +74,7 @@ class Fredenslund_test(VLE):
         return f'Fredenslund test for {super().get_title()}'
 
     def report(self):
-        click.echo(underline(self.get_title()))
+        underline_echo(self.get_title())
         self.report_warnings()
 
         click.echo(f'p residual   = {self.p_res_avg:.2f} %')
@@ -82,13 +82,12 @@ class Fredenslund_test(VLE):
         click.echo(f'y_2 residual = {self.y_2_res_avg:.2f} %')
         click.echo('')
         if self.is_consistent:
-            click.secho(
-                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven',
-                fg=cli_fg_ok)
+            ok_echo(
+                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven')
         else:
-            click.secho(
-                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.0f} %, data consistency is disproven',
-                fg=cli_fg_err)
+            err_echo(
+                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.0f} %, data consistency is disproven'
+            )
         click.echo('')
 
     def plot_g_E(self):

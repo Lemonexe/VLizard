@@ -1,7 +1,7 @@
 import click
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.underline import underline
+from src.utils.echo import underline_echo
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
@@ -39,7 +39,7 @@ class VLE(Result):
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
 
     def report(self):
-        click.echo(underline(f'Activity coeffs for {self.get_title()}'))
+        underline_echo(f'Activity coeffs for {self.get_title()}')
         self.report_warnings()
 
         # pretty-print a table of following vectors

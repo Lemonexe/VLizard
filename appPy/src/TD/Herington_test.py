@@ -1,7 +1,7 @@
 import click
 import numpy as np
-from src.utils.underline import underline
-from src.config import cli_fg_ok, cli_fg_err, herington_DJ_criterion
+from src.utils.echo import ok_echo, err_echo, underline_echo
+from src.config import herington_DJ_criterion
 from .Area import Area
 
 
@@ -25,15 +25,15 @@ class Herington_test(Area):
         return f'Herington test for {super().get_title()}'
 
     def report(self):
-        click.echo(underline(self.get_title()))
+        underline_echo(self.get_title())
         self.report_warnings()
         click.echo(f'|D-J| = {self.DJ:.1f}')
         if self.is_consistent:
-            click.secho(f'|D-J| < {self.criterion:.0f}', fg=cli_fg_ok)
-            click.secho('OK, data consistency is proven', fg=cli_fg_ok)
+            ok_echo(f'|D-J| < {self.criterion:.0f}')
+            ok_echo('OK, data consistency is proven')
         else:
-            click.secho(f'|D-J| > {self.criterion:.0f}', fg=cli_fg_err)
-            click.secho('NOT OK, data consistency is disproven', fg=cli_fg_err)
+            err_echo(f'|D-J| > {self.criterion:.0f}')
+            err_echo('NOT OK, data consistency is disproven')
         click.echo(f'\tD = {self.D:.1f}')
         click.echo(f'\tJ = {self.J:.1f}')
         click.echo('')
