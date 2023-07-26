@@ -11,6 +11,8 @@ FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metad
 
 návod jak python + electron https://github.com/fyears/electron-python-example
 
+is_consistent dát do Result a udělat na něm merge status
+
 
 2C:
 	matematická metoda optimalizace:

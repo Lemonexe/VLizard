@@ -1,10 +1,12 @@
 import click
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy.interpolate import UnivariateSpline
 from src.utils.echo import underline_echo
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
+from src.config import x_points_smooth_plot, gamma_abs_tol, d_gamma_abs_tol
 from .Antoine import Antoine
 
 
@@ -37,6 +39,44 @@ class VLE(Result):
 
         self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
+
+        # perform simple test if γi & dγi/dx1 behave as they should
+        self.evaluate_gamma()
+
+    def evaluate_gamma(self):
+        gamma_1_spline = UnivariateSpline(self.x_1, self.gamma_1)
+        gamma_2_spline = UnivariateSpline(self.x_1, self.gamma_2)
+        self.gamma_1_spline = gamma_1_spline
+        self.gamma_2_spline = gamma_2_spline
+
+        d_gamma_1_spline = gamma_1_spline.derivative()
+        d_gamma_2_spline = gamma_2_spline.derivative()
+
+        gamma_1_tab = gamma_1_spline([0, 1])
+        d_gamma_1_tab = d_gamma_1_spline([0, 1])
+        gamma_2_tab = gamma_2_spline([0, 1])
+        d_gamma_2_tab = d_gamma_2_spline([0, 1])
+
+        self.is_consistent = True
+        if abs(gamma_2_tab[0] - 1) > gamma_abs_tol:
+            self.is_consistent = False
+            self.warn(f'Data inconsistency: γ2(0) should be 1, but {gamma_2_tab[0]:.3f} was extrapolated')
+        if abs(gamma_1_tab[1] - 1) > gamma_abs_tol:
+            self.is_consistent = False
+            self.warn(f'Data inconsistency: γ1(1) should be 1, but {gamma_1_tab[1]:.3f} was extrapolated')
+        if abs(d_gamma_2_tab[0] - 0) > d_gamma_abs_tol:
+            self.is_consistent = False
+            self.warn(
+                f'Possible data inconsistency: dγ2/dx1(0) should be 0, but {d_gamma_2_tab[0]:.3f} was extrapolated')
+        if abs(d_gamma_1_tab[1] - 0) > d_gamma_abs_tol:
+            self.is_consistent = False
+            self.warn(
+                f'Possible data inconsistency: dγ1/dx1(1) should be 0, but {d_gamma_1_tab[1]:.3f} was extrapolated')
+
+        # click.echo(f'Activity coeffs for {self.get_title()}')
+        # click.echo(f'{(gamma_2_tab[0]-1):.3f}     {(gamma_1_tab[1]-1):.3f}')
+        # click.echo(f'{(d_gamma_2_tab[0]-0):.3f}     {(d_gamma_1_tab[1]-0):.3f}')
+        # click.echo('')
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
@@ -79,9 +119,15 @@ class VLE(Result):
 
     # plot diagram of activity coeffs per x
     def plot_gamma(self):
+        x_tab = np.linspace(0, 1, x_points_smooth_plot)
+        gamma_1_tab = self.gamma_1_spline(x_tab)
+        gamma_2_tab = self.gamma_2_spline(x_tab)
+
         plt.figure()
         plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
+        plt.plot(x_tab, gamma_1_tab, ':r', label='$\\gamma_1$ spline')
+        plt.plot(x_tab, gamma_2_tab, ':b', label='$\\gamma_2$ spline')
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
         plt.title(f'Activity coefficients for {self.get_title()}')
