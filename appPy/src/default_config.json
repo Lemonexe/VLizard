@@ -1,0 +1,8 @@
+{
+    "gamma_abs_tol": 3e-2,
+    "antoine_bounds_rel_tol": 0.10,
+    "rk_D_criterion": 10,
+    "herington_DJ_criterion": 10,
+    "rk_quad_rel_tol": 1e-4,
+    "fredenslund_criterion": 1
+}

@@ -1,7 +1,3 @@
-config předělat na JSON, bude to jako default values, aby se dal později udělat override from user settings
-
-
-
 dataset = isobaric table
 system = set of isobaric tables
 
