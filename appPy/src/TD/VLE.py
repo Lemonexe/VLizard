@@ -1,9 +1,8 @@
-import click
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
 from src.utils.TD.van_Laar import van_Laar_with_error
-from src.utils.echo import underline_echo
+from src.utils.echo import echo, underline_echo
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
@@ -72,8 +71,8 @@ class VLE(Result):
         # pretty-print a table of following vectors
         headlines = ['  x1', 'γ1', 'γ2']
         table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
-        click.echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
-        click.echo('')
+        echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        echo('')
 
     def get_title(self):
         return f'{self.compound1}-{self.compound2}, {self.dataset_name}'

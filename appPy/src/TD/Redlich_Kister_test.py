@@ -1,7 +1,6 @@
-import click
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.echo import ok_echo, err_echo, underline_echo
+from src.utils.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import x_points_smooth_plot, rk_D_criterion
 from .Area import Area
 
@@ -23,16 +22,16 @@ class Redlich_Kister_test(Area):
     def report(self):
         underline_echo(self.get_title())
         self.report_warnings()
-        click.echo(f'D = {self.D:.1f}')
+        echo(f'D = {self.D:.1f}')
         if self.is_consistent:
             ok_echo(f'D < {self.criterion:.0f}')
             ok_echo('OK, data consistency is proven')
         else:
             err_echo(f'D > {self.criterion:.0f}')
             err_echo('NOT OK, data consistency is disproven')
-        click.echo(f'\ta-b = {self.curve_dif:.4f}')
-        click.echo(f'\ta+b = {self.curve_sum:.4f}')
-        click.echo('')
+        echo(f'\ta-b = {self.curve_dif:.4f}')
+        echo(f'\ta+b = {self.curve_sum:.4f}')
+        echo('')
 
     def plot(self):
         # smooth tabelation of curve

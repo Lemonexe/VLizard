@@ -1,5 +1,4 @@
-import click
-from src.utils.echo import warn_echo
+from src.utils.echo import echo, warn_echo
 
 
 # utility class to provide standard interface for results of an operation
@@ -35,4 +34,4 @@ class Result:
         if self.status > 0:
             messages = list(map(lambda str: f'WARNING: {str}', self.warnings))
             warn_echo('\n'.join(messages))
-            if len(messages): click.echo('')
+            if len(messages): echo('')

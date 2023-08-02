@@ -1,6 +1,9 @@
 import click
 from src.config import cli_fg_ok, cli_fg_err, cli_fg_warn
 
+# this file contains helpers to push click library to the edge of program, so it is not tightly bound
+echo = click.echo
+
 # helper function that takes string and appends dotted underline beneath it
 underline = lambda text: text + '\n' + '¨' * (len(text))
 
