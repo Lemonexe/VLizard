@@ -1,17 +1,15 @@
-Možná long-term: L-W Wisniak
-Van Ness až poté co bych dodělal proložení dat modelem
+config předělat na JSON, bude to jako default values, aby se dal později udělat override from user settings
+
 
 
 dataset = isobaric table
 system = set of isobaric tables
-
 
 FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metadata as .json
 
 
 návod jak python + electron https://github.com/fyears/electron-python-example
 
-is_consistent dát do Result a udělat na něm merge status
 
 
 2C:

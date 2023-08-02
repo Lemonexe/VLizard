@@ -15,10 +15,7 @@ from src.TD.VLE import VLE
 @click.option('--xy', is_flag=True, help='Plot x,y diagram')
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff')
-@click.option('--gamma-model',
-              is_flag=True,
-              help='Plot activity coeff including van Laar model with error (used for activity coeff validation)')
-def cli_vle(compound1, compound2, dataset, xy, txy, gamma, gamma_model):
+def cli_vle(compound1, compound2, dataset, xy, txy, gamma):
     """Get VLE data & calculate activity coeffs for COMPOUND1 code, COMPOUND2 code."""
 
     def do_for_dataset(compound1, compound2, dataset):
@@ -27,10 +24,10 @@ def cli_vle(compound1, compound2, dataset, xy, txy, gamma, gamma_model):
 
         if xy: vle.plot_xy()
         if txy: vle.plot_Txy()
-        if gamma or gamma_model: vle.plot_gamma(gamma_model)
+        if gamma: vle.plot_gamma()
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
-    if xy or txy or gamma or gamma_model: pause_to_keep_charts()
+    if xy or txy or gamma: pause_to_keep_charts()
 
 
 # pylint: disable=no-value-for-parameter

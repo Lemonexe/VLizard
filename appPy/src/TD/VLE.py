@@ -1,13 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy.optimize import least_squares
-from src.utils.TD.van_Laar import van_Laar_with_error
 from src.utils.echo import echo, underline_echo
 from src.utils.array import serialize_cols
 from src.utils.tsv import array2tsv
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
-from src.config import x_points_smooth_plot, gamma_abs_tol
 from .Antoine import Antoine
 
 
@@ -40,30 +37,6 @@ class VLE(Result):
 
         self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
-
-        # perform simple test if γi & dγi/dx1 behave as they should
-        self.evaluate_gamma()
-
-    def evaluate_gamma(self):
-        params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
-        y_matrix = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
-
-        # vector of residuals for least_squares
-        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - y_matrix).flatten()
-
-        result = least_squares(residual, params0)
-        if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
-        self.van_Laar_with_error_params = result.x
-        [_A_12, _A_21, err_1, err_2] = result.x
-
-        self.is_consistent = True
-        template = lambda i, err: f'Data inconsistency: γ{i}(x{i}=1) must be 1, but {(1+err):.3f} was extrapolated (tolerance is {(gamma_abs_tol*100)} %)'
-        if abs(err_2) > gamma_abs_tol:
-            self.is_consistent = False
-            self.warn(template(i=2, err=err_2))
-        if abs(err_1) > gamma_abs_tol:
-            self.is_consistent = False
-            self.warn(template(i=1, err=err_1))
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
@@ -105,16 +78,10 @@ class VLE(Result):
         plt.show()
 
     # plot diagram of activity coeffs per x
-    def plot_gamma(self, draw_model=False):
+    def plot_gamma_silent(self):
         plt.figure()
         plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
-
-        if draw_model:
-            x_tab = np.linspace(0, 1, x_points_smooth_plot)
-            gamma_tab = van_Laar_with_error(x_tab, *self.van_Laar_with_error_params)
-            plt.plot(x_tab, gamma_tab[0, :], ':r', label='$\\gamma_1$ spline')
-            plt.plot(x_tab, gamma_tab[1, :], ':b', label='$\\gamma_2$ spline')
 
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
@@ -122,5 +89,8 @@ class VLE(Result):
         plt.xlabel('$x_1$')
         plt.ylabel('$\\gamma$')
         plt.legend()
+
+    def plot_gamma(self):
+        self.plot_gamma_silent()
         plt.ion()
         plt.show()
