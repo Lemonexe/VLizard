@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from src.config import antoine_bounds_rel_tol, x_points_smooth_plot
-from src.utils.open_tsv import open_tsv
+from src.utils.tsv import open_tsv
 from src.utils.Result import Result
 from src.utils.errors import AppException
 

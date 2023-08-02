@@ -1,7 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.echo import echo, underline_echo
-from src.utils.array2tsv import array2tsv, vecs2cols
+from src.utils.array import serialize_cols
+from src.utils.tsv import array2tsv
 from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
 
@@ -35,7 +36,7 @@ class Slope_test(VLE):
 
         # pretty-print a table of following vectors
         headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
-        table = vecs2cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_res)
+        table = serialize_cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_res)
         echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
 
         avgR = np.mean(abs(self.P2P_res))  # summary characteristic

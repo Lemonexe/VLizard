@@ -3,7 +3,8 @@ from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
 from src.utils.TD.van_Laar import van_Laar_with_error
 from src.utils.echo import echo, underline_echo
-from src.utils.array2tsv import array2tsv, vecs2cols
+from src.utils.array import serialize_cols
+from src.utils.tsv import array2tsv
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
 from src.config import x_points_smooth_plot, gamma_abs_tol
@@ -70,7 +71,7 @@ class VLE(Result):
 
         # pretty-print a table of following vectors
         headlines = ['  x1', 'γ1', 'γ2']
-        table = vecs2cols(self.x_1, self.gamma_1, self.gamma_2)
+        table = serialize_cols(self.x_1, self.gamma_1, self.gamma_2)
         echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
         echo('')
 

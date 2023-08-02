@@ -1,4 +1,16 @@
+import csv
 import numpy as np
+
+
+# open a filename with .tsv file and return it as list of lists, no parsing
+def open_tsv(filename):
+    lines = []
+    with open(filename, encoding='utf-8') as tsvfile:
+        reader = csv.reader(tsvfile, delimiter='\t')
+        for row in reader:
+            if len(row) > 0:
+                lines.append(row)
+    return lines
 
 
 # prettyprint numpy array to tsv
@@ -27,10 +39,3 @@ def save_array2tsv(arr, filepath, headlines=None, format_spec=None):
     content = array2tsv(arr, headlines, format_spec)
     with open(filepath, mode='w', encoding='utf-8') as new_tsv_file:
         print(content, file=new_tsv_file)
-
-
-# helper to serialize vectors as columns of one matrix
-def vecs2cols(*args):
-    vec2col = lambda vec: vec[:, np.newaxis]
-    cols = tuple(map(vec2col, args))
-    return np.concatenate(cols, axis=1)
