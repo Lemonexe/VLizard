@@ -1,12 +1,13 @@
 import click
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy.interpolate import UnivariateSpline
+from scipy.optimize import least_squares
+from src.utils.TD.van_Laar import van_Laar_with_error
 from src.utils.echo import underline_echo
 from src.utils.array2tsv import array2tsv, vecs2cols
 from src.utils.Result import Result
 from src.utils.get_VLE_data import get_VLE_table
-from src.config import x_points_smooth_plot, gamma_abs_tol, d_gamma_abs_tol
+from src.config import x_points_smooth_plot, gamma_abs_tol
 from .Antoine import Antoine
 
 
@@ -44,39 +45,25 @@ class VLE(Result):
         self.evaluate_gamma()
 
     def evaluate_gamma(self):
-        gamma_1_spline = UnivariateSpline(self.x_1, self.gamma_1)
-        gamma_2_spline = UnivariateSpline(self.x_1, self.gamma_2)
-        self.gamma_1_spline = gamma_1_spline
-        self.gamma_2_spline = gamma_2_spline
+        params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
+        y_matrix = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
-        d_gamma_1_spline = gamma_1_spline.derivative()
-        d_gamma_2_spline = gamma_2_spline.derivative()
+        # vector of residuals for least_squares
+        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - y_matrix).flatten()
 
-        gamma_1_tab = gamma_1_spline([0, 1])
-        d_gamma_1_tab = d_gamma_1_spline([0, 1])
-        gamma_2_tab = gamma_2_spline([0, 1])
-        d_gamma_2_tab = d_gamma_2_spline([0, 1])
+        result = least_squares(residual, params0)
+        if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
+        self.van_Laar_with_error_params = result.x
+        [_A_12, _A_21, err_1, err_2] = result.x
 
         self.is_consistent = True
-        if abs(gamma_2_tab[0] - 1) > gamma_abs_tol:
+        template = lambda i, gamma: f'Data inconsistency: γ{i}(x{i}=1) must be 1, but {gamma:.3f} was extrapolated (tolerance is {(gamma_abs_tol*100)} %)'
+        if abs(err_2) > gamma_abs_tol:
             self.is_consistent = False
-            self.warn(f'Data inconsistency: γ2(0) should be 1, but {gamma_2_tab[0]:.3f} was extrapolated')
-        if abs(gamma_1_tab[1] - 1) > gamma_abs_tol:
+            self.warn(template(2, (1 + err_2)))
+        if abs(err_1) > gamma_abs_tol:
             self.is_consistent = False
-            self.warn(f'Data inconsistency: γ1(1) should be 1, but {gamma_1_tab[1]:.3f} was extrapolated')
-        if abs(d_gamma_2_tab[0] - 0) > d_gamma_abs_tol:
-            self.is_consistent = False
-            self.warn(
-                f'Possible data inconsistency: dγ2/dx1(0) should be 0, but {d_gamma_2_tab[0]:.3f} was extrapolated')
-        if abs(d_gamma_1_tab[1] - 0) > d_gamma_abs_tol:
-            self.is_consistent = False
-            self.warn(
-                f'Possible data inconsistency: dγ1/dx1(1) should be 0, but {d_gamma_1_tab[1]:.3f} was extrapolated')
-
-        # click.echo(f'Activity coeffs for {self.get_title()}')
-        # click.echo(f'{(gamma_2_tab[0]-1):.3f}     {(gamma_1_tab[1]-1):.3f}')
-        # click.echo(f'{(d_gamma_2_tab[0]-0):.3f}     {(d_gamma_1_tab[1]-0):.3f}')
-        # click.echo('')
+            self.warn(template(1, (1 + err_1)))
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
@@ -118,16 +105,17 @@ class VLE(Result):
         plt.show()
 
     # plot diagram of activity coeffs per x
-    def plot_gamma(self):
-        x_tab = np.linspace(0, 1, x_points_smooth_plot)
-        gamma_1_tab = self.gamma_1_spline(x_tab)
-        gamma_2_tab = self.gamma_2_spline(x_tab)
-
+    def plot_gamma(self, draw_model=False):
         plt.figure()
         plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
-        plt.plot(x_tab, gamma_1_tab, ':r', label='$\\gamma_1$ spline')
-        plt.plot(x_tab, gamma_2_tab, ':b', label='$\\gamma_2$ spline')
+
+        if draw_model:
+            x_tab = np.linspace(0, 1, x_points_smooth_plot)
+            gamma_tab = van_Laar_with_error(x_tab, *self.van_Laar_with_error_params)
+            plt.plot(x_tab, gamma_tab[0, :], ':r', label='$\\gamma_1$ spline')
+            plt.plot(x_tab, gamma_tab[1, :], ':b', label='$\\gamma_2$ spline')
+
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
         plt.title(f'Activity coefficients for {self.get_title()}')

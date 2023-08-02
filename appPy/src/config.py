@@ -5,8 +5,7 @@ cli_fg_warn = 'yellow'
 x_points_smooth_plot = 100  # how many x points shall be tabelated when function is plotted
 
 # Calculations: arbitrary tolerances & criterions
-gamma_abs_tol = 0.02  # gamma tolerance for simple gamma test
-d_gamma_abs_tol = 0.15  # d(gamma)/dx tolerance for simple gamma test
+gamma_abs_tol = 3e-2  # gamma tolerance for simple gamma test
 antoine_bounds_rel_tol = 0.10  # when extrapolating Antoine, allow temperature to be out bounds by = this * (Antoine temp interval)
 rk_D_criterion = 10  # [%] in Redlich-Kister test, data is inconsistent if D > this
 herington_DJ_criterion = 10  # [%] in Herington test, data is inconsistent if |D-J| > this
