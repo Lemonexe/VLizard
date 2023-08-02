@@ -56,13 +56,13 @@ class VLE(Result):
         [_A_12, _A_21, err_1, err_2] = result.x
 
         self.is_consistent = True
-        template = lambda i, gamma: f'Data inconsistency: γ{i}(x{i}=1) must be 1, but {gamma:.3f} was extrapolated (tolerance is {(gamma_abs_tol*100)} %)'
+        template = lambda i, err: f'Data inconsistency: γ{i}(x{i}=1) must be 1, but {(1+err):.3f} was extrapolated (tolerance is {(gamma_abs_tol*100)} %)'
         if abs(err_2) > gamma_abs_tol:
             self.is_consistent = False
-            self.warn(template(2, (1 + err_2)))
+            self.warn(template(i=2, err=err_2))
         if abs(err_1) > gamma_abs_tol:
             self.is_consistent = False
-            self.warn(template(1, (1 + err_1)))
+            self.warn(template(i=1, err=err_1))
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
