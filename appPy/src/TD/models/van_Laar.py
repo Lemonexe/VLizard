@@ -8,8 +8,9 @@ import numpy as np
 def van_Laar_with_error(x_1, A_12, A_21, err_1, err_2):
     x_2 = (1 - x_1)
     denominator = A_12*x_1 + A_21*x_2
-    return np.exp(np.array([A_12 * (A_21 * x_2 / denominator)**2 + err_1,
-                            A_21 * (A_12 * x_1 / denominator)**2 + err_2]))
+    ln_gamma_1 = A_12 * (A_21 * x_2 / denominator)**2 + err_1
+    ln_gamma_2 = A_21 * (A_12 * x_1 / denominator)**2 + err_2
+    return np.exp([ln_gamma_1, ln_gamma_2])
 
 
 # simplified (and TD correct) version where offset from 1 is 0
