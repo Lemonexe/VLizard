@@ -24,7 +24,8 @@ def do_datasets(compound1, compound2, dataset, do_for_dataset):
     if dataset:
         dataset = dataset.strip()
         if not dataset in dataset_names:
-            raise AppException(f'the dataset {dataset} was not found in system {compound1}-{compound2}!')
+            message = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {", ".join(dataset_names)}'
+            raise AppException(message)
         do_for_dataset(compound1, compound2, dataset)
     else:
         for name in dataset_names:

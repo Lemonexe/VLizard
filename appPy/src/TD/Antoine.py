@@ -17,7 +17,7 @@ class Antoine(Result):
 
     # for the given compound code, get Antoine function from tsv file; populate antoine_fun as lambda T: p, T_min, T_max
     def get_from_data(self):
-        consts = open_tsv('data/Antoine.tsv')
+        consts = open_tsv('data/VLE/Antoine.tsv')
         matches = list(filter(lambda row: row[0].upper() == self.compound.upper(),
                               consts))  # find the appropriate row per compound name
 

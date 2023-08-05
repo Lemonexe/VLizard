@@ -1,4 +1,3 @@
-import math
 import numpy as np
 
 # parametrized van Laar activity coefficient model to calculate [gamma1, gamma2]
@@ -14,4 +13,4 @@ def van_Laar_with_error(x_1, A_12, A_21, err_1, err_2):
 
 
 # simplified (and TD correct) version where offset from 1 is 0
-van_Laar = lambda x_1, A_12, A_21: vanLaarWithError(x_1, A_12, A_21, 0, 0)
+van_Laar = lambda x_1, A_12, A_21: van_Laar_with_error(x_1, A_12, A_21, 0, 0)

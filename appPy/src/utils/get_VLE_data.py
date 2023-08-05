@@ -7,23 +7,18 @@ from .tsv import open_tsv
 # helper to get directory path where data is stored for the given compounds system dir, and raise AppException if not exists
 def get_system_path(compound1, compound2):
     system_name = f'{compound1}-{compound2}'
-    system_dir_path = os.path.join('data', system_name)
+    system_dir_path = os.path.join('data', 'VLE', system_name)
     if not os.path.exists(system_dir_path):
-        raise AppException(f'The system {system_name} does not exist in your data!')
+        system_dir_names = [f.name for f in os.scandir(os.path.join('data', 'VLE')) if f.is_dir()]
+        raise AppException(
+            f'The system {system_name} does not exist in your data!!\nAvailable systems: {", ".join(system_dir_names)}')
     return system_dir_path
 
 
 # for the given system code, get collection of available dataset names
 def list_VLE_tables(compound1, compound2):
     system_dir_path = get_system_path(compound1, compound2)
-
-    name_map = []
-
-    for filename in os.listdir(system_dir_path):
-        if filename.endswith('.tsv'):
-            name_map.append(filename.replace('.tsv', ''))
-
-    return name_map
+    return [f.name.replace('.tsv', '') for f in os.scandir(system_dir_path) if f.name.endswith('.tsv')]
 
 
 # get specific dataset as a np matrix with columns p/kPa, T/K, x1, y1
