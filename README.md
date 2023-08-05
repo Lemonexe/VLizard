@@ -1,11 +1,11 @@
 # VLizard
 **a VLE wizard** 🧙‍♂️⚗🦎
 
-A useful toolbox for evaluation of VLE data (vapor-liquid equilibrium). This comprises running tests of thermodynamic consistency and ~fitting models with non-linear regression~ _(TODO mid-term future)_
+A useful toolbox for evaluation of VLE data (vapor-liquid equilibrium), which comprises tests of thermodynamic consistency & fitting models with non-linear regression.
 
-The project is a monorepo consisting of Python Core+Backend ~and Typescript Frontend~ _(TODO short-term future)_
+The project is a monorepo consisting of Python Core+Backend and TypeScript Frontend.
 
-In the inital phase, VLizard is a toolbox for VLE data, but in future it shall be expanded to be a broad scope data tool – it might comprise tools for LLE or reaction kinetics.
+In the initial phase, VLizard is intended as a toolbox for VLE data, but in future its scope may be expanded to include tools for LLE or reaction kinetics data.
 
 ## Setup
 
@@ -17,15 +17,22 @@ pip install --user pipenv
 pipenv install --dev
 ```
 
-## Run
+## Run CLI
 Examples for CLI commands:
 ```
+pipenv run cli\slope --help
 pipenv run cli\antoine CHOL
-pipenv run cli\vle CPF CPOL -d 40kPa --gamma-model
+pipenv run cli\vle CPF CPOL
+pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa --plot
-pipenv run cli\fredenslund CPF CPOL --ge --res
+pipenv run cli\herington CHF CHOL -d 25kPa --plot
+pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
 ```
 See [appPy/cli](appPy/cli), where filenames correspond to commands; calling with `--help` will instruct you further.
+
+## Run app
+
+todo
 
 ## Development
 
@@ -35,6 +42,9 @@ Run unit tests: `pipenv run test`
 Run lint: `pipenv run lint`  
 Run prettier: `pipenv run prettier`
 
+### TypeScript
+
+todo
 
 ## Conventions
 Since this software is highly mathematical, variable naming is often conventional rather than descriptive or semantical.  
@@ -50,5 +60,9 @@ If those two correspond to more volatile and less volatile (as in case of VLE), 
 
 Following literature sources were used for creation of this software:
 
-- dev data from [T. Sommer 2020](https://doi.org/10.1021/acs.jced.9b00746) _(CHOL,CHF,CPOL,CPF)_, [O. Rojas 2016](https://doi.org/10.1021/acs.jced.6b00197) _(Antoine for isoamyl)_
-- thermodynamic consistency tests: slope, Redlich-Kister, Herington, Fredenslund from [J. Wisniak 2017](https://doi.org/10.1016/j.jct.2016.10.038), [A. Fredenslund 1977](https://doi.org/10.1016/B978-0-444-41621-6.X5001-7)
+- thermodynamic consistency tests
+  - slope, Redlich-Kister, Herington: [J. Wisniak 2017](https://doi.org/10.1016/j.jct.2016.10.038)
+  - Fredenslund: [A. Fredenslund 1977](https://doi.org/10.1016/B978-0-444-41621-6.X5001-7)
+- dev data
+  - CHOL,CHF,CPOL,CPF: [T. Sommer 2020](https://doi.org/10.1021/acs.jced.9b00746)
+  - Antoine for isoamyl: [O. Rojas 2016](https://doi.org/10.1021/acs.jced.6b00197)
