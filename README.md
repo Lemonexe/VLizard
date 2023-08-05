@@ -27,6 +27,7 @@ pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa --plot
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
+pipenv run cli\fit CHF CHOL -d 25kPa -m vanLaar --plot
 ```
 See [appPy/cli](appPy/cli), where filenames correspond to commands; calling with `--help` will instruct you further.
 

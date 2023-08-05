@@ -48,7 +48,7 @@ class Gamma_test(VLE):
         echo('')
 
     def plot_gamma_model(self):
-        self.plot_gamma_silent()
+        self.plot_gamma(silent=True)
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         gamma_tab = van_Laar_with_error(x_tab, *self.van_Laar_with_error_params)
         plt.plot(x_tab, gamma_tab[0, :], ':r', label='$\\gamma_1$ spline')
