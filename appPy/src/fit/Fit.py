@@ -19,7 +19,7 @@ class Fit(Result):
             raise AppException(f'Unknown model {model}.\nAvailable models: {", ".join(supported_models)}')
 
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
-        if model == 'vanLaar' and len(self.dataset_names) != 1:
+        if model == 'vanLaar' and len(self.dataset_names) > 1:
             self.warn(f'van Laar model is isothermal, be cautious when fitting multiple datasets of different pressure')
 
     def report(self):
