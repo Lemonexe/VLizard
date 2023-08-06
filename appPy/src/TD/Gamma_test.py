@@ -14,10 +14,10 @@ class Gamma_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
 
         params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
-        y_matrix = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
+        gamma_matrix = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # vector of residuals for least_squares
-        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - y_matrix).flatten()
+        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - gamma_matrix).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
