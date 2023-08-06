@@ -24,10 +24,10 @@ pipenv run cli\slope --help
 pipenv run cli\antoine CHOL
 pipenv run cli\vle CPF CPOL
 pipenv run cli\gamma CHF CHOL -d 25kPa --plot
-pipenv run cli\rk CHF CHOL -d 25kPa --plot
-pipenv run cli\herington CHF CHOL -d 25kPa --plot
+pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
+pipenv run cli\herington CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
-pipenv run cli\fit CHF CHOL -d 25kPa -m vanLaar --plot
+pipenv run cli\fit CHF CHOL -d 25kPa -m NRTL --plot
 ```
 See [appPy/cli](appPy/cli), where filenames correspond to commands; calling with `--help` will instruct you further.
 

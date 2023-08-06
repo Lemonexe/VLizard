@@ -7,6 +7,12 @@ FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metad
 návod jak python + electron https://github.com/fyears/electron-python-example
 
 
+přejmenovat regress na fit
+
+přejmenovat do_datasets.py na datasets.py, vyndat pause_to_keep_charts
+
+restrukturalizovat readme do md souborů
+
 
 2C:
 	matematická metoda optimalizace:

@@ -5,22 +5,20 @@ sys.path.append(sys.path[0] + '/..')
 import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.do_datasets import pause_to_keep_charts
-from src.regress.Fit import Fit
+from src.regress.Fit import Fit, default_model, supported_models
 
 
 @click.command()
 @click.argument('compound1')
 @click.argument('compound2')
-@click.option('-m', '--model', help='Model to fit, either NRTL or vanLaar')
-@click.option('-d',
-              '--datasets',
-              help='Comma separated exact names of datasets, otherwise do all datasets of the system')
+@click.option('-m', '--model', default=default_model, help=f'Model to fit, choose {" or ".join(supported_models)}')
+@click.option('-d', '--datasets', help='Comma-separated exact dataset names, otherwise do all datasets of the system')
 @click.option('-p', '--params', help='TODO')
 @click.option('--xy', is_flag=True, help='Plot x,y diagram + regression')
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram + regression')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff + regression')
 def cli_fit(compound1, compound2, model, datasets, params, xy, txy, gamma):
-    """Fit VLE data with a given model, and optionally with specified initial parameters."""
+    """Fit binary VLE data with a given model, and optionally with specified initial parameters."""
 
     fit = Fit(compound1, compound2, model, datasets, params)
     fit.report()

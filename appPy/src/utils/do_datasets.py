@@ -3,33 +3,50 @@ from src.utils.get_VLE_data import list_VLE_tables
 from src.utils.echo import warn_echo
 
 
-# helper for those CLI functions which take a binary compounds, and optionally a dataset (otherwise lot of boilerplate)
-def do_datasets(compound1, compound2, dataset, do_for_dataset):
+# get datasets of a binary system, either in the given order, or swapped around
+def get_all_datasets(compound1, compound2):
     # first try in the given order
     try:
-        dataset_names = list_VLE_tables(compound1, compound2)
+        all_dataset_names = list_VLE_tables(compound1, compound2)
 
     # then try to swap it around with warning
     except AppException as err1:
         try:
             (compound1, compound2) = (compound2, compound1)
-            dataset_names = list_VLE_tables(compound1, compound2)
+            all_dataset_names = list_VLE_tables(compound1, compound2)
             warn_echo(f'WARNING: compounds were swapped as {compound1}-{compound2} (that system was found)\n')
 
         # but if nothing is found either, throw the original error, not the swapped one
         except AppException as err2:
             raise AppException(err1) from err2
 
-    # do either for one specified dataset, or all found datasets
-    if dataset:
-        dataset = dataset.strip()
-        if not dataset in dataset_names:
-            message = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {", ".join(dataset_names)}'
-            raise AppException(message)
-        do_for_dataset(compound1, compound2, dataset)
+    return all_dataset_names
+
+# for a binary system, parse the 'datasets' comma-separated string and return a list of valid dataset names
+def parse_datasets(compound1, compound2, datasets):
+    all_dataset_names = get_all_datasets(compound1, compound2)
+
+    if datasets:
+        dataset_names = list(map(lambda str: str.strip(), datasets.split(',')))
+        for dataset_name in dataset_names:
+            validate_dataset(dataset_name, all_dataset_names)
+        return dataset_names
     else:
-        for name in dataset_names:
-            do_for_dataset(compound1, compound2, name)
+        return all_dataset_names
+
+# wrapper for parse_datasets that fires callback on each valid dataset name
+def do_datasets(compound1, compound2, datasets, do_for_dataset):
+    dataset_names = parse_datasets(compound1, compound2, datasets)
+    for dataset_name in dataset_names:
+        do_for_dataset(compound1, compound2, dataset_name)
+
+
+
+# throw if dataset does not exist in the system
+def validate_dataset(dataset, all_dataset_names):
+    if not dataset in all_dataset_names:
+        message = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {", ".join(all_dataset_names)}'
+        raise AppException(message)
 
 
 # plt.ion() enables pyplot interactive mode, which allows rendering charts async (open chart windows all at once instead of one by one)
