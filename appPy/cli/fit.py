@@ -4,8 +4,8 @@ sys.path.append(sys.path[0] + '/..')
 
 import click
 from src.utils.errors import CLI_error_boundary
-from src.utils.do_datasets import pause_to_keep_charts
-from src.regress.Fit import Fit, default_model, supported_models
+from src.utils.plot import pause_to_keep_charts
+from src.fit.Fit import Fit, default_model, supported_models
 
 
 @click.command()

@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
 from src.utils.Result import Result
 from src.utils.errors import AppException
-from src.utils.do_datasets import parse_datasets
+from src.utils.datasets import parse_datasets
 from src.utils.echo import echo, ok_echo, err_echo, underline_echo
 
 supported_models = ['vanLaar', 'NRTL']
