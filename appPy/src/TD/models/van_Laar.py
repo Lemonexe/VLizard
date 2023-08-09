@@ -1,6 +1,7 @@
 import numpy as np
 
-van_Laar_params0 = np.array([0.5, 0.5]) # generic initial estimate
+van_Laar_params0 = np.array([0.5, 0.5])  # generic initial estimate
+
 
 # parametrized van Laar activity coefficient model to calculate [gamma1, gamma2]
 # using binary parameters A_12, A_21 and err_1,err_2 as offset of gamma_1(x_1=1),gamma_2(x_2=1) from 1

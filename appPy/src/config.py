@@ -1,11 +1,13 @@
 import json
 
-### OVERRIDABLE CONFIG
+# ------------------
+# OVERRIDABLE CONFIG
+# ------------------
 
 with open('src/default_config.json', mode='r', encoding='utf-8') as file:
     data = json.load(file)
 
-## Calculations: arbitrary tolerances & criterions
+# CALCULATIONS: arbitrary tolerances & criteria
 
 # gamma tolerance for simple gamma test
 gamma_abs_tol = data['gamma_abs_tol']
@@ -20,13 +22,18 @@ rk_quad_rel_tol = data['rk_quad_rel_tol']
 # [%] in Fredenslund test, when average residuals are above this threshold, data is declared inconsistent
 fredenslund_criterion = data['fredenslund_criterion']
 
-### IMMUTABLE CONFIG
+# ----------------
+# IMMUTABLE CONFIG
+# ----------------
 
-## CONSTANTS
+# CALCULATIONS
+T_boil_tol = 1e-3  # [K] tolerance for optimization of boiling point
+
+# CONSTANTS
 R = 8.31446  # [J/K/mol]
 
-## UI
+# UI
 cli_fg_ok = 'green'
 cli_fg_err = 'bright_red'
 cli_fg_warn = 'yellow'
-x_points_smooth_plot = 100  # how many x points shall be tabelated when function is plotted
+x_points_smooth_plot = 100  # how many x points shall be tabulated when function is plotted

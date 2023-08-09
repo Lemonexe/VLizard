@@ -54,7 +54,7 @@ class VLE(Result):
     # plot x,y diagram
     def plot_xy(self, silent=False):
         plt.figure()
-        plt.plot(self.x_1, self.y_1, 'Dk')
+        plt.plot(self.x_1, self.y_1, 'Dk', label='data')
         plt.plot([0, 1], [0, 1], ':k')
         plt.xlim(0, 1)
         plt.ylim(0, 1)

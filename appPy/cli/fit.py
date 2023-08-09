@@ -25,9 +25,9 @@ def cli_fit(compound1, compound2, model, datasets, params, xy, txy, gamma):
     fit = Fit(compound1, compound2, model, datasets, params)
     fit.report()
 
-    if xy: fit.plot_xy()
-    if txy: fit.plot_Txy()
-    if gamma: fit.plot_gamma()
+    if xy: fit.plot_xy_model()
+    if txy: fit.plot_Txy_model()
+    if gamma: fit.plot_gamma_model()
     if xy or txy or gamma: pause_to_keep_charts()
 
 

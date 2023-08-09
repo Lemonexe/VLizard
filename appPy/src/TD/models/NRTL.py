@@ -1,7 +1,8 @@
 import numpy as np
 from src.config import R
 
-NRTL_params0 = np.array([0.5, 0.5, 0.5, 0.5, 0.5]) # generic initial estimate
+NRTL_params0 = np.array([0.5, 0.5, 0.5, 0.5, 0.5])  # generic initial estimate
+
 
 # parametrized NRTL activity coefficient model to calculate [gamma1, gamma2]
 def NRTL(x_1, T, A_12, A_21, g_11, g_22, g_12):

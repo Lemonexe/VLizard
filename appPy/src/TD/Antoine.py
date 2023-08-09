@@ -35,7 +35,13 @@ class Antoine(Result):
             )
         C1, C2, C3, self.T_min, self.T_max = map(float, cells)  # unpack the appropriate cells into variables
 
+        # Antoine function as p[kPa] = f(T[K])
         self.antoine_fun = lambda T: np.exp(C1 + C2 / (T+C3))
+
+        # inverse Antoine function as T[K] = f(p[kPa])
+        self.inverse_antoine_fun = lambda p: C2 / (np.log(p) - C1) - C3
+        self.p_min = self.antoine_fun(self.T_min)
+        self.p_max = self.antoine_fun(self.T_max)
 
     # checks if queried T_min, T_max fall within the Antoine T_min, T_max (with tolerance)
     def check_T_bounds(self, T_min_query, T_max_query):
@@ -44,7 +50,6 @@ class Antoine(Result):
 
         if T_min_query < self.T_min - antoine_bounds_rel_tol*T_int:
             self.warn(template(extrem='min', T_query=T_min_query, T_data=self.T_min))
-
         if T_max_query > self.T_max + antoine_bounds_rel_tol*T_int:
             self.warn(template(extrem='max', T_query=T_max_query, T_data=self.T_max))
 
@@ -52,7 +57,7 @@ class Antoine(Result):
         return f'Vapor pressure for {self.compound}'
 
     def plot(self):
-        # smooth tabelation of curve
+        # smooth tabulation of curve
         T = np.linspace(self.T_min, self.T_max, num=x_points_smooth_plot)
         p = self.antoine_fun(T)
         plt.figure()

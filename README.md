@@ -27,7 +27,7 @@ pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
-pipenv run cli\fit CHF CHOL -d 25kPa -m NRTL --plot
+pipenv run cli\fit CHF CHOL -d 25kPa -m NRTL --xy --txy --gamma
 ```
 See [appPy/cli](appPy/cli), where filenames correspond to commands; calling with `--help` will instruct you further.
 
@@ -50,7 +50,8 @@ todo
 ## Conventions
 Since this software is highly mathematical, variable naming is often conventional rather than descriptive or semantical.  
 Standard signs for quantities or operators are used, and indexes are marked using `_`, some indexes are used to mark purpose or origin:  
-***dif***ference, ***res***idual, ***sum***, ***exp***erimental values, ***cal***culated, ***tab***elated
+***dif***ference, ***res***idual, ***sum***, ***exp***erimental values, ***cal***culated, ***tab***elated,  
+***M***atrix _(where it'd be unexpected, e.g. serializing vectors to a matrix)_
 
 Visual language of charts is following: **black** is main data series, **green** is calculated model.  
 Diamonds markers and full lines are used primarily. Auxiliary lines are dotted.  
