@@ -49,7 +49,6 @@ class Fit(Result):
         self.gamma_2 = squash(self.dataset_VLEs, 'gamma_2')
 
         self.optimize()
-        self.tabulate()
 
     def optimize(self):
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
@@ -57,9 +56,9 @@ class Fit(Result):
         # vector of residuals for least_squares
         residual = lambda params: (self.model_fun(self.x_1, self.T, *params) - gamma_M).flatten()
 
-        result = least_squares(residual, self.params0)
+        result = least_squares(residual, self.params0, method='lm')
         if result.status <= 0:
-            raise AppException(f'Optimization failed with status {result.status} and message {result.message}')
+            raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.params = result.x
 
     def tabulate(self):
@@ -71,6 +70,7 @@ class Fit(Result):
         underline_echo(self.get_title())
         self.report_warnings()
 
+        # TODO prettyprint params
         echo(f'Optimization complete with following parameters: {self.params}')
 
     def get_title(self):

@@ -24,6 +24,7 @@ def cli_fit(compound1, compound2, model, datasets, params, xy, txy, gamma):
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     fit = Fit(compound1, compound2, model, datasets, params)
     fit.report()
+    fit.tabulate()
 
     if xy: fit.plot_xy_model()
     if txy: fit.plot_Txy_model()
