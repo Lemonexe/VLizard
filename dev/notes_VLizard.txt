@@ -1,12 +1,9 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
+napsat testy na datasets.py, systems.py
+
 restrukturalizovat readme do md souborů
     dataset = isobaric table
     system = set of isobaric tables
 
     FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metadata as .json
-
-
-2C:
-	matematická metoda optimalizace:
-		Belohav, Z., Zamostny, P., Kluson, P., Volf, J., 1997. Can. J. Chem. Engng. 75, 735.

@@ -4,7 +4,7 @@ from src.utils.echo import echo, underline_echo
 from src.utils.array import serialize_cols
 from src.utils.tsv import array2tsv
 from src.utils.Result import Result
-from src.utils.get_VLE_data import get_VLE_table
+from src.utils.datasets import get_dataset_VLE_table
 from .Antoine import Antoine
 
 
@@ -17,7 +17,7 @@ class VLE(Result):
         self.compound2 = compound2
         self.dataset_name = dataset_name
 
-        table = get_VLE_table(compound1, compound2, dataset_name)
+        table = get_dataset_VLE_table(compound1, compound2, dataset_name)
 
         (self.p, self.T, self.x_1, self.y_1) = table.T
         self.x_2 = 1 - self.x_1

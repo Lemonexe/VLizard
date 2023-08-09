@@ -3,6 +3,7 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
+from src.utils.systems import validate_system_or_swap
 from src.utils.errors import CLI_error_boundary
 from src.utils.plot import pause_to_keep_charts
 from src.fit.Fit import Fit, default_model, supported_models
@@ -20,6 +21,7 @@ from src.fit.Fit import Fit, default_model, supported_models
 def cli_fit(compound1, compound2, model, datasets, params, xy, txy, gamma):
     """Fit binary VLE data with a given model, and optionally with specified initial parameters."""
 
+    compound1, compound2 = validate_system_or_swap(compound1, compound2)
     fit = Fit(compound1, compound2, model, datasets, params)
     fit.report()
 
