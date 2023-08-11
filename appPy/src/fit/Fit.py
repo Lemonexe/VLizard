@@ -1,4 +1,3 @@
-from functools import reduce
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
@@ -16,7 +15,7 @@ default_model = 'vanLaar'
 supported_models = {'vanLaar': van_Laar_model, 'NRTL': NRTL_model}
 
 # squash a selected VLE property from list of VLEs into a single array
-squash = lambda vles, prop: reduce(lambda acc, curr: np.concatenate((acc, curr)), [getattr(vle, prop) for vle in vles])
+squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
 
 
 # create non-linear regression problem for given binary system datasets and selected model

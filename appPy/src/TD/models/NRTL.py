@@ -3,7 +3,7 @@ from src.config import R
 from .Model import Model
 
 
-# parametrized NRTL activity coefficient model to calculate [gamma1, gamma2]
+# parametrized NRTL activity coefficient model to calculate [gamma_1, gamma_2]
 def NRTL(x_1, T, A_12, A_21, g_11, g_22, g_12):
     x_2 = 1 - x_1
     tau_12 = (g_12-g_22) / R / T

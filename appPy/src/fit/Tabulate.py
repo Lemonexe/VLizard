@@ -10,7 +10,6 @@ from src.utils.errors import AppException
 class Tabulate:
 
     def __init__(self, vle, model, params):
-        model_fun = model.fun
         self.p_mean = p_mean = np.mean(vle.p)
         self.x_1 = np.linspace(0, 1, x_points_smooth_plot)
 
@@ -29,10 +28,10 @@ class Tabulate:
 
             # when gamma model is dependent on T, always calculate gamma together with T
             if model.is_gamma_T_fun:
-                get_gamma_12 = lambda T: model_fun(x_1i, T, *params)
-            # when gamma model is independent on T, calculate gamma once and return the cached value (optimization)
+                get_gamma_12 = lambda T: model.fun(x_1i, T, *params)
+            # optimization: when gamma model is independent on T, calculate gamma once and return the cached value
             else:
-                gamma_12_const = model_fun(x_1i, 0, *params)  # pass 0 as temperature as it does not matter
+                gamma_12_const = model.fun(x_1i, 0, *params)  # pass 0 as temperature since it doesn't matter
                 get_gamma_12 = lambda T: gamma_12_const
 
             # sum of both partial pressures must be equal to total pressure

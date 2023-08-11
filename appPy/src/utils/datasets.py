@@ -17,7 +17,7 @@ def parse_datasets(compound1, compound2, datasets):
     all_dataset_names = get_all_dataset_names(compound1, compound2)
 
     if datasets:
-        dataset_names = list(filter(bool, map(lambda str: str.strip(), datasets.split(','))))
+        dataset_names = list(filter(bool, map(lambda name: name.strip(), datasets.split(','))))
         if len(dataset_names) == 0:
             raise AppException('No datasets given! Omit the parameter to list all datasets.')
         for dataset_name in dataset_names:

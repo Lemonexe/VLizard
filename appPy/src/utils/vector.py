@@ -5,14 +5,15 @@ import numpy as np
 def pick_vector(vec, idxs):
     vec = np.array(vec)
     idxs = np.unique(idxs)
+    n = len(vec)
 
-    if len(idxs) > len(vec):
-        raise ValueError(f'length of idxs ({len(idxs)}) must be less than length of vec ({len(vec)})')
+    if len(idxs) > n:
+        raise ValueError(f'length of idxs ({len(idxs)}) must be less than length of vec ({n})')
     if len(idxs) == 0: return np.array([]), vec
-    if np.max(idxs) >= len(vec) or np.min(idxs) < 0:
-        raise ValueError(f'index {np.max(idxs)} out of bounds, max {len(vec)-1}')
+    if np.max(idxs) >= n or np.min(idxs) < 0:
+        raise ValueError(f'index {np.max(idxs)} out of bounds, max {n-1}')
 
-    mask = np.zeros(len(vec), dtype=bool)
+    mask = np.zeros(n, dtype=bool)
     mask[idxs] = True
     picked = vec[mask]
     rest = vec[~mask]

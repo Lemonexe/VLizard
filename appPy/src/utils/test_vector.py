@@ -27,7 +27,6 @@ def test_pick_vector():
     assert np.array_equal(picked, vec_1)
     assert np.array_equal(rest, vec_2)
 
-    # special case where none are picked
     picked, rest = pick_vector(all_params, [])
     assert np.array_equal(picked, np.array([]))
     assert np.array_equal(rest, all_params)
