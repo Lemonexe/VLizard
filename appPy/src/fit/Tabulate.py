@@ -34,20 +34,23 @@ class Tabulate:
                 gamma_12_const = model.fun(x_1i, 0, *params)  # pass 0 as temperature since it doesn't matter
                 get_gamma_12 = lambda T: gamma_12_const
 
-            # sum of both partial pressures must be equal to total pressure
+            # partial pressures as per Raoult's Law
+            p_1i = lambda gamma_1, T: x_1i * gamma_1 * vle.antoine_fun_1(T)
+            p_2i = lambda gamma_2, T: x_2i * gamma_2 * vle.antoine_fun_2(T)
 
+            # resid of equation to solve for T: p_1i + p_2i = p
             def resid(T):
                 gamma_1, gamma_2 = get_gamma_12(T)
-                return x_1i * gamma_1 * vle.antoine_fun_1(T) + x_2i * gamma_2 * vle.antoine_fun_2(T) - p_mean
+                return p_1i(gamma_1, T) + p_2i(gamma_2, T) - p_mean
 
             T_est = T_spline(x_1i)
             sol = root(fun=resid, x0=T_est, tol=T_boil_tol)
             if not sol.success: raise AppException(f'Error while tabulating model – could not find T for x_1 = {x_1i}')
             self.T[i] = T_i = sol.x
 
-            gamma_1, gamma_2 = get_gamma_12(T_i)
+            gamma_1_final, gamma_2_final = get_gamma_12(T_i)
 
-            self.gamma_1[i] = gamma_1
-            self.gamma_2[i] = gamma_2
-            self.y_1[i] = x_1i * gamma_1 * vle.antoine_fun_1(T_i) / p_mean
+            self.gamma_1[i] = gamma_1_final
+            self.gamma_2[i] = gamma_2_final
+            self.y_1[i] = x_1i * gamma_1_final * vle.antoine_fun_1(T_i) / p_mean
             self.y_2[i] = 1 - self.y_1[i]
