@@ -34,7 +34,7 @@ class Redlich_Kister_test(Area):
         echo('')
 
     def plot(self):
-        # smooth tabelation of curve
+        # smooth tabulation of curve
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         curve_tab = self.curve_spline(x_tab)
 

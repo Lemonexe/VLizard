@@ -4,7 +4,7 @@ sys.path.append(sys.path[0] + '/..')
 
 import click
 from src.utils.errors import CLI_error_boundary
-from src.utils.do_datasets import do_datasets
+from src.utils.datasets import do_datasets
 from src.TD.Herington_test import Herington_test
 
 

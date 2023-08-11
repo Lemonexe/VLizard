@@ -14,10 +14,10 @@ class Gamma_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
 
         params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
-        y_matrix = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
+        gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # vector of residuals for least_squares
-        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - y_matrix).flatten()
+        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - gamma_M).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
@@ -48,11 +48,11 @@ class Gamma_test(VLE):
         echo('')
 
     def plot_gamma_model(self):
-        self.plot_gamma_silent()
+        self.plot_gamma(silent=True)
         x_tab = np.linspace(0, 1, x_points_smooth_plot)
         gamma_tab = van_Laar_with_error(x_tab, *self.van_Laar_with_error_params)
-        plt.plot(x_tab, gamma_tab[0, :], ':r', label='$\\gamma_1$ spline')
-        plt.plot(x_tab, gamma_tab[1, :], ':b', label='$\\gamma_2$ spline')
+        plt.plot(x_tab, gamma_tab[0, :], '-r', label='$\\gamma_1$ spline')
+        plt.plot(x_tab, gamma_tab[1, :], '-b', label='$\\gamma_2$ spline')
         plt.legend()
         plt.ion()
         plt.show()
