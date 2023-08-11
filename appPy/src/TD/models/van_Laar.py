@@ -1,6 +1,5 @@
 import numpy as np
-
-van_Laar_params0 = np.array([0.5, 0.5])  # generic initial estimate
+from .Model import Model
 
 
 # parametrized van Laar activity coefficient model to calculate [gamma1, gamma2]
@@ -19,3 +18,12 @@ van_Laar = lambda x_1, A_12, A_21: van_Laar_with_error(x_1, A_12, A_21, err_1=0,
 
 # although van Laar is not temperature dependent, a united interface is required for fitting
 van_Laar_with_T = lambda x_1, T, A_12, A_21: van_Laar(x_1, A_12, A_21)
+
+van_Laar_model = Model(
+    name='van Laar',
+    fun=van_Laar_with_T,
+    n_params=2,
+    params0=np.ones(2) * 0.5,
+    param_names=['A_12', 'A_21'],
+    is_gamma_T_fun=False,
+)

@@ -4,6 +4,11 @@ napsat testy na datasets.py, systems.py
 
 popsat v readme konvence UoM [kPa, K]
 
+FITTING QoL
+    save the fitting results to JSON
+    load the fitting results from JSON instead of regression when available
+    force recalculation by input params
+
 restrukturalizovat readme do md souborů
     dataset = isobaric table
     system = set of isobaric tables

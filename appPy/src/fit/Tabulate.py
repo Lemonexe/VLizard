@@ -5,11 +5,12 @@ from src.config import x_points_smooth_plot, T_boil_tol
 from src.utils.errors import AppException
 
 
-# create a Tabulation object, takes a VLE dataset instance, a model function and its parameters
+# create a Tabulation object, takes a VLE dataset instance, a Model instance and its parameters
 # bears tabulated isobaric x, y, gamma, T (at pressure mean)
 class Tabulate:
 
-    def __init__(self, vle, model_fun, params, is_T_const):
+    def __init__(self, vle, model, params):
+        model_fun = model.fun
         self.p_mean = p_mean = np.mean(vle.p)
         self.x_1 = np.linspace(0, 1, x_points_smooth_plot)
 
@@ -26,13 +27,13 @@ class Tabulate:
             # pylint: disable=cell-var-from-loop
             x_2i = 1 - x_1i
 
-            # when gamma model is independent on T, calculate gamma once and return the cached value
-            if is_T_const:
-                gamma_12_const = model_fun(x_1i, 0, *params)  # pass 0 as temperature
-                get_gamma_12 = lambda T: gamma_12_const
             # when gamma model is dependent on T, always calculate gamma together with T
-            else:
+            if model.is_gamma_T_fun:
                 get_gamma_12 = lambda T: model_fun(x_1i, T, *params)
+            # when gamma model is independent on T, calculate gamma once and return the cached value (optimization)
+            else:
+                gamma_12_const = model_fun(x_1i, 0, *params)  # pass 0 as temperature as it does not matter
+                get_gamma_12 = lambda T: gamma_12_const
 
             # sum of both partial pressures must be equal to total pressure
 
@@ -49,6 +50,5 @@ class Tabulate:
 
             self.gamma_1[i] = gamma_1
             self.gamma_2[i] = gamma_2
-            # self.T[i] = T_i
             self.y_1[i] = x_1i * gamma_1 * vle.antoine_fun_1(T_i) / p_mean
             self.y_2[i] = 1 - self.y_1[i]
