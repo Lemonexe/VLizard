@@ -9,6 +9,7 @@ from src.utils.Result import Result
 from src.utils.errors import AppException
 from src.utils.datasets import parse_datasets
 from src.utils.echo import echo, underline_echo
+from src.utils.vector import pick_vector, overlay_vectors
 from .Tabulate import Tabulate
 
 default_model = 'vanLaar'
@@ -22,8 +23,7 @@ squash = lambda vles, prop: reduce(lambda acc, curr: np.concatenate((acc, curr))
 # optionally with list of initial params (or None), and/or indices which parameters to keep constant (or None)
 class Fit(Result):
 
-    # TODO consts -> params
-    def __init__(self, compound1, compound2, model_name, datasets, params, consts):
+    def __init__(self, compound1, compound2, model_name, datasets, params, consts_idxs):
         super().__init__()
         self.compound1 = compound1
         self.compound2 = compound2
@@ -38,8 +38,15 @@ class Fit(Result):
             msg = f'{model.name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
             self.warn(msg)
 
+        common_msg = f'{model.name} model expects {model.n_params} parameters'
+        if params and len(params) != model.n_params:
+            raise AppException(f'{common_msg}, got {len(params)}')
+        if consts_idxs and len(consts_idxs) > model.n_params:
+            raise AppException(f'{common_msg}, can\'t set {len(consts_idxs)} as constant')
+
+        self.consts_idxs = consts_idxs or []  # indices of parameters to keep constant
         self.params0 = params or model.params0  # use either given params or default model params as initial estimate
-        self.params = None  # result of optimization
+        self.result_params = None  # result of optimization
 
         self.tabulated_datasets = None  # T, x_1, y_1, gamma_1, gamma_2 tabulation of fitted model for each dataset
 
@@ -56,23 +63,29 @@ class Fit(Result):
     def optimize(self):
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
-        # vector of residuals for least_squares
+        # sort model parameters per indices: those that are to be kept constant, those that will be optimized
+        consts, picked_params0 = pick_vector(self.params0, self.consts_idxs)
+
+        # vector of residuals for least_squares as function of all model parameters
         residual = lambda params: (self.model.fun(self.x_1, self.T, *params) - gamma_M).flatten()
 
-        result = least_squares(residual, self.params0, method='lm')
-        if result.status <= 0:
-            raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        self.params = result.x
+        # wrapped residual as function of picked model parameters, which are merged with the const model parameters
+        callback = lambda picked_params: residual(overlay_vectors(consts, self.consts_idxs, picked_params))
+
+        # optimization itself, using built-in Levenberg-Marquardt algorithm
+        result = least_squares(callback, picked_params0, method='lm')
+        if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
+        self.result_params = overlay_vectors(consts, self.consts_idxs, result.x)
 
     def tabulate(self):
-        self.tabulated_datasets = [Tabulate(vle, self.model, self.params) for vle in self.dataset_VLEs]
+        self.tabulated_datasets = [Tabulate(vle, self.model, self.result_params) for vle in self.dataset_VLEs]
 
     def report(self):
         underline_echo(self.get_title())
         self.report_warnings()
 
         echo('Optimization complete with following parameters:')
-        for (name, value) in zip(self.model.param_names, self.params):
+        for (name, value) in zip(self.model.param_names, self.result_params):
             echo(f'  {name} = {value:.4g}')
 
     def get_title(self):
