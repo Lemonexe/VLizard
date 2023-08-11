@@ -46,6 +46,8 @@ class Fit(Result):
         self.consts_idxs = consts_idxs or []  # indices of parameters to keep constant
         self.params0 = params or model.params0  # use either given params or default model params as initial estimate
         self.result_params = None  # result of optimization
+        self.sumsq_resid_final = None
+        self.sumsq_resid_init = None
 
         self.tabulated_datasets = None  # T, x_1, y_1, gamma_1, gamma_2 tabulation of fitted model for each dataset
 
@@ -76,6 +78,9 @@ class Fit(Result):
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.result_params = overlay_vectors(consts, self.consts_idxs, result.x)
 
+        self.sumsq_resid_init = np.sum(np.square(residual(self.params0)))
+        self.sumsq_resid_final = np.sum(np.square(result.fun))
+
     def tabulate(self):
         self.tabulated_datasets = [Tabulate(vle, self.model, self.result_params) for vle in self.dataset_VLEs]
 
@@ -86,6 +91,10 @@ class Fit(Result):
         echo('Optimization complete with following parameters:')
         for (name, value) in zip(self.model.param_names, self.result_params):
             echo(f'  {name} = {value:.4g}')
+
+        echo('')
+        echo(f'Initial residual   = {self.sumsq_resid_init:.3g}')
+        echo(f'Remaining residual = {self.sumsq_resid_final:.3g}')
 
     def get_title(self):
         return f'Regression of {self.model.name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'
