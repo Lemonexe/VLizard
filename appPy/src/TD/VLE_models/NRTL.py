@@ -1,6 +1,6 @@
 import numpy as np
 from src.config import R
-from .Model import Model
+from .VLE_Model import VLE_Model
 
 
 # parametrized NRTL activity coefficient model to calculate [gamma_1, gamma_2]
@@ -17,7 +17,7 @@ def NRTL(x_1, T, A_12, A_21, g_11, g_22, g_12):
     return np.exp([ln_gamma_1, ln_gamma_2])
 
 
-NRTL_model = Model(
+NRTL_model = VLE_Model(
     display_name='NRTL',
     fun=NRTL,
     n_params=5,

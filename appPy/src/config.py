@@ -10,8 +10,8 @@ data = open_json('src/default_config.json')
 
 # gamma tolerance for simple gamma test
 gamma_abs_tol = data['gamma_abs_tol']
-# when extrapolating Antoine, allow temperature to be out bounds by = this * (Antoine temp interval)
-antoine_bounds_rel_tol = data['antoine_bounds_rel_tol']
+# when extrapolating vapor pressure, allow temp to be out bounds by: this * (vapor pressure fun temp interval)
+T_bounds_rel_tol = data['T_bounds_rel_tol']
 # [%] in Redlich-Kister test, data is inconsistent if D > this
 rk_D_criterion = data['rk_D_criterion']
 # [%] in Herington test, data is inconsistent if |D-J| > this
@@ -29,7 +29,9 @@ fredenslund_criterion = data['fredenslund_criterion']
 T_boil_tol = 1e-3  # [K] tolerance for optimization of boiling point
 
 # CONSTANTS
+C2K = 273.15  # [K]
 R = 8.31446  # [J/K/mol]
+atm = 101.325  # [kPa]
 
 # UI
 cli_fg_ok = 'green'

@@ -1,5 +1,5 @@
 import numpy as np
-from .Model import Model
+from .VLE_Model import VLE_Model
 
 
 # parametrized van Laar activity coefficient model to calculate [gamma1, gamma2]
@@ -19,7 +19,7 @@ van_Laar = lambda x_1, A_12, A_21: van_Laar_with_error(x_1, A_12, A_21, err_1=0,
 # although van Laar is not temperature dependent, a united interface is required for fitting
 van_Laar_with_T = lambda x_1, T, A_12, A_21: van_Laar(x_1, A_12, A_21)
 
-van_Laar_model = Model(
+van_Laar_model = VLE_Model(
     display_name='van Laar',
     fun=van_Laar_with_T,
     n_params=2,

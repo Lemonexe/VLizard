@@ -5,7 +5,7 @@ from src.utils.vector import serialize_cols
 from src.utils.io.tsv import array2tsv
 from src.utils.Result import Result
 from src.utils.datasets import get_dataset_VLE_table
-from .Antoine import Antoine
+from .Vapor import Vapor
 
 
 # for a given dataset of a given system, unpack the basic necessary data into object with derived physical quantities + metadata
@@ -23,17 +23,17 @@ class VLE(Result):
         self.x_2 = 1 - self.x_1
         self.y_2 = 1 - self.y_1
 
-        antoine_1 = Antoine(compound1)
-        antoine_2 = Antoine(compound2)
+        vapor_1 = Vapor(compound1)
+        vapor_2 = Vapor(compound2)
         T_data_bounds = (np.min(self.T), np.max(self.T))
-        antoine_1.check_T_bounds(*T_data_bounds)
-        antoine_2.check_T_bounds(*T_data_bounds)
-        self.merge_status(antoine_1, antoine_2)
-        self.antoine_fun_1 = antoine_1.antoine_fun
-        self.antoine_fun_2 = antoine_2.antoine_fun
+        vapor_1.check_T_bounds(*T_data_bounds)
+        vapor_2.check_T_bounds(*T_data_bounds)
+        self.merge_status(vapor_1, vapor_2)
+        self.ps_fun_1 = vapor_1.ps_fun
+        self.ps_fun_2 = vapor_2.ps_fun
 
-        self.ps_1 = self.antoine_fun_1(self.T)
-        self.ps_2 = self.antoine_fun_2(self.T)
+        self.ps_1 = self.ps_fun_1(self.T)
+        self.ps_2 = self.ps_fun_2(self.T)
 
         self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2

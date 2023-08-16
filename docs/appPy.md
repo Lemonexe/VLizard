@@ -21,7 +21,7 @@ pipenv install --dev
 Examples for CLI commands:
 ```
 pipenv run cli\slope --help
-pipenv run cli\antoine CHOL
+pipenv run cli\vapor CHOL
 pipenv run cli\vle CPF CPOL
 pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot

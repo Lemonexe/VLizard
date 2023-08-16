@@ -2,8 +2,8 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
-from src.TD.models.van_Laar import van_Laar_model
-from src.TD.models.NRTL import NRTL_model
+from src.TD.VLE_models.van_Laar import van_Laar_model
+from src.TD.VLE_models.NRTL import NRTL_model
 from src.TD.VLE import VLE
 from src.utils.Result import Result
 from src.utils.errors import AppException
@@ -136,7 +136,7 @@ class Fit(Result):
 
     def load(self):
         json_path = self.get_json_path()
-        on_error = lambda exc: self.warn(f'Ignored saved results in {json_path} because file is not readable')
+        on_error = lambda exc: self.warn(f'Ignored saved results in {json_path} because file is not a valid json')
         saved_results = open_json(json_path, on_error=on_error)
         if not saved_results: return
         self.params0 = saved_results['params']

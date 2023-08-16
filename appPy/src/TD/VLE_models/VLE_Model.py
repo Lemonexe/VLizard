@@ -1,5 +1,5 @@
 # wrapper for the model function itself that provides important metadata
-class Model:
+class VLE_Model:
 
     def __init__(self, display_name, fun, n_params, params0, param_names, is_gamma_T_fun):
         self.display_name = display_name

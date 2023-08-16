@@ -35,8 +35,8 @@ class Tabulate:
                 get_gamma_12 = lambda T: gamma_12_const
 
             # partial pressures as per Raoult's Law
-            p_1i = lambda gamma_1, T: x_1i * gamma_1 * vle.antoine_fun_1(T)
-            p_2i = lambda gamma_2, T: x_2i * gamma_2 * vle.antoine_fun_2(T)
+            p_1i = lambda gamma_1, T: x_1i * gamma_1 * vle.ps_fun_1(T)
+            p_2i = lambda gamma_2, T: x_2i * gamma_2 * vle.ps_fun_2(T)
 
             # resid of equation to solve for T: p_1i + p_2i = p
             def resid(T):
@@ -52,5 +52,5 @@ class Tabulate:
 
             self.gamma_1[i] = gamma_1_final
             self.gamma_2[i] = gamma_2_final
-            self.y_1[i] = x_1i * gamma_1_final * vle.antoine_fun_1(T_i) / p_mean
+            self.y_1[i] = x_1i * gamma_1_final * vle.ps_fun_1(T_i) / p_mean
             self.y_2[i] = 1 - self.y_1[i]
