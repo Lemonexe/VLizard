@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
-from src.utils.echo import echo, ok_echo, err_echo, underline_echo
+from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
 from src.config import x_points_smooth_plot, fredenslund_criterion

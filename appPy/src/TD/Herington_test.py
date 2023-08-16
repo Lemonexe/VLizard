@@ -1,5 +1,5 @@
 import numpy as np
-from src.utils.echo import echo, ok_echo, err_echo, underline_echo
+from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import herington_DJ_criterion
 from .Area import Area
 

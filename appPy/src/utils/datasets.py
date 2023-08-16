@@ -1,8 +1,8 @@
 import os
 import numpy as np
-from src.utils.errors import AppException
-from src.utils.systems import validate_system_or_swap, get_system_path
-from src.utils.tsv import open_tsv
+from .errors import AppException
+from .systems import validate_system_or_swap, get_system_path
+from .io.tsv import open_tsv
 
 
 # get datasets of a binary system as a list of strings

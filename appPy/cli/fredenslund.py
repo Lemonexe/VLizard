@@ -5,7 +5,7 @@ sys.path.append(sys.path[0] + '/..')
 import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
-from src.utils.plot import pause_to_keep_charts
+from src.utils.io.plot import pause_to_keep_charts
 from src.TD.Fredenslund_test import Fredenslund_test
 
 

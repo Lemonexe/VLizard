@@ -1,8 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.echo import echo, underline_echo
-from src.utils.array import serialize_cols
-from src.utils.tsv import array2tsv
+from src.utils.io.echo import echo, underline_echo
+from src.utils.vector import serialize_cols
+from src.utils.io.tsv import array2tsv
 from src.utils.Result import Result
 from src.utils.datasets import get_dataset_VLE_table
 from .Antoine import Antoine

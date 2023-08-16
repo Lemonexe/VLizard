@@ -1,5 +1,9 @@
 import numpy as np
 
+# helpers to serialize vectors as columns of one matrix
+serialize_rows = lambda *args: np.vstack(tuple(args))
+serialize_cols = lambda *args: serialize_rows(*args).T
+
 
 # pick part of vector by list of indices, and the rest
 def pick_vector(vec, idxs):

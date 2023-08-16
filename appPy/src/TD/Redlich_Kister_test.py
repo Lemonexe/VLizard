@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from src.utils.echo import echo, ok_echo, err_echo, underline_echo
+from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import x_points_smooth_plot, rk_D_criterion
 from .Area import Area
 

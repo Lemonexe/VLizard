@@ -5,7 +5,7 @@ sys.path.append(sys.path[0] + '/..')
 import click
 from src.utils.systems import validate_system_or_swap
 from src.utils.errors import CLI_error_boundary, AppException
-from src.utils.plot import pause_to_keep_charts
+from src.utils.io.plot import pause_to_keep_charts
 from src.fit.Fit import Fit, default_model, supported_models
 
 model_list = ", ".join(supported_models.keys())

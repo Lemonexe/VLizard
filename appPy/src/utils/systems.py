@@ -1,6 +1,6 @@
 import os
 from .errors import AppException
-from .echo import warn_echo
+from .io.echo import warn_echo
 
 
 # check if the system of compounds exists in given order, or in swapped order, or throws if system doesn't exist

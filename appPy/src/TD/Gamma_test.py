@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
-from src.utils.echo import echo, ok_echo, err_echo, underline_echo
+from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import x_points_smooth_plot, gamma_abs_tol
 from .models.van_Laar import van_Laar_with_error
 from .VLE import VLE

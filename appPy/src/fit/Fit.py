@@ -9,9 +9,9 @@ from src.utils.Result import Result
 from src.utils.errors import AppException
 from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
-from src.utils.echo import echo, underline_echo
+from src.utils.io.echo import echo, underline_echo
 from src.utils.systems import get_system_path
-from src.utils.json import open_json, save_json
+from src.utils.io.json import open_json, save_json
 from .Tabulate import Tabulate
 
 default_model = 'vanLaar'

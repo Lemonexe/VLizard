@@ -1,4 +1,4 @@
-from src.utils.json import open_json
+from src.utils.io.json import open_json
 
 # ------------------
 # OVERRIDABLE CONFIG
