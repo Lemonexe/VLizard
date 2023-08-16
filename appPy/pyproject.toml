@@ -1,0 +1,11 @@
+# pyproject.toml
+[tool.pytest.ini_options]
+minversion = "7.3"
+testpaths = [
+    "tests",
+    "integration",
+]
+python_files = [
+    "spec_*.py",
+    "*_spec.py",
+]
