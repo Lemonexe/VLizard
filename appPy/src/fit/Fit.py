@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
@@ -6,9 +7,11 @@ from src.TD.models.NRTL import NRTL_model
 from src.TD.VLE import VLE
 from src.utils.Result import Result
 from src.utils.errors import AppException
+from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
 from src.utils.echo import echo, underline_echo
-from src.utils.vector import pick_vector, overlay_vectors
+from src.utils.systems import get_system_path
+from src.utils.json import open_json, save_json
 from .Tabulate import Tabulate
 
 default_model = 'vanLaar'
@@ -22,22 +25,22 @@ squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
 # optionally with list of initial params (or None), and/or indices which parameters to keep constant (or None)
 class Fit(Result):
 
-    def __init__(self, compound1, compound2, model_name, datasets, params, consts_idxs):
+    def __init__(self, compound1, compound2, model_id, datasets, params, consts_idxs):
         super().__init__()
         self.compound1 = compound1
         self.compound2 = compound2
 
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
 
-        if not model_name in supported_models:
-            raise AppException(f'Unknown model {model_name}.\nAvailable models: {", ".join(supported_models.keys())}')
-        self.model = model = supported_models[model_name]
+        if not model_id in supported_models:
+            raise AppException(f'Unknown model {model_id}.\nAvailable models: {", ".join(supported_models.keys())}')
+        self.model = model = supported_models[model_id]
 
         if not model.is_gamma_T_fun and len(self.dataset_names) > 1:
-            msg = f'{model.name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
+            msg = f'{model.display_name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
             self.warn(msg)
 
-        common_msg = f'{model.name} model expects {model.n_params} parameters'
+        common_msg = f'{model.display_name} model expects {model.n_params} parameters'
         if params and len(params) != model.n_params:
             raise AppException(f'{common_msg}, got {len(params)}')
         if consts_idxs and len(consts_idxs) > model.n_params:
@@ -97,12 +100,12 @@ class Fit(Result):
         echo(f'Remaining residual = {self.sumsq_resid_final:.3g}')
 
     def get_title(self):
-        return f'Regression of {self.model.name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'
+        return f'Regression of {self.model.display_name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'
 
     def plot_xy_model(self):
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             vle.plot_xy(silent=True)
-            plt.plot(tab.x_1, tab.y_1, '-k', label=self.model.name)
+            plt.plot(tab.x_1, tab.y_1, '-k', label=self.model.display_name)
             plt.legend()
             plt.ion()
             plt.show()
@@ -110,8 +113,8 @@ class Fit(Result):
     def plot_Txy_model(self):
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             vle.plot_Txy(silent=True)
-            plt.plot(tab.y_1, tab.T, '-r', label=f'dew {self.model.name}')
-            plt.plot(tab.x_1, tab.T, '-b', label=f'boil {self.model.name}')
+            plt.plot(tab.y_1, tab.T, '-r', label=f'dew {self.model.display_name}')
+            plt.plot(tab.x_1, tab.T, '-b', label=f'boil {self.model.display_name}')
             plt.legend()
             plt.ion()
             plt.show()
@@ -119,8 +122,32 @@ class Fit(Result):
     def plot_gamma_model(self):
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             vle.plot_gamma(silent=True)
-            plt.plot(tab.x_1, tab.gamma_1, '-r', label=f'$\\gamma_1$ {self.model.name}')
-            plt.plot(tab.x_1, tab.gamma_2, '-b', label=f'$\\gamma_2$ {self.model.name}')
+            plt.plot(tab.x_1, tab.gamma_1, '-r', label=f'$\\gamma_1$ {self.model.display_name}')
+            plt.plot(tab.x_1, tab.gamma_2, '-b', label=f'$\\gamma_2$ {self.model.display_name}')
             plt.legend()
             plt.ion()
             plt.show()
+
+    # unused code for saving/loading results
+    # it is not viable for CLI, but will be used for UI, albeit it'll probably need to be refactored a bit
+    def get_json_path(self):
+        system_dir_path = get_system_path(self.compound1, self.compound2)
+        return os.path.join(system_dir_path, 'analysis', f'{self.model.display_name}.json')
+
+    def load(self):
+        json_path = self.get_json_path()
+        on_error = lambda exc: self.warn(f'Ignored saved results in {json_path} because file is not readable')
+        saved_results = open_json(json_path, on_error=on_error)
+        if not saved_results: return
+        self.params0 = saved_results['params']
+        self.consts_idxs = saved_results['consts_idxs']
+
+    def save(self):
+        json_path = self.get_json_path()
+        saved_results = {
+            'dataset_names': self.dataset_names,
+            'params': list(self.result_params),
+            'consts_idxs': list(self.consts_idxs),
+            'residual': self.sumsq_resid_final
+        }
+        save_json(saved_results, json_path)

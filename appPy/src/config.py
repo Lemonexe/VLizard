@@ -1,11 +1,10 @@
-import json
+from src.utils.json import open_json
 
 # ------------------
 # OVERRIDABLE CONFIG
 # ------------------
 
-with open('src/default_config.json', mode='r', encoding='utf-8') as file:
-    data = json.load(file)
+data = open_json('src/default_config.json')
 
 # CALCULATIONS: arbitrary tolerances & criteria
 

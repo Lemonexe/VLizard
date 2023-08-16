@@ -1,4 +1,8 @@
 .idea/
 
+# json files are, by convention, output files
+appPy/data/**/*.json
+
 # temporary testdata folder that cannot be shared
 appPy/data/VLE/MBuOH-MBuAc/
+

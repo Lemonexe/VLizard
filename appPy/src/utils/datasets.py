@@ -8,7 +8,8 @@ from src.utils.tsv import open_tsv
 # get datasets of a binary system, either in the given order, or swapped around
 def get_all_dataset_names(compound1, compound2):
     system_dir_path = get_system_path(compound1, compound2)
-    return [f.name.replace('.tsv', '') for f in os.scandir(system_dir_path) if f.name.endswith('.tsv')]
+    names = [f.name.replace('.tsv', '') for f in os.scandir(system_dir_path) if f.name.endswith('.tsv')]
+    return sorted(names)
 
 
 # for a binary system, parse the 'datasets' comma-separated string and return a list of valid dataset names
@@ -17,7 +18,7 @@ def parse_datasets(compound1, compound2, datasets):
     all_dataset_names = get_all_dataset_names(compound1, compound2)
 
     if datasets:
-        dataset_names = list(filter(bool, map(lambda name: name.strip(), datasets.split(','))))
+        dataset_names = sorted(list(filter(bool, map(lambda name: name.strip(), datasets.split(',')))))
         if len(dataset_names) == 0:
             raise AppException('No datasets given! Omit the parameter to list all datasets.')
         for dataset_name in dataset_names:

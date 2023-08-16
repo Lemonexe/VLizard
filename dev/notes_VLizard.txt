@@ -4,14 +4,7 @@ napsat testy na datasets.py, systems.py
 
 popsat v readme konvence UoM [kPa, K]
 
-FITTING QoL
-    print residual
-    save the fitting results to JSON
-    load the fitting results from JSON instead of regression when available
-    force recalculation by input params
-
-restrukturalizovat readme do md souborů
+restrukturalizovat readme do .md souborů
     dataset = isobaric table
     system = set of isobaric tables
-
-    FILE STRUCTURE: both input/output data as human readable .tsv files w/ app metadata as .json
+    FILE STRUCTURE: input data as human-readable .tsv, output as .json
