@@ -1,7 +1,5 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
-napsat testy na datasets.py, systems.py
-
 popsat v readme konvence UoM [kPa, K]
 
 restrukturalizovat readme do .md souborů

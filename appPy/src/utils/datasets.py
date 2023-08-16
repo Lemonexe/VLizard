@@ -5,7 +5,8 @@ from src.utils.systems import validate_system_or_swap, get_system_path
 from src.utils.tsv import open_tsv
 
 
-# get datasets of a binary system, either in the given order, or swapped around
+# get datasets of a binary system as a list of strings
+# assumes valid system compound1-compound2
 def get_all_dataset_names(compound1, compound2):
     system_dir_path = get_system_path(compound1, compound2)
     names = [f.name.replace('.tsv', '') for f in os.scandir(system_dir_path) if f.name.endswith('.tsv')]
@@ -13,7 +14,7 @@ def get_all_dataset_names(compound1, compound2):
 
 
 # for a binary system, parse the 'datasets' comma-separated string and return a list of valid dataset names
-# assumes valid system
+# assumes valid system compound1-compound2
 def parse_datasets(compound1, compound2, datasets):
     all_dataset_names = get_all_dataset_names(compound1, compound2)
 
@@ -28,7 +29,7 @@ def parse_datasets(compound1, compound2, datasets):
 
 
 # wrapper for parse_datasets that fires callback on each valid dataset name
-# may swap compounds order if needed
+# also validates system, may swap compounds order if needed
 def do_datasets(compound1, compound2, datasets, do_for_dataset):
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     dataset_names = parse_datasets(compound1, compound2, datasets)
@@ -37,6 +38,7 @@ def do_datasets(compound1, compound2, datasets, do_for_dataset):
 
 
 # throw if dataset does not exist in the system
+# assumes valid system compound1-compound2
 def validate_dataset(compound1, compound2, dataset, all_dataset_names):
     if not dataset in all_dataset_names:
         message = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {", ".join(all_dataset_names)}'
@@ -44,6 +46,7 @@ def validate_dataset(compound1, compound2, dataset, all_dataset_names):
 
 
 # get specific dataset as a np matrix with columns p/kPa, T/K, x1, y1
+# assumes valid system compound1-compound2
 def get_dataset_VLE_table(compound1, compound2, dataset):
     system_dir_path = get_system_path(compound1, compound2)
     filename = dataset + '.tsv'
