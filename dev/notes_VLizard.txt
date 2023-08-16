@@ -1,8 +1,1 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
-
-popsat v readme konvence UoM [kPa, K]
-
-restrukturalizovat readme do .md souborů
-    dataset = isobaric table
-    system = set of isobaric tables
-    FILE STRUCTURE: input data as human-readable .tsv, output as .json
