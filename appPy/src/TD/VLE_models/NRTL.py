@@ -1,27 +1,49 @@
 import numpy as np
-from src.config import R
+from src.config import C2K
 from .VLE_Model import VLE_Model
 
 
-# parametrized NRTL activity coefficient model to calculate [gamma_1, gamma_2]
-def NRTL(x_1, T, A_12, A_21, g_11, g_22, g_12):
+# full version of NRTL activity coefficient model (10 parameters) to calculate [gamma_1, gamma_2]
+def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
     x_2 = 1 - x_1
-    tau_12 = (g_12-g_22) / R / T
-    tau_21 = (g_12-g_11) / R / T
-    G_12 = np.exp(-A_12 * tau_12)
-    G_21 = np.exp(-A_21 * tau_21)
+    t = T - C2K  # [°C]
+    ln_T = np.log(T)
+
+    tau_12 = a_12 + b_12/T + e_12*ln_T + f_12*T
+    tau_21 = a_21 + b_21/T + e_21*ln_T + f_21*T
+
+    # note: when alpha_12 = 0, NRTL model becomes Margules model
+    alpha_21 = alpha_12 = c_12 + d_12*t
+
+    G_12 = np.exp(-alpha_12 * tau_12)
+    G_21 = np.exp(-alpha_21 * tau_21)
+
     den_12 = x_2 + x_1*G_12  # denominator with G_12
     den_21 = x_1 + x_2*G_21  # denominator with G_21
-    ln_gamma_1 = x_2**2 * (tau_21 * (G_21 / den_21)**2 + tau_12*G_12/den_12)
-    ln_gamma_2 = x_1**2 * (tau_12 * (G_12 / den_12)**2 + tau_21*G_21/den_21)
+    ln_gamma_1 = x_2**2 * (tau_21 * (G_21 / den_21)**2 + tau_12*G_12/den_12/den_12)
+    ln_gamma_2 = x_1**2 * (tau_12 * (G_12 / den_12)**2 + tau_21*G_21/den_21/den_21)
     return np.exp([ln_gamma_1, ln_gamma_2])
 
+
+# simplified model with only the first 5 parameters
+NRTL = lambda *params: NRTL10(*params, 0, 0, 0, 0, 0)
+
+NRTL_params0 = np.array([0, 0, 100, 100, 0.3])
 
 NRTL_model = VLE_Model(
     name='NRTL',
     fun=NRTL,
     n_params=5,
-    params0=np.zeros(5),
-    param_names=['A_12', 'A_21', 'g_11', 'g_22', 'g_12'],
+    params0=NRTL_params0,
+    param_names=['a_12', 'a_21', 'b_12', 'b_21', 'c_12'],
+    is_gamma_T_fun=True,
+)
+
+NRTL10_model = VLE_Model(
+    name='NRTL10',
+    fun=NRTL10,
+    n_params=10,
+    params0=np.concatenate((NRTL_params0, np.zeros(5))),
+    param_names=['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'd_12', 'e_12', 'e_21', 'f_12', 'f_21'],
     is_gamma_T_fun=True,
 )

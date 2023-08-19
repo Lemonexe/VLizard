@@ -2,8 +2,9 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
+from src.TD.VLE_models.NRTL import NRTL_model, NRTL10_model
 from src.TD.VLE_models.van_Laar import van_Laar_model
-from src.TD.VLE_models.NRTL import NRTL_model
+from src.TD.VLE_models.margules import margules_model
 from src.TD.VLE import VLE
 from src.utils.Result import Result
 from src.utils.errors import AppException
@@ -14,8 +15,8 @@ from src.utils.systems import get_system_path
 from src.utils.io.json import open_json, save_json
 from .Tabulate import Tabulate
 
-default_model = van_Laar_model.name
-supported_models = [van_Laar_model, NRTL_model]
+default_model = NRTL_model.name
+supported_models = [NRTL_model, NRTL10_model, van_Laar_model, margules_model]
 supported_model_names = [model.name for model in supported_models]
 
 # squash a selected VLE property from list of VLEs into a single array
@@ -52,11 +53,12 @@ class Fit(Result):
 
     # parse model name and check if it is appropriate for given datasets
     def __parse_model(self, model_name):
-        if not model_name in supported_model_names:
+        supported_model_names_lcase = [name.lower() for name in supported_model_names]
+        if not model_name.lower() in supported_model_names_lcase:
             csv = ', '.join(supported_model_names)
             raise AppException(f'Unknown model {model_name}.\nAvailable models: {csv}')
 
-        model = supported_models[supported_model_names.index(model_name)]
+        model = supported_models[supported_model_names_lcase.index(model_name.lower())]
 
         if not model.is_gamma_T_fun and len(self.dataset_names) > 1:
             msg = f'{model.display_name} model is T independent, fitting of multiple datasets of different pressure is not recommended'

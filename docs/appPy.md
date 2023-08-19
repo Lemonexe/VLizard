@@ -27,8 +27,8 @@ pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
-pipenv run cli\fit CPF CPOL -d 25kPa --txy
-pipenv run cli\fit CHOL CHF -m NRTL -d 10kPa,25kPa,40kPa --xy --txy --gamma -p 1,1,0,0,0.3 -c g_12
+pipenv run cli\fit CPF CPOL -m vanLaar -d 25kPa --txy
+pipenv run cli\fit CHOL CHF -d 10kPa,25kPa,40kPa --xy --txy --gamma -c c_12
 ```
 See [appPy/cli](../appPy/cli), where filenames correspond to commands;
 calling with `--help` will instruct you further.

@@ -17,7 +17,7 @@ def van_Laar_with_error(x_1, A_12, A_21, err_1, err_2):
 van_Laar = lambda x_1, A_12, A_21: van_Laar_with_error(x_1, A_12, A_21, err_1=0, err_2=0)
 
 # although van Laar is not temperature dependent, a united interface is required for fitting
-van_Laar_with_T = lambda x_1, T, A_12, A_21: van_Laar(x_1, A_12, A_21)
+van_Laar_with_T = lambda x_1, _T, A_12, A_21: van_Laar(x_1, A_12, A_21)
 
 van_Laar_model = VLE_Model(
     name='vanLaar',
