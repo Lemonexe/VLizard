@@ -14,8 +14,9 @@ from src.utils.systems import get_system_path
 from src.utils.io.json import open_json, save_json
 from .Tabulate import Tabulate
 
-default_model = 'vanLaar'
-supported_models = {'vanLaar': van_Laar_model, 'NRTL': NRTL_model}
+default_model = van_Laar_model.name
+supported_models = [van_Laar_model, NRTL_model]
+supported_model_names = [model.name for model in supported_models]
 
 # squash a selected VLE property from list of VLEs into a single array
 squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
@@ -25,29 +26,14 @@ squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
 # optionally with list of initial params (or None), and/or indices which parameters to keep constant (or None)
 class Fit(Result):
 
-    def __init__(self, compound1, compound2, model_id, datasets, params, consts_idxs):
+    def __init__(self, compound1, compound2, model_name, datasets, params0, const_param_names):
         super().__init__()
         self.compound1 = compound1
         self.compound2 = compound2
-
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
-
-        if not model_id in supported_models:
-            raise AppException(f'Unknown model {model_id}.\nAvailable models: {", ".join(supported_models.keys())}')
-        self.model = model = supported_models[model_id]
-
-        if not model.is_gamma_T_fun and len(self.dataset_names) > 1:
-            msg = f'{model.display_name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
-            self.warn(msg)
-
-        common_msg = f'{model.display_name} model expects {model.n_params} parameters'
-        if params and len(params) != model.n_params:
-            raise AppException(f'{common_msg}, got {len(params)}')
-        if consts_idxs and len(consts_idxs) > model.n_params:
-            raise AppException(f'{common_msg}, can\'t set {len(consts_idxs)} as constant')
-
-        self.consts_idxs = consts_idxs or []  # indices of parameters to keep constant
-        self.params0 = params or model.params0  # use either given params or default model params as initial estimate
+        self.model = self.__parse_model(model_name)
+        self.params0 = self.__parse_params0(params0)  # initial params
+        self.const_param_names = self.__parse_const_param_names(const_param_names)  # param names to be kept constant
         self.result_params = None  # result of optimization
         self.sumsq_resid_final = None
         self.sumsq_resid_init = None
@@ -64,22 +50,53 @@ class Fit(Result):
 
         self.optimize()
 
+    # parse model name and check if it is appropriate for given datasets
+    def __parse_model(self, model_name):
+        if not model_name in supported_model_names:
+            csv = ', '.join(supported_model_names)
+            raise AppException(f'Unknown model {model_name}.\nAvailable models: {csv}')
+
+        model = supported_models[supported_model_names.index(model_name)]
+
+        if not model.is_gamma_T_fun and len(self.dataset_names) > 1:
+            msg = f'{model.display_name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
+            self.warn(msg)
+        return model
+
+    # parse & validate initial params, use either given params or default model params as initial estimate
+    def __parse_params0(self, params0):
+        model = self.model
+        if not params0: return model.params0
+        if len(params0) != model.n_params:
+            raise AppException(f'{model.display_name} model expects {model.n_params} parameters, got {len(params0)}!')
+        return params0
+
+    # parse & validate param names that shall be kept constant
+    def __parse_const_param_names(self, const_param_names):
+        model = self.model
+        if not const_param_names: return []
+        for name in const_param_names:
+            if name not in model.param_names:
+                raise AppException(f'{model.display_name} has parameters {", ".join(model.param_names)}, got {name}!')
+        return const_param_names
+
     def optimize(self):
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # sort model parameters per indices: those that are to be kept constant, those that will be optimized
-        consts, picked_params0 = pick_vector(self.params0, self.consts_idxs)
+        const_param_idxs = [self.model.param_names.index(name) for name in self.const_param_names]
+        const_params, picked_params0 = pick_vector(self.params0, const_param_idxs)
 
         # vector of residuals for least_squares as function of all model parameters
         residual = lambda params: (self.model.fun(self.x_1, self.T, *params) - gamma_M).flatten()
 
         # wrapped residual as function of picked model parameters, which are merged with the const model parameters
-        callback = lambda picked_params: residual(overlay_vectors(consts, self.consts_idxs, picked_params))
+        callback = lambda picked_params: residual(overlay_vectors(const_params, const_param_idxs, picked_params))
 
         # optimization itself, using built-in Levenberg-Marquardt algorithm
         result = least_squares(callback, picked_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        self.result_params = overlay_vectors(consts, self.consts_idxs, result.x)
+        self.result_params = overlay_vectors(const_params, const_param_idxs, result.x)
 
         self.sumsq_resid_init = np.sum(np.square(residual(self.params0)))
         self.sumsq_resid_final = np.sum(np.square(result.fun))
@@ -132,22 +149,22 @@ class Fit(Result):
     # it is not viable for CLI, but will be used for UI, albeit it'll probably need to be refactored a bit
     def get_json_path(self):
         system_dir_path = get_system_path(self.compound1, self.compound2)
-        return os.path.join(system_dir_path, 'analysis', f'{self.model.display_name}.json')
+        return os.path.join(system_dir_path, 'analysis', f'{self.model.name}.json')
 
     def load(self):
         json_path = self.get_json_path()
-        on_error = lambda exc: self.warn(f'Ignored saved results in {json_path} because file is not a valid json')
+        on_error = lambda _exc: self.warn(f'Ignored saved results in {json_path} because file is not a valid json')
         saved_results = open_json(json_path, on_error=on_error)
         if not saved_results: return
-        self.params0 = saved_results['params']
-        self.consts_idxs = saved_results['consts_idxs']
+        self.params0 = [saved_results['params'][param_name] for param_name in self.model.param_names]
+        self.const_param_names = saved_results['const_param_names']
 
     def save(self):
         json_path = self.get_json_path()
         saved_results = {
             'dataset_names': self.dataset_names,
-            'params': list(self.result_params),
-            'consts_idxs': list(self.consts_idxs),
+            'params': dict(zip(self.model.param_names, self.result_params)),
+            'const_param_names': self.const_param_names,
             'residual': self.sumsq_resid_final
         }
         save_json(saved_results, json_path)

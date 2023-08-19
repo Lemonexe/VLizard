@@ -1,5 +1,5 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
-pořádek v display_name
+atomize constructors
 
 svg

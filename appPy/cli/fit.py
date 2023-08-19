@@ -6,9 +6,9 @@ import click
 from src.utils.systems import validate_system_or_swap
 from src.utils.errors import CLI_error_boundary, AppException
 from src.utils.io.plot import pause_to_keep_charts
-from src.fit.Fit import Fit, default_model, supported_models
+from src.fit.Fit import Fit, default_model, supported_model_names
 
-model_list = ", ".join(supported_models.keys())
+model_list = ", ".join(supported_model_names)
 
 
 @click.command()
@@ -17,7 +17,7 @@ model_list = ", ".join(supported_models.keys())
 @click.option('-m', '--model', default=default_model, help=f'Which model to fit, enter one of: {model_list}')
 @click.option('-d', '--datasets', help='Comma-separated exact dataset names, otherwise do all datasets of the system')
 @click.option('-p', '--params', help='Comma-separated initial parameters, will ignore params saved in file')
-@click.option('-c', '--consts', help='Comma-separated indices of parameters to be kept constant')
+@click.option('-c', '--consts', help='Comma-separated names of parameters to be kept constant')
 @click.option('--xy', is_flag=True, help='Plot x,y diagram + regression')
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram + regression')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff + regression')
@@ -27,28 +27,28 @@ def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamm
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     fit = Fit(compound1, compound2, model, datasets, parse_params(params), parse_consts(consts))
     fit.report()
-    fit.tabulate()
 
+    if not (xy or txy or gamma): return
+    fit.tabulate()
     if xy: fit.plot_xy_model()
     if txy: fit.plot_Txy_model()
     if gamma: fit.plot_gamma_model()
-    if xy or txy or gamma: pause_to_keep_charts()
+    pause_to_keep_charts()
 
 
+# parse comma-separated params as list of floats
 def parse_params(params):
     if not params: return None
     try:
-        return list(map(float, map(lambda str: str.strip(), params.split(','))))
+        return [float(param.strip()) for param in params.split(',')]
     except ValueError as exc:
         raise AppException(f'Argument params must be a comma-separated list of floats, got {params}') from exc
 
 
+# parse comma-separated param names as unique list of stripped strings
 def parse_consts(consts):
     if not consts: return None
-    try:
-        return list(map(int, map(lambda str: str.strip(), consts.split(','))))
-    except ValueError as exc:
-        raise AppException(f'Argument consts must be a comma-separated list of integers, got {consts}') from exc
+    return list({param_name.strip() for param_name in consts.split(',')})  # deduplicated by set comprehension
 
 
 # pylint: disable=no-value-for-parameter

@@ -18,7 +18,7 @@ def NRTL(x_1, T, A_12, A_21, g_11, g_22, g_12):
 
 
 NRTL_model = VLE_Model(
-    display_name='NRTL',
+    name='NRTL',
     fun=NRTL,
     n_params=5,
     params0=np.zeros(5),
