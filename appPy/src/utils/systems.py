@@ -17,7 +17,8 @@ def validate_system_or_swap(compound1, compound2):
 
     # but if nothing is found either, throw & list available system
     system_dir_names = [f.name for f in os.scandir(os.path.join('data', 'VLE')) if f.is_dir()]
-    msg = f'The system {compound1}-{compound2} does not exist in your data!\nAvailable systems: {", ".join(system_dir_names)}'
+    csv = ', '.join(system_dir_names)
+    msg = f'The system {compound1}-{compound2} does not exist in your data!\nAvailable systems: {csv}'
     raise AppException(msg)
 
 

@@ -32,6 +32,6 @@ class Result:
     # report on warnings in CLI mode
     def report_warnings(self):
         if self.status > 0:
-            messages = list(map(lambda str: f'WARNING: {str}', self.warnings))
+            messages = [f'WARNING: {warning}' for warning in self.warnings]
             warn_echo('\n'.join(messages))
             if len(messages): echo('')

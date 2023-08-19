@@ -57,9 +57,7 @@ class Fredenslund_test(VLE):
         self.p_res = (p-p_cal) / p
         self.y_1_res = y_1 - y_1_cal
         self.y_2_res = y_2 - y_2_cal
-        self.evaluate()
 
-    def evaluate(self):
         # calculate average y, p residuals [%]
         self.p_res_avg = np.mean(abs(self.p_res)) * 100
         self.y_1_res_avg = np.mean(abs(self.y_1_res)) * 100

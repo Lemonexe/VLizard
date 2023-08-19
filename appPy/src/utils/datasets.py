@@ -41,8 +41,9 @@ def do_datasets(compound1, compound2, datasets, do_for_dataset):
 # assumes valid system compound1-compound2
 def validate_dataset(compound1, compound2, dataset, all_dataset_names):
     if not dataset in all_dataset_names:
-        message = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {", ".join(all_dataset_names)}'
-        raise AppException(message)
+        csv = ', '.join(all_dataset_names)
+        msg = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {csv}'
+        raise AppException(msg)
 
 
 # get specific dataset as a np matrix with columns p/kPa, T/K, x1, y1

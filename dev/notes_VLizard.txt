@@ -1,5 +1,3 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
-atomize constructors
-
 svg
