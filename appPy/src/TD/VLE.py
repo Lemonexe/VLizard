@@ -4,7 +4,7 @@ from src.utils.io.echo import echo, underline_echo
 from src.utils.vector import serialize_cols
 from src.utils.io.tsv import array2tsv
 from src.utils.Result import Result
-from src.utils.datasets import get_dataset_VLE_table
+from src.utils.datasets import get_dataset_VLE_data
 from .Vapor import Vapor
 
 
@@ -17,9 +17,8 @@ class VLE(Result):
         self.compound2 = compound2
         self.dataset_name = dataset_name
 
-        table = get_dataset_VLE_table(compound1, compound2, dataset_name)
+        (self.p, self.T, self.x_1, self.y_1) = get_dataset_VLE_data(compound1, compound2, dataset_name)
 
-        (self.p, self.T, self.x_1, self.y_1) = table.T
         self.x_2 = 1 - self.x_1
         self.y_2 = 1 - self.y_1
 

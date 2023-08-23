@@ -1,5 +1,5 @@
 import pytest
-from .datasets import get_all_dataset_names, parse_datasets, do_datasets, validate_dataset, get_dataset_VLE_table
+from .datasets import get_all_dataset_names, parse_datasets, do_datasets, validate_dataset, get_dataset_VLE_data
 from .errors import AppException
 
 # NOTE: this test relies on the existence of the test system in data/VLE
@@ -52,8 +52,7 @@ def test_validate_dataset():
 
 
 def test_get_dataset_VLE_table():
-    table = get_dataset_VLE_table(compound1, compound2, 'atm')
-    (p, T, x_1, y_1) = table.T
+    (p, T, x_1, y_1) = get_dataset_VLE_data(compound1, compound2, 'atm')
     assert (p == 101.325).all()
     assert x_1[0] == 0.1
     assert x_1[-1] == 0.9

@@ -46,11 +46,22 @@ def validate_dataset(compound1, compound2, dataset, all_dataset_names):
         raise AppException(msg)
 
 
-# get specific dataset as a np matrix with columns p/kPa, T/K, x1, y1
+expected_headers = ['p/kPa', 'T/K', 'x1', 'y1']
+
+
+# get specific dataset as a np matrix with rows p/kPa, T/K, x1, y1 (convenient, because it can be destructured as such)
 # assumes valid system compound1-compound2
-def get_dataset_VLE_table(compound1, compound2, dataset):
+def get_dataset_VLE_data(compound1, compound2, dataset):
     system_dir_path = get_system_path(compound1, compound2)
     filename = dataset + '.tsv'
 
-    table = open_tsv(os.path.join(system_dir_path, filename))
-    return np.array(table[1:], dtype='float64')
+    # first row is headers, rest is numerical data
+    headers, *table = open_tsv(os.path.join(system_dir_path, filename))
+
+    for header, expected in zip(headers, expected_headers):
+        if header.strip().lower() != expected.lower():
+            msg = f'Unprocessable dataset {dataset} of system {compound1}-{compound2}! Table must have headers: {" ".join(expected_headers)}'
+            raise AppException(msg)
+
+    # transpose so that rows correspond to p/kPa, T/K, x1, y1
+    return np.array(table, dtype='float64').T
