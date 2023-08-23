@@ -33,7 +33,7 @@ class Vapor(Result):
 
     # get json data file for the given compound
     def __get_json_data(self):
-        json_path = os.path.join('data/ps', self.compound + '.json')
+        json_path = os.path.join('data', 'ps', self.compound + '.json')
         if not os.path.exists(json_path):
             raise AppException(f'No vapor pressure data for compound {self.compound}!')
 
