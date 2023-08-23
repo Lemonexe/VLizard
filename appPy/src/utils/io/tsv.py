@@ -2,15 +2,11 @@ import csv
 import numpy as np
 
 
-# open a filename with .tsv file and return it as list of lists, no parsing
-def open_tsv(filename):
-    lines = []
-    with open(filename, encoding='utf-8') as tsvfile:
-        reader = csv.reader(tsvfile, delimiter='\t')
-        for row in reader:
-            if len(row) > 0:
-                lines.append(row)
-    return lines
+# open a path with .tsv file and return it as list of lists, filter out empty rows
+def open_tsv(file_path):
+    with open(file_path, encoding='utf-8') as tsv_file:
+        reader = csv.reader(tsv_file, delimiter='\t')
+        return [row for row in reader if len(row) > 0]
 
 
 # prettyprint numpy array to tsv

@@ -1,10 +1,9 @@
-import os
 import numpy as np
 from scipy.optimize import root
 from matplotlib import pyplot as plt
 from src.config import atm, C2K, T_bounds_rel_tol, T_boil_tol, x_points_smooth_plot
-from src.utils.io.json import open_json
 from src.utils.io.echo import echo, underline_echo
+from src.utils.compounds import get_vapor_model_params
 from src.utils.Result import Result
 from src.utils.errors import AppException
 from src.TD.vapor_models.wagner import wagner_model
@@ -12,54 +11,27 @@ from src.TD.vapor_models.antoine import antoine_model
 
 # supported models in order of preference, descending
 supported_models = [wagner_model, antoine_model]
-supported_model_names = [model.name for model in supported_models]
 
 
 # create a vapor pressure function for a given compound
+def choose_vapor_model_params(compound):
+    for model in supported_models:
+        results = get_vapor_model_params(compound, model)
+        if results: return model, *results
+    raise AppException(f'No vapor pressure model found for {compound}!')
+
+
 class Vapor(Result):
 
     def __init__(self, compound):
         super().__init__()
         self.compound = compound
 
-        json_data = self.__get_json_data()
-        self.model = model = self.__get_preferred_model(json_data)
-        json_model_data = json_data[model.name]
-        self.params = params = [json_model_data[param_name] for param_name in model.param_names]
-        self.ps_fun = lambda T: model.fun(T, *params)  # p [kPa] = f(T [K])
-
-        self.T_min = json_model_data['T_min']
-        self.T_max = json_model_data['T_max']
-
-    # get json data file for the given compound
-    def __get_json_data(self):
-        json_path = os.path.join('data', 'ps', self.compound + '.json')
-        if not os.path.exists(json_path):
-            raise AppException(f'No vapor pressure data for compound {self.compound}!')
-
-        def on_error(_exc):
-            raise AppException(f'Vapor pressure data file {json_path} is not a valid json!')
-
-        return open_json(json_path, on_error=on_error)
-
-    # get preferred vapor pressure model for the given .json data
-    def __get_preferred_model(self, json_data):
-        # either the preferred model has been set explicitly
-        setting = json_data['preferred_model']
-        if setting and setting in supported_model_names:
-            return supported_models[supported_model_names.index(setting)]
-
-        # or find the first available model in preference order
-        available_models = json_data.keys()
-        for model, model_name in zip(supported_models, supported_model_names):
-            if model_name in available_models:
-                return model
-
-        # no model found
-        raise AppException(f'Invalid vapor pressure data for compound {self.compound}!')
+        self.model, self.T_min, self.T_max, self.params = choose_vapor_model_params(compound)
+        self.ps_fun = lambda T: self.model.fun(T, *self.params)  # p [kPa] = f(T [K])
 
     # checks if queried temp conforms to vapor pressure function T_min, T_max (with tolerance)
-    # either enter one temperature T_min_query, or an interval T_min_query, T_max_query
+    # can receive one param (one temp point) or two params (temp interval)
     def check_T_bounds(self, T_min_query, T_max_query=None):
         if not T_max_query: T_max_query = T_min_query
         T_int = self.T_max - self.T_min
