@@ -10,11 +10,15 @@ class Redlich_Kister_test(Area):
 
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
+        self.keys_to_serialize = ['D', 'is_consistent', 'criterion', 'x_1', 'curve', 'x_tab', 'curve_tab']
 
         # the test criterion D [%]
         self.D = self.curve_dif / self.curve_sum * 100
         self.is_consistent = self.D <= rk_D_criterion
         self.criterion = rk_D_criterion
+
+        self.x_tab = np.linspace(0, 1, x_points_smooth_plot)
+        self.curve_tab = self.curve_spline(self.x_tab)
 
     def get_title(self):
         return f'Redlich-Kister test for {super().get_title()}'
@@ -34,13 +38,9 @@ class Redlich_Kister_test(Area):
         echo('')
 
     def plot(self):
-        # smooth tabulation of curve
-        x_tab = np.linspace(0, 1, x_points_smooth_plot)
-        curve_tab = self.curve_spline(x_tab)
-
         plt.figure()
         plt.plot(self.x_1, self.curve, 'Dk')
-        plt.plot(x_tab, curve_tab, '-k')
+        plt.plot(self.x_tab, self.curve_tab, '-k')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())
         plt.xlim(0, 1)

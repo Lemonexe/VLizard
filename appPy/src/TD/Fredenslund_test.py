@@ -13,6 +13,10 @@ class Fredenslund_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
+        self.keys_to_serialize = [
+            'is_consistent', 'criterion', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'g_E_exp', 'x_tab',
+            'g_E_tab', 'p_res', 'y_1_res', 'y_2_res'
+        ]
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
@@ -67,6 +71,10 @@ class Fredenslund_test(VLE):
         self.is_consistent = conditions.all()
         self.criterion = fredenslund_criterion
 
+        # tabulate
+        self.x_tab = np.linspace(0, 1, x_points_smooth_plot)
+        self.g_E_tab = self.g_E_fun(self.x_tab, *self.g_E_fun_params)
+
     def get_title(self):
         return f'Fredenslund test for {super().get_title()}'
 
@@ -90,9 +98,7 @@ class Fredenslund_test(VLE):
     def plot_g_E(self):
         plt.figure()
         plt.plot(self.x_1, self.g_E_exp, 'Dk', label='experimental')
-        x_tab = np.linspace(0, 1, x_points_smooth_plot)
-        g_E_tab = self.g_E_fun(x_tab, *self.g_E_fun_params)
-        plt.plot(x_tab, g_E_tab, '-g', label='Legendre model')
+        plt.plot(self.x_tab, self.g_E_tab, '-g', label='Legendre model')
         plt.title(f'{self.get_title()}\n$g_E$')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
