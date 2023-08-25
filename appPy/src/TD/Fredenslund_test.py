@@ -11,7 +11,7 @@ from .VLE import VLE
 # perform Fredenslund test as object with results and methods for reporting & visualization
 class Fredenslund_test(VLE):
 
-    def __init__(self, compound1, compound2, dataset_name):
+    def __init__(self, compound1, compound2, dataset_name, legendre_order=4):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = [
             'is_consistent', 'criterion', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'g_E_exp', 'x_tab',
@@ -20,11 +20,15 @@ class Fredenslund_test(VLE):
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
+        if legendre_order not in [3, 4, 5]:
+            raise AppException(f'Legendre polynomial must be of order 3, 4, 5, got {legendre_order}')
+
         # number of model params must be greater than number of points
         n_x = len(x_1)
-        legendre_order = 3 if n_x == 5 else 4  # normally use order 4, only when you have 5 points fallback to 3
-        if n_x < 5:
-            raise AppException(f'Fredenslund test must be performed with at least 5 points, got {n_x}')
+        n_x_min = legendre_order + 2
+        if n_x < n_x_min:
+            raise AppException(
+                f'Legendre polynomial of order {legendre_order} requires at least {n_x_min} points, got {n_x}')
 
         # note: g_E means dimensionless excess molar Gibbs energy (g_E = G_mE / RT)
 

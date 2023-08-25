@@ -39,4 +39,5 @@ def herington_test_api():
 @td_blueprint.post('/api/fredenslund_test')
 def fredenslund_test_api():
     compound1, compound2, dataset = unpack_request_or_throw(request, keys)
-    return Fredenslund_test(compound1, compound2, dataset).serialize()
+    legendre_order = request.json.get('legendre_order')
+    return Fredenslund_test(compound1, compound2, dataset, legendre_order).serialize()

@@ -30,6 +30,6 @@ Content-Type: application/json
 POST http://localhost:4663/api/fredenslund_test
 Content-Type: application/json
 
-{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
+{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa", "legendre_order": 4}
 
 ###
