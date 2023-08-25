@@ -13,19 +13,22 @@ def get_all_dataset_names(compound1, compound2):
     return sorted(names)
 
 
-# for a binary system, parse the 'datasets' comma-separated string and return a list of valid dataset names
+# for a binary system, parse the 'datasets' comma-separated string or list and return a list of valid dataset names
 # assumes valid system compound1-compound2
 def parse_datasets(compound1, compound2, datasets):
     all_dataset_names = get_all_dataset_names(compound1, compound2)
+    if datasets is None: return all_dataset_names
 
-    if datasets:
-        dataset_names = sorted(list(filter(bool, map(lambda name: name.strip(), datasets.split(',')))))
-        if len(dataset_names) == 0:
-            raise AppException('No datasets given! Omit the parameter to list all datasets.')
-        for dataset_name in dataset_names:
-            validate_dataset(compound1, compound2, dataset_name, all_dataset_names)
-        return dataset_names
-    return all_dataset_names
+    if isinstance(datasets, str):
+        dataset_names = list(filter(bool, map(lambda name: name.strip(), datasets.split(','))))
+    else:
+        dataset_names = datasets
+
+    if len(dataset_names) == 0:
+        raise AppException('No datasets given! Omit the parameter to list all datasets.')
+    for dataset_name in dataset_names:
+        validate_dataset(compound1, compound2, dataset_name, all_dataset_names)
+    return sorted(dataset_names)
 
 
 # wrapper for parse_datasets that fires callback on each valid dataset name
