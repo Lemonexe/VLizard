@@ -1,0 +1,14 @@
+###
+GET http://127.0.0.1:4663/is_it_up
+Accept: application/json
+
+###
+
+POST http://localhost:4663/api/gamma_test
+Content-Type: application/json
+
+{
+  "data": 3
+}
+
+###

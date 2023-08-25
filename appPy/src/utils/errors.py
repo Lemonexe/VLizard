@@ -2,9 +2,9 @@ import click
 from src.config import cli_fg_err
 
 
-# exception Class that shall be used when user input is legitimate, but calculation is unable to proceed
-# for example when resource cannot be found etc.
-# not to be used to catch programmer errors, then use built-in exceptions
+# user input is valid, but calculation cannot proceed, e.g. when resource cannot be found etc.
+# not to be used to catch programmer errors (then use built-in python exceptions)
+# handled globally in CLI_error_boundary or Flask errorhandler (as 422)
 class AppException(Exception):
     pass
 

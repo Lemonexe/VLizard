@@ -33,7 +33,8 @@ C2K = 273.15  # [K]
 R = 8.31446  # [J/K/mol]
 atm = 101.325  # [kPa]
 
-# UI
+# APP
+port_number = 4663
 cli_fg_ok = 'green'
 cli_fg_err = 'bright_red'
 cli_fg_warn = 'yellow'
