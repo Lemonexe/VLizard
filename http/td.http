@@ -1,0 +1,14 @@
+
+POST http://localhost:4663/api/gamma_test
+Content-Type: application/json
+
+{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
+
+###
+
+POST http://localhost:4663/api/slope_test
+Content-Type: application/json
+
+{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
+
+###
