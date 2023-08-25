@@ -1,3 +1,7 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
 svg
+
+? refactor Tabulate dataset as pure function, extract tabulate one point
+
+use standard docstring format !!!

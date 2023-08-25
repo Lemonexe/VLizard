@@ -8,7 +8,9 @@ POST http://localhost:4663/api/gamma_test
 Content-Type: application/json
 
 {
-  "data": 3
+  "compound1": "CHOL",
+  "compound2": "CHF",
+  "dataset": "10kPa"
 }
 
 ###
