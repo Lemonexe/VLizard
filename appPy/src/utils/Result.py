@@ -1,12 +1,5 @@
-import numpy as np
 from .io.echo import echo, warn_echo
-
-
-# cast value so it's acceptable for json serialization
-def cast_type_to_jsonable(value):
-    if isinstance(value, np.ndarray): return value.tolist()
-    if isinstance(value, np.bool_): return bool(value)
-    return value
+from .io.json import cast_type_to_jsonable
 
 
 # utility class to provide standard interface for results of an operation

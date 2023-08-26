@@ -1,4 +1,3 @@
-import os
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
@@ -11,8 +10,6 @@ from src.utils.errors import AppException
 from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
 from src.utils.io.echo import echo, underline_echo
-from src.utils.systems import get_system_path
-from src.utils.io.json import open_json, save_json
 from .Tabulate import Tabulate
 
 default_model = NRTL_model.name
@@ -147,27 +144,3 @@ class Fit(Result):
             plt.legend()
             plt.ion()
             plt.show()
-
-    # unused code for saving/loading results
-    # it is not viable for CLI, but will be used for UI, albeit it'll probably need to be refactored a bit
-    def get_json_path(self):
-        system_dir_path = get_system_path(self.compound1, self.compound2)
-        return os.path.join(system_dir_path, 'analysis', f'{self.model.name}.json')
-
-    def load(self):
-        json_path = self.get_json_path()
-        on_error = lambda _exc: self.warn(f'Ignored saved results in {json_path} because file is not a valid json')
-        saved_results = open_json(json_path, on_error=on_error)
-        if not saved_results: return
-        self.params0 = [saved_results['params'][param_name] for param_name in self.model.param_names]
-        self.const_param_names = saved_results['const_param_names']
-
-    def save(self):
-        json_path = self.get_json_path()
-        saved_results = {
-            'dataset_names': self.dataset_names,
-            'params': dict(zip(self.model.param_names, self.result_params)),
-            'const_param_names': self.const_param_names,
-            'residual': self.sumsq_resid_final
-        }
-        save_json(saved_results, json_path)

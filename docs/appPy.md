@@ -26,8 +26,7 @@ Uses port 4663 by default.
 See [http/](../http) for API documentation (as IntelliJ http files).  
 
 CRUD controllers operate on `.tsv` files, which store user input data.
-There are also `POST` endpoints that run commands normally without side effects,
-but they persist data in json as cache.
+Analyses are run via `POST` endpoints, which return json and also persist it in `.json` files as cache.
 
 
 #### CLI

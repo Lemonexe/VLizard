@@ -16,29 +16,39 @@ common_schema = {'compound1': True, 'compound2': True, 'dataset': True}
 @td_test_blueprint.post('/gamma')
 def gamma_test_api():
     params = unpack_request_schema(request, common_schema)
-    return Gamma_test(*params.values()).serialize()
+    payload = Gamma_test(*params.values()).serialize()
+    persist_VLE_analysis('gamma', params['compound1'], params['compound2'], payload)
+    return payload
 
 
 @td_test_blueprint.post('/slope')
 def slope_test_api():
     params = unpack_request_schema(request, common_schema)
-    return Slope_test(*params.values()).serialize()
+    payload = Slope_test(*params.values()).serialize()
+    persist_VLE_analysis('slope', params['compound1'], params['compound2'], payload)
+    return payload
 
 
 @td_test_blueprint.post('/rk')
 def rk_test_api():
     params = unpack_request_schema(request, common_schema)
-    return Redlich_Kister_test(*params.values()).serialize()
+    payload = Redlich_Kister_test(*params.values()).serialize()
+    persist_VLE_analysis('rk', params['compound1'], params['compound2'], payload)
+    return payload
 
 
 @td_test_blueprint.post('/herington')
 def herington_test_api():
     params = unpack_request_schema(request, common_schema)
-    return Herington_test(*params.values()).serialize()
+    payload = Herington_test(*params.values()).serialize()
+    persist_VLE_analysis('herington', params['compound1'], params['compound2'], payload)
+    return payload
 
 
 @td_test_blueprint.post('/fredenslund')
 def fredenslund_test_api():
     schema = dict(common_schema, legendre_order=False)
     params = unpack_request_schema(request, schema)
-    return Fredenslund_test(*params.values()).serialize()
+    payload = Fredenslund_test(*params.values()).serialize()
+    persist_VLE_analysis('fredenslund', params['compound1'], params['compound2'], payload)
+    return payload
