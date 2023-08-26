@@ -12,4 +12,4 @@ def unpack_request_schema(request, schema):
         if is_mandatory and param is None: raise BadRequest(f'Missing mandatory parameter {key}')
         return param
 
-    return [get_or_throw(key, is_mandatory) for key, is_mandatory in schema.items()]
+    return {key: get_or_throw(key, is_mandatory) for key, is_mandatory in schema.items()}

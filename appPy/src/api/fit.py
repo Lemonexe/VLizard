@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from src.fit.Fit import Fit
 from .schema_validation import unpack_request_schema
+from .persist import persist_VLE_analysis
 
 fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
 
@@ -16,6 +17,6 @@ def fit_VLE_api():
         'const_param_names': False
     }
     params = unpack_request_schema(request, param_schema)
-    fit = Fit(*params)
+    fit = Fit(*params.values())
     # fit.tabulate()
     return fit.serialize()
