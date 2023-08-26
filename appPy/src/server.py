@@ -7,6 +7,7 @@ from werkzeug.exceptions import HTTPException
 from src.config import port_number
 from src.utils.errors import AppException
 from src.api.td_test import td_blueprint
+from src.api.fit import fit_blueprint
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ def handle_app_exception(err):
 
 
 app.register_blueprint(td_blueprint)
+app.register_blueprint(fit_blueprint)
 
 if __name__ == '__main__':
     debug_mode = 'debug' in sys.argv

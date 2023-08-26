@@ -29,6 +29,7 @@ class Fit(Result):
 
     def __init__(self, compound1, compound2, model_name, datasets, params0, const_param_names):
         super().__init__()
+        self.keys_to_serialize = ['result_params', 'sumsq_resid_final', 'sumsq_resid_init']
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
