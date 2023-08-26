@@ -9,6 +9,7 @@ class Herington_test(Area):
 
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
+        self.keys_to_serialize = ['D', 'J', 'DJ', 'is_consistent', 'criterion']
 
         self.warn('Herington test is deprecated, results should be considered only advisory')
 

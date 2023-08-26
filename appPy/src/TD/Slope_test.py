@@ -12,16 +12,14 @@ class Slope_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
         super().__init__(compound1, compound2, dataset_name)
+        self.keys_to_serialize = ['x_1', 'd_ln_gamma_1', 'd_ln_gamma_2', 'P2P_res']
         gamma_1, gamma_2, x_1, x_2 = self.gamma_1, self.gamma_2, self.x_1, self.x_2
 
         # serialize the two gamma vectors below each other (as matrix of two rows)
         ln_gamma_12 = np.array([np.log(gamma_1), np.log(gamma_2)])
 
         # calculate d gamma / d x using three-point non-equidistant formula (same shape as ln_gamma_12)
-        d_ln_gamma_12 = diffs_noneq_3(x_1, ln_gamma_12)
-
-        d_ln_gamma_1 = d_ln_gamma_12[0, :]
-        d_ln_gamma_2 = d_ln_gamma_12[1, :]
+        d_ln_gamma_1, d_ln_gamma_2 = diffs_noneq_3(x_1, ln_gamma_12)
         self.d_ln_gamma_1, self.d_ln_gamma_2 = d_ln_gamma_1, d_ln_gamma_2
 
         # point-to-point residue of Gibbs-Duhem equation as vector
@@ -44,11 +42,10 @@ class Slope_test(VLE):
         echo('')
 
     def plot(self):
-        x_1 = self.x_1
         plt.figure()
-        plt.plot(x_1, self.d_ln_gamma_1, '^r', label='$d$ln$\\gamma_1$')
-        plt.plot(x_1, self.d_ln_gamma_2, 'vb', label='$d$ln$\\gamma_2$')
-        plt.plot(x_1, self.P2P_res, 'Dk', label='residual')
+        plt.plot(self.x_1, self.d_ln_gamma_1, '^r', label='$d$ln$\\gamma_1$')
+        plt.plot(self.x_1, self.d_ln_gamma_2, 'vb', label='$d$ln$\\gamma_2$')
+        plt.plot(self.x_1, self.P2P_res, 'Dk', label='residual')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())
         plt.xlim(0, 1)

@@ -1,15 +1,15 @@
 from .io.echo import echo, warn_echo
+from .io.json import cast_type_to_jsonable
 
 
 # utility class to provide standard interface for results of an operation
-# status is 0 for success, 1 for warning, AppException for error state
-# these shall be used for warnings concerning the calculations
-# while for application errors, raise shall be used
+# status is 0 for success, 1 for warning (error is not handled)
 class Result:
 
     def __init__(self):
         self.status = 0
         self.warnings = []
+        self.keys_to_serialize = []  # custom keys for serialization, may be filled by inheriting classes
 
     # just warn & forget :)
     def warn(self, what):
@@ -21,7 +21,7 @@ class Result:
         else:
             raise TypeError('Error while warning, it must be instance of list || str')
 
-    # take an other Result instance and merge it here
+    # take another Result instance and merge it here
     def merge_status(self, *other_results):
         for other_result in other_results:
             if not isinstance(other_result, Result): raise TypeError('other_result must be a Result instance')
@@ -35,3 +35,8 @@ class Result:
             messages = [f'WARNING: {warning}' for warning in self.warnings]
             warn_echo('\n'.join(messages))
             if len(messages): echo('')
+
+    # serialize to a dict that can be converted to json
+    def serialize(self):
+        keys = ['status', 'warnings'] + self.keys_to_serialize
+        return {key: cast_type_to_jsonable(getattr(self, key)) for key in keys}

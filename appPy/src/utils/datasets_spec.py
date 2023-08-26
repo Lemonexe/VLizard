@@ -19,11 +19,16 @@ def test_parse_datasets():
     dataset_names = parse_datasets(compound1, compound2, 'pres,vac')
     assert dataset_names == ['pres', 'vac']
 
+    dataset_names = parse_datasets(compound1, compound2, ['pres', 'vac'])
+    assert dataset_names == ['pres', 'vac']
+
     # dataset string that parses to empty list
     with pytest.raises(AppException):
         parse_datasets(compound1, compound2, '   ,,')
+    with pytest.raises(AppException):
+        parse_datasets(compound1, compound2, [])
 
-    # this raise occurs in validate_dataset
+    # test that datasets are validated (raise in validate_dataset)
     with pytest.raises(AppException):
         parse_datasets(compound1, compound2, 'atm,nonsense')
 

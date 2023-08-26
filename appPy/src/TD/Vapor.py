@@ -30,6 +30,14 @@ class Vapor(Result):
         self.model, self.T_min, self.T_max, self.params = choose_vapor_model_params(compound)
         self.ps_fun = lambda T: self.model.fun(T, *self.params)  # p [kPa] = f(T [K])
 
+        # try to find normal boiling point
+        resid = lambda T: self.ps_fun(T) - atm
+        sol = root(fun=resid, x0=400, tol=T_boil_tol)  # 400 K as initial estimate
+        self.T_boil = sol.x[0] if sol.success else None
+
+        self.T_tab = np.linspace(self.T_min, self.T_max, x_points_smooth_plot)
+        self.p_tab = self.ps_fun(self.T_tab)
+
     # checks if queried temp conforms to vapor pressure function T_min, T_max (with tolerance)
     # can receive one param (one temp point) or two params (temp interval)
     def check_T_bounds(self, T_min_query, T_max_query=None):
@@ -56,21 +64,12 @@ class Vapor(Result):
 
         echo(f'ps_min = {self.ps_fun(T_min):.3g} kPa')
         echo(f'ps_max = {self.ps_fun(T_max):.3g} kPa')
-
-        # try to find normal boiling point
-        resid = lambda T: self.ps_fun(T) - atm
-        sol = root(fun=resid, x0=400, tol=T_boil_tol)
-        if sol.success:
-            T_boil = sol.x[0]
-            echo(f'T_boil(atm) = {(T_boil-C2K):.1f}°C')
+        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-C2K):.1f}°C')
         echo('')
 
     def plot(self):
-        # smooth tabulation of curve
-        T = np.linspace(self.T_min, self.T_max, x_points_smooth_plot)
-        p = self.ps_fun(T)
         plt.figure()
-        plt.plot(T - C2K, p, '-k')
+        plt.plot(self.T_tab - C2K, self.p_tab, '-k')
         plt.title(self.get_title())
         plt.xlabel('T [°C]')
         plt.ylabel('p [kPa]')

@@ -20,6 +20,7 @@ herington_DJ_criterion = data['herington_DJ_criterion']
 rk_quad_rel_tol = data['rk_quad_rel_tol']
 # [%] in Fredenslund test, when average residuals are above this threshold, data is declared inconsistent
 fredenslund_criterion = data['fredenslund_criterion']
+default_legendre_order = 4
 
 # ----------------
 # IMMUTABLE CONFIG
@@ -33,8 +34,9 @@ C2K = 273.15  # [K]
 R = 8.31446  # [J/K/mol]
 atm = 101.325  # [kPa]
 
-# UI
+# APP
+port_number = 4663
 cli_fg_ok = 'green'
 cli_fg_err = 'bright_red'
 cli_fg_warn = 'yellow'
-x_points_smooth_plot = 100  # how many x points shall be tabulated when function is plotted
+x_points_smooth_plot = 101  # how many x points shall be tabulated when function is plotted

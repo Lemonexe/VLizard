@@ -3,7 +3,7 @@
 Or `appPy` for short, is a python application which does the heavy lifting.
 All algorithms for thermodynamic consistency tests and fitting models are implemented here.
 
-I/O is provided either via CLI (local development) or ~~Flask server~~ (for Electron app).
+I/O is provided either via CLI (local development) or Flask server (for Electron app).
 
 ~~It is packed together with the Electron app, running silently.~~
 ~~See [Typescript frontend](appUI.md) for build process.~~
@@ -17,6 +17,19 @@ pipenv install --dev
 ```
 
 ### Local run
+
+#### Flask server
+Run server: `pipenv run start`  
+Run development server: `pipenv run dev`  
+Uses port 4663 by default.    
+
+See [http/](../http) for API documentation (as IntelliJ http files).  
+
+Endpoints assume valid systems and datasets, UI must take care of that.
+CRUD controllers operate on `.tsv` files, which store user input data.
+Analyses are run via `POST` endpoints, which return json and also persist it in `.json` files as cache.
+
+
 #### CLI
 Examples for CLI commands:
 ```
@@ -32,9 +45,6 @@ pipenv run cli\fit CHOL CHF -d 10kPa,25kPa,40kPa --xy --txy --gamma -c c_12
 ```
 See [appPy/cli](../appPy/cli), where filenames correspond to commands;
 calling with `--help` will instruct you further.
-
-#### Flask server
-todo
 
 ### Development
 Run unit tests: `pipenv run test`  

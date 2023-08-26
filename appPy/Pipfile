@@ -8,6 +8,7 @@ numpy = "*"
 scipy = "*"
 click = "*"
 matplotlib = "*"
+flask = "*"
 
 [dev-packages]
 yapf = "*"
@@ -18,6 +19,8 @@ pytest = "*"
 python_version = "3.11"
 
 [scripts]
+start = "pipenv run python src/server.py"
+dev = "pipenv run python src/server.py debug"
 prettier = "pipenv run yapf -i -r src cli"
 lint = "pipenv run pylint src cli --disable=C"
 test = "pipenv run pytest src"
