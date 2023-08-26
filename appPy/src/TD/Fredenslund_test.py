@@ -4,24 +4,26 @@ from matplotlib import pyplot as plt
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
-from src.config import x_points_smooth_plot, fredenslund_criterion
+from src.config import x_points_smooth_plot, fredenslund_criterion, default_legendre_order
 from .VLE import VLE
 
 
 # perform Fredenslund test as object with results and methods for reporting & visualization
 class Fredenslund_test(VLE):
 
-    def __init__(self, compound1, compound2, dataset_name, legendre_order=4):
+    def __init__(self, compound1, compound2, dataset_name, legendre_order):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = [
             'is_consistent', 'criterion', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'g_E_exp', 'x_tab',
-            'g_E_tab', 'p_res', 'y_1_res', 'y_2_res'
+            'g_E_tab', 'p_res', 'y_1_res', 'y_2_res', 'legendre_order'
         ]
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
-        if legendre_order not in [3, 4, 5]:
+        if legendre_order is None: legendre_order = default_legendre_order
+        elif legendre_order not in [3, 4, 5]:
             raise AppException(f'Legendre polynomial must be of order 3, 4, 5, got {legendre_order}')
+        self.legendre_order = legendre_order
 
         # number of model params must be greater than number of points
         n_x = len(x_1)

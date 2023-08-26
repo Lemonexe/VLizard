@@ -3,6 +3,7 @@ import sys
 sys.path.append(sys.path[0] + '/..')
 
 import click
+from src.config import default_legendre_order
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
@@ -13,7 +14,7 @@ from src.TD.Fredenslund_test import Fredenslund_test
 @click.argument('compound1')
 @click.argument('compound2')
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
-@click.option('--legendre', help='Order of Legendre polynomials', default=4, show_default=True, type=int)
+@click.option('--legendre', help=f'Order of Legendre polynomials (default {default_legendre_order})', type=int)
 @click.option('--ge', is_flag=True, help='Plot gE')
 @click.option('--res', is_flag=True, help='Plot p,y1,y2 residuals')
 def cli_fredenslund(compound1, compound2, dataset, legendre, ge, res):

@@ -5,3 +5,5 @@ svg
 ? refactor Tabulate dataset as pure function, extract tabulate one point
 
 use standard docstring format !!!
+
+zbavit se json configu, mít to v py a overridovat z json

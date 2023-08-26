@@ -20,6 +20,7 @@ herington_DJ_criterion = data['herington_DJ_criterion']
 rk_quad_rel_tol = data['rk_quad_rel_tol']
 # [%] in Fredenslund test, when average residuals are above this threshold, data is declared inconsistent
 fredenslund_criterion = data['fredenslund_criterion']
+default_legendre_order = 4
 
 # ----------------
 # IMMUTABLE CONFIG
