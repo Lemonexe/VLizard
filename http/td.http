@@ -1,33 +1,33 @@
 
-POST http://localhost:4663/api/gamma_test
+POST http://localhost:4663/td_test/gamma
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
 
 ###
 
-POST http://localhost:4663/api/slope_test
+POST http://localhost:4663/td_test/slope
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
 
 ###
 
-POST http://localhost:4663/api/rk_test
+POST http://localhost:4663/td_test/rk
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
 
 ###
 
-POST http://localhost:4663/api/herington_test
+POST http://localhost:4663/td_test/herington
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
 
 ###
 
-POST http://localhost:4663/api/fredenslund_test
+POST http://localhost:4663/td_test/fredenslund
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa", "legendre_order": 4}

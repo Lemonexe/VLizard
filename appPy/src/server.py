@@ -6,7 +6,7 @@ from flask import Flask
 from werkzeug.exceptions import HTTPException
 from src.config import port_number
 from src.utils.errors import AppException
-from src.api.td import td_blueprint
+from src.api.td_test import td_blueprint
 
 app = Flask(__name__)
 
