@@ -94,10 +94,10 @@ class Fredenslund_test(VLE):
         echo('')
         if self.is_consistent:
             ok_echo(
-                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.0f} %, data consistency is proven')
+                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.1f} %, data consistency is proven')
         else:
             err_echo(
-                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.0f} %, data consistency is disproven'
+                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.1f} %, data consistency is disproven'
             )
         echo('')
 

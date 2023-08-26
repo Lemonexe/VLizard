@@ -8,7 +8,3 @@ refactor Tabulate dataset as pure function, extract tabulate one point
     remove unused code in Fit
 
 use standard docstring format !!!
-
-zbavit se json configu, mít to v py a overridovat z json
-
-CLI dependencies as dev dependencies?? Is it possible?
