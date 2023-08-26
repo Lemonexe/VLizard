@@ -31,5 +31,5 @@ app.register_blueprint(td_test_blueprint)
 app.register_blueprint(fit_blueprint)
 
 if __name__ == '__main__':
-    debug_mode = 'debug' in sys.argv
-    app.run(port=port_number, debug=debug_mode)
+    is_debug_mode = 'debug' in sys.argv
+    app.run(port=port_number, debug=is_debug_mode)

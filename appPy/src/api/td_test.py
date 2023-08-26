@@ -12,7 +12,6 @@ td_test_blueprint = Blueprint('TD', __name__, url_prefix='/td_test')
 common_schema = {'compound1': True, 'compound2': True, 'dataset': True}
 
 
-# perform and persist Gamma test for given system and dataset (assumes valid input data)
 @td_test_blueprint.post('/gamma')
 def gamma_test_api():
     params = unpack_request_schema(request, common_schema)
