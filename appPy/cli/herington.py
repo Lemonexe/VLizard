@@ -13,7 +13,7 @@ from src.TD.Herington_test import Herington_test
 @click.argument('compound2')
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
 def cli_herington(compound1, compound2, dataset):
-    """Perform Herington test for COMPOUND1 code, COMPOUND2 code."""
+    """Perform Herington test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         herington_test = Herington_test(compound1, compound2, dataset)

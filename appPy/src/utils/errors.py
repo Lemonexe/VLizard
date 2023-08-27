@@ -2,15 +2,16 @@ import click
 from src.config import cli_fg_err
 
 
-# user input is valid, but calculation cannot proceed, e.g. when resource cannot be found etc.
-# not to be used to catch programmer errors (then use built-in python exceptions)
-# handled globally in CLI_error_boundary or Flask errorhandler (as 422)
 class AppException(Exception):
-    pass
+    """
+    Exception when user input is valid, but calculation cannot proceed, e.g. when resource cannot be found etc.
+    Not to be used to catch programmer errors (then use built-in python exceptions).
+    Handled globally in CLI_error_boundary or Flask errorhandler (as 422).
+    """
 
 
-# wrapper for CLI functions to catch AppException
 def CLI_error_boundary(callback):
+    """Wrapper for CLI functions to catch AppException."""
     try:
         callback()
     except AppException as err:

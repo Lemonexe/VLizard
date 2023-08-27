@@ -8,6 +8,7 @@ fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
 
 @fit_blueprint.post('/VLE')
 def fit_VLE_api():
+    """Return result of fitting VLE data with a thermodynamic model."""
     param_schema = {
         'compound1': True,
         'compound2': True,

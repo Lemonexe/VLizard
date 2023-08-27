@@ -5,8 +5,14 @@ serialize_rows = lambda *args: np.vstack(tuple(args))
 serialize_cols = lambda *args: serialize_rows(*args).T
 
 
-# pick part of vector by list of indices, and the rest
 def pick_vector(vec, idxs):
+    """
+    Pick part of vector by list of indices, and the rest.
+
+    vec (np.array or list): whole vector to pick from
+    idxs (np.array or list): indices of elements to pick from vec
+    return tuple: picked part of vector (np.array), rest of vector (np.array)
+    """
     vec = np.array(vec)
     idxs = np.unique(idxs)
     n = len(vec)
@@ -24,8 +30,15 @@ def pick_vector(vec, idxs):
     return picked, rest
 
 
-# merge two vectors given a list of indices of first vector in the whole, while the other vector fills the remaining space
 def overlay_vectors(vec_1, idxs_1, vec_2):
+    """
+    Merge two vectors given a list of indices of first vector in the whole, while the other vector fills the remaining space.
+
+    vec_1 (np.array or list): vector whose elements will be placed at indices idxs_1
+    idxs_1 (np.array or list): indices of elements of vec_1 in the whole vector
+    vec_2 (np.array or list): vector whose elements will fill the remaining space
+    return np.array: the whole, merged vector
+    """
     vec_1 = np.array(vec_1)
     idxs_1 = np.unique(idxs_1)
     vec_2 = np.array(vec_2)

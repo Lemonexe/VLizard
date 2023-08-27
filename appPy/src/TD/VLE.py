@@ -8,10 +8,15 @@ from src.utils.datasets import get_dataset_VLE_data
 from .Vapor import Vapor
 
 
-# for a given dataset of a given system, unpack the basic necessary data into object with derived physical quantities + metadata
 class VLE(Result):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Create a VLE analysis for a given dataset of binary system, using data from files.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__()
         self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'x_2', 'y_2', 'ps_1', 'ps_2', 'gamma_1', 'gamma_2']
         self.compound1 = compound1
@@ -51,8 +56,8 @@ class VLE(Result):
     def get_title(self):
         return f'{self.compound1}-{self.compound2}, {self.dataset_name}'
 
-    # plot x,y diagram
     def plot_xy(self, silent=False):
+        """Plot x,y diagram."""
         plt.figure()
         plt.plot(self.x_1, self.y_1, 'Dk', label='data')
         plt.plot([0, 1], [0, 1], ':k')
@@ -65,8 +70,8 @@ class VLE(Result):
         plt.ion()
         plt.show()
 
-    # plot T,x,y diagram
     def plot_Txy(self, silent=False):
+        """Plot T,x,y diagram."""
         plt.figure()
         plt.plot(self.y_1, self.T, 'Dr', label='dew')
         plt.plot(self.x_1, self.T, 'Db', label='boil')
@@ -79,8 +84,8 @@ class VLE(Result):
         plt.ion()
         plt.show()
 
-    # plot diagram of activity coeffs per x
     def plot_gamma(self, silent=False):
+        """Plot diagram of activity coeffs per x."""
         plt.figure()
         plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')

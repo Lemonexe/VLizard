@@ -5,10 +5,15 @@ from src.config import x_points_smooth_plot, rk_D_criterion
 from .Area import Area
 
 
-# perform Redlich-Kister area test as object with results and methods for reporting & visualization
 class Redlich_Kister_test(Area):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Perform Redlich-Kister area test as object with results and methods for reporting & visualization.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['D', 'is_consistent', 'criterion', 'x_1', 'curve', 'x_tab', 'curve_tab']
 

@@ -46,7 +46,8 @@ x_points_smooth_plot = 101  # how many x points shall be tabulated when function
 # JSON CONFIG
 # ------------
 
-data = open_json('data/config.json')  # user config data
+# load config.json file with users' config data and assign to the constants above
+data = open_json('data/config.json')
 if data:
     gamma_abs_tol = data.get('gamma_abs_tol', gamma_abs_tol) or gamma_abs_tol
     T_bounds_rel_tol = data.get('T_bounds_rel_tol', T_bounds_rel_tol) or T_bounds_rel_tol
@@ -56,9 +57,13 @@ if data:
     fredenslund_criterion = data.get('fredenslund_criterion', fredenslund_criterion) or fredenslund_criterion
     port_number = data.get('port_number', port_number) or port_number
 
-# currently unused, will be used when data is stored in user's home directory
+
 def generate_config():
-    data = {
+    """
+    Generate initial config.json file from default config.
+    Currently unused, will be used when data is stored in user's home directory.
+    """
+    blank_config_data = {
         'gamma_abs_tol': gamma_abs_tol,
         'T_bounds_rel_tol': T_bounds_rel_tol,
         'rk_D_criterion': rk_D_criterion,
@@ -67,4 +72,4 @@ def generate_config():
         'fredenslund_criterion': fredenslund_criterion,
         'port_number': port_number
     }
-    save_json(data, 'data/config.json', pretty=True)
+    save_json(blank_config_data, 'data/config.json', pretty=True)

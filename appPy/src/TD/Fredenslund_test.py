@@ -8,10 +8,16 @@ from src.config import x_points_smooth_plot, fredenslund_criterion, default_lege
 from .VLE import VLE
 
 
-# perform Fredenslund test as object with results and methods for reporting & visualization
 class Fredenslund_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name, legendre_order):
+        """
+        Perform Fredenslund test as object with results and methods for reporting & visualization.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        legendre_order (int): order of Legendre polynomial to use, must be 3, 4 or 5, default 4
+        """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = [
             'is_consistent', 'criterion', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'g_E_exp', 'x_tab',
@@ -37,7 +43,7 @@ class Fredenslund_test(VLE):
         # g_E vector from experimental values
         g_E_exp = (x_1 * np.log(gamma_1) + x_2 * np.log(gamma_2))
 
-        # parametrized model function to calculate g_E using Legendre polynomials
+        # parametrized model function to calculate g_E using linear combination of Legendre polynomials * params
         legendre_array_fun = get_ordered_array_fun(legendre_order, get_g_E_poly)
         g_E_fun = lambda x, *params: np.sum(params * legendre_array_fun(x).T, 1)
 

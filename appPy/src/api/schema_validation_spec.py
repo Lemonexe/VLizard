@@ -20,7 +20,7 @@ optional_schema = {'param1': True, 'param2': False}  # schema with an optional p
 
 
 def test_unpack_request_schema():
-    # strict schema that requires value2
+    # test with mandatory_schema
     params = unpack_request_schema(full_request, mandatory_schema)
     assert params == {'param1': 'value1', 'param2': 'value2'}
     assert list(params.keys()) == ['param1', 'param2']  # order matters
@@ -32,7 +32,7 @@ def test_unpack_request_schema():
     with pytest.raises(BadRequest):
         unpack_request_schema(excess_request, mandatory_schema)
 
-    # loose schema that allows for optional value2
+    # test with optional_schema
     params = unpack_request_schema(full_request, optional_schema)
     assert params == {'param1': 'value1', 'param2': 'value2'}
     assert list(params.keys()) == ['param1', 'param2']

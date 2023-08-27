@@ -15,7 +15,7 @@ from src.TD.Gamma_test import Gamma_test
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
 @click.option('--plot', is_flag=True, help='Plot activity coeff including van Laar model with error')
 def cli_gamma(compound1, compound2, dataset, plot):
-    """Perform simple Gamma test for COMPOUND1 code, COMPOUND2 code."""
+    """Perform simple Gamma test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         gamma_test = Gamma_test(compound1, compound2, dataset)

@@ -2,15 +2,27 @@ import csv
 import numpy as np
 
 
-# open a path with .tsv file and return it as list of lists, filter out empty rows
 def open_tsv(file_path):
+    """
+    Open a path with .tsv file and return it as list of lists, filter out empty rows.
+
+    file_path (str): exact path to tsv file
+    return (list of lists): tsv file content as list of rows, each row is a list of cells for each column
+    """
     with open(file_path, encoding='utf-8') as tsv_file:
         reader = csv.reader(tsv_file, delimiter='\t')
         return [row for row in reader if len(row) > 0]
 
 
-# prettyprint numpy array to tsv
 def array2tsv(arr, headlines=None, format_spec=None):
+    """
+    Prettyprint numpy array to tsv format.
+
+    arr (numpy array): array to be printed
+    headlines (list of str): list of headlines for each column
+    format_spec (str): format specification for each numerical cell, e.g. '.2f' for two decimal places
+    return (str): tsv formatted string
+    """
     arr = np.array(arr)
     if arr.ndim != 2: raise TypeError('arr must be a numpy array of two dimensions')
 
@@ -30,8 +42,8 @@ def array2tsv(arr, headlines=None, format_spec=None):
     return '\n'.join(lines)
 
 
-# save numpy array to exact filepath (e.g. data\example.tsv)
 def save_array2tsv(arr, filepath, headlines=None, format_spec=None):
+    """Save numpy array to exact filepath."""
     content = array2tsv(arr, headlines, format_spec)
     with open(filepath, mode='w', encoding='utf-8') as new_tsv_file:
         print(content, file=new_tsv_file)

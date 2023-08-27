@@ -7,10 +7,15 @@ from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
 
 
-# perform simple point-to-point slope test as object with results and methods for reporting & visualization
 class Slope_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Perform simple point-to-point slope test as object with results and methods for reporting & visualization.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['x_1', 'd_ln_gamma_1', 'd_ln_gamma_2', 'P2P_res']
         gamma_1, gamma_2, x_1, x_2 = self.gamma_1, self.gamma_2, self.x_1, self.x_2

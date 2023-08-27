@@ -3,8 +3,14 @@ from .errors import AppException
 from .io.tsv import open_tsv
 
 
-# for the given compound code, get vapor pressure model parameters from file
 def get_vapor_model_params(compound, model):
+    """
+    For the given compound, get parameters of selected vapor pressure model from file.
+
+    compound (str): compound name
+    model (Vapor_Model): vapor pressure model instance
+    return (tuple): T_min [K], T_max [K], *params
+    """
     table_path = os.path.join('data', 'ps', model.name + '.tsv')
     table = open_tsv(table_path)
 

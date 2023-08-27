@@ -13,8 +13,13 @@ from src.TD.vapor_models.antoine import antoine_model
 supported_models = [wagner_model, antoine_model]
 
 
-# create a vapor pressure function for a given compound
 def choose_vapor_model_params(compound):
+    """
+    Choose model of vapor pressure.
+
+    compound (str): compound name
+    return (tuple): Vapor_Model, T_min [K], T_max [K], *params
+    """
     for model in supported_models:
         results = get_vapor_model_params(compound, model)
         if results: return model, *results
@@ -24,6 +29,11 @@ def choose_vapor_model_params(compound):
 class Vapor(Result):
 
     def __init__(self, compound):
+        """
+        Create a vapor pressure analysis for given pure compound.
+
+        compound (str): compound name
+        """
         super().__init__()
         self.compound = compound
 
@@ -38,9 +48,14 @@ class Vapor(Result):
         self.T_tab = np.linspace(self.T_min, self.T_max, x_points_smooth_plot)
         self.p_tab = self.ps_fun(self.T_tab)
 
-    # checks if queried temp conforms to vapor pressure function T_min, T_max (with tolerance)
-    # can receive one param (one temp point) or two params (temp interval)
     def check_T_bounds(self, T_min_query, T_max_query=None):
+        """
+        Check if queried temperature conforms to T_min, T_max of vapor pressure function with tolerance.
+        Either a single point or an interval can be queried.
+
+        T_min_query (float): queried lower interval bound, or the single point [K]
+        T_max_query (float): queried upper interval bound [K]
+        """
         if not T_max_query: T_max_query = T_min_query
         T_int = self.T_max - self.T_min
         template = lambda extrem, T_query, T_data: f'Temperature extrapolation of vapor pressure for {self.compound}: queried T = {T_query:.1f} K, while T_{extrem} = {T_data:.1f} K'

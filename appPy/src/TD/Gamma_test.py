@@ -11,6 +11,14 @@ from .VLE import VLE
 class Gamma_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Perform home-baked "gamma test" as object with results and methods for reporting & visualization.
+        The basis of the test is to see if γ1, γ2 goes to one if we extrapolate VLE data to pure compounds, as it must.
+        This is done by fitting modified van Laar model with error terms on the data, and evaluating the deviations from one.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = [
             'is_consistent', 'gamma_abs_tol', 'err_1', 'err_2', 'x_tab', 'gamma_tab_1', 'gamma_tab_2'
@@ -21,7 +29,7 @@ class Gamma_test(VLE):
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # vector of residuals for least_squares
-        residual = lambda params: (van_Laar_with_error(self.x_1, *params) - gamma_M).flatten()
+        residual = lambda params: (van_Laar_with_error(self.x_1, 0, *params) - gamma_M).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
@@ -30,7 +38,7 @@ class Gamma_test(VLE):
         self.is_consistent = abs(self.err_2) <= gamma_abs_tol and abs(self.err_1) <= gamma_abs_tol
 
         self.x_tab = np.linspace(0, 1, x_points_smooth_plot)
-        self.gamma_tab_1, self.gamma_tab_2 = van_Laar_with_error(self.x_tab, *self.params)
+        self.gamma_tab_1, self.gamma_tab_2 = van_Laar_with_error(self.x_tab, 0, *self.params)
 
     def get_title(self):
         return f'γ test for {super().get_title()}'

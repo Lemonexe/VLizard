@@ -18,7 +18,7 @@ from src.TD.Fredenslund_test import Fredenslund_test
 @click.option('--ge', is_flag=True, help='Plot gE')
 @click.option('--res', is_flag=True, help='Plot p,y1,y2 residuals')
 def cli_fredenslund(compound1, compound2, dataset, legendre, ge, res):
-    """Perform Fredenslund test for COMPOUND1 code, COMPOUND2 code."""
+    """Perform Fredenslund test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         fredenslund_test = Fredenslund_test(compound1, compound2, dataset, legendre)

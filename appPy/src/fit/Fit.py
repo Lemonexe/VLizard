@@ -20,11 +20,19 @@ supported_model_names = [model.name for model in supported_models]
 squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
 
 
-# create non-linear regression problem for given binary system datasets and selected model
-# optionally with list of initial params (or None), and/or indices which parameters to keep constant (or None)
 class Fit(Result):
 
     def __init__(self, compound1, compound2, model_name, datasets, params0, const_param_names):
+        """
+        Create non-linear regression problem for given binary system VLE datasets and a selected model.
+
+        compound1 (str): name of first compound of the system.
+        compound2 (str): name of second compound of the system.
+        model_name (str): name of the model to be fitted.
+        datasets (list of str): names of datasets to be fitted.
+        params0 (list of float): initial estimate of model parameters (ordered).
+        const_param_names (list of str): names of parameters to be kept constant during optimization.
+        """
         super().__init__()
         self.keys_to_serialize = ['result_params', 'sumsq_resid_final', 'sumsq_resid_init']
         self.compound1 = compound1
@@ -49,8 +57,8 @@ class Fit(Result):
 
         self.optimize()
 
-    # parse model name and check if it is appropriate for given datasets
     def __parse_model(self, model_name):
+        """Parse model_name and check if it is appropriate for given datasets."""
         supported_model_names_lcase = [name.lower() for name in supported_model_names]
         if not model_name.lower() in supported_model_names_lcase:
             csv = ', '.join(supported_model_names)
@@ -63,16 +71,16 @@ class Fit(Result):
             self.warn(msg)
         return model
 
-    # parse & validate initial params, use either given params or default model params as initial estimate
     def __parse_params0(self, params0):
+        """Parse & validate params0, use either given params or default model params as initial estimate."""
         model = self.model
         if not params0: return model.params0
         if len(params0) != model.n_params:
             raise AppException(f'{model.display_name} model expects {model.n_params} parameters, got {len(params0)}!')
         return params0
 
-    # parse & validate param names that shall be kept constant
     def __parse_const_param_names(self, const_param_names):
+        """Parse & validate const_param_names."""
         model = self.model
         if not const_param_names: return []
         for name in const_param_names:
@@ -81,6 +89,7 @@ class Fit(Result):
         return const_param_names
 
     def optimize(self):
+        """Perform optimization of model parameters to fit the VLE data."""
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # sort model parameters per indices: those that are to be kept constant, those that will be optimized
@@ -102,6 +111,7 @@ class Fit(Result):
         self.sumsq_resid_final = np.sum(np.square(result.fun))
 
     def tabulate(self):
+        """Tabulate model using result_params for each dataset."""
         self.tabulated_datasets = [Tabulate(vle, self.model, self.result_params) for vle in self.dataset_VLEs]
 
     def report(self):

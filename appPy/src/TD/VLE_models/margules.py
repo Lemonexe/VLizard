@@ -2,8 +2,15 @@ import numpy as np
 from .VLE_Model import VLE_Model
 
 
-# parametrized Margules activity coefficient model to calculate [gamma_1, gamma_2]
 def margules(x_1, _T, A_12, A_21):
+    """
+    Calculate activity coefficients using Margules model.
+
+    x_1 (float): mole fraction of compound1
+    _T (float): temperature [K], not used
+    A_12, A_21 (float): dimensionless binary parameters
+    return (np.array): activity coefficients as [gamma_1, gamma_2]
+    """
     x_2 = (1 - x_1)
     ln_gamma_1 = x_2**2 * (A_12 + 2 * x_1 * (A_21-A_12))
     ln_gamma_2 = x_1**2 * (A_21 + 2 * x_2 * (A_12-A_21))

@@ -3,8 +3,18 @@ from src.config import C2K
 from .VLE_Model import VLE_Model
 
 
-# full version of NRTL activity coefficient model (10 parameters) to calculate [gamma_1, gamma_2]
 def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
+    """
+    Calculate activity coefficients using NRTL model (full version with 10 parameters).
+
+    x_1 (float): mole fraction of compound1
+    T (float): temperature [K]
+    a_12, a_21, c_12, e_12, e_21 (float): dimensionless binary parameters
+    b_12, b_21 (float): temperature dependent binary parameters [K]
+    d_12 (float): temperature dependent binary parameter [°C^-1]
+    f_12, f_21 (float): temperature dependent binary parameters [K^-1]
+    return (np.array): activity coefficients as [gamma_1, gamma_2]
+    """
     x_2 = 1 - x_1
     t = T - C2K  # [°C]
     ln_T = np.log(T)
@@ -25,8 +35,8 @@ def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
     return np.exp([ln_gamma_1, ln_gamma_2])
 
 
-# simplified model with only the first 5 parameters
 NRTL = lambda *params: NRTL10(*params, 0, 0, 0, 0, 0)
+"""Simplified NRTL activity coefficient model with only first 5 parameters."""
 
 NRTL_params0 = np.array([0, 0, 100, 100, 0.3])
 

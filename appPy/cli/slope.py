@@ -15,7 +15,7 @@ from src.TD.Slope_test import Slope_test
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
 @click.option('--plot', is_flag=True, help='Plot slope test residual & gamma derivations')
 def cli_slope(compound1, compound2, dataset, plot):
-    """Perform slope test for COMPOUND1 code, COMPOUND2 code."""
+    """Perform slope test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         slope_test = Slope_test(compound1, compound2, dataset)

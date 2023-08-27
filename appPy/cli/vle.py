@@ -17,7 +17,7 @@ from src.TD.VLE import VLE
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff')
 def cli_vle(compound1, compound2, dataset, xy, txy, gamma):
-    """Analyze VLE data for COMPOUND1 code, COMPOUND2 code."""
+    """Analyze VLE data for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         vle = VLE(compound1, compound2, dataset)

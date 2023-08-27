@@ -9,6 +9,12 @@ from .VLE import VLE
 class Area(VLE):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Perform calculations of the integrals necessary for area tests, currently used in Redlich-Kister and Herington tests.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__(compound1, compound2, dataset_name)
         gamma_1, gamma_2, x_1 = self.gamma_1, self.gamma_2, self.x_1
 

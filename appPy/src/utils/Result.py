@@ -2,12 +2,13 @@ from .io.echo import echo, warn_echo
 from .io.json import cast_type_to_jsonable
 
 
-# utility class to provide standard interface for results of an operation
-# status is 0 for success, 1 for warning (error is not handled)
 class Result:
+    """
+    Utility class to provide standard interface for results of an operation (e.g. analysis or regression).
+    """
 
     def __init__(self):
-        self.status = 0
+        self.status = 0  # 0 = ok, 1 = warning
         self.warnings = []
         self.keys_to_serialize = []  # custom keys for serialization, may be filled by inheriting classes
 
@@ -36,7 +37,7 @@ class Result:
             warn_echo('\n'.join(messages))
             if len(messages): echo('')
 
-    # serialize to a dict that can be converted to json
+    # serialize itself to a dict that can be converted to json
     def serialize(self):
         keys = ['status', 'warnings'] + self.keys_to_serialize
         return {key: cast_type_to_jsonable(getattr(self, key)) for key in keys}

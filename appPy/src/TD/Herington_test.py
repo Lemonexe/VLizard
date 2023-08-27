@@ -4,10 +4,16 @@ from src.config import herington_DJ_criterion
 from .Area import Area
 
 
-# perform Herington area test as object with results and methods for reporting
 class Herington_test(Area):
 
     def __init__(self, compound1, compound2, dataset_name):
+        """
+        Perform Herington area test as object with results and methods for reporting & visualization.
+        Deprecated for scientific use.
+
+        compound1, compound2 (str): names of compounds
+        dataset_name (str): name of dataset
+        """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['D', 'J', 'DJ', 'is_consistent', 'criterion']
 

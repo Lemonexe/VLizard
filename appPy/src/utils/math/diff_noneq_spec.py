@@ -9,8 +9,8 @@ x_vec = np.array([0.01915698,0.0525313,0.05380665,0.08390383,0.13675854,0.241161
 # yapf: enable
 
 
-# test the formula to get constants, which are dependent only on x_vec grid & x_query point, using known formulae for equidistant
 def test_get_diff_noneq_consts():
+    """Test the formula to get constants, which are dependent only on x_vec grid & x_query point, using known formulae for equidistant."""
     rel_tol = 1e-6
 
     err = lambda C1, C2: np.max(abs(C1 - C2))
@@ -28,20 +28,24 @@ def test_get_diff_noneq_consts():
     assert err(C_num, C_anal) < rel_tol
 
 
-# on x_vec grid query derivation at single x point
-# fx  = sin(x)
-# dfx = cos(x)
 def test_diff_noneq():
+    """
+    Test derivation on x_vec query derivation at single x point.
+    fx  = sin(x)
+    dfx = cos(x)
+    """
     rel_tol = 1e-6
     x_query = pi / 6
     dsin = diff_noneq(x_vec, np.sin(x_vec), x_query)
     assert abs(dsin / np.cos(x_query) - 1) < rel_tol
 
 
-# on x_vec grid query derivation at vector x, in *this* case same as x_vec
-# fx  = ln(2 + x)
-# dfx = 1 / x
 def test_diffs_noneq_single():
+    """
+    Test derivation on x_vec query at vector x, in *this* case same as x_vec.
+    fx  = ln(2 + x)
+    dfx = 1 / x
+    """
     rel_tol = 1e-6
     y = np.log(2 + x_vec)
     dy_anal = 1 / (2+x_vec)
@@ -60,12 +64,14 @@ def test_diffs_noneq_single():
     assert np.max(err) < rel_tol
 
 
-# on x_vec grid query derivation at arbitrary vector x
-# f1x  = sin(x)
-# df1x = cos(x)
-# f2x  = x**2 - 1.2*x + 0.8
-# df2x = 2*x - 1.2
 def test_diffs_noneq_multiple():
+    """
+    Test derivation on x_vec grid query at arbitrary vector x.
+    f1x  = sin(x)
+    df1x = cos(x)
+    f2x  = x**2 - 1.2*x + 0.8
+    df2x = 2*x - 1.2
+    """
     rel_tol = 1e-6
     x_qn = 29  # number of queried points
     x_query_vec = np.linspace(0.1, 0.9, x_qn)
@@ -93,9 +99,11 @@ def test_diffs_noneq_multiple():
         diff_noneq(x_vec, np.sin(x_query_vec), 0.5)
 
 
-# on x_vec grid query derivations using 3 point formula (automatically x_vec is queried)
-# fx same as in 'test_diffs_noneq_multiple'
 def test_diffs_noneq_3():
+    """
+    Test derivation on x_vec query using 3 point formula (automatically x_vec is queried).
+    fx same as in 'test_diffs_noneq_multiple'.
+    """
     rel_tol = 1e-2
 
     y_1 = np.sin(x_vec)

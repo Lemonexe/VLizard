@@ -5,17 +5,28 @@ from .systems import validate_system_or_swap, get_system_path
 from .io.tsv import open_tsv
 
 
-# get datasets of a binary system as a list of strings
-# assumes valid system compound1-compound2
 def get_all_dataset_names(compound1, compound2):
+    """
+    Get all datasets of a binary VLE system.
+    Assumes valid system in given order.
+
+    compound1, compound2 (str): names of compounds in the system
+    return (list(str)): names of all datasets in the system
+    """
     system_dir_path = get_system_path(compound1, compound2)
     names = [f.name.replace('.tsv', '') for f in os.scandir(system_dir_path) if f.name.endswith('.tsv')]
     return sorted(names)
 
 
-# for a binary system, parse the 'datasets' comma-separated string or list and return a list of valid dataset names
-# assumes valid system compound1-compound2
 def parse_datasets(compound1, compound2, datasets):
+    """
+    Select some or all datasets for a binary VLE system.
+    Assumes valid system in given order.
+
+    compound1, compound2 (str): names of compounds in the system
+    datasets (str or list(str)): comma-separated string or list of dataset names
+    return (list(str)): names of selected datasets in the system
+    """
     all_dataset_names = get_all_dataset_names(compound1, compound2)
     if datasets is None: return all_dataset_names
 
@@ -31,18 +42,28 @@ def parse_datasets(compound1, compound2, datasets):
     return sorted(dataset_names)
 
 
-# wrapper for parse_datasets that fires callback on each valid dataset name
-# also validates system, may swap compounds order if needed
 def do_datasets(compound1, compound2, datasets, do_for_dataset):
+    """
+    Call parse_datasets and fire callback on each valid dataset name.
+    Also validates system, may swap compounds order if needed.
+
+    compound1, compound2, datasets...
+    do_for_dataset (lambda compound1, compound2, dataset_name): callback function that takes compound1, compound2, dataset_name as parameters
+    """
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     dataset_names = parse_datasets(compound1, compound2, datasets)
     for dataset_name in dataset_names:
         do_for_dataset(compound1, compound2, dataset_name)
 
 
-# throw if dataset does not exist in the system
-# assumes valid system compound1-compound2
 def validate_dataset(compound1, compound2, dataset, all_dataset_names):
+    """
+    Throw if dataset does not exist in the system.
+
+    compound1, compound2 (str): names of compounds in the system
+    dataset (str): name of the dataset in question
+    all_dataset_names (list(str)): names of all datasets in the system
+    """
     if not dataset in all_dataset_names:
         csv = ', '.join(all_dataset_names)
         msg = f'the dataset {dataset} was not found in system {compound1}-{compound2}!\nAvailable datasets: {csv}'
@@ -52,9 +73,15 @@ def validate_dataset(compound1, compound2, dataset, all_dataset_names):
 expected_headers = ['p/kPa', 'T/K', 'x1', 'y1']
 
 
-# get specific dataset as a np matrix with rows p/kPa, T/K, x1, y1 (convenient, because it can be destructured as such)
-# assumes valid system compound1-compound2
 def get_dataset_VLE_data(compound1, compound2, dataset):
+    """
+    Get the data matrix for a specific dataset.
+    Assumes valid system compound1-compound2.
+
+    compound1, compound2 (str): names of compounds in the system
+    dataset (str): name of the dataset
+    return np.array(4,n): matrix of data with rows p/kPa, T/K, x1, y1 (convenient, because it can be destructured as such)
+    """
     system_dir_path = get_system_path(compound1, compound2)
     filename = dataset + '.tsv'
 

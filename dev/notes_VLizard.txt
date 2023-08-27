@@ -7,4 +7,4 @@ refactor Tabulate dataset as pure function, extract tabulate one point
     umožnit Fit skip optimize (jen tabulate)
     remove unused code in Fit
 
-use standard docstring format !!!
+rationalize array2tsv, test

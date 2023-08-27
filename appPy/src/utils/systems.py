@@ -3,9 +3,13 @@ from .errors import AppException
 from .io.echo import warn_echo
 
 
-# check if the system of compounds exists in given order, or in swapped order, or throws if system doesn't exist
-# returns tuple of compounds in correct order
 def validate_system_or_swap(compound1, compound2):
+    """
+    Check if the system of two compounds exists in given order, or in swapped order, or throw if system doesn't exist.
+
+    compound1, compound2 (str): names of compounds in the system
+    return tuple: compound1, compound2 in correct order.
+    """
     # first try in the given order
     if os.path.exists(get_system_path(compound1=compound1, compound2=compound2)):
         return compound1, compound2
@@ -22,9 +26,14 @@ def validate_system_or_swap(compound1, compound2):
     raise AppException(msg)
 
 
-# get directory path where data is stored for the given system
-# assumes valid system
 def get_system_path(compound1, compound2):
+    """
+    Get directory path where data is stored for the given system of two compounds.
+    Assumes valid system in given order.
+
+    compound1, compound2 (str): names of compounds in the system
+    return str: path to the binary system directory
+    """
     system_name = f'{compound1}-{compound2}'
     system_dir_path = os.path.join('data', 'VLE', system_name)
     return system_dir_path

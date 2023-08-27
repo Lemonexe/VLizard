@@ -1,14 +1,20 @@
 import click
 from src.config import cli_fg_ok, cli_fg_err, cli_fg_warn
 
-# this file contains helpers to push click library to the edge of program, so it is not tightly bound
 echo = click.echo
+"""Write to console."""
 
-# helper function that takes string and appends dotted underline beneath it
 underline = lambda text: text + '\n' + '¨' * (len(text))
+"""Append dotted underline beneath a string."""
 
-# helper functions for styled echo texts
 err_echo = lambda text: click.secho(text, fg=cli_fg_err)
+"""Write error styled text to console."""
+
 ok_echo = lambda text: click.secho(text, fg=cli_fg_ok)
+"""Write success styled text to console."""
+
 warn_echo = lambda text: click.secho(text, fg=cli_fg_warn)
+"""Write warning styled text to console."""
+
 underline_echo = lambda text: click.echo(underline(text))
+"""Write underlined text to console."""

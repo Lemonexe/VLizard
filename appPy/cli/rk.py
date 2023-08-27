@@ -15,7 +15,7 @@ from src.TD.Redlich_Kister_test import Redlich_Kister_test
 @click.option('-d', '--dataset', help='Exact name of dataset, otherwise do all datasets of the system.')
 @click.option('--plot', is_flag=True, help='Plot area')
 def cli_rk(compound1, compound2, dataset, plot):
-    """Perform Redlich-Kister test for COMPOUND1 code, COMPOUND2 code."""
+    """Perform Redlich-Kister test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
         rk_test = Redlich_Kister_test(compound1, compound2, dataset)
