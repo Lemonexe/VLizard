@@ -2,5 +2,5 @@ návod jak python + electron https://github.com/fyears/electron-python-example
 
 svg
 
-umožnit Fit skip optimize (jen tabulate)
-
+ze všech classy vyčlenit např VLE -> VLE_view, kde budou jen report, plot atd. a to bude využíváno jen pro CLI
+pak oddělit matplotlib do dev dependencies :)

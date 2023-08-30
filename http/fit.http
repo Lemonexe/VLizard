@@ -2,7 +2,7 @@
 POST http://localhost:4663/fit/VLE
 Content-Type: application/json
 
-{"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar", "datasets":  ["1939vac"]}
+{"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar", "datasets":  ["1939vac"], "skip_optimization": false}
 
 ###
 

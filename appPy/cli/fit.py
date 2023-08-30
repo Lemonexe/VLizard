@@ -21,11 +21,13 @@ model_list = ", ".join(supported_model_names)
 @click.option('--xy', is_flag=True, help='Plot x,y diagram + regression')
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram + regression')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff + regression')
-def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamma):
+@click.option('--skip', is_flag=True, help='Skip optimization (use initial params for tabulation)')
+def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamma, skip):
     """Fit binary VLE data with a given model, datasets, and optionally with specified initial parameters."""
 
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     fit = Fit(compound1, compound2, model, datasets, parse_params(params), parse_consts(consts))
+    if not skip: fit.optimize()
     fit.report()
 
     if not (xy or txy or gamma): return

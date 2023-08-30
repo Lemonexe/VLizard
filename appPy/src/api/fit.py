@@ -15,10 +15,14 @@ def fit_VLE_api():
         'model_name': True,
         'datasets': True,
         'params0': False,
-        'const_param_names': False
+        'const_param_names': False,
+        'skip_optimization': False
     }
+    params_to_pass = 'compound1', 'compound2', 'model_name', 'datasets', 'params0', 'const_param_names'
+
     params = unpack_request_schema(request, param_schema)
-    fit = Fit(*params.values())
+    fit = Fit(*[params[name] for name in params_to_pass])
+    if not params['skip_optimization']: fit.optimize()
     fit.tabulate()
     payload = fit.serialize()
     persist_VLE_analysis('fit', params['compound1'], params['compound2'], payload)

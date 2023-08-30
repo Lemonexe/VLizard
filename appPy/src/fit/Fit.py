@@ -34,28 +34,28 @@ class Fit(Result):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__()
-        self.keys_to_serialize = ['result_params', 'sumsq_resid_final', 'sumsq_resid_init', 'tabulated_datasets']
+        self.keys_to_serialize = ['is_optimized', 'result_params', 'resid_final', 'resid_init', 'tabulated_datasets']
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
         self.model = self.__parse_model(model_name)
         self.params0 = self.__parse_params0(params0)  # initial params
         self.const_param_names = self.__parse_const_param_names(const_param_names)  # param names to be kept constant
-        self.result_params = None  # result of optimization
-        self.sumsq_resid_final = None
-        self.sumsq_resid_init = None
-
-        self.tabulated_datasets = None  # T, x_1, y_1, gamma_1, gamma_2 tabulation of fitted model for each dataset
+        self.result_params = self.params0  # result of optimization
+        self.tabulated_datasets = None  # T, x_1, y_1, y_2 gamma_1, gamma_2 tabulation of fitted model for each dataset
+        self.is_optimized = False  # whether optimization has been performed
 
         self.dataset_VLEs = [VLE(compound1, compound2, dataset_name) for dataset_name in self.dataset_names]
 
+        # serialize all datasets to one array per property
         self.x_1 = squash(self.dataset_VLEs, 'x_1')
-        self.y_1 = squash(self.dataset_VLEs, 'y_1')
         self.T = squash(self.dataset_VLEs, 'T')
         self.gamma_1 = squash(self.dataset_VLEs, 'gamma_1')
         self.gamma_2 = squash(self.dataset_VLEs, 'gamma_2')
 
-        self.optimize()
+        # initial and final objective function values
+        self.resid_init = np.sum(np.square(self.get_residual(self.params0)))
+        self.resid_final = None
 
     def __parse_model(self, model_name):
         """Parse model_name and check if it is appropriate for given datasets."""
@@ -88,27 +88,29 @@ class Fit(Result):
                 raise AppException(f'{model.display_name} has parameters {", ".join(model.param_names)}, got {name}!')
         return const_param_names
 
+    def get_residual(self, params):
+        """Evaluate residual vector for the complete set of params; it is flattened so that it can be used by least_squares."""
+        gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # both dependent variables next to each other
+        return (self.model.fun(self.x_1, self.T, *params) - gamma_M).flatten()
+
     def optimize(self):
         """Perform optimization of model parameters to fit the VLE data."""
-        gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
-
         # sort model parameters per indices: those that are to be kept constant, those that will be optimized
         const_param_idxs = [self.model.param_names.index(name) for name in self.const_param_names]
         const_params, picked_params0 = pick_vector(self.params0, const_param_idxs)
 
-        # vector of residuals for least_squares as function of all model parameters
-        residual = lambda params: (self.model.fun(self.x_1, self.T, *params) - gamma_M).flatten()
-
         # wrapped residual as function of picked model parameters, which are merged with the const model parameters
-        callback = lambda picked_params: residual(overlay_vectors(const_params, const_param_idxs, picked_params))
+        callback = lambda picked_params: self.get_residual(
+            overlay_vectors(const_params, const_param_idxs, picked_params))
 
         # optimization itself, using built-in Levenberg-Marquardt algorithm
         result = least_squares(callback, picked_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.result_params = overlay_vectors(const_params, const_param_idxs, result.x)
 
-        self.sumsq_resid_init = np.sum(np.square(residual(self.params0)))
-        self.sumsq_resid_final = np.sum(np.square(result.fun))
+        # final objective function value, log optimization as complete
+        self.resid_final = np.sum(np.square(result.fun))
+        self.is_optimized = True
 
     def tabulate(self):
         """Tabulate model using result_params for each dataset."""
@@ -118,13 +120,14 @@ class Fit(Result):
         underline_echo(self.get_title())
         self.report_warnings()
 
-        echo('Optimization complete with following parameters:')
+        if self.is_optimized: echo('Optimization complete with following parameters:')
+        else: echo('Optimization skipped, using initial parameters:')
         for (name, value) in zip(self.model.param_names, self.result_params):
             echo(f'  {name} = {value:.4g}')
 
         echo('')
-        echo(f'Initial residual   = {self.sumsq_resid_init:.3g}')
-        echo(f'Remaining residual = {self.sumsq_resid_final:.3g}')
+        echo(f'Initial residual = {self.resid_init:.3g}')
+        if self.is_optimized: echo(f'Final residual   = {self.resid_final:.3g}')
 
     def get_title(self):
         return f'Regression of {self.model.display_name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'
