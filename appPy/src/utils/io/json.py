@@ -2,15 +2,11 @@ import json
 import numpy as np
 
 
-def cast_type_to_jsonable(value):
-    """Cast value so it's acceptable for json serialization."""
+def cast_to_jsonable(value):
+    """Cast value for json serialization."""
     if isinstance(value, np.ndarray): return value.tolist()
     if isinstance(value, np.bool_): return bool(value)
     return value
-
-
-cast_dict_to_jsonable = lambda payload: {key: cast_type_to_jsonable(value) for key, value in payload.items()}
-"""Cast values of dict so it's acceptable for json serialization."""
 
 
 def open_json(file_path, encoding='utf-8', on_error=None):
@@ -47,7 +43,6 @@ def save_json(payload, file_path, encoding='utf-8', pretty=False, on_error=None)
     separators = None if pretty else (',', ':')
     with open(file_path, mode='w', encoding=encoding) as file:
         try:
-            payload = cast_dict_to_jsonable(payload)
             json.dump(payload, file, indent=indent, separators=separators, ensure_ascii=False)
         except TypeError as exc:
             if on_error: on_error(exc)

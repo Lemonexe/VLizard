@@ -1,5 +1,13 @@
 from .io.echo import echo, warn_echo
-from .io.json import cast_type_to_jsonable
+from .io.json import cast_to_jsonable
+
+
+def cast_to_jsonable_recursive(value):
+    """Recursively cast value for json serialization, or serialize Result instances."""
+    if isinstance(value, list): return [cast_to_jsonable_recursive(child) for child in value]
+    if isinstance(value, dict): return {key: cast_to_jsonable_recursive(child) for key, child in value.items()}
+    if isinstance(value, Result): return value.serialize()
+    return cast_to_jsonable(value)
 
 
 class Result:
@@ -37,7 +45,7 @@ class Result:
             warn_echo('\n'.join(messages))
             if len(messages): echo('')
 
-    # serialize itself to a dict that can be converted to json
+    # recursively serialize itself to a dict that can be converted to json
     def serialize(self):
         keys = ['status', 'warnings'] + self.keys_to_serialize
-        return {key: cast_type_to_jsonable(getattr(self, key)) for key in keys}
+        return {key: cast_to_jsonable_recursive(getattr(self, key)) for key in keys}

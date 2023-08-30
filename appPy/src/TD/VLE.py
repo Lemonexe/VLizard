@@ -18,7 +18,7 @@ class VLE(Result):
         dataset_name (str): name of dataset
         """
         super().__init__()
-        self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'x_2', 'y_2', 'ps_1', 'ps_2', 'gamma_1', 'gamma_2']
+        self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'x_2', 'y_2', 'gamma_1', 'gamma_2']
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_name = dataset_name

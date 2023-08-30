@@ -10,14 +10,14 @@ from src.utils.errors import AppException
 from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
 from src.utils.io.echo import echo, underline_echo
-from .Tabulate import Tabulate
+from .VLE_Tabulation import VLE_Tabulation
 
 default_model = NRTL_model.name
 supported_models = [NRTL_model, NRTL10_model, van_Laar_model, margules_model]
 supported_model_names = [model.name for model in supported_models]
 
 # squash a selected VLE property from list of VLEs into a single array
-squash = lambda vles, prop: np.concatenate([getattr(vle, prop) for vle in vles])
+squash = lambda vle_list, prop: np.concatenate([getattr(vle, prop) for vle in vle_list])
 
 
 class Fit(Result):
@@ -34,7 +34,7 @@ class Fit(Result):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__()
-        self.keys_to_serialize = ['result_params', 'sumsq_resid_final', 'sumsq_resid_init']
+        self.keys_to_serialize = ['result_params', 'sumsq_resid_final', 'sumsq_resid_init', 'tabulated_datasets']
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
@@ -112,7 +112,7 @@ class Fit(Result):
 
     def tabulate(self):
         """Tabulate model using result_params for each dataset."""
-        self.tabulated_datasets = [Tabulate(vle, self.model, self.result_params) for vle in self.dataset_VLEs]
+        self.tabulated_datasets = [VLE_Tabulation(self.model, self.result_params, vle) for vle in self.dataset_VLEs]
 
     def report(self):
         underline_echo(self.get_title())

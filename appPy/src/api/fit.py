@@ -19,7 +19,7 @@ def fit_VLE_api():
     }
     params = unpack_request_schema(request, param_schema)
     fit = Fit(*params.values())
-    # fit.tabulate()
+    fit.tabulate()
     payload = fit.serialize()
     persist_VLE_analysis('fit', params['compound1'], params['compound2'], payload)
     return payload

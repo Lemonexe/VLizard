@@ -19,8 +19,8 @@ def matrix2tsv(M, headlines=None, format_spec=None):
     Prettyprint 2D matrix to tsv format, optionally with headlines.
 
     arr (list of lists or np.array(m,n)): data matrix to be printed
-    headlines (list of str or None): list of headlines for each column
-    format_spec (str or None): format specification for each numerical cell, e.g. '.2f' for two decimal places
+    headlines (optional list of str): list of headlines for each column
+    format_spec (optional str): format specification for each numerical cell, e.g. '.2f' for two decimal places
     return (str): tsv formatted string
     """
     # validate that it is castable as matrix
