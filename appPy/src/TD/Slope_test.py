@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.io.echo import echo, underline_echo
 from src.utils.vector import serialize_cols
-from src.utils.io.tsv import array2tsv
+from src.utils.io.tsv import matrix2tsv
 from src.utils.math.diff_noneq import diffs_noneq_3
 from .VLE import VLE
 
@@ -38,9 +38,9 @@ class Slope_test(VLE):
         self.report_warnings()
 
         # pretty-print a table of following vectors
-        headlines = ['  x1', 'dln γ1', 'dln γ2', 'residual']
+        headlines = ['x1', 'dln γ1', 'dln γ2', 'residual']
         table = serialize_cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_res)
-        echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        echo(matrix2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
 
         avgR = np.mean(abs(self.P2P_res))  # summary characteristic
         echo(f'\nMean abs residual = {avgR:.3f}')

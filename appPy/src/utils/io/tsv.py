@@ -4,7 +4,7 @@ import numpy as np
 
 def open_tsv(file_path):
     """
-    Open a path with .tsv file and return it as list of lists, filter out empty rows.
+    Open a path with .tsv file and return it as list of lists, while filtering out empty rows.
 
     file_path (str): exact path to tsv file
     return (list of lists): tsv file content as list of rows, each row is a list of cells for each column
@@ -14,36 +14,35 @@ def open_tsv(file_path):
         return [row for row in reader if len(row) > 0]
 
 
-def array2tsv(arr, headlines=None, format_spec=None):
+def matrix2tsv(M, headlines=None, format_spec=None):
     """
-    Prettyprint numpy array to tsv format.
+    Prettyprint 2D matrix to tsv format, optionally with headlines.
 
-    arr (numpy array): array to be printed
-    headlines (list of str): list of headlines for each column
-    format_spec (str): format specification for each numerical cell, e.g. '.2f' for two decimal places
+    arr (list of lists or np.array(m,n)): data matrix to be printed
+    headlines (list of str or None): list of headlines for each column
+    format_spec (str or None): format specification for each numerical cell, e.g. '.2f' for two decimal places
     return (str): tsv formatted string
     """
-    arr = np.array(arr)
-    if arr.ndim != 2: raise TypeError('arr must be a numpy array of two dimensions')
+    # validate that it is castable as matrix
+    M = np.array(M)
+    if M.ndim != 2 or M.shape[0] == 0 or M.shape[1] == 0:
+        raise ValueError('arr must have two dimensions, both non-empty')
+    n_cols = M.shape[1]
 
     lines = []
 
     if headlines:
-        if len(headlines) != arr.shape[1]: raise ValueError('headlines has to be of same length as arr columns')
-        headline = '\t'.join(map(str, headlines))
-        lines.append(headline)
+        if len(headlines) != n_cols: raise ValueError('headlines has to be of same length as arr columns')
+        lines.append('\t'.join(map(str, headlines)))
 
-    formatter = str if not format_spec else format_spec.format  # lambda to map each numerical cell into a string
-    for i in range(arr.shape[0]):
-        row = arr[i, :]
-        line = '\t'.join(map(formatter, row))
-        lines.append(line)
+    formatter = format_spec.format if format_spec else str  # lambda to map each numerical cell into a string
+    lines.extend(['\t'.join(map(formatter, row)) for row in M])
 
     return '\n'.join(lines)
 
 
-def save_array2tsv(arr, filepath, headlines=None, format_spec=None):
-    """Save numpy array to exact filepath."""
-    content = array2tsv(arr, headlines, format_spec)
-    with open(filepath, mode='w', encoding='utf-8') as new_tsv_file:
+def save_matrix2tsv(arr, file_path, headlines=None, format_spec=None):
+    """Save 2D matrix to tsv at exact file path."""
+    content = matrix2tsv(arr, headlines, format_spec)
+    with open(file_path, mode='w', encoding='utf-8') as new_tsv_file:
         print(content, file=new_tsv_file)

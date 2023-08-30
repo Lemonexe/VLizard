@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from src.utils.io.echo import echo, underline_echo
 from src.utils.vector import serialize_cols
-from src.utils.io.tsv import array2tsv
+from src.utils.io.tsv import matrix2tsv
 from src.utils.Result import Result
 from src.utils.datasets import get_dataset_VLE_data
 from .Vapor import Vapor
@@ -48,9 +48,9 @@ class VLE(Result):
         self.report_warnings()
 
         # pretty-print a table of following vectors
-        headlines = ['  x1', 'γ1', 'γ2']
+        headlines = ['x1', 'γ1', 'γ2']
         table = serialize_cols(self.x_1, self.gamma_1, self.gamma_2)
-        echo(array2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
+        echo(matrix2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
         echo('')
 
     def get_title(self):
