@@ -7,6 +7,9 @@ It uses Electron runtime, Vite bundler, React framework, and MUI material librar
 **Local dev** is done using Electron with Vite dev server and python backend server,  
 while **build process** is done using Electron Forge to create an all-inclusive Electron app ~~where python backend runs silently~~.
 
+Cool custom icon ([file here](../appUI/public/icon.png)) generated using [Stable Diffusion](https://stablediffusionweb.com/) and [Pixel It](https://giventofly.github.io/pixelit/).
+Thanks to the authors!
+
 ### Setup
 ⚠ Execute in `appUI` folder!
 
