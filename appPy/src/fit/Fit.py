@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
 from src.TD.VLE_models.NRTL import NRTL_model, NRTL10_model
 from src.TD.VLE_models.van_Laar import van_Laar_model
@@ -131,29 +130,3 @@ class Fit(Result):
 
     def get_title(self):
         return f'Regression of {self.model.display_name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'
-
-    def plot_xy_model(self):
-        for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
-            vle.plot_xy(silent=True)
-            plt.plot(tab.x_1, tab.y_1, '-k', label=self.model.display_name)
-            plt.legend()
-            plt.ion()
-            plt.show()
-
-    def plot_Txy_model(self):
-        for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
-            vle.plot_Txy(silent=True)
-            plt.plot(tab.y_1, tab.T, '-r', label=f'dew {self.model.display_name}')
-            plt.plot(tab.x_1, tab.T, '-b', label=f'boil {self.model.display_name}')
-            plt.legend()
-            plt.ion()
-            plt.show()
-
-    def plot_gamma_model(self):
-        for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
-            vle.plot_gamma(silent=True)
-            plt.plot(tab.x_1, tab.gamma_1, '-r', label=f'$\\gamma_1$ {self.model.display_name}')
-            plt.plot(tab.x_1, tab.gamma_2, '-b', label=f'$\\gamma_2$ {self.model.display_name}')
-            plt.legend()
-            plt.ion()
-            plt.show()

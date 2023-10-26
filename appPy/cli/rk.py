@@ -6,7 +6,7 @@ import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
-from src.TD.Redlich_Kister_test import Redlich_Kister_test
+from src.plot.Redlich_Kister_plot import Redlich_Kister_plot
 
 
 @click.command()
@@ -18,7 +18,7 @@ def cli_rk(compound1, compound2, dataset, plot):
     """Perform Redlich-Kister test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        rk_test = Redlich_Kister_test(compound1, compound2, dataset)
+        rk_test = Redlich_Kister_plot(compound1, compound2, dataset)
         rk_test.report()
 
         if plot: rk_test.plot()

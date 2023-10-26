@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.optimize import root
-from matplotlib import pyplot as plt
 from src.config import atm, C2K, T_bounds_rel_tol, T_boil_tol, x_points_smooth_plot
 from src.utils.io.echo import echo, underline_echo
 from src.utils.compounds import get_vapor_model_params
@@ -81,12 +80,3 @@ class Vapor(Result):
         echo(f'ps_max = {self.ps_fun(T_max):.3g} kPa')
         if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-C2K):.1f}°C')
         echo('')
-
-    def plot(self):
-        plt.figure()
-        plt.plot(self.T_tab - C2K, self.p_tab, '-k')
-        plt.title(self.get_title())
-        plt.xlabel('T [°C]')
-        plt.ylabel('p [kPa]')
-        plt.ion()
-        plt.show()

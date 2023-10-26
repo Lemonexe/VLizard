@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import x_points_smooth_plot, rk_D_criterion
 from .Area import Area
@@ -41,15 +40,3 @@ class Redlich_Kister_test(Area):
         echo(f'\ta-b = {self.curve_dif:.4f}')
         echo(f'\ta+b = {self.curve_sum:.4f}')
         echo('')
-
-    def plot(self):
-        plt.figure()
-        plt.plot(self.x_1, self.curve, 'Dk')
-        plt.plot(self.x_tab, self.curve_tab, '-k')
-        plt.axhline(y=0, color='k', linestyle=':')
-        plt.title(self.get_title())
-        plt.xlim(0, 1)
-        plt.xlabel('$x_1$')
-        plt.ylabel('ln $\\gamma_1/\\gamma_2$')
-        plt.ion()
-        plt.show()

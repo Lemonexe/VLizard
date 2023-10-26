@@ -7,7 +7,7 @@ from src.config import default_legendre_order
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
-from src.TD.Fredenslund_test import Fredenslund_test
+from src.plot.Fredenslund_plot import Fredenslund_plot
 
 
 @click.command()
@@ -21,7 +21,7 @@ def cli_fredenslund(compound1, compound2, dataset, legendre, ge, res):
     """Perform Fredenslund test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        fredenslund_test = Fredenslund_test(compound1, compound2, dataset, legendre)
+        fredenslund_test = Fredenslund_plot(compound1, compound2, dataset, legendre)
         fredenslund_test.report()
 
         if ge: fredenslund_test.plot_g_E()

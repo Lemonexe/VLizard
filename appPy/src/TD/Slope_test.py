@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from src.utils.io.echo import echo, underline_echo
 from src.utils.vector import serialize_cols
 from src.utils.io.tsv import matrix2tsv
@@ -45,17 +44,3 @@ class Slope_test(VLE):
         avgR = np.mean(abs(self.P2P_res))  # summary characteristic
         echo(f'\nMean abs residual = {avgR:.3f}')
         echo('')
-
-    def plot(self):
-        plt.figure()
-        plt.plot(self.x_1, self.d_ln_gamma_1, '^r', label='$d$ln$\\gamma_1$')
-        plt.plot(self.x_1, self.d_ln_gamma_2, 'vb', label='$d$ln$\\gamma_2$')
-        plt.plot(self.x_1, self.P2P_res, 'Dk', label='residual')
-        plt.axhline(y=0, color='k', linestyle=':')
-        plt.title(self.get_title())
-        plt.xlim(0, 1)
-        plt.xlabel('$x_1$')
-        plt.ylabel('$d$ln$\\gamma$')
-        plt.legend()
-        plt.ion()
-        plt.show()

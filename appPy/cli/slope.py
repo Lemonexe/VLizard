@@ -6,7 +6,7 @@ import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
-from src.TD.Slope_test import Slope_test
+from src.plot.Slope_plot import Slope_plot
 
 
 @click.command()
@@ -18,7 +18,7 @@ def cli_slope(compound1, compound2, dataset, plot):
     """Perform slope test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        slope_test = Slope_test(compound1, compound2, dataset)
+        slope_test = Slope_plot(compound1, compound2, dataset)
         slope_test.report()
 
         if plot: slope_test.plot()

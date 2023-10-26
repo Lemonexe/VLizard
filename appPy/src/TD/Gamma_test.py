@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from scipy.optimize import least_squares
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import x_points_smooth_plot, gamma_abs_tol
@@ -60,11 +59,3 @@ class Gamma_test(VLE):
         if self.is_consistent:
             ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {(gamma_abs_tol*100)} %)')
         echo('')
-
-    def plot_gamma_model(self):
-        self.plot_gamma(silent=True)
-        plt.plot(self.x_tab, self.gamma_tab_1, '-r', label='$\\gamma_1$ spline')
-        plt.plot(self.x_tab, self.gamma_tab_2, '-b', label='$\\gamma_2$ spline')
-        plt.legend()
-        plt.ion()
-        plt.show()

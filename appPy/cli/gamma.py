@@ -6,7 +6,7 @@ import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
-from src.TD.Gamma_test import Gamma_test
+from src.plot.Gamma_plot import Gamma_plot
 
 
 @click.command()
@@ -18,7 +18,7 @@ def cli_gamma(compound1, compound2, dataset, plot):
     """Perform simple Gamma test for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        gamma_test = Gamma_test(compound1, compound2, dataset)
+        gamma_test = Gamma_plot(compound1, compound2, dataset)
         gamma_test.report()
 
         if plot: gamma_test.plot_gamma_model()

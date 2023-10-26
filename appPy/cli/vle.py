@@ -6,7 +6,7 @@ import click
 from src.utils.errors import CLI_error_boundary
 from src.utils.datasets import do_datasets
 from src.utils.io.plot import pause_to_keep_charts
-from src.TD.VLE import VLE
+from src.plot.VLE_plot import VLE_plot
 
 
 @click.command()
@@ -20,7 +20,7 @@ def cli_vle(compound1, compound2, dataset, xy, txy, gamma):
     """Analyze VLE data for two compound codes."""
 
     def do_for_dataset(compound1, compound2, dataset):
-        vle = VLE(compound1, compound2, dataset)
+        vle = VLE_plot(compound1, compound2, dataset)
         vle.report()
 
         if xy: vle.plot_xy()
