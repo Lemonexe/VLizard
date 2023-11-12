@@ -1,12 +1,14 @@
 ## Python backend
 
-Or `appPy` for short, is a python application which does the heavy lifting.
-All algorithms for thermodynamic consistency tests and fitting models are implemented here.
+Or `appPy` for short, is a python application which does the heavy lifting –
+all algorithms for thermodynamic consistency tests, non-linear regression and the fitting models are implemented here.
 
-I/O is provided either via CLI (local development) or Flask server (for Electron app).
+I/O is provided either via **Flask server** (for Electron app) or **CLI** (local development, may be outdated).
 
 ~~It is packed together with the Electron app, running silently.~~
 ~~See [Typescript frontend](appUI.md) for build process.~~
+
+Uses `pipenv` for dependency management, see [Pipfile](../appPy/Pipfile) _(also specifies python version)_.
 
 ### Setup
 ⚠ Execute in `appPy` folder!

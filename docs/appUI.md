@@ -10,6 +10,8 @@ while **build process** is done using Electron Forge to create an all-inclusive 
 Cool custom icon ([file here](../appUI/public/icon.png)) generated using [Stable Diffusion](https://stablediffusionweb.com/) and [Pixel It](https://giventofly.github.io/pixelit/).
 Thanks to the authors!
 
+Uses `npm` for dependency management, see [package.json](../appUI/package.json).
+
 ### Setup
 ⚠ Execute in `appUI` folder!
 
@@ -21,7 +23,11 @@ npm i
 ```
 
 ### Local run
-todo
+Electron dev app + vite dev server: `npm run dev`
+
+### Build
+**TODO** Build Electron app: `npm run build`
 
 ### Development
-todo
+Run eslint: `npm run lint`  
+Run prettier: `npm run prettier`
