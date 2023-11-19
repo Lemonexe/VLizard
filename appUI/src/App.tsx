@@ -1,23 +1,34 @@
-import { useState } from 'react';
-import { Box, Button, ThemeProvider } from '@mui/material';
+import { FC, PropsWithChildren } from 'react';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { DefaultLayout } from './components/DefaultLayout.tsx';
+import { Home } from './pages/Home.tsx';
+import { Data } from './pages/Data.tsx';
+import { Analysis } from './pages/Analysis.tsx';
+import { Fitting } from './pages/Fitting.tsx';
+import { Settings } from './pages/Settings.tsx';
+import { About } from './pages/About.tsx';
 
-// empty MUI theme object
-const theme = {};
+const MUITheme = createTheme({});
 
-function App() {
-    const [count, setCount] = useState(0);
+const AppProviders: FC<PropsWithChildren> = ({ children }) => (
+    <ThemeProvider theme={MUITheme}>
+        <DefaultLayout>{children}</DefaultLayout>
+    </ThemeProvider>
+);
 
-    return (
-        <ThemeProvider theme={theme}>
-            Henlo vlizerd!
-            <Box>
-                <Button variant="contained" color="primary" onClick={() => setCount((prev) => prev + 1)}>
-                    Click me
-                </Button>
-                <Box sx={{ m: 1 }}>{count}</Box>
-            </Box>
-        </ThemeProvider>
-    );
-}
-
-export default App;
+export const App: FC = () => (
+    <AppProviders>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="data" element={<Data />} />
+                <Route path="analysis" element={<Analysis />} />
+                <Route path="fitting" element={<Fitting />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="about" element={<About />} />
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </Router>
+    </AppProviders>
+);
