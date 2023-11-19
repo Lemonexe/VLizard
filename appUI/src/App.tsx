@@ -9,7 +9,14 @@ import { Fitting } from './pages/Fitting.tsx';
 import { Settings } from './pages/Settings.tsx';
 import { About } from './pages/About.tsx';
 
-const MUITheme = createTheme({});
+const MUITheme = createTheme({
+    typography: {
+        fontFamily: ['Open Sans', 'sans-serif'].join(','),
+        h1: { fontSize: '2rem', fontWeight: 700 },
+        h2: { fontSize: '1.5rem', fontWeight: 700 },
+        h3: { fontSize: '1.25rem', fontWeight: 700 },
+    },
+});
 
 const AppProviders: FC<PropsWithChildren> = ({ children }) => (
     <ThemeProvider theme={MUITheme}>

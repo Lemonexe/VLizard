@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import path from 'node:path';
 
 // The built directory structure
@@ -17,6 +17,11 @@ let win: BrowserWindow | null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 
+// Parse the URL to extract the protocol and hostname
+function getRootUrl(fullUrl: string) {
+    const { protocol, hostname } = new URL(fullUrl);
+    return `${protocol}//${hostname}`;
+}
 function createWindow() {
     win = new BrowserWindow({
         icon: path.join(process.env.PUBLIC, 'icon.png'),
@@ -28,6 +33,16 @@ function createWindow() {
     // Test active push message to Renderer-process.
     win.webContents.on('did-finish-load', () => {
         win?.webContents.send('main-process-message', new Date().toLocaleString());
+    });
+
+    // Open external link using the default browser instead of the Electron browser.
+    win.webContents.on('will-navigate', (event, url) => {
+        if (!win) return;
+        const rootUrl = getRootUrl(win.webContents.getURL());
+        if (!url.includes(rootUrl)) {
+            event.preventDefault();
+            shell.openExternal(url);
+        }
     });
 
     if (VITE_DEV_SERVER_URL) {

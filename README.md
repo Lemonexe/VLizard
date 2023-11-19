@@ -1,7 +1,7 @@
 # VLizard
 **a VLE wizard** 🧙‍♂️⚗🦎
 
-A useful toolbox for evaluation of VLE data (vapor-liquid equilibrium), which comprises tests of thermodynamic consistency & fitting models with non-linear regression.
+A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibrium) data, which comprises tests of thermodynamic consistency & model fitting using non-linear regression.
 
 The project is a monorepo consisting of:
 - [Python Core+Backend+CLI](docs/appPy.md)

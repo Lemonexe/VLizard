@@ -6,5 +6,6 @@ body {
 
 @font-face {
   font-family: 'Open Sans';
-  src: url(../public/OpenSans-Regular.ttf) format('truetype');
+  /* The URL is correct, files in public/ are accessible at root */
+  src: url(/OpenSans-Regular.ttf) format('truetype');
 }
