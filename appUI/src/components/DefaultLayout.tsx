@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import { AppBar, Box, Button, Container, IconButton, Toolbar, Tooltip } from '@mui/material';
-import { Home, Settings, HelpOutline } from '@mui/icons-material';
+import { HelpOutline, Home, Settings } from '@mui/icons-material';
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => (
     <>

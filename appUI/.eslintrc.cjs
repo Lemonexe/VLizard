@@ -5,7 +5,7 @@ module.exports = {
     parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
     plugins: ['react-refresh', 'react-hooks'],
     rules: {
-        'react-refresh/only-export-components': 'warn',
+        'react-refresh/only-export-components': 'off',
         '@typescript-eslint/no-use-before-define': 'error',
         '@typescript-eslint/no-shadow': 'error',
         'import/prefer-default-export': 'off',
