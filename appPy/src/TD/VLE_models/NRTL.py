@@ -1,5 +1,5 @@
 import numpy as np
-from src.config import C2K
+from src.config import cfg
 from .VLE_Model import VLE_Model
 
 
@@ -16,7 +16,7 @@ def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
     return (np.array): activity coefficients as [gamma_1, gamma_2]
     """
     x_2 = 1 - x_1
-    t = T - C2K  # [°C]
+    t = T - cfg.C2K  # [°C]
     ln_T = np.log(T)
 
     tau_12 = a_12 + b_12/T + e_12*ln_T + f_12*T

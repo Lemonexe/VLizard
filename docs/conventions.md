@@ -23,5 +23,6 @@ If those two correspond to more volatile and less volatile (as in case of VLE), 
 
 ### Files
 
-Input data is usually tabular, so it is in human-readable `.tsv`.  
-Output or intermediate data is condensed, so it is in `.json` _(it's easier to process)_
+- Tabular input data is in `.tsv` _(human or Excel readable)_.    
+- Config is in `.yaml` _(human readable)_.
+- Output or intermediate data is in `.json` _(meant as machine-only)_.

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import UnivariateSpline
-from src.config import rk_quad_rel_tol
+from src.config import cfg
 from .VLE import VLE
 
 
@@ -31,7 +31,7 @@ class Area(VLE):
 
         # warn if scipy declares a large integration error
         rel_err_max = max(abs(err_dif / self.curve_dif), abs(err_sum / self.curve_sum))
-        if rel_err_max > rk_quad_rel_tol:
+        if rel_err_max > cfg.rk_quad_rel_tol:
             self.warn(
-                f'relative error of numerical integration is {rel_err_max:.1e}, limit is {rk_quad_rel_tol:.0e}. Calculation is to be considered unreliable.'
+                f'relative error of numerical integration is {rel_err_max:.1e}, limit is {cfg.rk_quad_rel_tol:.0e}. Calculation is to be considered unreliable.'
             )

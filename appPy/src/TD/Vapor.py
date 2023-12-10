@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import root
-from src.config import atm, C2K, T_bounds_rel_tol, T_boil_tol, x_points_smooth_plot
+from src.config import cfg
 from src.utils.io.echo import echo, underline_echo
 from src.utils.compounds import get_vapor_model_params
 from src.utils.Result import Result
@@ -40,11 +40,11 @@ class Vapor(Result):
         self.ps_fun = lambda T: self.model.fun(T, *self.params)  # p [kPa] = f(T [K])
 
         # try to find normal boiling point
-        resid = lambda T: self.ps_fun(T) - atm
-        sol = root(fun=resid, x0=400, tol=T_boil_tol)  # 400 K as initial estimate
+        resid = lambda T: self.ps_fun(T) - cfg.atm
+        sol = root(fun=resid, x0=400, tol=cfg.T_boil_tol)  # 400 K as initial estimate
         self.T_boil = sol.x[0] if sol.success else None
 
-        self.T_tab = np.linspace(self.T_min, self.T_max, x_points_smooth_plot)
+        self.T_tab = np.linspace(self.T_min, self.T_max, cfg.x_points_smooth_plot)
         self.p_tab = self.ps_fun(self.T_tab)
 
     def check_T_bounds(self, T_min_query, T_max_query=None):
@@ -59,9 +59,9 @@ class Vapor(Result):
         T_int = self.T_max - self.T_min
         template = lambda extrem, T_query, T_data: f'Temperature extrapolation of vapor pressure for {self.compound}: queried T = {T_query:.1f} K, while T_{extrem} = {T_data:.1f} K'
 
-        if T_min_query < self.T_min - T_bounds_rel_tol*T_int:
+        if T_min_query < self.T_min - cfg.T_bounds_rel_tol * T_int:
             self.warn(template(extrem='min', T_query=T_min_query, T_data=self.T_min))
-        if T_max_query > self.T_max + T_bounds_rel_tol*T_int:
+        if T_max_query > self.T_max + cfg.T_bounds_rel_tol * T_int:
             self.warn(template(extrem='max', T_query=T_max_query, T_data=self.T_max))
 
     def get_title(self):
@@ -73,10 +73,10 @@ class Vapor(Result):
 
         T_min, T_max = self.T_min, self.T_max
         echo(f'Vapor pressure function: {self.model.name}')
-        echo(f'T_min = {(T_min-C2K):5.1f}°C')
-        echo(f'T_max = {(T_max-C2K):5.1f}°C')
+        echo(f'T_min = {(T_min-cfg.C2K):5.1f}°C')
+        echo(f'T_max = {(T_max-cfg.C2K):5.1f}°C')
 
         echo(f'ps_min = {self.ps_fun(T_min):.3g} kPa')
         echo(f'ps_max = {self.ps_fun(T_max):.3g} kPa')
-        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-C2K):.1f}°C')
+        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-cfg.C2K):.1f}°C')
         echo('')

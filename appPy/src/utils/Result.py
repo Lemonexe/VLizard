@@ -1,5 +1,5 @@
 from .io.echo import echo, warn_echo
-from .io.json import cast_to_jsonable
+from .io.yaml import cast_to_jsonable
 
 
 def cast_to_jsonable_recursive(value):

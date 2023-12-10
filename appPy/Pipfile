@@ -8,6 +8,7 @@ numpy = "*"
 scipy = "*"
 click = "*"
 flask = "*"
+pyyaml = "*"
 
 [dev-packages]
 yapf = "*"

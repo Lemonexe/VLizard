@@ -3,7 +3,7 @@ from scipy.optimize import curve_fit
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
-from src.config import x_points_smooth_plot, fredenslund_criterion, default_legendre_order
+from src.config import cfg
 from .VLE import VLE
 
 
@@ -25,7 +25,7 @@ class Fredenslund_test(VLE):
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
-        if legendre_order is None: legendre_order = default_legendre_order
+        if legendre_order is None: legendre_order = cfg.default_legendre_order
         elif legendre_order not in [3, 4, 5]:
             raise AppException(f'Legendre polynomial must be of order 3, 4, 5, got {legendre_order}')
         self.legendre_order = legendre_order
@@ -78,12 +78,12 @@ class Fredenslund_test(VLE):
         self.y_1_res_avg = np.mean(abs(self.y_1_res)) * 100
         self.y_2_res_avg = np.mean(abs(self.y_2_res)) * 100
 
-        conditions = np.array([self.p_res_avg, self.y_1_res_avg, self.y_2_res_avg]) <= fredenslund_criterion
+        conditions = np.array([self.p_res_avg, self.y_1_res_avg, self.y_2_res_avg]) <= cfg.fredenslund_criterion
         self.is_consistent = conditions.all()
-        self.criterion = fredenslund_criterion
+        self.criterion = cfg.fredenslund_criterion
 
         # tabulate
-        self.x_tab = np.linspace(0, 1, x_points_smooth_plot)
+        self.x_tab = np.linspace(0, 1, cfg.x_points_smooth_plot)
         self.g_E_tab = self.g_E_fun(self.x_tab, *self.g_E_fun_params)
 
     def get_title(self):

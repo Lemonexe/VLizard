@@ -1,6 +1,6 @@
 import numpy as np
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
-from src.config import herington_DJ_criterion
+from src.config import cfg
 from .Area import Area
 
 
@@ -24,8 +24,8 @@ class Herington_test(Area):
         self.D = self.curve_dif / self.curve_sum * 100
         self.J = 150 * (T_max-T_min) / T_min
         self.DJ = abs(self.D - self.J)
-        self.is_consistent = self.DJ <= herington_DJ_criterion
-        self.criterion = herington_DJ_criterion
+        self.is_consistent = self.DJ <= cfg.herington_DJ_criterion
+        self.criterion = cfg.herington_DJ_criterion
 
     def get_title(self):
         return f'Herington test for {super().get_title()}'

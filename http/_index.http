@@ -1,4 +1,5 @@
 ###
+# @no-log
 GET http://127.0.0.1:4663/is_it_up
 Accept: application/json
 
