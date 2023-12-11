@@ -48,3 +48,13 @@ def get_vapor_model_params(compound, model):
         raise AppException(msg)
 
     return T_min, T_max, params
+
+
+def get_compound_names():
+    """Return list of all compound names for which vapor pressure parameters are available."""
+    compound_names = set()
+    for model in supported_models:
+        table_path = os.path.join('data', 'ps', model.name + '.tsv')
+        table = open_tsv(table_path)
+        compound_names.update([row[0] for row in table[1:]])  # skip header row
+    return list(compound_names)

@@ -8,6 +8,7 @@ from src.config import cfg
 from src.utils.errors import AppException
 from src.api.td_test import td_test_blueprint
 from src.api.fit import fit_blueprint
+from src.api.vapor import vapor_blueprint
 
 app = Flask(__name__)
 
@@ -33,6 +34,7 @@ def handle_app_exception(err):
 # register modules and run the app
 app.register_blueprint(td_test_blueprint)
 app.register_blueprint(fit_blueprint)
+app.register_blueprint(vapor_blueprint)
 
 if __name__ == '__main__':
     is_debug_mode = 'debug' in sys.argv
