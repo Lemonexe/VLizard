@@ -1,6 +1,24 @@
 import os
 from .errors import AppException
 from .io.tsv import open_tsv
+from src.TD.vapor_models.wagner import wagner_model
+from src.TD.vapor_models.antoine import antoine_model
+
+# supported models in order of preference, descending
+supported_models = [wagner_model, antoine_model]
+
+
+def get_preferred_vapor_model(compound):
+    """
+    For the given compound, find preferred model of vapor pressure.
+
+    compound (str): compound name
+    return (tuple): Vapor_Model, T_min [K], T_max [K], *params
+    """
+    for model in supported_models:
+        results = get_vapor_model_params(compound, model)
+        if results: return model, *results
+    raise AppException(f'No vapor pressure model found for {compound}!')
 
 
 def get_vapor_model_params(compound, model):

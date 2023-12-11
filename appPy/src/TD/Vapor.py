@@ -2,27 +2,8 @@ import numpy as np
 from scipy.optimize import root
 from src.config import cfg
 from src.utils.io.echo import echo, underline_echo
-from src.utils.compounds import get_vapor_model_params
+from src.utils.compounds import get_preferred_vapor_model
 from src.utils.Result import Result
-from src.utils.errors import AppException
-from src.TD.vapor_models.wagner import wagner_model
-from src.TD.vapor_models.antoine import antoine_model
-
-# supported models in order of preference, descending
-supported_models = [wagner_model, antoine_model]
-
-
-def choose_vapor_model_params(compound):
-    """
-    Choose model of vapor pressure.
-
-    compound (str): compound name
-    return (tuple): Vapor_Model, T_min [K], T_max [K], *params
-    """
-    for model in supported_models:
-        results = get_vapor_model_params(compound, model)
-        if results: return model, *results
-    raise AppException(f'No vapor pressure model found for {compound}!')
 
 
 class Vapor(Result):
@@ -36,16 +17,28 @@ class Vapor(Result):
         super().__init__()
         self.compound = compound
 
-        self.model, self.T_min, self.T_max, self.params = choose_vapor_model_params(compound)
+        self.model, self.T_min, self.T_max, self.params = get_preferred_vapor_model(compound)
         self.ps_fun = lambda T: self.model.fun(T, *self.params)  # p [kPa] = f(T [K])
 
-        # try to find normal boiling point
-        resid = lambda T: self.ps_fun(T) - cfg.atm
-        sol = root(fun=resid, x0=400, tol=cfg.T_boil_tol)  # 400 K as initial estimate
-        self.T_boil = sol.x[0] if sol.success else None
+        self.T_boil = self.get_T_boil()
 
         self.T_tab = np.linspace(self.T_min, self.T_max, cfg.x_points_smooth_plot)
         self.p_tab = self.ps_fun(self.T_tab)
+
+    def get_T_boil(self):
+        """Numerically calculate normal boiling point from vapor pressure function. """
+        resid = lambda T: self.ps_fun(T) - cfg.atm
+        T_boil_init = self.est_T_boil()
+        sol = root(fun=resid, x0=T_boil_init, tol=cfg.T_boil_tol)
+        return sol.x[0] if sol.success else None
+
+    def est_T_boil(self):
+        """Estimate normal boiling point from vapor pressure function using T = a * p**n. """
+        T1, T2 = self.T_min, self.T_max
+        p1, p2 = self.ps_fun(T1), self.ps_fun(T2)
+        n = np.log(T1 / T2) / np.log(p1 / p2)
+        a = np.exp(np.log(T1) - n * np.log(p1))
+        return a * cfg.atm**n
 
     def check_T_bounds(self, T_min_query, T_max_query=None):
         """
