@@ -60,6 +60,16 @@ def get_compound_names():
     return list(compound_names)
 
 
+def get_model_and_table(model_name):
+    try:
+        model = next(model for model in supported_models if model.name == model_name)
+    except StopIteration as exc:
+        raise AppException(f'Unknown model {model_name}!') from exc
+    table_path = os.path.join('data', 'ps', model_name + '.tsv')
+    table = open_tsv(table_path)
+    return model, table_path, table
+
+
 def amend_model_table(model_name, compound, T_min, T_max, params):
     """
     Add new row to model table, or update existing row.
@@ -70,32 +80,34 @@ def amend_model_table(model_name, compound, T_min, T_max, params):
     T_max (float): upper temperature bound [K]
     params (list of float): model parameters
     """
+    model, table_path, table = get_model_and_table(model_name)
 
     # validate params
-    try:
-        model = next(model for model in supported_models if model.name == model_name)
-    except StopIteration as exc:
-        raise AppException(f'Unknown model {model_name}!') from exc
     if len(params) != model.n_params:
         raise AppException(f'Expected {model.n_params} parameters for {model_name}, got {len(params)}!')
-
-    # open table
-    table_path = os.path.join('data', 'ps', model_name + '.tsv')
-    table = open_tsv(table_path)
 
     # find all rows for given compound case-insensitive
     matched_rows = [row for row in table if row[0].lower() == compound.lower()]
 
     if len(matched_rows) == 0:
-        # add new row
         new_row = [compound, T_min, T_max, *params]
         table.append(new_row)
     elif len(matched_rows) == 1:
-        # update existing row
         matched_row = matched_rows[0]
         matched_row[1:] = [T_min, T_max, *params]
     else:
         raise AppException(f'Multiple {model_name} parameter sets for compound {compound}, only one is permissible!')
 
-    # save table
+    save_matrix2tsv(table, table_path)
+
+
+def delete_compound(model_name, compound):
+    """
+    Delete row from model table.
+
+    model_name (str): name of model
+    compound (str): compound name
+    """
+    _model, table_path, table = get_model_and_table(model_name)
+    table = [row for row in table if row[0].lower() != compound.lower()]
     save_matrix2tsv(table, table_path)

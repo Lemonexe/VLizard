@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from src.TD.Vapor import Vapor
-from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table
+from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound
 from .helpers.schema_validation import unpack_request_schema
 
 vapor_blueprint = Blueprint('Vapor', __name__, url_prefix='/vapor')
@@ -42,4 +42,13 @@ def amend_table_api():
     schema = {'model_name': True, 'compound': True, 'T_min': True, 'T_max': True, 'params': True}
     params = unpack_request_schema(request, schema)
     amend_model_table(*params.values())
+    return "OK"
+
+
+@vapor_blueprint.delete('')
+def delete_compound_api():
+    """Delete compound from vapor pressure model table."""
+    schema = {'model_name': True, 'compound': True}
+    params = unpack_request_schema(request, schema)
+    delete_compound(*params.values())
     return "OK"

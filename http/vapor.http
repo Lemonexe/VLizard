@@ -17,3 +17,10 @@ Content-Type: application/json
 {"model_name": "Antoine", "compound": "WHAT", "T_min": 262, "T_max": 363, "params": [7714, 0.2, 1.234e-7]}
 
 ###
+# @no-log
+DELETE http://localhost:4663/vapor
+Content-Type: application/json
+
+{"model_name": "Antoine", "compound": "WHAT"}
+
+###
