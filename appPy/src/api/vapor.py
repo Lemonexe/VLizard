@@ -7,7 +7,7 @@ vapor_blueprint = Blueprint('Vapor', __name__, url_prefix='/vapor')
 
 
 @vapor_blueprint.get('')
-def get_vapor_models():
+def get_vapor_models_api():
     """Return all compounds with their vapor pressure models."""
 
     def process_preferred_model(compound_name):
