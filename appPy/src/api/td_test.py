@@ -4,7 +4,7 @@ from src.TD.Slope_test import Slope_test
 from src.TD.Redlich_Kister_test import Redlich_Kister_test
 from src.TD.Herington_test import Herington_test
 from src.TD.Fredenslund_test import Fredenslund_test
-from .schema_validation import unpack_request_schema
+from .helpers.schema_validation import unpack_request_schema
 
 td_test_blueprint = Blueprint('TD', __name__, url_prefix='/td_test')
 

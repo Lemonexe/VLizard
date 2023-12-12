@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from src.fit.Fit import Fit
-from .schema_validation import unpack_request_schema
+from .helpers.schema_validation import unpack_request_schema
 
 fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
 
