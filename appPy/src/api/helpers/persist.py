@@ -7,6 +7,7 @@ get_VLE_analysis_dir_path = lambda compound1, compound2: os.path.join(get_system
 get_json_filename = lambda name: f'{name}.json'
 
 
+# currently unused, and analyses are done on demand with no result caching, because the dev work is immense -> deferred
 def persist_VLE_analysis(name, compound1, compound2, payload):
     """
     Persist VLE analysis to json file.
