@@ -18,6 +18,9 @@ def test_matrix2tsv():
     # with headlines
     assert matrix2tsv([[1, 2], [3, 4]], headlines=['x', 'y_n']) == 'x\ty_n\n1\t2\n3\t4'
 
+    # mixed type matrix
+    assert matrix2tsv([['compound', 'T [K]', 'kPa'], ['H2O', 100, True]]) == 'compound\tT [K]\tkPa\nH2O\t100\tTrue'
+
     # format spec with matrix of float
     assert matrix2tsv([[1 / 3, 7.7e7], [8.8e-8, 3.1]], format_spec='{:6.3g}') == ' 0.333\t7.7e+07\n8.8e-08\t   3.1'
 

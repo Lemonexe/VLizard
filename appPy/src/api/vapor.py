@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 from src.TD.Vapor import Vapor
-from src.utils.compounds import get_compound_names, get_preferred_vapor_model
+from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table
 from .helpers.schema_validation import unpack_request_schema
 
 vapor_blueprint = Blueprint('Vapor', __name__, url_prefix='/vapor')
 
 
-@vapor_blueprint.get('/')
+@vapor_blueprint.get('')
 def get_vapor_models():
     """Return all compounds with their vapor pressure models."""
 
@@ -34,3 +34,12 @@ def vapor_analysis_api():
     compound = params['compound']
     payload = Vapor(compound).serialize()
     return payload
+
+
+@vapor_blueprint.put('')
+def amend_table_api():
+    """Amend vapor pressure model table with given data."""
+    schema = {'model_name': True, 'compound': True, 'T_min': True, 'T_max': True, 'params': True}
+    params = unpack_request_schema(request, schema)
+    amend_model_table(*params.values())
+    return "OK"
