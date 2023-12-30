@@ -1,3 +1,8 @@
+###
+GET http://localhost:4663/fit/VLE
+Accept: application/json
+
+###
 
 POST http://localhost:4663/fit/VLE
 Content-Type: application/json
@@ -10,5 +15,12 @@ POST http://localhost:4663/fit/VLE
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "model_name": "NRTL", "datasets":  ["10kPa", "25kPa", "40kPa"], "const_param_names": ["c_12"]}
+
+###
+# @no-log
+DELETE http://localhost:4663/fit/VLE
+Content-Type: application/json
+
+{"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar"}
 
 ###

@@ -6,7 +6,8 @@ import numpy as np
 def cast_to_jsonable(value):
     """Cast value for json serialization."""
     if isinstance(value, np.ndarray): return value.tolist()
-    if isinstance(value, np.bool_): return bool(value)
+    if np.isscalar(value) and hasattr(value, 'item'):
+        return value.item()
     return value
 
 
