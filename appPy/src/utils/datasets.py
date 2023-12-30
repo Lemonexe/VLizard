@@ -2,7 +2,8 @@ import os
 import numpy as np
 from .errors import AppException
 from .systems import validate_system_or_swap, get_system_path
-from .io.tsv import open_tsv
+from .io.tsv import open_tsv, save_matrix2tsv
+from .vector import serialize_cols
 
 
 def get_all_dataset_names(compound1, compound2):
@@ -95,3 +96,33 @@ def get_dataset_VLE_data(compound1, compound2, dataset):
 
     # transpose so that rows correspond to p/kPa, T/K, x1, y1
     return np.array(table, dtype='float64').T
+
+
+def upsert_dataset(compound1, compound2, dataset, p, T, x_1, y_1):
+    """
+    Create or overwrite a dataset of a binary VLE system, create the system if not exists.
+    Assumes system will not be duplicated in given order.
+
+    compound1, compound2 (str): names of compounds in the system
+    dataset (str): name of the dataset
+    p, T, x_1, y_1 (np.array or list): data vectors
+    """
+    system_path = get_system_path(compound1, compound2)
+    if not os.path.exists(system_path):
+        os.makedirs(system_path)
+    table_path = os.path.join(system_path, dataset + '.tsv')
+    table = serialize_cols(p, T, x_1, y_1)
+    save_matrix2tsv(table, table_path, expected_headers)
+
+
+def delete_dataset(compound1, compound2, dataset):
+    """
+    Delete a dataset of a binary VLE system.
+    Assumes valid system in given order.
+
+    compound1, compound2 (str): names of compounds in the system
+    dataset (str): name of the dataset
+    """
+    system_dir_path = get_system_path(compound1, compound2)
+    filename = dataset + '.tsv'
+    os.remove(os.path.join(system_dir_path, filename))

@@ -1,0 +1,29 @@
+###
+GET http://127.0.0.1:4663/vle
+Accept: application/json
+
+###
+POST http://localhost:4663/vle/analysis
+Content-Type: application/json
+
+{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa"}
+
+###
+# @no-log
+POST http://localhost:4663/vle
+Content-Type: application/json
+
+{
+  "compound1": "test1", "compound2": "test2", "dataset": "new",
+  "p": [77, 77.1, 76.95],
+  "T": [366, 355, 347],
+  "x_1": [0.2, 0.44, 0.77],
+  "y_1": [0.61234567890, 0.77, 0.88]
+}
+
+###
+# @no-log
+DELETE http://localhost:4663/vle
+Content-Type: application/json
+
+{"compound1": "test1", "compound2": "test2", "dataset": "new"}
