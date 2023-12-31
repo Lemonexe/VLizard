@@ -1,11 +1,27 @@
+@font-face {
+  font-family: 'Open Sans';
+  /* The URL is correct, files in public/ are accessible at root */
+  src: url(/OpenSans-Regular.ttf) format('truetype');
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
 }
 
-@font-face {
-  font-family: 'Open Sans';
-  /* The URL is correct, files in public/ are accessible at root */
-  src: url(/OpenSans-Regular.ttf) format('truetype');
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
 }
