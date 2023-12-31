@@ -27,6 +27,8 @@ function createWindow() {
         icon: path.join(process.env.PUBLIC, 'icon.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            // Enable all CORS. Better here than BE, which has to be secure against outside calls, but for FE it doesn't matter.
+            webSecurity: false,
         },
     });
 

@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
-import { AppBar, Box, Button, Container, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Box, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
+import { ContentContainer } from './ContentContainer.tsx';
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => (
     <>
@@ -33,8 +34,6 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => (
                 </Tooltip>
             </Toolbar>
         </AppBar>
-        <Container maxWidth="lg" sx={{ py: 2 }}>
-            {children}
-        </Container>
+        <ContentContainer>{children}</ContentContainer>
     </>
 );

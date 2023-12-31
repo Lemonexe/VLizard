@@ -1,5 +1,5 @@
 import { Component, PropsWithChildren } from 'react';
-import { Alert, Typography } from '@mui/material';
+import { ErrorAlert } from './ErrorAlert.tsx';
 
 interface ErrorBoundaryState {
     error: unknown;
@@ -16,16 +16,7 @@ export class ErrorBoundary extends Component<PropsWithChildren, ErrorBoundarySta
     }
 
     render() {
-        if (this.state.error)
-            return (
-                <>
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        Oops! Something went wrong.
-                    </Alert>
-                    <Typography variant="subtitle2">Debug info:</Typography>
-                    <code>{this.state.error.toString()}</code>
-                </>
-            );
+        if (this.state.error) return <ErrorAlert message={this.state.error.toString()} />;
 
         return this.props.children;
     }

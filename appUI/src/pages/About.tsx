@@ -11,7 +11,7 @@ export const About: FC = () => (
             <Button
                 startIcon={<QuestionMark />}
                 href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/manual.md"
-                variant="contained"
+                variant="outlined"
             >
                 User manual
             </Button>
