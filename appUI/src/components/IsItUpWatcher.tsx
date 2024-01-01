@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { useIsItUp } from '../adapters/api/isItUp.ts';
+import { useIsItUp } from '../adapters/api/useIsItUp.ts';
 import { ErrorAlert } from './ErrorAlert.tsx';
 
 export const IsItUpWatcher: FC<PropsWithChildren> = ({ children }) => {

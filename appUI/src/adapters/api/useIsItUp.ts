@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-export const useIsItUp = () => {
-    return useQuery(
+export const useIsItUp = () =>
+    useQuery(
         'isItUp',
         async () => {
             try {
@@ -17,7 +17,5 @@ export const useIsItUp = () => {
         {
             retry: Infinity,
             refetchInterval: 5000,
-            cacheTime: 0,
         },
     );
-};

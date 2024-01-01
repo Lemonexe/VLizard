@@ -7,7 +7,7 @@ import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 import { DefaultLayout } from './components/DefaultLayout.tsx';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ defaultOptions: { queries: { cacheTime: 0 } } });
 
 export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
     <QueryClientProvider client={queryClient}>

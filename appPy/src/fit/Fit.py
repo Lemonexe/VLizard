@@ -40,7 +40,8 @@ class Fit(Result):
         self.model = self.__parse_model(model_name)
         self.params0 = self.__parse_params0(params0)  # initial params
         self.const_param_names = self.__parse_const_param_names(const_param_names)  # param names to be kept constant
-        self.result_params = self.params0  # result of optimization
+        self.params = self.params0  # result of optimization as vector of values
+        self.result_params = self.__set_named_params()  # result of optimization as a dict of named values
         self.tabulated_datasets = None  # T, x_1, y_1, y_2 gamma_1, gamma_2 tabulation of fitted model for each dataset
         self.is_optimized = False  # whether optimization has been performed
 
@@ -55,6 +56,10 @@ class Fit(Result):
         # initial and final objective function values
         self.resid_init = np.sum(np.square(self.get_residual(self.params0)))
         self.resid_final = None
+
+    def __set_named_params(self):
+        """Compose result_params vector into a self-descriptive dict."""
+        return dict(zip(self.model.param_names, self.params))
 
     def __parse_model(self, model_name):
         """Parse model_name and check if it is appropriate for given datasets."""
@@ -105,7 +110,8 @@ class Fit(Result):
         # optimization itself, using built-in Levenberg-Marquardt algorithm
         result = least_squares(callback, picked_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        self.result_params = overlay_vectors(const_params, const_param_idxs, result.x)
+        self.params = overlay_vectors(const_params, const_param_idxs, result.x)
+        self.result_params = self.__set_named_params()
 
         # final objective function value, log optimization as complete
         self.resid_final = np.sum(np.square(result.fun))
@@ -113,7 +119,7 @@ class Fit(Result):
 
     def tabulate(self):
         """Tabulate model using result_params for each dataset."""
-        self.tabulated_datasets = [VLE_Tabulation(self.model, self.result_params, vle) for vle in self.dataset_VLEs]
+        self.tabulated_datasets = [VLE_Tabulation(self.model, self.params, vle) for vle in self.dataset_VLEs]
 
     def report(self):
         underline_echo(self.get_title())
@@ -121,7 +127,7 @@ class Fit(Result):
 
         if self.is_optimized: echo('Optimization complete with following parameters:')
         else: echo('Optimization skipped, using initial parameters:')
-        for (name, value) in zip(self.model.param_names, self.result_params):
+        for (name, value) in zip(self.model.param_names, self.params):
             echo(f'  {name} = {value:.4g}')
 
         echo('')
