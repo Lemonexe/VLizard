@@ -5,7 +5,6 @@ import { MUITheme } from './adapters/MUITheme.tsx';
 import { NotificationProvider } from './adapters/NotificationContext.tsx';
 import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
-import { DefaultLayout } from './components/DefaultLayout.tsx';
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { cacheTime: 0 } } });
 
@@ -14,9 +13,7 @@ export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
         <ThemeProvider theme={MUITheme}>
             <NotificationProvider>
                 <IsItUpWatcher>
-                    <ErrorBoundary>
-                        <DefaultLayout>{children}</DefaultLayout>
-                    </ErrorBoundary>
+                    <ErrorBoundary>{children}</ErrorBoundary>
                 </IsItUpWatcher>
             </NotificationProvider>
         </ThemeProvider>

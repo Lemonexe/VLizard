@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { QuestionMark } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
+import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 export const About: FC = () => (
-    <>
+    <DefaultLayout>
         <h1>VLizard v{APP_VERSION}</h1>
         <Box my={2}>
             <Button
@@ -19,5 +20,5 @@ export const About: FC = () => (
             <a href="https://github.com/Lemonexe/VLizard/">Github repository</a> under the free{' '}
             <a href="https://github.com/Lemonexe/VLizard/blob/master/LICENSE">MIT License</a>.
         </p>
-    </>
+    </DefaultLayout>
 );

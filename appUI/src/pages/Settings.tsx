@@ -1,8 +1,9 @@
 import { FC } from 'react';
+import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 export const Settings: FC = () => (
-    <>
-        Settings
+    <DefaultLayout>
+        <h2>Settings</h2>
         <br />
-    </>
+    </DefaultLayout>
 );

@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Box, Button, Stack } from '@mui/material';
 import { useNotifications } from '../adapters/NotificationContext.tsx';
+import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 // TEMPORARY, remove this
 const Playground: FC = () => {
@@ -24,7 +25,7 @@ const Playground: FC = () => {
 };
 
 export const Home: FC = () => (
-    <>
+    <DefaultLayout>
         <Stack direction="row" spacing={2} alignItems="center" mb={2}>
             <img src="/icon.png" width={128} alt="VLizard logo" />
             <Box>
@@ -38,5 +39,5 @@ export const Home: FC = () => (
         </p>
 
         <Playground />
-    </>
+    </DefaultLayout>
 );
