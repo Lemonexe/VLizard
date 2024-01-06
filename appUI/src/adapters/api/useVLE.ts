@@ -9,7 +9,10 @@ import {
 } from './types/VLE.ts';
 
 export const useGetVLESystems = () =>
-    useQuery('getVLESystems', () => axios.get<GetVLESystemsResponse>('http://localhost:4663/vle'));
+    useQuery('getVLESystems', async () => {
+        const { data } = await axios.get<GetVLESystemsResponse>('http://localhost:4663/vle');
+        return data;
+    });
 
 export const useVLEAnalysis = () =>
     useMutation('VLEAnalysis', async (payload: VLEAnalysisRequest) => {

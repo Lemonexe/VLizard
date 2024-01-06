@@ -3,7 +3,10 @@ import { useMutation, useQuery } from 'react-query';
 import { DeleteFitRequest, FitAnalysisRequest, FitAnalysisResponse, GetPersistedFitsResponse } from './types/fit.ts';
 
 export const useGetPersistedFits = () =>
-    useQuery('getPersistedFits', () => axios.get<GetPersistedFitsResponse>('http://localhost:4663/fit/VLE'));
+    useQuery('getPersistedFits', async () => {
+        const { data } = await axios.get<GetPersistedFitsResponse>('http://localhost:4663/fit/VLE');
+        return data;
+    });
 
 export const useFitAnalysis = () =>
     useMutation('fitAnalysis', async (payload: FitAnalysisRequest) => {

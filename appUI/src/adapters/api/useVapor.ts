@@ -9,7 +9,10 @@ import {
 } from './types/vapor.ts';
 
 export const useGetVaporModels = () =>
-    useQuery('getVaporModels', () => axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor'));
+    useQuery('getVaporModels', async () => {
+        const { data } = await axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor');
+        return data;
+    });
 
 export const useVaporAnalysis = () =>
     useMutation('vaporAnalysis', async (payload: VaporAnalysisRequest) => {
