@@ -13,16 +13,16 @@ def get_vapor_models_api():
     def process_preferred_model(compound_name):
         """Return dict entries of compound_name: preferred vapor pressure model."""
         model, T_min, T_max, params = get_preferred_vapor_model(compound_name)
-        return compound_name, {
+        return {
+            'compound': compound_name,
             'model_name': model.name,
-            'param_names': model.param_names,
+            'params': dict(zip(model.param_names, params)),
             'T_min': T_min,
             'T_max': T_max,
-            'params': params,
         }
 
     compound_names = get_compound_names()
-    payload = dict([process_preferred_model(compound_name) for compound_name in compound_names])
+    payload = [process_preferred_model(compound_name) for compound_name in compound_names]
     return payload
 
 

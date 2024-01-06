@@ -2,15 +2,16 @@ import { AnalysisResult, VLEDatasetIdentifier } from './common.ts';
 
 /* GET */
 export type DatasetTable = {
+    name: string;
     x_1: number[];
     y_1: number[];
     T: number[];
     p: number[];
 };
 
-export type VLESystem = Record<string, DatasetTable>; // key = dataset name
+export type VLESystem = { system: string; datasets: string[] };
 
-export type GetVLESystemsResponse = Record<string, VLESystem>; // key = compound1-compound2
+export type GetVLESystemsResponse = VLESystem[];
 
 /* POST ANALYSIS */
 export type VLEAnalysisRequest = VLEDatasetIdentifier;

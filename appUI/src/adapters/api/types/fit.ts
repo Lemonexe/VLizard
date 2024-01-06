@@ -2,6 +2,7 @@ import { AnalysisResult, NamedParams } from './common.ts';
 
 /* GET */
 export type PersistedFit = {
+    model_name: string;
     input: {
         datasets: string[];
         params0: NamedParams;
@@ -13,9 +14,12 @@ export type PersistedFit = {
     };
 };
 
-export type PersistedFitsForSystem = Record<string, PersistedFit>;
+export type PersistedFitsForSystem = {
+    system: string;
+    fits: PersistedFit[];
+};
 
-export type GetPersistedFitsResponse = Record<string, PersistedFitsForSystem>;
+export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 
 /* POST ANALYSIS */
 export type FitAnalysisRequest = {

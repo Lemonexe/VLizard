@@ -16,14 +16,17 @@ def get_vle_api():
 
     def get_VLE_data_object(compound1, compound2, dataset_name):
         table = cast_to_jsonable_recursive(get_dataset_VLE_data(compound1, compound2, dataset_name))
-        return dict(zip(['p', 'T', 'x_1', 'y_1'], table))
+        VLE_data_object = dict(zip(['p', 'T', 'x_1', 'y_1'], table))
+        VLE_data_object['name'] = dataset_name
+        return VLE_data_object
 
     def load_all_tables(dir_name):
         compound1, compound2 = parse_system_dir_name(dir_name)
         dataset_names = get_all_dataset_names(compound1, compound2)
-        return {dataset_name: get_VLE_data_object(compound1, compound2, dataset_name) for dataset_name in dataset_names}
+        datasets = [get_VLE_data_object(compound1, compound2, dataset_name) for dataset_name in dataset_names]
+        return {'system': dir_name, 'datasets': datasets}
 
-    return {dir_name: load_all_tables(dir_name) for dir_name in system_dir_names}
+    return [load_all_tables(dir_name) for dir_name in system_dir_names]
 
 
 @vle_blueprint.post('/analysis')

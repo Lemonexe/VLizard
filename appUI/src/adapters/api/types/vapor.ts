@@ -1,15 +1,15 @@
-import { AnalysisResult } from './common.ts';
+import { AnalysisResult, NamedParams } from './common.ts';
 
 /* GET */
 export type VaporModel = {
+    compound: string;
     model_name: string;
-    param_names: string[];
-    params: number[];
+    params: NamedParams;
     T_min: number;
     T_max: number;
 };
 
-export type GetVaporModelsResponse = Record<string, VaporModel>; // key = compound
+export type GetVaporModelsResponse = VaporModel[];
 
 /* POST ANALYSIS */
 export type VaporAnalysisRequest = { compound: string };
