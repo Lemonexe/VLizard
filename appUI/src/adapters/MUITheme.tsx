@@ -1,6 +1,10 @@
 import { createTheme } from '@mui/material';
 
+const spacing: number = 8;
+export const spacingN = (n: number) => spacing * n;
+
 export const MUITheme = createTheme({
+    spacing,
     palette: {
         primary: {
             main: '#1690AE',
@@ -17,13 +21,24 @@ export const MUITheme = createTheme({
             defaultProps: { color: 'primary' },
         },
         MuiDialogActions: {
-            styleOverrides: { root: { padding: 24, paddingTop: 0, paddingBottom: 16 } },
+            styleOverrides: {
+                root: {
+                    padding: spacingN(8),
+                    paddingTop: 0,
+                    paddingBottom: spacingN(2),
+                },
+            },
         },
         MuiTableHead: {
             styleOverrides: { root: { fontWeight: 700 } },
         },
         MuiTableCell: {
-            styleOverrides: { root: { fontWeight: 'inherit' } },
+            styleOverrides: {
+                root: {
+                    padding: spacingN(1.5),
+                    fontWeight: 'inherit',
+                },
+            },
         },
     },
 });
