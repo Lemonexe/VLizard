@@ -9,7 +9,7 @@ export type DatasetTable = {
     p: number[];
 };
 
-export type VLESystem = { system: string; datasets: string[] };
+export type VLESystem = { system_name: string; datasets: DatasetTable[] };
 
 export type GetVLESystemsResponse = VLESystem[];
 
@@ -33,4 +33,8 @@ export type UpsertVLEDatasetRequest = VLEDatasetIdentifier & {
 };
 
 /* DELETE */
-export type DeleteVLEDatasetRequest = VLEDatasetIdentifier;
+export type DeleteVLERequest = {
+    compound1: string;
+    compound2: string;
+    dataset?: string; // delete entire system if not specified
+};

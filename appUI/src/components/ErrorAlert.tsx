@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Alert, Box, Button } from '@mui/material';
 import { Loop } from '@mui/icons-material';
-import { ContentContainer } from './ContentContainer.tsx';
+import { ContentContainer } from './Mui/ContentContainer.tsx';
 
 interface ErrorAlertProps {
     message: string;

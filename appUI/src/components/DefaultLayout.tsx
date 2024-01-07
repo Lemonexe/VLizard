@@ -1,8 +1,13 @@
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Button, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Box, Button, IconButton, styled, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
-import { ContentContainer } from './ContentContainer.tsx';
+import { ContentContainer } from './Mui/ContentContainer.tsx';
+import { spacingN } from '../adapters/MUITheme.tsx';
+
+const DenseIconButton = styled(IconButton)({
+    padding: spacingN(0.5),
+});
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
@@ -10,31 +15,31 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     return (
         <>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar style={{ gap: spacingN(1) }}>
                     <Tooltip title="HOME">
-                        <IconButton onClick={() => navigate('/')} edge="start" color="inherit">
+                        <DenseIconButton onClick={() => navigate('/')} edge="start" color="inherit">
                             <Home />
-                        </IconButton>
+                        </DenseIconButton>
                     </Tooltip>
-                    <Button color="inherit" onClick={() => navigate('/data')}>
-                        Data
+                    <Button color="inherit" onClick={() => navigate('/compounds')}>
+                        Pure Data
                     </Button>
-                    <Button color="inherit" onClick={() => navigate('/analysis')}>
-                        Analysis
+                    <Button color="inherit" onClick={() => navigate('/systems')}>
+                        Binary Data
                     </Button>
                     <Button color="inherit" onClick={() => navigate('/fitting')}>
                         Fitting
                     </Button>
                     <Box flexGrow={1} />
                     <Tooltip title="SETTINGS">
-                        <IconButton onClick={() => navigate('/settings')} color="inherit">
+                        <DenseIconButton onClick={() => navigate('/settings')} color="inherit">
                             <Settings />
-                        </IconButton>
+                        </DenseIconButton>
                     </Tooltip>
                     <Tooltip title="ABOUT">
-                        <IconButton onClick={() => navigate('/about')} edge="end" color="inherit">
+                        <DenseIconButton onClick={() => navigate('/about')} edge="end" color="inherit">
                             <HelpOutline />
-                        </IconButton>
+                        </DenseIconButton>
                     </Tooltip>
                 </Toolbar>
             </AppBar>

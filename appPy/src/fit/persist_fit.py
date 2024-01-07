@@ -21,7 +21,7 @@ def get_all_persisted_fits():
                 file_path = os.path.join(analysis_dir_path, get_yaml_filename(model_name))
                 if os.path.exists(file_path):
                     fits_per_system.append(open_yaml(file_path))
-        payload.append({'system': system_dir_name, 'fits': fits_per_system})
+        payload.append({'system_name': system_dir_name, 'fits': fits_per_system})
     return payload
 
 
