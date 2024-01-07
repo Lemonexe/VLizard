@@ -12,6 +12,8 @@ const CollapsibleTableCell = styled(TableCell)({
     paddingLeft: spacingN(2),
 });
 
+const NoBorderCell = styled(TableCell)({ border: 'unset' });
+
 type SystemRowProps = { model: VLESystem };
 
 export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets } }) => {
@@ -20,18 +22,18 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
 
     return (
         <>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell sx={{ width: 40, px: 0 }}>
+            <TableRow>
+                <NoBorderCell sx={{ width: 40, px: 0 }}>
                     <IconButton onClick={() => setOpen((prevOpen) => !prevOpen)}>
                         {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
-                </TableCell>
-                <TableCell>{compound1}</TableCell>
-                <TableCell>{compound2}</TableCell>
-                <TableCell>{datasets.length}</TableCell>
-                <TableCell>
+                </NoBorderCell>
+                <NoBorderCell>{compound1}</NoBorderCell>
+                <NoBorderCell>{compound2}</NoBorderCell>
+                <NoBorderCell>{datasets.length}</NoBorderCell>
+                <NoBorderCell>
                     <DeleteSystemButton compound1={compound1} compound2={compound2} n_datasets={datasets.length} />
-                </TableCell>
+                </NoBorderCell>
             </TableRow>
 
             <TableRow sx={{ '&:last-child td': { border: 0 } }}>

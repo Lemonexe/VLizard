@@ -23,7 +23,7 @@ export const DatasetsSubTable: FC<DatasetsSubTableProps> = ({ compound1, compoun
             <TableRow>
                 <DenseTableHeadCell>Dataset</DenseTableHeadCell>
                 <DenseTableHeadCell>Points</DenseTableHeadCell>
-                <DenseTableHeadCell>Actions</DenseTableHeadCell>
+                <DenseTableHeadCell />
             </TableRow>
         </TableHead>
         <TableBody>

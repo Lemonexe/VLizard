@@ -36,7 +36,7 @@ export const CompoundsTable: FC = () => {
                 <TableRow>
                     <TableCell>Name</TableCell>
                     <TableCell style={{ width: 150 }}>Model</TableCell>
-                    <TableCell style={{ width: 150 }}>Actions</TableCell>
+                    <TableCell style={{ width: 150 }} />
                 </TableRow>
             </TableHead>
             <TableBody>

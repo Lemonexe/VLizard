@@ -16,7 +16,7 @@ export const SystemsTable: FC = () => {
                     <TableCell>Compound 1</TableCell>
                     <TableCell>Compound 2</TableCell>
                     <TableCell>Datasets</TableCell>
-                    <TableCell>Actions</TableCell>
+                    <TableCell />
                 </TableRow>
             </TableHead>
             <TableBody>
