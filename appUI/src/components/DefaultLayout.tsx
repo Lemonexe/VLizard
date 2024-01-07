@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, IconButton, styled, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
+import { spacingN } from '../adapters/MUITheme.tsx';
 
-const DenseIconButton = styled(IconButton)(({ theme }) => ({
-    padding: theme.spacing(0.5),
-}));
+const DenseIconButton = styled(IconButton)({
+    padding: spacingN(0.5),
+});
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     return (
         <>
             <AppBar position="static">
-                <Toolbar style={{ gap: 8 }}>
+                <Toolbar style={{ gap: spacingN(1) }}>
                     <Tooltip title="HOME">
                         <DenseIconButton onClick={() => navigate('/')} edge="start" color="inherit">
                             <Home />

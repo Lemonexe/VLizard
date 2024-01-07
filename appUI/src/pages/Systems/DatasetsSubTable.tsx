@@ -1,18 +1,19 @@
 import { FC } from 'react';
 import { IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
 import { QueryStats, TableView } from '@mui/icons-material';
+import { spacingN } from '../../adapters/MUITheme.tsx';
 import { DatasetTable } from '../../adapters/api/types/VLE.ts';
 import { DeleteDatasetButton } from './DeleteDatasetButton.tsx';
 
-const DenseTableCell = styled(TableCell)(({ theme }) => ({
-    padding: theme.spacing(0.25),
+const DenseTableCell = styled(TableCell)({
+    padding: spacingN(0.25),
     border: 'unset',
-}));
+});
 
-const DenseTableHeadCell = styled(TableCell)(({ theme }) => ({
-    padding: theme.spacing(0.5),
+const DenseTableHeadCell = styled(TableCell)({
+    padding: spacingN(0.5),
     border: 'unset',
-}));
+});
 
 type DatasetsSubTableProps = { compound1: string; compound2: string; datasets: DatasetTable[] };
 

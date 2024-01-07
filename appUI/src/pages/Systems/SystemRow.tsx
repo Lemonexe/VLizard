@@ -4,12 +4,13 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { VLESystem } from '../../adapters/api/types/VLE.ts';
 import { DeleteSystemButton } from './DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
+import { spacingN } from '../../adapters/MUITheme.tsx';
 
-const CollapsibleTableCell = styled(TableCell)(({ theme }) => ({
+const CollapsibleTableCell = styled(TableCell)({
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: theme.spacing(2),
-}));
+    paddingLeft: spacingN(2),
+});
 
 type SystemRowProps = { model: VLESystem };
 
