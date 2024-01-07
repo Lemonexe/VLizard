@@ -9,7 +9,7 @@ export type DatasetTable = {
     p: number[];
 };
 
-export type VLESystem = { system: string; datasets: string[] };
+export type VLESystem = { system_name: string; datasets: DatasetTable[] };
 
 export type GetVLESystemsResponse = VLESystem[];
 

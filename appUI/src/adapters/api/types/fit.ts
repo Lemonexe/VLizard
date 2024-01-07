@@ -18,7 +18,7 @@ export type PersistedFit = {
 };
 
 export type PersistedFitsForSystem = {
-    system: string;
+    system_name: string;
     fits: PersistedFit[];
 };
 

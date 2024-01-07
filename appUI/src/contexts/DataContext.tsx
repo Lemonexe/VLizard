@@ -31,7 +31,7 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
         return {
             compoundNames: vaporData?.map(({ compound }) => compound) ?? [],
             vaporData,
-            systemNames: VLEData?.map(({ system }) => system) ?? [],
+            systemNames: VLEData?.map(({ system_name }) => system_name) ?? [],
             VLEData,
             fitData,
         };

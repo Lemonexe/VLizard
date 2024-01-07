@@ -24,7 +24,7 @@ def get_vle_api():
         compound1, compound2 = parse_system_dir_name(dir_name)
         dataset_names = get_all_dataset_names(compound1, compound2)
         datasets = [get_VLE_data_object(compound1, compound2, dataset_name) for dataset_name in dataset_names]
-        return {'system': dir_name, 'datasets': datasets}
+        return {'system_name': dir_name, 'datasets': datasets}
 
     return [load_all_tables(dir_name) for dir_name in system_dir_names]
 
