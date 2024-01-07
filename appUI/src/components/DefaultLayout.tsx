@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, IconButton, styled, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
-import { ContentContainer } from './ContentContainer.tsx';
+import { ContentContainer } from './Mui/ContentContainer.tsx';
 
 const DenseIconButton = styled(IconButton)(({ theme }) => ({
     padding: theme.spacing(0.5),

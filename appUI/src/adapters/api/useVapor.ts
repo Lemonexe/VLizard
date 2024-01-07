@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNotifications } from '../NotificationContext.tsx';
 import {
     DeleteVaporModelRequest,
     GetVaporModelsResponse,
@@ -8,8 +9,10 @@ import {
     VaporAnalysisResponse,
 } from './types/vapor.ts';
 
+export const getVaporModelsKey = 'getVaporModels';
+
 export const useGetVaporModels = () =>
-    useQuery('getVaporModels', async () => {
+    useQuery(getVaporModelsKey, async () => {
         const { data } = await axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor');
         return data;
     });
@@ -25,7 +28,17 @@ export const useUpdateVaporModel = () =>
         await axios.put('http://localhost:4663/vapor', { data: payload });
     });
 
-export const useDeleteVaporModel = () =>
-    useMutation('deleteVaporModel', async (payload: DeleteVaporModelRequest) => {
-        await axios.delete('http://localhost:4663/vapor', { data: payload });
-    });
+export const useDeleteVaporModel = () => {
+    const queryClient = useQueryClient();
+    const pushNotification = useNotifications();
+    return useMutation(
+        'deleteVaporModel',
+        async (payload: DeleteVaporModelRequest) => {
+            await axios.delete('http://localhost:4663/vapor', { data: payload });
+        },
+        {
+            onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),
+            onError: () => pushNotification({ message: `Error deleting compound!`, severity: 'error' }),
+        },
+    );
+};
