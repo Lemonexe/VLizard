@@ -23,10 +23,20 @@ export const useVaporAnalysis = () =>
         return data;
     });
 
-export const useUpdateVaporModel = () =>
-    useMutation('updateVaporModel', async (payload: UpdateVaporModelRequest) => {
-        await axios.put('http://localhost:4663/vapor', { data: payload });
-    });
+export const useUpdateVaporModel = () => {
+    const queryClient = useQueryClient();
+    const pushNotification = useNotifications();
+    return useMutation(
+        'updateVaporModel',
+        async (payload: UpdateVaporModelRequest) => {
+            await axios.put('http://localhost:4663/vapor', { data: payload });
+        },
+        {
+            onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),
+            onError: () => pushNotification({ message: `Error updating vapor pressure models!`, severity: 'error' }),
+        },
+    );
+};
 
 export const useDeleteVaporModel = () => {
     const queryClient = useQueryClient();

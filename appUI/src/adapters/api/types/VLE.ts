@@ -33,4 +33,8 @@ export type UpsertVLEDatasetRequest = VLEDatasetIdentifier & {
 };
 
 /* DELETE */
-export type DeleteVLEDatasetRequest = VLEDatasetIdentifier;
+export type DeleteVLERequest = {
+    compound1: string;
+    compound2: string;
+    dataset?: string; // delete entire system if not specified
+};
