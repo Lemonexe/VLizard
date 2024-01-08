@@ -6,13 +6,13 @@ from .helpers.schema_validation import unpack_request_schema
 fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
 
 
-@fit_blueprint.get('/VLE')
+@fit_blueprint.get('')
 def get_VLE_fits_api():
     """Get all persisted fits of thermodynamic VLE models."""
     return get_all_persisted_fits()
 
 
-@fit_blueprint.post('/VLE')
+@fit_blueprint.post('')
 def fit_VLE_api():
     """Fit VLE data with a thermodynamic model, and return the regression analysis."""
     param_schema = {
@@ -37,7 +37,7 @@ def fit_VLE_api():
     return payload
 
 
-@fit_blueprint.delete('/VLE')
+@fit_blueprint.delete('')
 def delete_VLE_fit_api():
     """Delete a specific persisted fit."""
     schema = {'compound1': True, 'compound2': True, 'model_name': True}

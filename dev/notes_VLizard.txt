@@ -6,6 +6,4 @@ fetch available models for fitting
 
 System warning for missing compounds
 
-rename fit/VLE to just fit..
-
-handling of generic errors, see CHOL CHF broken vanLaar to play with
+app constants like port number

@@ -8,14 +8,22 @@ import {
     VLEAnalysisRequest,
     VLEAnalysisResponse,
 } from './types/VLE.ts';
+import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
 
 export const getVLESystemsKey = 'Binary systems data'; // also a description
 
-export const useGetVLESystems = () =>
-    useQuery(getVLESystemsKey, async () => {
-        const { data } = await axios.get<GetVLESystemsResponse>('http://localhost:4663/vle');
-        return data;
+export const useGetVLESystems = () => {
+    const handleApiError = useHandleApiError();
+    return useQuery(getVLESystemsKey, async () => {
+        try {
+            const { data } = await axios.get<GetVLESystemsResponse>('http://localhost:4663/vle');
+            return data;
+        } catch (e) {
+            handleApiError(e);
+            throw e;
+        }
     });
+};
 
 export const useVLEAnalysis = () =>
     useMutation('VLEAnalysis', async (payload: VLEAnalysisRequest) => {

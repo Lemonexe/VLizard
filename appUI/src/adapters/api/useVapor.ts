@@ -8,14 +8,22 @@ import {
     VaporAnalysisRequest,
     VaporAnalysisResponse,
 } from './types/vapor.ts';
+import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
 
 export const getVaporModelsKey = 'Pure compounds data'; // also a description
 
-export const useGetVaporModels = () =>
-    useQuery(getVaporModelsKey, async () => {
-        const { data } = await axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor');
-        return data;
+export const useGetVaporModels = () => {
+    const handleApiError = useHandleApiError();
+    return useQuery(getVaporModelsKey, async () => {
+        try {
+            const { data } = await axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor');
+            return data;
+        } catch (e) {
+            handleApiError(e);
+            throw e;
+        }
     });
+};
 
 export const useVaporAnalysis = () =>
     useMutation('vaporAnalysis', async (payload: VaporAnalysisRequest) => {

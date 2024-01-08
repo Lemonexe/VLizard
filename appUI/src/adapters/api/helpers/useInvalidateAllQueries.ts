@@ -3,7 +3,6 @@ import { useNotifications } from '../../NotificationContext.tsx';
 import { getVaporModelsKey } from '../useVapor.ts';
 import { getPersistedFitsKey } from '../useFit.ts';
 import { getVLESystemsKey } from '../useVLE.ts';
-import { AxiosError } from 'axios';
 
 const queryKeys: QueryKey[] = [getVaporModelsKey, getVLESystemsKey, getPersistedFitsKey];
 
@@ -12,16 +11,12 @@ export const useInvalidateAllQueries = () => {
     const pushNotification = useNotifications();
 
     return async () => {
-        try {
-            await Promise.all(
-                queryKeys.map(async (queryKey) => {
-                    await queryClient.invalidateQueries(queryKey, undefined, { throwOnError: true });
-                }),
-            );
-            pushNotification({ message: 'Data was refreshed.', severity: 'success' });
-        } catch (e) {
-            const message = e instanceof AxiosError ? e.response?.data.error ?? e : e;
-            pushNotification({ message, severity: 'error' });
-        }
+        await Promise.all(
+            queryKeys.map(async (queryKey) => {
+                await queryClient.invalidateQueries(queryKey, undefined, { throwOnError: true });
+            }),
+        );
+        pushNotification({ message: 'Data was refreshed.', severity: 'success' });
+        // async error is left unhandled; the individual queries are responsible to pushNotification on error
     };
 };
