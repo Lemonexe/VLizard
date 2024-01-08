@@ -27,6 +27,12 @@ def handle_app_exception(err):
     return {'error': str(err)}, 422
 
 
+@app.errorhandler(Exception)
+def handle_exception_default(err):
+    """Handle all other exceptions verbosely (by default it'd just say 500 internal error)."""
+    return {'error': str(err)}, 500
+
+
 # register modules and run the app
 app.register_blueprint(td_test_blueprint)
 app.register_blueprint(fit_blueprint)

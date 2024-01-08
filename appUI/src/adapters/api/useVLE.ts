@@ -9,7 +9,7 @@ import {
     VLEAnalysisResponse,
 } from './types/VLE.ts';
 
-export const getVLESystemsKey = 'getVLESystems';
+export const getVLESystemsKey = 'Binary systems data'; // also a description
 
 export const useGetVLESystems = () =>
     useQuery(getVLESystemsKey, async () => {

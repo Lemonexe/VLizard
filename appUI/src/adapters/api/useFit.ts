@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNotifications } from '../NotificationContext.tsx';
 import { DeleteFitRequest, FitAnalysisRequest, FitAnalysisResponse, GetPersistedFitsResponse } from './types/fit.ts';
 
-export const getPersistedFitsKey = 'getPersistedFits';
+export const getPersistedFitsKey = 'VLE regressions data'; // also a description
 
 export const useGetPersistedFits = () =>
     useQuery(getPersistedFitsKey, async () => {

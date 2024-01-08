@@ -1,13 +1,11 @@
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Button, IconButton, styled, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
-import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { spacingN } from '../adapters/MUITheme.tsx';
-
-const DenseIconButton = styled(IconButton)({
-    padding: spacingN(0.5),
-});
+import { ContentContainer } from './Mui/ContentContainer.tsx';
+import { DenseIconButton } from './Mui/DenseIconButton.tsx';
+import { QueryRefreshButton } from './QueryRefreshButton.tsx';
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
@@ -31,6 +29,7 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                         Fitting
                     </Button>
                     <Box flexGrow={1} />
+                    <QueryRefreshButton />
                     <Tooltip title="SETTINGS">
                         <DenseIconButton onClick={() => navigate('/settings')} color="inherit">
                             <Settings />

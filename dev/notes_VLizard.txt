@@ -1,3 +1,11 @@
 návod jak python + electron https://github.com/fyears/electron-python-example
 
-RU api for config
+read/update api for config
+
+fetch available models for fitting
+
+System warning for missing compounds
+
+rename fit/VLE to just fit..
+
+handling of generic errors, see CHOL CHF broken vanLaar to play with

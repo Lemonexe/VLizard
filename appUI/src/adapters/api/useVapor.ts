@@ -9,7 +9,7 @@ import {
     VaporAnalysisResponse,
 } from './types/vapor.ts';
 
-export const getVaporModelsKey = 'getVaporModels';
+export const getVaporModelsKey = 'Pure compounds data'; // also a description
 
 export const useGetVaporModels = () =>
     useQuery(getVaporModelsKey, async () => {

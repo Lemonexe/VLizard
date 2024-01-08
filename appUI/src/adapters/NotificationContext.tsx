@@ -2,10 +2,15 @@ import { createContext, Dispatch, FC, PropsWithChildren, ReactNode, useCallback,
 import { Alert, AlertColor, Snackbar } from '@mui/material';
 
 const AUTOHIDE_DURATION = 4000; // ms
+const ERROR_DURATION = 10_000; // ms
+
+const getDuration = (notification: Notification): number =>
+    notification.severity === 'error' ? ERROR_DURATION : notification.duration || AUTOHIDE_DURATION;
 
 type Notification = {
     message: ReactNode;
     severity: AlertColor;
+    duration?: number;
 };
 
 export const NotificationContext = createContext<Dispatch<Notification> | null>(null);
@@ -27,7 +32,7 @@ export const NotificationProvider: FC<PropsWithChildren> = ({ children }) => {
         setNotification(newNotification);
         setOpen(true);
         if (timeoutHandle) clearTimeout(timeoutHandle);
-        timeoutHandle = window.setTimeout(() => setOpen(false), AUTOHIDE_DURATION);
+        timeoutHandle = window.setTimeout(() => setOpen(false), getDuration(newNotification));
     }, []);
 
     return (

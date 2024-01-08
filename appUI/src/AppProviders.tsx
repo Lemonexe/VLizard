@@ -7,7 +7,9 @@ import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 import { DataContextProvider } from './contexts/DataContext.tsx';
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { cacheTime: 0 } } });
+const staleTime = Infinity;
+const cacheTime = 5 * 60 * 1000;
+const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime, cacheTime, retry: 0 } } });
 
 export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
     <QueryClientProvider client={queryClient}>
