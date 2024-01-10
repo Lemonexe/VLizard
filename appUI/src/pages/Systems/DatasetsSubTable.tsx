@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
-import { QueryStats, TableView } from '@mui/icons-material';
+import { QueryStats } from '@mui/icons-material';
 import { spacingN } from '../../adapters/MUITheme.tsx';
 import { DatasetTable } from '../../adapters/api/types/VLE.ts';
 import { DeleteDatasetButton } from './DeleteDatasetButton.tsx';
+import { EditDatasetButton } from './EditDatasetButton.tsx';
 
 const DenseTableCell = styled(TableCell)({
     padding: spacingN(0.25),
@@ -35,9 +36,7 @@ export const DatasetsSubTable: FC<DatasetsSubTableProps> = ({ compound1, compoun
                         <Tooltip title="Perform analysis">
                             <IconButton children={<QueryStats />} />
                         </Tooltip>
-                        <Tooltip title="Edit dataset table">
-                            <IconButton children={<TableView />} />
-                        </Tooltip>
+                        <EditDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                         <DeleteDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                     </DenseTableCell>
                 </TableRow>

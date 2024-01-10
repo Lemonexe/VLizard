@@ -1,9 +1,5 @@
-návod jak python + electron https://github.com/fyears/electron-python-example
+how to use python + electron https://github.com/fyears/electron-python-example
 
-read/update api for config
+read/update api for config (only for user settings)
 
 fetch available models for fitting
-
-System warning for missing compounds
-
-app constants like port number

@@ -10,8 +10,8 @@ export const DialogTitleWithX: FC<DialogTitleProps> = ({ children, handleClose }
     <DialogTitle>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
             <span>{children}</span>
-            <IconButton onClick={handleClose} color="default">
-                <Close />
+            <IconButton onClick={handleClose}>
+                <Close color="action" />
             </IconButton>
         </Stack>
     </DialogTitle>
