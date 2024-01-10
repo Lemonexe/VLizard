@@ -9,6 +9,7 @@ import {
     VaporAnalysisResponse,
 } from './types/vapor.ts';
 import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
+import { hostName } from './helpers/hostName.ts';
 
 export const getVaporModelsKey = 'Pure compounds data'; // also a description
 
@@ -16,7 +17,7 @@ export const useGetVaporModels = () => {
     const handleApiError = useHandleApiError();
     return useQuery(getVaporModelsKey, async () => {
         try {
-            const { data } = await axios.get<GetVaporModelsResponse>('http://localhost:4663/vapor');
+            const { data } = await axios.get<GetVaporModelsResponse>(hostName + '/vapor');
             return data;
         } catch (e) {
             handleApiError(e);
@@ -27,7 +28,7 @@ export const useGetVaporModels = () => {
 
 export const useVaporAnalysis = () =>
     useMutation('vaporAnalysis', async (payload: VaporAnalysisRequest) => {
-        const { data } = await axios.post<VaporAnalysisResponse>('http://localhost:4663/vapor/analysis', payload);
+        const { data } = await axios.post<VaporAnalysisResponse>(hostName + '/vapor/analysis', payload);
         return data;
     });
 
@@ -37,7 +38,7 @@ export const useUpdateVaporModel = () => {
     return useMutation(
         'updateVaporModel',
         async (payload: UpdateVaporModelRequest) => {
-            await axios.put('http://localhost:4663/vapor', { data: payload });
+            await axios.put(hostName + '/vapor', { data: payload });
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),
@@ -52,7 +53,7 @@ export const useDeleteVaporModel = () => {
     return useMutation(
         'deleteVaporModel',
         async (payload: DeleteVaporModelRequest) => {
-            await axios.delete('http://localhost:4663/vapor', { data: payload });
+            await axios.delete(hostName + '/vapor', { data: payload });
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),

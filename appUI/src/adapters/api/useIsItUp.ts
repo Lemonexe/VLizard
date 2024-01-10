@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
+import { hostName } from './helpers/hostName.ts';
 
 const refetchInterval = 2500;
 const timeout = 1000;
@@ -14,7 +15,7 @@ export const useIsItUp = () => {
         'isItUp',
         async () => {
             try {
-                await axios.get('http://localhost:4663/is_it_up', { timeout });
+                await axios.get(hostName + '/is_it_up', { timeout });
                 setFailuresInRow(0);
                 return true;
             } catch (_e) {

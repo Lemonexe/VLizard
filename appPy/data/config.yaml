@@ -14,8 +14,3 @@ rk_quad_rel_tol: 1e-4
 fredenslund_criterion: 1
 # default maximum order of Legendre polynomials in Fredenslund test
 default_legendre_order: 4
-
-## APP BEHAVIOR
-
-# Port number for python backend, change only if you know what you're doing
-port_number: 4663

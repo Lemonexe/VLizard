@@ -9,6 +9,7 @@ import {
     VLEAnalysisResponse,
 } from './types/VLE.ts';
 import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
+import { hostName } from './helpers/hostName.ts';
 
 export const getVLESystemsKey = 'Binary systems data'; // also a description
 
@@ -16,7 +17,7 @@ export const useGetVLESystems = () => {
     const handleApiError = useHandleApiError();
     return useQuery(getVLESystemsKey, async () => {
         try {
-            const { data } = await axios.get<GetVLESystemsResponse>('http://localhost:4663/vle');
+            const { data } = await axios.get<GetVLESystemsResponse>(hostName + '/vle');
             return data;
         } catch (e) {
             handleApiError(e);
@@ -27,7 +28,7 @@ export const useGetVLESystems = () => {
 
 export const useVLEAnalysis = () =>
     useMutation('VLEAnalysis', async (payload: VLEAnalysisRequest) => {
-        const { data } = await axios.post<VLEAnalysisResponse>('http://localhost:4663/vle/analysis', payload);
+        const { data } = await axios.post<VLEAnalysisResponse>(hostName + '/vle/analysis', payload);
         return data;
     });
 
@@ -37,7 +38,7 @@ export const useUpsertVLEDataset = () => {
     return useMutation(
         'upsertVLEDataset',
         async (payload: UpsertVLEDatasetRequest) => {
-            await axios.post('http://localhost:4663/vle', { data: payload });
+            await axios.post(hostName + '/vle', { data: payload });
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVLESystemsKey),
@@ -52,7 +53,7 @@ export const useDeleteVLE = () => {
     return useMutation(
         'deleteVLE',
         async (payload: DeleteVLERequest) => {
-            await axios.delete('http://localhost:4663/vle', { data: payload });
+            await axios.delete(hostName + '/vle', { data: payload });
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVLESystemsKey),
