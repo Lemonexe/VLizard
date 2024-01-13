@@ -1,8 +1,8 @@
-import { AnalysisResult, VLEDatasetIdentifier } from './common.ts';
+import { AnalysisResult, DatasetIdentifier } from './common.ts';
 
 export type ConclusiveTestResult = AnalysisResult & { is_consistent: boolean };
 
-export type TestRequest = VLEDatasetIdentifier;
+export type TestRequest = DatasetIdentifier;
 
 export type GammaTestResponse = ConclusiveTestResult & {
     err_1: number;
@@ -36,7 +36,7 @@ export type HeringtonTestResponse = ConclusiveTestResult & {
     criterion: number;
 };
 
-export type FredenslundTestRequest = VLEDatasetIdentifier & {
+export type FredenslundTestRequest = DatasetIdentifier & {
     legendre_order: 3 | 4 | 5;
 };
 

@@ -3,15 +3,16 @@ export type AnalysisResult = {
     warnings: string[];
 };
 
-export type VLEDatasetIdentifier = {
+export type SystemIdentifier = {
     compound1: string;
     compound2: string;
+};
+
+export type DatasetIdentifier = SystemIdentifier & {
     dataset: string;
 };
 
-export type VLEDatasetsIdentifier = {
-    compound1: string;
-    compound2: string;
+export type MultipleDatasetsIdentifier = SystemIdentifier & {
     datasets: string[];
 };
 

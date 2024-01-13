@@ -1,11 +1,10 @@
 import { FC, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { PostAdd } from '@mui/icons-material';
+import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { UpsertDatasetDialog } from './UpsertDatasetDialog.tsx';
 
-type AddDatasetButtonProps = { compound1: string; compound2: string };
-
-export const AddDatasetButton: FC<AddDatasetButtonProps> = ({ compound1, compound2 }) => {
+export const AddDatasetButton: FC<SystemIdentifier> = ({ compound1, compound2 }) => {
     const [open, setOpen] = useState(false);
     return (
         <>

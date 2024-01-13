@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
@@ -33,7 +33,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     origCompound2,
     origDataset,
 }) => {
-    const { compoundNames, VLEData, systemNames } = useData();
+    const { compoundNames, findDataset, systemNames } = useData();
     const modifyingSystem = Boolean(origCompound1 && origCompound2);
     const modifyingDataset = Boolean(modifyingSystem && origDataset);
     const [compound1, setCompound1] = useState(origCompound1 ?? '');
@@ -49,10 +49,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
 
     const isUnknownCompound = (compound: string) => compound.length > 0 && !compoundNames.includes(compound);
     const willOverwriteDataset = (newDatasetName: string) =>
-        (isDataChanged() || !modifyingDataset) &&
-        VLEData?.find(({ system_name }) => system_name === `${compound1}-${compound2}`)?.datasets.find(
-            ({ name }) => name === newDatasetName,
-        );
+        (isDataChanged() || !modifyingDataset) && findDataset(compound1, compound2, newDatasetName);
     const areCompoundsSame = () => compound1.length > 0 && compound1 === compound2;
     const isError = () => areCompoundsSame();
 

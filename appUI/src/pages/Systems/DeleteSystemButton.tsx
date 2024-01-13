@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVLE } from '../../adapters/api/useVLE.ts';
-import { DeleteVLERequest } from '../../adapters/api/types/VLE.ts';
+import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { DeleteIconButton } from '../../components/Mui/DeleteIconButton.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 
@@ -13,7 +13,7 @@ const NotEmptyAlert: FC<NProps> = ({ n_datasets }) => (
     </Alert>
 );
 
-type DeleteSystemButtonProps = DeleteVLERequest & NProps;
+type DeleteSystemButtonProps = SystemIdentifier & NProps;
 
 export const DeleteSystemButton: FC<DeleteSystemButtonProps> = ({ compound1, compound2, n_datasets }) => {
     const { mutate } = useDeleteVLE();

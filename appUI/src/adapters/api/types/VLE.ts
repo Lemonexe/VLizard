@@ -1,4 +1,4 @@
-import { AnalysisResult, VLEDatasetIdentifier } from './common.ts';
+import { AnalysisResult, DatasetIdentifier, SystemIdentifier } from './common.ts';
 
 /* GET */
 export type DatasetTable = {
@@ -14,7 +14,7 @@ export type VLESystem = { system_name: string; datasets: DatasetTable[] };
 export type GetVLESystemsResponse = VLESystem[];
 
 /* POST ANALYSIS */
-export type VLEAnalysisRequest = VLEDatasetIdentifier;
+export type VLEAnalysisRequest = DatasetIdentifier;
 
 export type VLEAnalysisResponse = AnalysisResult &
     DatasetTable & {
@@ -25,7 +25,7 @@ export type VLEAnalysisResponse = AnalysisResult &
     };
 
 /* POST UPSERT */
-export type UpsertVLEDatasetRequest = VLEDatasetIdentifier & {
+export type UpsertVLEDatasetRequest = DatasetIdentifier & {
     p: number[];
     T: number[];
     x_1: number[];
@@ -33,8 +33,6 @@ export type UpsertVLEDatasetRequest = VLEDatasetIdentifier & {
 };
 
 /* DELETE */
-export type DeleteVLERequest = {
-    compound1: string;
-    compound2: string;
+export type DeleteVLERequest = SystemIdentifier & {
     dataset?: string; // delete entire system if not specified
 };

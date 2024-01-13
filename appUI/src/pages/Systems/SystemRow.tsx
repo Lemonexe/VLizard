@@ -9,13 +9,16 @@ import { DeleteSystemButton } from './DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
 import { AddDatasetButton } from './AddDatasetButton.tsx';
 
-type ValidatedCompoundNameProps = { compound: string; compounds: string[] };
-const ValidatedCompoundName: FC<ValidatedCompoundNameProps> = ({ compound, compounds }) => (
-    <Stack direction="row" alignItems="center">
-        <span>{compound}</span>
-        {!compounds.includes(compound) && <WarningTooltip title="Unknown compound (no vapor pressure model)" />}
-    </Stack>
-);
+type ValidatedCompoundNameProps = { compound: string };
+const ValidatedCompoundName: FC<ValidatedCompoundNameProps> = ({ compound }) => {
+    const { compoundNames } = useData();
+    return (
+        <Stack direction="row" alignItems="center">
+            <span>{compound}</span>
+            {!compoundNames.includes(compound) && <WarningTooltip title="Unknown compound (no vapor pressure model)" />}
+        </Stack>
+    );
+};
 
 const CollapsibleTableCell = styled(TableCell)({
     paddingTop: 0,
@@ -30,7 +33,6 @@ type SystemRowProps = { model: VLESystem };
 export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets } }) => {
     const [expandRow, setExpandRow] = useState(false);
     const [compound1, compound2] = system_name.split('-');
-    const { compoundNames } = useData();
 
     useEffect(() => {
         if (datasets.length === 0) setExpandRow(false);
@@ -47,10 +49,10 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
                     )}
                 </NoBorderCell>
                 <NoBorderCell>
-                    <ValidatedCompoundName compound={compound1} compounds={compoundNames} />
+                    <ValidatedCompoundName compound={compound1} />
                 </NoBorderCell>
                 <NoBorderCell>
-                    <ValidatedCompoundName compound={compound2} compounds={compoundNames} />
+                    <ValidatedCompoundName compound={compound2} />
                 </NoBorderCell>
                 <NoBorderCell>{datasets.length}</NoBorderCell>
                 <NoBorderCell>

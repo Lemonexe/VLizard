@@ -1,4 +1,4 @@
-import { AnalysisResult, NamedParams, VLEDatasetsIdentifier } from './common.ts';
+import { AnalysisResult, NamedParams, MultipleDatasetsIdentifier, SystemIdentifier } from './common.ts';
 import { supportedModels } from '../constants.ts';
 
 export type SupportedModelNames = typeof supportedModels;
@@ -25,7 +25,7 @@ export type PersistedFitsForSystem = {
 export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 
 /* POST ANALYSIS */
-export type FitAnalysisRequest = VLEDatasetsIdentifier & {
+export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
     params0?: string[];
     const_param_names?: string[];
@@ -51,8 +51,6 @@ export type FitAnalysisResponse = AnalysisResult & {
 };
 
 /* DELETE */
-export type DeleteFitRequest = {
-    compound1: string;
-    compound2: string;
+export type DeleteFitRequest = SystemIdentifier & {
     model_name: string;
 };

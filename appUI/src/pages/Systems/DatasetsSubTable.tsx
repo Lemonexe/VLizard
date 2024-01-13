@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
 import { spacingN } from '../../adapters/MUITheme.tsx';
+import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { DatasetTable } from '../../adapters/api/types/VLE.ts';
 import { DeleteDatasetButton } from './DeleteDatasetButton.tsx';
 import { EditDatasetButton } from './EditDatasetButton.tsx';
@@ -16,7 +17,7 @@ const DenseTableHeadCell = styled(TableCell)({
     border: 'unset',
 });
 
-type DatasetsSubTableProps = { compound1: string; compound2: string; datasets: DatasetTable[] };
+type DatasetsSubTableProps = SystemIdentifier & { datasets: DatasetTable[] };
 
 export const DatasetsSubTable: FC<DatasetsSubTableProps> = ({ compound1, compound2, datasets }) => (
     <Table>

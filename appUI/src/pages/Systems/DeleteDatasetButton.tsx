@@ -1,13 +1,11 @@
 import { FC, useCallback, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVLE } from '../../adapters/api/useVLE.ts';
-import { DeleteVLERequest } from '../../adapters/api/types/VLE.ts';
+import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
 import { DeleteIconButton } from '../../components/Mui/DeleteIconButton.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 
-type DeleteDatasetButtonProps = DeleteVLERequest & { dataset: string };
-
-export const DeleteDatasetButton: FC<DeleteDatasetButtonProps> = ({ compound1, compound2, dataset }) => {
+export const DeleteDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound2, dataset }) => {
     const { mutate } = useDeleteVLE();
     const [open, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), []);
