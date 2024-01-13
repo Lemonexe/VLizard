@@ -1,9 +1,15 @@
-import { FC, useState } from 'react';
-import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
+import { FC, useMemo, useState, useCallback } from 'react';
+import Spreadsheet from 'react-spreadsheet';
+import { Autocomplete, Box, Button, Dialog, DialogContent, Stack, TextField } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
+import { ProminentDialogActions } from '../../components/Mui/ProminentDialogActions.tsx';
+import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+import { generateEmptyCells, SpreadsheetData, transposeMatrix } from '../../adapters/spreadsheet.ts';
+
+const SpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
@@ -34,11 +40,13 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     origDataset,
 }) => {
     const { compoundNames, findDataset, systemNames } = useData();
-    const modifyingSystem = Boolean(origCompound1 && origCompound2);
-    const modifyingDataset = Boolean(modifyingSystem && origDataset);
     const [compound1, setCompound1] = useState(origCompound1 ?? '');
     const [compound2, setCompound2] = useState(origCompound2 ?? '');
     const [datasetName, setDatasetName] = useState(origDataset ?? '');
+
+    // CHECKS
+    const modifyingSystem = Boolean(origCompound1 && origCompound2);
+    const modifyingDataset = Boolean(modifyingSystem && origDataset);
 
     // does system differ from the orig, if specified?
     const isSystemChanged = () => modifyingSystem && (compound1 !== origCompound1 || compound2 !== origCompound2);
@@ -51,8 +59,10 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const willOverwriteDataset = (newDatasetName: string) =>
         (isDataChanged() || !modifyingDataset) && findDataset(compound1, compound2, newDatasetName);
     const areCompoundsSame = () => compound1.length > 0 && compound1 === compound2;
+    // overall error check
     const isError = () => areCompoundsSame();
 
+    // ACTIONS
     const restoreOrig = () => {
         origCompound1 && setCompound1(origCompound1);
         origCompound2 && setCompound2(origCompound2);
@@ -63,10 +73,30 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         setCompound1(compound2);
     };
 
+    // SPREADSHEET
+    const getInitialData = (): SpreadsheetData => {
+        if (!modifyingDataset) return generateEmptyCells(1, 4);
+        const ds = findDataset(compound1, compound2, datasetName);
+        if (!ds) return generateEmptyCells(1, 4);
+        const rows = [ds.p, ds.T, ds.x_1, ds.y_1];
+        const cols = transposeMatrix(rows);
+        return cols.map((row) => row.map((cell) => ({ value: cell })));
+    };
+    const initialData = useMemo(getInitialData, []);
+    const [data, setData] = useState<SpreadsheetData>(getInitialData);
+    const [touched, setTouched] = useState(false);
+    const handleChange = useCallback((newData: SpreadsheetData) => {
+        const normalizedData = newData.map((row) => row.slice(0, 4));
+        setData(normalizedData);
+        setTouched(true);
+    }, []);
+
     return (
         <Dialog fullScreen open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>
-                {modifyingDataset ? 'Edit dataset' : modifyingSystem ? 'Add a dataset' : 'Add a system'}
+                {modifyingDataset
+                    ? 'Edit existing dataset'
+                    : `Add a new dataset (${modifyingSystem ? 'existing' : 'new'} binary system)`}
             </DialogTitleWithX>
             <DialogContent>
                 <Stack direction="column" gap={2} pt={1}>
@@ -124,17 +154,25 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     </Stack>
                 </Stack>
                 <Box pt={2}>
-                    <p>Here be table. Todo.</p>
+                    <Stack direction="row" gap={2}>
+                        <Spreadsheet data={data} onChange={handleChange} columnLabels={SpreadsheetHeaders} />
+                        <SpreadsheetControls
+                            initialData={modifyingDataset ? initialData : undefined}
+                            setData={setData}
+                            touched={touched}
+                            setTouched={setTouched}
+                        />
+                    </Stack>
                 </Box>
             </DialogContent>
-            <DialogActions>
+            <ProminentDialogActions>
                 <Button onClick={handleClose} variant="outlined">
                     Cancel
                 </Button>
                 <Button onClick={handleClose} variant="contained" disabled={isError()}>
                     Save
                 </Button>
-            </DialogActions>
+            </ProminentDialogActions>
         </Dialog>
     );
 };
