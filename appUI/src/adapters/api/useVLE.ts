@@ -8,22 +8,21 @@ import {
     VLEAnalysisRequest,
     VLEAnalysisResponse,
 } from './types/VLE.ts';
-import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
+import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const getVLESystemsKey = 'Binary systems data'; // also a description
 
 export const useGetVLESystems = () => {
-    const handleApiError = useHandleApiError();
-    return useQuery(getVLESystemsKey, async () => {
-        try {
+    const pushNotification = useNotifications();
+    return useQuery(
+        getVLESystemsKey,
+        async () => {
             const { data } = await axios.get<GetVLESystemsResponse>(hostName + '/vle');
             return data;
-        } catch (e) {
-            handleApiError(e);
-            throw e;
-        }
-    });
+        },
+        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+    );
 };
 
 export const useVLEAnalysis = () =>

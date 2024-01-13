@@ -8,22 +8,21 @@ import {
     VaporAnalysisRequest,
     VaporAnalysisResponse,
 } from './types/vapor.ts';
-import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
+import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const getVaporModelsKey = 'Pure compounds data'; // also a description
 
 export const useGetVaporModels = () => {
-    const handleApiError = useHandleApiError();
-    return useQuery(getVaporModelsKey, async () => {
-        try {
+    const pushNotification = useNotifications();
+    return useQuery(
+        getVaporModelsKey,
+        async () => {
             const { data } = await axios.get<GetVaporModelsResponse>(hostName + '/vapor');
             return data;
-        } catch (e) {
-            handleApiError(e);
-            throw e;
-        }
-    });
+        },
+        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+    );
 };
 
 export const useVaporAnalysis = () =>

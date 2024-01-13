@@ -2,22 +2,21 @@ import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNotifications } from '../NotificationContext.tsx';
 import { DeleteFitRequest, FitAnalysisRequest, FitAnalysisResponse, GetPersistedFitsResponse } from './types/fit.ts';
-import { useHandleApiError } from './helpers/getApiErrorMessage.ts';
+import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const getPersistedFitsKey = 'VLE regressions data'; // also a description
 
 export const useGetPersistedFits = () => {
-    const handleApiError = useHandleApiError();
-    return useQuery(getPersistedFitsKey, async () => {
-        try {
+    const pushNotification = useNotifications();
+    return useQuery(
+        getPersistedFitsKey,
+        async () => {
             const { data } = await axios.get<GetPersistedFitsResponse>(hostName + '/fit');
             return data;
-        } catch (e) {
-            handleApiError(e);
-            throw e;
-        }
-    });
+        },
+        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+    );
 };
 
 export const useFitAnalysis = () => {
