@@ -9,7 +9,7 @@ const getDuration = (notification: Notification): number =>
 
 type Notification = {
     message: ReactNode;
-    severity: AlertColor;
+    severity?: AlertColor;
     duration?: number;
 };
 

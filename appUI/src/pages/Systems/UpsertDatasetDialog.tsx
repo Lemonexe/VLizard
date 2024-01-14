@@ -1,4 +1,4 @@
-import { FC, useMemo, useState, useCallback } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Autocomplete, Box, Button, Dialog, DialogContent, Stack, TextField } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
@@ -7,7 +7,17 @@ import { ProminentDialogActions } from '../../components/Mui/ProminentDialogActi
 import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
-import { generateEmptyCells, SpreadsheetData, transposeMatrix } from '../../adapters/spreadsheet.ts';
+import {
+    checkIsSpreadsheetDataWhole,
+    generateEmptyCells,
+    matrixToNumerical,
+    matrixToSpreadsheetData,
+    SpreadsheetData,
+    spreadsheetDataToMatrix,
+    transposeMatrix,
+} from '../../adapters/spreadsheet.ts';
+import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
+import { useNotifications } from '../../adapters/NotificationContext.tsx';
 
 const SpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 
@@ -59,28 +69,24 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const willOverwriteDataset = (newDatasetName: string) =>
         (isDataChanged() || !modifyingDataset) && findDataset(compound1, compound2, newDatasetName);
     const areCompoundsSame = () => compound1.length > 0 && compound1 === compound2;
-    // overall error check
-    const isError = () => areCompoundsSame();
 
     // ACTIONS
-    const restoreOrig = () => {
+    const restoreOrig = useCallback(() => {
         origCompound1 && setCompound1(origCompound1);
         origCompound2 && setCompound2(origCompound2);
         origDataset && setDatasetName(origDataset);
-    };
-    const swapSystem = () => {
+    }, [origCompound1, origCompound2, origDataset]);
+    const swapSystem = useCallback(() => {
         setCompound2(compound1);
         setCompound1(compound2);
-    };
+    }, [compound1, compound2]);
 
     // SPREADSHEET
     const getInitialData = (): SpreadsheetData => {
         if (!modifyingDataset) return generateEmptyCells(1, 4);
         const ds = findDataset(compound1, compound2, datasetName);
         if (!ds) return generateEmptyCells(1, 4);
-        const rows = [ds.p, ds.T, ds.x_1, ds.y_1];
-        const cols = transposeMatrix(rows);
-        return cols.map((row) => row.map((cell) => ({ value: cell })));
+        return matrixToSpreadsheetData(transposeMatrix([ds.p, ds.T, ds.x_1, ds.y_1]));
     };
     const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
@@ -90,6 +96,24 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         setData(normalizedData);
         setTouched(true);
     }, []);
+    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+
+    // OVERALL ERROR CHECK
+    const isError = () => !isDataWhole || areCompoundsSame();
+
+    // MUTATION
+    const pushNotification = useNotifications();
+    const { mutate } = useUpsertVLEDataset();
+    const handleSave = useCallback(() => {
+        const [p, T, x_1, y_1] = matrixToNumerical(transposeMatrix(spreadsheetDataToMatrix(data)));
+        const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
+        mutate(ds, {
+            onSuccess: () => {
+                pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
+                handleClose();
+            },
+        });
+    }, [compound1, compound2, datasetName, data]);
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose}>
@@ -164,12 +188,17 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         />
                     </Stack>
                 </Box>
+                {!isDataWhole && data.length > 1 && (
+                    <Box pt={2}>
+                        <ErrorLabel title="Data is incomplete!" />
+                    </Box>
+                )}
             </DialogContent>
             <ProminentDialogActions>
                 <Button onClick={handleClose} variant="outlined">
                     Cancel
                 </Button>
-                <Button onClick={handleClose} variant="contained" disabled={isError()}>
+                <Button onClick={handleSave} variant="contained" disabled={isError()}>
                     Save
                 </Button>
             </ProminentDialogActions>

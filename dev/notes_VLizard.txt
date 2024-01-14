@@ -5,3 +5,5 @@ read/update api for config (only for user settings)
 fetch available models for fitting
 
 spreadsheet.ts jest || vitest
+
+optimize horrible rerenders of UpsertDatasetDialog

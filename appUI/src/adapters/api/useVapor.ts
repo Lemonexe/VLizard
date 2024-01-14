@@ -37,7 +37,7 @@ export const useUpdateVaporModel = () => {
     return useMutation(
         'updateVaporModel',
         async (payload: UpdateVaporModelRequest) => {
-            await axios.put(hostName + '/vapor', { data: payload });
+            await axios.put(hostName + '/vapor', payload);
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),

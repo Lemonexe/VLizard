@@ -37,7 +37,7 @@ export const useUpsertVLEDataset = () => {
     return useMutation(
         'upsertVLEDataset',
         async (payload: UpsertVLEDatasetRequest) => {
-            await axios.post(hostName + '/vle', { data: payload });
+            await axios.post(hostName + '/vle', payload);
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getVLESystemsKey),
