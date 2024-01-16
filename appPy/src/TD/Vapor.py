@@ -15,11 +15,12 @@ class Vapor(Result):
         compound (str): compound name
         """
         super().__init__()
-        self.keys_to_serialize = ['compound', 'T_min', 'T_max', 'T_boil', 'T_tab', 'p_tab']
+        self.keys_to_serialize = ['compound', 'model_name', 'T_min', 'T_max', 'T_boil', 'T_tab', 'p_tab']
 
         self.compound = compound
 
         self.model, self.T_min, self.T_max, self.params = get_preferred_vapor_model(compound)
+        self.model_name = self.model.name
         self.ps_fun = lambda T: self.model.fun(T, *self.params)  # p [kPa] = f(T [K])
 
         self.T_boil = self.get_T_boil()

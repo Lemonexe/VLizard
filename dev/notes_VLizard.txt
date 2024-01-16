@@ -7,3 +7,8 @@ fetch available models for fitting
 spreadsheet.ts jest || vitest
 
 optimize horrible rerenders of UpsertDatasetDialog
+	Fullscreen dialogs: maybe disable esc + backdrop click by supplying () => {}, close only by X and Cancel and unmount Component
+
+bump react-query to @Tanstack react-query
+
+significant digits instead of fixed, C UUC

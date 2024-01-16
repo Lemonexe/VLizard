@@ -16,6 +16,7 @@ export type VaporAnalysisRequest = { compound: string };
 
 export type VaporAnalysisResponse = AnalysisResult & {
     compound: string;
+    model_name: string;
     T_min: number;
     T_max: number;
     T_boil: number;
