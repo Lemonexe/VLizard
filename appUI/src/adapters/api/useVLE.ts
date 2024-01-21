@@ -8,20 +8,20 @@ import {
     VLEAnalysisRequest,
     VLEAnalysisResponse,
 } from './types/VLE.ts';
-import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
+import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const getVLESystemsKey = 'Binary systems data'; // also a description
 
 export const useGetVLESystems = () => {
-    const pushNotification = useNotifications();
+    const onError = useNotifyErrorMessage();
     return useQuery(
         getVLESystemsKey,
         async () => {
             const { data } = await axios.get<GetVLESystemsResponse>(hostName + '/vle');
             return data;
         },
-        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+        { onError },
     );
 };
 

@@ -9,32 +9,32 @@ import {
     VaporAnalysisRequest,
     VaporAnalysisResponse,
 } from './types/vapor.ts';
-import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
+import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const getVaporModelsKey = 'Pure compounds data'; // also a description
 
 export const useGetVaporModels = () => {
-    const pushNotification = useNotifications();
+    const onError = useNotifyErrorMessage();
     return useQuery(
         getVaporModelsKey,
         async () => {
             const { data } = await axios.get<GetVaporModelsResponse>(hostName + '/vapor');
             return data;
         },
-        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+        { onError },
     );
 };
 
 export const useGetVaporModelDefs = () => {
-    const pushNotification = useNotifications();
+    const onError = useNotifyErrorMessage();
     return useQuery(
         'Vapor pressure model definitions', // static app metadata, will not be requeried
         async () => {
             const { data } = await axios.get<GetVaporModelDefsResponse>(hostName + '/vapor/definitions');
             return data;
         },
-        { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
+        { onError },
     );
 };
 

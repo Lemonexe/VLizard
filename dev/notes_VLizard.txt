@@ -11,9 +11,4 @@ optimize horrible rerenders of UpsertDatasetDialog
 
 bump react-query to @Tanstack react-query
 
-significant digits instead of fixed, C UUC
-
-abstract
-    { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
-
 py: on upsert compound delete old one

@@ -5,13 +5,14 @@ import { Download } from '@mui/icons-material';
 import { generateTooltipContent, responsiveLineChartProps } from '../../adapters/io/charts.tsx';
 import { downloadSvg } from '../../adapters/io/download.ts';
 import { K2C } from '../../adapters/logic/units.ts';
+import { toSigDgts } from '../../adapters/logic/numbers.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
 
 const TooltipContent = generateTooltipContent(({ x, y }) => (
     <>
-        {x.toFixed(1)} °C
+        {toSigDgts(x, 3)} °C
         <br />
-        {y.toFixed(0)} kPa
+        {toSigDgts(y, 3)} kPa
     </>
 ));
 const xLabel = { value: 't / °C', position: 'bottom', offset: 5 };

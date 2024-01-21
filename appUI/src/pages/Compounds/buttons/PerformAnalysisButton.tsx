@@ -3,8 +3,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
 import { useVaporAnalysis } from '../../../adapters/api/useVapor.ts';
 import { VaporAnalysisResponse } from '../../../adapters/api/types/vapor.ts';
-import { useNotifications } from '../../../contexts/NotificationContext.tsx';
-import { getApiErrorMessage } from '../../../adapters/api/helpers/getApiErrorMessage.ts';
+import { useNotifyErrorMessage } from '../../../adapters/api/helpers/getApiErrorMessage.ts';
 import { VaporAnalysisDialog } from '../VaporAnalysisDialog.tsx';
 
 type PerformAnalysisButtonProps = { compound: string };
@@ -12,7 +11,7 @@ type PerformAnalysisButtonProps = { compound: string };
 export const PerformAnalysisButton: FC<PerformAnalysisButtonProps> = ({ compound }) => {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState<VaporAnalysisResponse | null>(null);
-    const pushNotification = useNotifications();
+    const onError = useNotifyErrorMessage();
     const { mutate } = useVaporAnalysis();
 
     const performAnalysis = useCallback(() => {
@@ -23,9 +22,7 @@ export const PerformAnalysisButton: FC<PerformAnalysisButtonProps> = ({ compound
                     setOpen(true);
                     setData(response);
                 },
-                onError: (e) => {
-                    pushNotification({ message: `Error: ${getApiErrorMessage(e)}}`, severity: 'error' });
-                },
+                onError,
             },
         );
     }, [compound, mutate]);
