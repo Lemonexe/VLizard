@@ -1,5 +1,4 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import Spreadsheet from 'react-spreadsheet';
 import { Autocomplete, Box, Button, Dialog, DialogContent, Stack, TextField } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
@@ -19,8 +18,7 @@ import {
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-
-const spreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
+import { TableSpreadsheet } from './TableSpreadsheet.tsx';
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
@@ -91,11 +89,6 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
     const [touched, setTouched] = useState(false);
-    const handleChange = useCallback((newData: SpreadsheetData) => {
-        const normalizedData = newData.map((row) => row.slice(0, 4));
-        setData(normalizedData);
-        setTouched(true);
-    }, []);
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
     const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
@@ -180,7 +173,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                 </Stack>
                 <Box pt={2}>
                     <Stack direction="row" gap={2}>
-                        <Spreadsheet data={data} onChange={handleChange} columnLabels={spreadsheetHeaders} />
+                        <TableSpreadsheet data={data} setData={setData} setTouched={setTouched} />
                         <SpreadsheetControls
                             initialData={modifyingDataset ? initialData : undefined}
                             setData={setData}

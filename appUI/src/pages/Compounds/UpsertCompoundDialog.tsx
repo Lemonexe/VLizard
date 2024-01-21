@@ -156,7 +156,11 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         </Box>
                     )}
                 </Stack>
-                {modelDef && <ParamsSpreadsheet data={data} setData={setData} model={modelDef} />}
+                {modelDef && (
+                    <Box pt={3}>
+                        <ParamsSpreadsheet data={data} setData={setData} model={modelDef} />
+                    </Box>
+                )}
                 {modelDef && !isDataWhole && (
                     <Box pt={2}>
                         <ErrorLabel title="Data is incomplete!" />

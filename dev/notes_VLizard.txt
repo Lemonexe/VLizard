@@ -1,13 +1,13 @@
 how to use python + electron https://github.com/fyears/electron-python-example
 
+react-spreadsheet BUG report with minimal example
+    https://github.com/iddan/react-spreadsheet/issues/279
+
 read/update api for config (only for user settings)
 
-fetch available models for fitting
+py: fetch available models for fitting
 
 spreadsheet.ts jest || vitest
-
-optimize horrible rerenders of UpsertDatasetDialog
-	Fullscreen dialogs: maybe disable esc + backdrop click by supplying () => {}, close only by X and Cancel and unmount Component
 
 bump react-query to @Tanstack react-query
 
