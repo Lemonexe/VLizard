@@ -5,7 +5,7 @@ import { useGetVLESystems } from '../adapters/api/useVLE.ts';
 import { DatasetTable, GetVLESystemsResponse, VLESystem } from '../adapters/api/types/VLE.ts';
 import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vapor.ts';
 import { GetPersistedFitsResponse } from '../adapters/api/types/fit.ts';
-import { findCompound, findDataset, findSystem, getCompoundNames, getSystemNames } from '../adapters/dataQueries.ts';
+import { findCompound, findDataset, findSystem, listCompounds, listSystems } from '../adapters/logic/dataQueries.ts';
 
 export type DataContextType = {
     compoundNames: string[];
@@ -37,9 +37,9 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const providerValue = useMemo(() => {
         return {
-            compoundNames: getCompoundNames(vaporData),
+            compoundNames: listCompounds(vaporData),
             vaporData,
-            systemNames: getSystemNames(VLEData),
+            systemNames: listSystems(VLEData),
             VLEData,
             fitData,
             vaporDefs,

@@ -1,5 +1,5 @@
 import { QueryKey, useQueryClient } from 'react-query';
-import { useNotifications } from '../../NotificationContext.tsx';
+import { useNotifications } from '../../../contexts/NotificationContext.tsx';
 import { getVaporModelsKey } from '../useVapor.ts';
 import { getPersistedFitsKey } from '../useFit.ts';
 import { getVLESystemsKey } from '../useVLE.ts';

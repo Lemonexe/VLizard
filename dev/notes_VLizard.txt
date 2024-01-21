@@ -4,7 +4,6 @@ read/update api for config (only for user settings)
 
 fetch available models for fitting
 
-
 spreadsheet.ts jest || vitest
 
 optimize horrible rerenders of UpsertDatasetDialog
@@ -14,9 +13,7 @@ bump react-query to @Tanstack react-query
 
 significant digits instead of fixed, C UUC
 
-common type for Dialog props
-
 abstract
     { onError: (e) => pushNotification({ message: getApiErrorMessage(e), severity: 'error' }) },
 
-on upsert compound delete old one
+py: on upsert compound delete old one

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Button } from '@mui/material';
 import { PostAdd } from '@mui/icons-material';
-import { UpsertDatasetDialog } from './UpsertDatasetDialog.tsx';
+import { UpsertDatasetDialog } from '../UpsertDatasetDialog.tsx';
 
 export const AddSystemButton: FC = () => {
     const [open, setOpen] = useState(false);

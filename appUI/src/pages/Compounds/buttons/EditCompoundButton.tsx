@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { Edit } from '@mui/icons-material';
-import { UpsertCompoundDialog } from './UpsertCompoundDialog.tsx';
+import { UpsertCompoundDialog } from '../UpsertCompoundDialog.tsx';
 
 type EditCompoundButtonProps = { compound: string };
 

@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Toolbar, Tooltip } from '@mui/material';
 import { HelpOutline, Home, Settings } from '@mui/icons-material';
-import { spacingN } from '../adapters/MUITheme.tsx';
+import { spacingN } from '../contexts/MUITheme.tsx';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
 import { QueryRefreshButton } from './QueryRefreshButton.tsx';

@@ -15,9 +15,10 @@ import {
     SpreadsheetData,
     spreadsheetDataToMatrix,
     transposeMatrix,
-} from '../../adapters/spreadsheet.ts';
+} from '../../adapters/logic/spreadsheet.ts';
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
-import { useNotifications } from '../../adapters/NotificationContext.tsx';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
 
 const spreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 
@@ -33,9 +34,7 @@ const commonAutoCompleteProps = {
     autoSelect: true,
 };
 
-type UpsertDatasetDialogProps = {
-    open: boolean;
-    handleClose: () => void;
+type UpsertDatasetDialogProps = DialogProps & {
     // defined for Edit/Add dataset, undefined for Add system
     origCompound1?: string;
     origCompound2?: string;

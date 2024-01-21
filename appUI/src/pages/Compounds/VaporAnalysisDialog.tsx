@@ -3,8 +3,9 @@ import { Dialog, DialogContent } from '@mui/material';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { VaporAnalysisDialogResults } from './VaporAnalysisDialogResults.tsx';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
 
-type VaporAnalysisDialogProps = { data: VaporAnalysisResponse | null; open: boolean; handleClose: () => void };
+type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse | null };
 
 export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, handleClose }) => {
     if (!data) return null;

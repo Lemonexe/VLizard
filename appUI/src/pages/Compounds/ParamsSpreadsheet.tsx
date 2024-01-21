@@ -1,7 +1,7 @@
 import { Dispatch, FC, useCallback } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Box } from '@mui/material';
-import { SpreadsheetData } from '../../adapters/spreadsheet.ts';
+import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { VaporModelDef } from '../../adapters/api/types/vapor.ts';
 
 type ParamsSpreadsheetProps = {

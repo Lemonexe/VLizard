@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { TableView } from '@mui/icons-material';
-import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
-import { UpsertDatasetDialog } from './UpsertDatasetDialog.tsx';
+import { DatasetIdentifier } from '../../../adapters/api/types/common.ts';
+import { UpsertDatasetDialog } from '../UpsertDatasetDialog.tsx';
 
 export const EditDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound2, dataset }) => {
     const [open, setOpen] = useState(false);

@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { Collapse, IconButton, Stack, styled, TableCell, TableRow } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { spacingN } from '../../adapters/MUITheme.tsx';
+import { spacingN } from '../../contexts/MUITheme.tsx';
 import { WarningTooltip } from '../../components/TooltipIcons.tsx';
 import { VLESystem } from '../../adapters/api/types/VLE.ts';
 import { useData } from '../../contexts/DataContext.tsx';
-import { DeleteSystemButton } from './DeleteSystemButton.tsx';
+import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
-import { AddDatasetButton } from './AddDatasetButton.tsx';
+import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
 
 type ValidatedCompoundNameProps = { compound: string };
 const ValidatedCompoundName: FC<ValidatedCompoundNameProps> = ({ compound }) => {

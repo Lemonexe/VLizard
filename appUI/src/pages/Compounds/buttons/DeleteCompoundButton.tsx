@@ -1,19 +1,20 @@
 import { FC, useCallback, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
-import { useDeleteVLE } from '../../adapters/api/useVLE.ts';
-import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
-import { DeleteIconButton } from '../../components/Mui/DeleteIconButton.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { useDeleteVaporModel } from '../../../adapters/api/useVapor.ts';
+import { DeleteVaporModelRequest } from '../../../adapters/api/types/vapor.ts';
+import { DeleteIconButton } from '../../../components/Mui/DeleteIconButton.tsx';
+import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 
-export const DeleteDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound2, dataset }) => {
-    const { mutate } = useDeleteVLE();
+type DeleteCompoundButtonProps = DeleteVaporModelRequest;
+
+export const DeleteCompoundButton: FC<DeleteCompoundButtonProps> = ({ compound, model_name }) => {
+    const { mutate } = useDeleteVaporModel();
     const [open, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), []);
     const handleDelete = useCallback(
-        () => mutate({ compound1, compound2, dataset }, { onSettled: handleClose }),
-        [compound1, compound2, dataset, mutate],
+        () => mutate({ compound, model_name }, { onSettled: handleClose }),
+        [compound, model_name, mutate],
     );
-    const system = `${compound1}-${compound2}`;
 
     return (
         <>
@@ -21,15 +22,15 @@ export const DeleteDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitleWithX handleClose={handleClose}>
-                    Delete dataset <q>{dataset}</q>?
+                    Delete compound <q>{compound}</q>?
                 </DialogTitleWithX>
                 <DialogContent>
                     <Alert severity="warning" sx={{ mb: 2 }}>
                         This action cannot be undone!
                     </Alert>
-                    Are you sure you want to delete the dataset <q>{dataset}</q>
+                    Are you sure you want to delete the compound <q>{compound}</q>
                     <br />
-                    from the system <q>{system}</q>?
+                    and its vapor pressure model <q>{model_name}</q>?
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} variant="outlined">

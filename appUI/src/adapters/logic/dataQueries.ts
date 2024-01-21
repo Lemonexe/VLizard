@@ -1,10 +1,10 @@
-import { DatasetTable, GetVLESystemsResponse, VLESystem } from './api/types/VLE.ts';
-import { GetVaporModelsResponse, VaporModel } from './api/types/vapor.ts';
+import { DatasetTable, GetVLESystemsResponse, VLESystem } from '../api/types/VLE.ts';
+import { GetVaporModelsResponse, VaporModel } from '../api/types/vapor.ts';
 
-export const getCompoundNames = (vaporData?: GetVaporModelsResponse): string[] =>
+export const listCompounds = (vaporData?: GetVaporModelsResponse): string[] =>
     vaporData?.map(({ compound }) => compound) ?? [];
 
-export const getSystemNames = (VLEData?: GetVLESystemsResponse): string[] =>
+export const listSystems = (VLEData?: GetVLESystemsResponse): string[] =>
     VLEData?.map(({ system_name }) => system_name) ?? [];
 
 export const findCompound = (comp: string, vaporData?: GetVaporModelsResponse): VaporModel | null =>

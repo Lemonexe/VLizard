@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
-import { spacingN } from '../../adapters/MUITheme.tsx';
+import { spacingN } from '../../contexts/MUITheme.tsx';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { DatasetTable } from '../../adapters/api/types/VLE.ts';
-import { DeleteDatasetButton } from './DeleteDatasetButton.tsx';
-import { EditDatasetButton } from './EditDatasetButton.tsx';
+import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
+import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
 
 const DenseTableCell = styled(TableCell)({
     padding: spacingN(0.25),

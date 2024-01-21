@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNotifications } from '../NotificationContext.tsx';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import {
     DeleteVaporModelRequest,
     GetVaporModelDefsResponse,

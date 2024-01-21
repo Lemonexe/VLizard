@@ -1,11 +1,11 @@
 import { FC, useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
-import { useVaporAnalysis } from '../../adapters/api/useVapor.ts';
-import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
-import { useNotifications } from '../../adapters/NotificationContext.tsx';
-import { getApiErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
-import { VaporAnalysisDialog } from './VaporAnalysisDialog.tsx';
+import { useVaporAnalysis } from '../../../adapters/api/useVapor.ts';
+import { VaporAnalysisResponse } from '../../../adapters/api/types/vapor.ts';
+import { useNotifications } from '../../../contexts/NotificationContext.tsx';
+import { getApiErrorMessage } from '../../../adapters/api/helpers/getApiErrorMessage.ts';
+import { VaporAnalysisDialog } from '../VaporAnalysisDialog.tsx';
 
 type PerformAnalysisButtonProps = { compound: string };
 

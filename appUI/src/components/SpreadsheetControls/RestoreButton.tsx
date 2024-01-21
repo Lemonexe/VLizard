@@ -1,7 +1,7 @@
 import { Dispatch, FC, useState } from 'react';
 import { Button } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/spreadsheet.ts';
+import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 
 type RestoreButtonProps = {
     initialData: SpreadsheetData;

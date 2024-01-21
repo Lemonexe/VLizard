@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Button } from '@mui/material';
 import { PostAdd } from '@mui/icons-material';
-import { UpsertCompoundDialog } from './UpsertCompoundDialog.tsx';
+import { UpsertCompoundDialog } from '../UpsertCompoundDialog.tsx';
 
 export const AddCompoundButton: FC = () => {
     const [open, setOpen] = useState(false);

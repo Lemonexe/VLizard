@@ -1,6 +1,6 @@
 import { Dispatch, FC } from 'react';
 import { Box, Stack } from '@mui/material';
-import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/spreadsheet.ts';
+import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { AddRowsButton } from './AddRowsButton.tsx';
 import { TrimButton } from './TrimButton.tsx';
 import { RestoreButton } from './RestoreButton.tsx';

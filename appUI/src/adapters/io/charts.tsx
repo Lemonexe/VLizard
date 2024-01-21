@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { ContentType } from 'recharts/types/component/Tooltip';
 import { Box, styled } from '@mui/material';
-import { spacingN } from './MUITheme.tsx';
+import { spacingN } from '../../contexts/MUITheme.tsx';
 
 // common props for a 4:3 rectangular responsive chart
 export const responsiveLineChartProps = {

@@ -2,9 +2,9 @@ import { FC, useMemo, useRef } from 'react';
 import { Line, LineChart, Tooltip as ChartTooltip, XAxis, YAxis } from 'recharts';
 import { Box, Button, Tooltip as MuiTooltip } from '@mui/material';
 import { Download } from '@mui/icons-material';
-import { generateTooltipContent, responsiveLineChartProps } from '../../adapters/charts.tsx';
-import { downloadSvg } from '../../adapters/download.ts';
-import { K2C } from '../../adapters/units.ts';
+import { generateTooltipContent, responsiveLineChartProps } from '../../adapters/io/charts.tsx';
+import { downloadSvg } from '../../adapters/io/download.ts';
+import { K2C } from '../../adapters/logic/units.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
 
 const TooltipContent = generateTooltipContent(({ x, y }) => (

@@ -20,16 +20,17 @@ import {
     matrixToSpreadsheetData,
     SpreadsheetData,
     spreadsheetDataToMatrix,
-} from '../../adapters/spreadsheet.ts';
-import { useNotifications } from '../../adapters/NotificationContext.tsx';
+} from '../../adapters/logic/spreadsheet.ts';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from './ParamsSpreadsheet.tsx';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
 
 const commonInputStyle = { maxWidth: 300 };
 const numInputStyle = { width: 100 };
-type UpsertCompoundDialogProps = { open: boolean; handleClose: () => void; origCompound?: string };
+type UpsertCompoundDialogProps = DialogProps & { origCompound?: string };
 
 export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompound, open, handleClose }) => {
     // compoundNames & vaporDefs are guaranteed, see CompoundsTable.tsx

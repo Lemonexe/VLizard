@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Button } from '@mui/material';
 import { ContentCut } from '@mui/icons-material';
-import { generateEmptyCells, SetSpreadsheetData } from '../../adapters/spreadsheet.ts';
+import { generateEmptyCells, SetSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 
 type TrimButtonProps = { setData: SetSpreadsheetData };
 

@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { generateEmptyCells, SetSpreadsheetData } from '../../adapters/spreadsheet.ts';
+import { generateEmptyCells, SetSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 
 type AddRowsButtonProps = { setData: SetSpreadsheetData };
 

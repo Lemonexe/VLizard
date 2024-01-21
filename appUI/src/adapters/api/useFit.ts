@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNotifications } from '../NotificationContext.tsx';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DeleteFitRequest, FitAnalysisRequest, FitAnalysisResponse, GetPersistedFitsResponse } from './types/fit.ts';
 import { getApiErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
