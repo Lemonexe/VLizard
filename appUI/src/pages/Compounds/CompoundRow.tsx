@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { TableCell, TableRow } from '@mui/material';
 import { VaporModel } from '../../adapters/api/types/vapor.ts';
 import { DeleteCompoundButton } from './DeleteCompoundButton.tsx';
 import { PerformAnalysisButton } from './PerformAnalysisButton.tsx';
+import { EditCompoundButton } from './EditCompoundButton.tsx';
 
 type CompoundRowProps = { model: VaporModel };
 export const CompoundRow: FC<CompoundRowProps> = ({ model: { compound, model_name } }) => (
@@ -12,9 +12,7 @@ export const CompoundRow: FC<CompoundRowProps> = ({ model: { compound, model_nam
         <TableCell>{model_name}</TableCell>
         <TableCell>
             <PerformAnalysisButton compound={compound} />
-            <Tooltip title="Change or edit vapor pressure model">
-                <IconButton children={<Edit />} />
-            </Tooltip>
+            <EditCompoundButton compound={compound} />
             <DeleteCompoundButton compound={compound} model_name={model_name} />
         </TableCell>
     </TableRow>

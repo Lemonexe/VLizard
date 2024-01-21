@@ -4,9 +4,9 @@ import { useData } from '../../contexts/DataContext.tsx';
 import { CompoundRow } from './CompoundRow.tsx';
 
 export const CompoundsTable: FC = () => {
-    const { vaporData } = useData();
+    const { vaporData, vaporDefs } = useData();
 
-    if (!vaporData) return 'Loading...';
+    if (!vaporData || !vaporDefs) return 'Loading...';
 
     return (
         <Table>

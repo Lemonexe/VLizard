@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from src.TD.Vapor import Vapor
-from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound
+from src.utils.io.yaml import cast_to_jsonable
+from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound, supported_models
 from .helpers.schema_validation import unpack_request_schema
 
 vapor_blueprint = Blueprint('Vapor', __name__, url_prefix='/vapor')
@@ -11,7 +12,7 @@ def get_vapor_models_api():
     """Return all compounds with their vapor pressure models."""
 
     def process_preferred_model(compound_name):
-        """Return dict entries of compound_name: preferred vapor pressure model."""
+        """Serialize vapor model for a compound to dict."""
         model, T_min, T_max, params = get_preferred_vapor_model(compound_name)
         return {
             'compound': compound_name,
@@ -23,6 +24,18 @@ def get_vapor_models_api():
 
     compound_names = get_compound_names()
     payload = [process_preferred_model(compound_name) for compound_name in compound_names]
+    return payload
+
+
+@vapor_blueprint.get('/definitions')
+def get_vapor_model_definitions_api():
+    """Return all supported Vapor_Model definitions."""
+    model2dict = lambda model: {
+        'name': model.name,
+        'params0': cast_to_jsonable(model.params0),
+        'param_names': model.param_names
+    }
+    payload = [model2dict(model) for model in supported_models]
     return payload
 
 

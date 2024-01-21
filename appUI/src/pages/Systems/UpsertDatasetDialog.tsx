@@ -19,14 +19,15 @@ import {
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import { useNotifications } from '../../adapters/NotificationContext.tsx';
 
-const SpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
+const spreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
+const commonInputStyle = { maxWidth: 300 };
 const commonAutoCompleteProps = {
     freeSolo: true,
     fullWidth: true,
-    style: { maxWidth: 300 },
+    style: commonInputStyle,
     forcePopupIcon: true,
     autoHighlight: true,
     autoSelect: true,
@@ -97,9 +98,10 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         setTouched(true);
     }, []);
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
     // OVERALL ERROR CHECK
-    const isError = () => !isDataWhole || areCompoundsSame();
+    const isError = () => !isDataWhole || areCompoundsSame() || isAnyFieldEmpty;
 
     // MUTATION
     const pushNotification = useNotifications();
@@ -116,7 +118,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     }, [compound1, compound2, datasetName, data]);
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <Dialog fullScreen open={open}>
             <DialogTitleWithX handleClose={handleClose}>
                 {modifyingDataset
                     ? 'Edit existing dataset'
@@ -151,7 +153,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                             value={datasetName}
                             onChange={(e) => setDatasetName(e.target.value)}
                             fullWidth
-                            style={{ maxWidth: 300 }}
+                            style={commonInputStyle}
                         />
                         {willOverwriteDataset(datasetName) && (
                             <WarningLabel title="This will overwrite an existing dataset." />
@@ -160,7 +162,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     <Stack gap={1}>
                         {isDataChanged() && (
                             <div>
-                                <InfoLabel title="One of the above was changed. Restore?" />
+                                <InfoLabel title="One of the above was changed (data will be saved as new). Restore?" />
                                 <RestoreButton onClick={restoreOrig} />
                             </div>
                         )}
@@ -179,7 +181,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                 </Stack>
                 <Box pt={2}>
                     <Stack direction="row" gap={2}>
-                        <Spreadsheet data={data} onChange={handleChange} columnLabels={SpreadsheetHeaders} />
+                        <Spreadsheet data={data} onChange={handleChange} columnLabels={spreadsheetHeaders} />
                         <SpreadsheetControls
                             initialData={modifyingDataset ? initialData : undefined}
                             setData={setData}
