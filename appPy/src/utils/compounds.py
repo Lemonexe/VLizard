@@ -73,6 +73,7 @@ def get_model_and_table(model_name):
 def amend_model_table(model_name, compound, T_min, T_max, params):
     """
     Add new row to model table, or update existing row.
+    If the compound exists in other model table, delete it from there.
 
     model_name (str): name of model
     compound (str): compound name
@@ -98,6 +99,14 @@ def amend_model_table(model_name, compound, T_min, T_max, params):
     else:
         raise AppException(f'Multiple {model_name} parameter sets for compound {compound}, only one is permissible!')
 
+    # delete compound from another model table, if it exists there
+    try:
+        currentModel, *_rest = get_preferred_vapor_model(compound)
+        if currentModel.name != model_name: delete_compound(currentModel.name, compound)
+    except AppException:
+        pass  # not found in any other table
+
+    # and finally, save the table
     save_matrix2tsv(table, table_path)
 
 

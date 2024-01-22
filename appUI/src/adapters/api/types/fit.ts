@@ -3,7 +3,7 @@ import { supportedModels } from '../constants.ts';
 
 export type SupportedModelNames = typeof supportedModels;
 
-/* GET */
+/* GET saved optimized models for systems */
 export type PersistedFit = {
     model_name: string;
     input: {
@@ -23,6 +23,16 @@ export type PersistedFitsForSystem = {
 };
 
 export type GetPersistedFitsResponse = PersistedFitsForSystem[];
+
+/* GET general definitions of model types */
+export type VLEModelDef = {
+    name: string;
+    params0: number[];
+    param_names: string[];
+    is_gamma_T_fun: boolean;
+};
+
+export type GetVLEModelDefsResponse = VLEModelDef[];
 
 /* POST ANALYSIS */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {

@@ -1,7 +1,6 @@
 import { AnalysisResult, NamedParams } from './common.ts';
 
-/* GET */
-// instance of model for compound
+/* GET instance of model for compound */
 export type VaporModel = {
     compound: string;
     model_name: string;
@@ -12,7 +11,7 @@ export type VaporModel = {
 
 export type GetVaporModelsResponse = VaporModel[];
 
-// general definition of a model type
+/* GET general definitions of model types */
 export type VaporModelDef = {
     name: string;
     params0: number[];

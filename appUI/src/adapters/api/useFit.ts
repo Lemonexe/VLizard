@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
-import { DeleteFitRequest, FitAnalysisRequest, FitAnalysisResponse, GetPersistedFitsResponse } from './types/fit.ts';
+import {
+    DeleteFitRequest,
+    FitAnalysisRequest,
+    FitAnalysisResponse,
+    GetPersistedFitsResponse,
+    GetVLEModelDefsResponse,
+} from './types/fit.ts';
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
 
@@ -13,6 +19,18 @@ export const useGetPersistedFits = () => {
         getPersistedFitsKey,
         async () => {
             const { data } = await axios.get<GetPersistedFitsResponse>(hostName + '/fit');
+            return data;
+        },
+        { onError },
+    );
+};
+
+export const useGetVLEModelDefs = () => {
+    const onError = useNotifyErrorMessage();
+    return useQuery(
+        'VLE model definitions', // static app metadata, will not be requeried
+        async () => {
+            const { data } = await axios.get<GetVLEModelDefsResponse>(hostName + '/fit/definitions');
             return data;
         },
         { onError },
