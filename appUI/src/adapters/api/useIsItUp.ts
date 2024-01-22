@@ -11,9 +11,9 @@ const failureThreshold = 2;
 
 export const useIsItUp = () => {
     const [failuresInRow, setFailuresInRow] = useState(0);
-    return useQuery(
-        ['isItUp'],
-        async () => {
+    return useQuery({
+        queryKey: ['isItUp'],
+        queryFn: async () => {
             try {
                 await axios.get(hostName + '/is_it_up', { timeout });
                 setFailuresInRow(0);
@@ -24,9 +24,7 @@ export const useIsItUp = () => {
                 return withinTolerance;
             }
         },
-        {
-            retry: Infinity,
-            refetchInterval,
-        },
-    );
+        retry: Infinity,
+        refetchInterval,
+    });
 };

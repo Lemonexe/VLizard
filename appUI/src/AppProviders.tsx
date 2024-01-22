@@ -8,10 +8,10 @@ import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 
 const staleTime = Infinity;
-const cacheTime = 5 * 60 * 1000;
+const gcTime = 5 * 60 * 1000;
 const queryClient = new QueryClient({
     defaultOptions: {
-        queries: { staleTime, cacheTime, retry: 0, networkMode: 'always' },
+        queries: { staleTime, gcTime, retry: 0, networkMode: 'always' },
         mutations: { networkMode: 'always' },
     },
 });

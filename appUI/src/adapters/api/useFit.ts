@@ -16,42 +16,42 @@ export const getPersistedFitsKey = ['VLE regressions data']; // also a descripti
 
 export const useGetPersistedFits = () => {
     const pushNotification = useNotifications();
-    return useQuery(getPersistedFitsKey, async () =>
-        axiosGetWithHandling<GetPersistedFitsResponse>(hostName + '/fit', pushNotification, getPersistedFitsKey[0]),
-    );
+    return useQuery({
+        queryKey: getPersistedFitsKey,
+        queryFn: async () =>
+            axiosGetWithHandling<GetPersistedFitsResponse>(hostName + '/fit', pushNotification, getPersistedFitsKey[0]),
+    });
 };
 
 export const useGetVLEModelDefs = () => {
     const pushNotification = useNotifications();
-    return useQuery(['VLE model definitions'], async () =>
-        axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/definitions', pushNotification),
-    );
+    return useQuery({
+        queryKey: ['VLE model definitions'],
+        queryFn: async () =>
+            axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/definitions', pushNotification),
+    });
 };
 
 export const useFitAnalysis = () => {
     const queryClient = useQueryClient();
-    return useMutation(
-        ['fitAnalysis'],
-        async (payload: FitAnalysisRequest) => {
+    return useMutation({
+        mutationFn: async (payload: FitAnalysisRequest) => {
             const { data } = await axios.post<FitAnalysisResponse>(hostName + '/fit', payload);
             return data;
         },
-        { onSuccess: () => queryClient.invalidateQueries(getPersistedFitsKey) },
-    );
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }),
+    });
 };
 
 export const useDeleteFit = () => {
     const queryClient = useQueryClient();
     const onError = useNotifyErrorMessage();
 
-    return useMutation(
-        ['deleteFit'],
-        async (payload: DeleteFitRequest) => {
+    return useMutation({
+        mutationFn: async (payload: DeleteFitRequest) => {
             await axios.delete(hostName + '/fit', { data: payload });
         },
-        {
-            onSuccess: () => queryClient.invalidateQueries(getPersistedFitsKey),
-            onError,
-        },
-    );
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }),
+        onError,
+    });
 };

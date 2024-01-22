@@ -17,50 +17,50 @@ export const getVaporModelsKey = ['Pure compounds data']; // also a description
 
 export const useGetVaporModels = () => {
     const pushNotification = useNotifications();
-    return useQuery(getVaporModelsKey, async () =>
-        axiosGetWithHandling<GetVaporModelsResponse>(hostName + '/vapor', pushNotification, getVaporModelsKey[0]),
-    );
+    return useQuery({
+        queryKey: getVaporModelsKey,
+        queryFn: async () =>
+            axiosGetWithHandling<GetVaporModelsResponse>(hostName + '/vapor', pushNotification, getVaporModelsKey[0]),
+    });
 };
 
 export const useGetVaporModelDefs = () => {
     const pushNotification = useNotifications();
-    return useQuery(['Vapor pressure model definitions'], async () =>
-        axiosGetWithHandling<GetVaporModelDefsResponse>(hostName + '/vapor/definitions', pushNotification),
-    );
+    return useQuery({
+        queryKey: ['Vapor pressure model definitions'],
+        queryFn: async () =>
+            axiosGetWithHandling<GetVaporModelDefsResponse>(hostName + '/vapor/definitions', pushNotification),
+    });
 };
 
 export const useVaporAnalysis = () =>
-    useMutation(['vaporAnalysis'], async (payload: VaporAnalysisRequest) => {
-        const { data } = await axios.post<VaporAnalysisResponse>(hostName + '/vapor/analysis', payload);
-        return data;
+    useMutation({
+        mutationFn: async (payload: VaporAnalysisRequest) => {
+            const { data } = await axios.post<VaporAnalysisResponse>(hostName + '/vapor/analysis', payload);
+            return data;
+        },
     });
 
 export const useUpdateVaporModel = () => {
     const queryClient = useQueryClient();
     const onError = useNotifyErrorMessage();
-    return useMutation(
-        ['updateVaporModel'],
-        async (payload: UpdateVaporModelRequest) => {
+    return useMutation({
+        mutationFn: async (payload: UpdateVaporModelRequest) => {
             await axios.put(hostName + '/vapor', payload);
         },
-        {
-            onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),
-            onError,
-        },
-    );
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: getVaporModelsKey }),
+        onError,
+    });
 };
 
 export const useDeleteVaporModel = () => {
     const queryClient = useQueryClient();
     const onError = useNotifyErrorMessage();
-    return useMutation(
-        ['deleteVaporModel'],
-        async (payload: DeleteVaporModelRequest) => {
+    return useMutation({
+        mutationFn: async (payload: DeleteVaporModelRequest) => {
             await axios.delete(hostName + '/vapor', { data: payload });
         },
-        {
-            onSuccess: () => queryClient.invalidateQueries(getVaporModelsKey),
-            onError,
-        },
-    );
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: getVaporModelsKey }),
+        onError,
+    });
 };

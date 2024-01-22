@@ -13,7 +13,7 @@ export const useInvalidateAllQueries = () => {
     return async () => {
         await Promise.all(
             queryKeys.map(async (queryKey) => {
-                await queryClient.invalidateQueries(queryKey, undefined, { throwOnError: true });
+                await queryClient.invalidateQueries({ queryKey }, { throwOnError: true });
             }),
         );
         pushNotification({ message: 'Data was refreshed.', severity: 'success' });
