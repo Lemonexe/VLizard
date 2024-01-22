@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@mui/material';
 import { MUITheme } from './contexts/MUITheme.tsx';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
@@ -9,7 +9,12 @@ import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 
 const staleTime = Infinity;
 const cacheTime = 5 * 60 * 1000;
-const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime, cacheTime, retry: 0 } } });
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: { staleTime, cacheTime, retry: 0, networkMode: 'always' },
+        mutations: { networkMode: 'always' },
+    },
+});
 
 export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
     <QueryClientProvider client={queryClient}>

@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
+import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import {
     DeleteFitRequest,
     FitAnalysisRequest,
@@ -8,39 +9,29 @@ import {
     GetPersistedFitsResponse,
     GetVLEModelDefsResponse,
 } from './types/fit.ts';
-import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import { hostName } from './helpers/hostName.ts';
+import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 
-export const getPersistedFitsKey = 'VLE regressions data'; // also a description
+export const getPersistedFitsKey = ['VLE regressions data']; // also a description
 
 export const useGetPersistedFits = () => {
-    const onError = useNotifyErrorMessage();
-    return useQuery(
-        getPersistedFitsKey,
-        async () => {
-            const { data } = await axios.get<GetPersistedFitsResponse>(hostName + '/fit');
-            return data;
-        },
-        { onError },
+    const pushNotification = useNotifications();
+    return useQuery(getPersistedFitsKey, async () =>
+        axiosGetWithHandling<GetPersistedFitsResponse>(hostName + '/fit', pushNotification, getPersistedFitsKey[0]),
     );
 };
 
 export const useGetVLEModelDefs = () => {
-    const onError = useNotifyErrorMessage();
-    return useQuery(
-        'VLE model definitions', // static app metadata, will not be requeried
-        async () => {
-            const { data } = await axios.get<GetVLEModelDefsResponse>(hostName + '/fit/definitions');
-            return data;
-        },
-        { onError },
+    const pushNotification = useNotifications();
+    return useQuery(['VLE model definitions'], async () =>
+        axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/definitions', pushNotification),
     );
 };
 
 export const useFitAnalysis = () => {
     const queryClient = useQueryClient();
     return useMutation(
-        'fitAnalysis',
+        ['fitAnalysis'],
         async (payload: FitAnalysisRequest) => {
             const { data } = await axios.post<FitAnalysisResponse>(hostName + '/fit', payload);
             return data;
@@ -51,15 +42,16 @@ export const useFitAnalysis = () => {
 
 export const useDeleteFit = () => {
     const queryClient = useQueryClient();
-    const pushNotification = useNotifications();
+    const onError = useNotifyErrorMessage();
+
     return useMutation(
-        'deleteFit',
+        ['deleteFit'],
         async (payload: DeleteFitRequest) => {
             await axios.delete(hostName + '/fit', { data: payload });
         },
         {
             onSuccess: () => queryClient.invalidateQueries(getPersistedFitsKey),
-            onError: () => pushNotification({ message: `Error deleting compound!`, severity: 'error' }),
+            onError,
         },
     );
 };

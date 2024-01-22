@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { hostName } from './helpers/hostName.ts';
 
@@ -12,7 +12,7 @@ const failureThreshold = 2;
 export const useIsItUp = () => {
     const [failuresInRow, setFailuresInRow] = useState(0);
     return useQuery(
-        'isItUp',
+        ['isItUp'],
         async () => {
             try {
                 await axios.get(hostName + '/is_it_up', { timeout });

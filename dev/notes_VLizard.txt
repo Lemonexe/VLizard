@@ -6,5 +6,3 @@ react-spreadsheet BUG report with minimal example
 read/update api for config (only for user settings)
 
 spreadsheet.ts jest || vitest
-
-bump react-query to @Tanstack react-query

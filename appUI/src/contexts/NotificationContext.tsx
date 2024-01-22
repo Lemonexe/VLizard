@@ -7,13 +7,14 @@ const ERROR_DURATION = 10_000; // ms
 const getDuration = (notification: Notification): number =>
     notification.severity === 'error' ? ERROR_DURATION : notification.duration || AUTOHIDE_DURATION;
 
-type Notification = {
+export type Notification = {
     message: ReactNode;
     severity?: AlertColor;
     duration?: number;
 };
+export type PushNotification = Dispatch<Notification>;
 
-export const NotificationContext = createContext<Dispatch<Notification> | null>(null);
+export const NotificationContext = createContext<PushNotification | null>(null);
 
 export const useNotifications = () => {
     const notificationContext = useContext(NotificationContext);
