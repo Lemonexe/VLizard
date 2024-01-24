@@ -1,13 +1,28 @@
-import { FC } from 'react';
+import { ElementRef, FC, useRef } from 'react';
+import { LineChart } from 'recharts';
 import { ContentType } from 'recharts/types/component/Tooltip';
 import { Box, styled } from '@mui/material';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
+export const useLineChartRef = () => useRef<ElementRef<typeof LineChart>>(null);
+
+export type Point = Record<string, number>;
+type CreatePoints = (xKey: string, x: number[], yKey: string, y: number[]) => Point[];
+export const createPoints: CreatePoints = (xKey, x, yKey, y) => x.map((val, i) => ({ [xKey]: val, [yKey]: y[i] }));
+export const getAxisRange = (data: number[], significance = 1) => [
+    Math.floor(Math.min(...data) / significance) * significance,
+    Math.ceil(Math.max(...data) / significance) * significance,
+];
+
 // common props for a 4:3 rectangular responsive chart
-export const responsiveLineChartProps = {
+export const chartPropsRect = {
     width: 800,
     height: 600,
     margin: { left: 30, bottom: 30, top: 10, right: 10 }, // left & bottom have to ensure enough room for axis labels
+};
+export const chartPropsSq = {
+    ...chartPropsRect,
+    width: 600,
 };
 
 const TooltipBox = styled(Box)({

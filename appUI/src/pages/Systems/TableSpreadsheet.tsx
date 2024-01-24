@@ -26,10 +26,8 @@ export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({ data, setData, set
     }, []);
 
     // see ParamsSpreadsheet.tsx for explanation of this weirdness
-    return useMemo(() => {
-        // TODO do not commit me
-        console.log('rendering TABLE spreadsheet');
-
-        return <Spreadsheet data={data} onChange={handleChange} columnLabels={spreadsheetHeaders} />;
-    }, [n_R, n_C]);
+    return useMemo(
+        () => <Spreadsheet data={data} onChange={handleChange} columnLabels={spreadsheetHeaders} />,
+        [n_R, n_C],
+    );
 };

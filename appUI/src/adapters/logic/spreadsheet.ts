@@ -52,3 +52,20 @@ export const checkIsSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
     // matrix has empty cells
     return data.every((row) => !row.some((cell) => cell?.value === undefined || cell.value === ''));
 };
+
+/**
+ * Make a matrix read-only
+ */
+export const makeReadOnly = (data: SpreadsheetData): SpreadsheetData =>
+    data.map((row) => row.map((cell) => ({ value: cell?.value, readOnly: true })));
+
+/**
+ * Shorthand for creating a column SpreadsheetData from array of arrays (which means array of rows)
+ */
+export const fromRows = (rows: Matrix<CellValueType>): SpreadsheetData =>
+    matrixToSpreadsheetData(transposeMatrix(rows));
+
+/**
+ * Shorthand for parsing SpreadsheetData to numerical matrix
+ */
+export const toNumMatrix = (data: SpreadsheetData): number[][] => matrixToNumerical(spreadsheetDataToMatrix(data));

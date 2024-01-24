@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
-import { QueryStats } from '@mui/icons-material';
+import { styled, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { DatasetTable } from '../../adapters/api/types/VLE.ts';
-import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
+import { PerformTDTestButton } from './buttons/PerformAnalysisButton.tsx';
 import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
+import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
 
 const DenseTableCell = styled(TableCell)({
     padding: spacingN(0.25),
@@ -34,9 +34,7 @@ export const DatasetsSubTable: FC<DatasetsSubTableProps> = ({ compound1, compoun
                     <DenseTableCell>{dataset.name}</DenseTableCell>
                     <DenseTableCell>{dataset.x_1.length}</DenseTableCell>
                     <DenseTableCell>
-                        <Tooltip title="Perform analysis">
-                            <IconButton children={<QueryStats />} />
-                        </Tooltip>
+                        <PerformTDTestButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                         <EditDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                         <DeleteDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                     </DenseTableCell>

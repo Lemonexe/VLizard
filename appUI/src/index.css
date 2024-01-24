@@ -22,8 +22,13 @@ h2 {
     color: #222;
 }
 h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.3rem;
+    font-weight: 400;
     margin: 0;
     color: #444;
+}
+
+/* Override gray text for readonly spreadsheet cells */
+.Spreadsheet__cell.Spreadsheet__cell--readonly {
+    color: inherit;
 }

@@ -4,3 +4,5 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
 read/update api for config (only for user settings)
+
+maybe drop recharts alltogether, and just open the pyplot charts as new windows directly from the python backend..

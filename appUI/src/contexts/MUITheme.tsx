@@ -20,6 +20,9 @@ export const MUITheme = createTheme({
         MuiIconButton: {
             defaultProps: { color: 'primary' },
         },
+        MuiDialogTitle: {
+            styleOverrides: { root: { fontSize: '1.3rem' } },
+        },
         MuiDialogActions: {
             styleOverrides: {
                 root: {

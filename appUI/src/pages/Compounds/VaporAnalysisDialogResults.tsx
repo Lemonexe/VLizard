@@ -1,12 +1,11 @@
-import { FC, useMemo, useRef } from 'react';
+import { FC } from 'react';
 import { Line, LineChart, Tooltip as ChartTooltip, XAxis, YAxis } from 'recharts';
-import { Box, Button, Tooltip as MuiTooltip } from '@mui/material';
-import { Download } from '@mui/icons-material';
-import { generateTooltipContent, responsiveLineChartProps } from '../../adapters/io/charts.tsx';
-import { downloadSvg } from '../../adapters/io/download.ts';
+import { Box, Tooltip as MuiTooltip } from '@mui/material';
+import { chartPropsRect, createPoints, generateTooltipContent, useLineChartRef } from '../../adapters/io/charts.tsx';
 import { K2C } from '../../adapters/logic/units.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
+import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
 
 const TooltipContent = generateTooltipContent(({ x, y }) => (
     <>
@@ -18,25 +17,14 @@ const TooltipContent = generateTooltipContent(({ x, y }) => (
 const xLabel = { value: 't / °C', position: 'bottom', offset: 5 };
 const yLabel = { value: 'p / kPa', position: 'left', angle: -90, offset: 10 };
 
-type Point = { t: number; p: number };
 type VaporAnalysisDialogResultsProps = { data: VaporAnalysisResponse };
 
 export const VaporAnalysisDialogResults: FC<VaporAnalysisDialogResultsProps> = ({ data }) => {
-    const chartRef = useRef(null);
-    const points: Point[] = useMemo(
-        () => data.T_tab.map((T, i) => ({ t: K2C(T), p: data.p_tab[i] })),
-        [data.T_tab, data.p_tab],
-    );
+    const t = data.T_tab.map(K2C);
+    const points = createPoints('t', t, 'p', data.p_tab);
 
-    const handleDownload = () => {
-        if (!chartRef.current) return;
-        // IDK how to properly type the ref placed on LineChart, which has current.container = div
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const svg: SVGElement = chartRef.current.container.firstChild;
-        const fileName = `chart ${data.compound} ${data.model_name}`;
-        downloadSvg(svg, fileName);
-    };
+    const chartRef = useLineChartRef();
+    const fileName = `chart ${data.compound} ${data.model_name}`;
 
     return (
         <>
@@ -61,8 +49,8 @@ export const VaporAnalysisDialogResults: FC<VaporAnalysisDialogResultsProps> = (
             <LineChart
                 data={points}
                 ref={chartRef}
-                {...responsiveLineChartProps}
-                style={{ minHeight: 400, maxHeight: 600, height: '60vh' }}
+                {...chartPropsRect}
+                style={{ minHeight: 600, maxHeight: 600, height: '60vh' }}
             >
                 <XAxis dataKey="t" type="number" label={xLabel} />
                 <YAxis dataKey="p" type="number" label={yLabel} />
@@ -70,9 +58,7 @@ export const VaporAnalysisDialogResults: FC<VaporAnalysisDialogResultsProps> = (
                 <Line type="linear" dataKey="p" stroke="#1690AE" dot={false} />
             </LineChart>
             <Box pt={3}>
-                <Button onClick={handleDownload} variant="outlined" startIcon={<Download />}>
-                    Save SVG
-                </Button>
+                <DownloadChartButton chartRef={chartRef} fileName={fileName} />
             </Box>
         </>
     );

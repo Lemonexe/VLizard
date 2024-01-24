@@ -16,10 +16,9 @@ import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
     checkIsSpreadsheetDataWhole,
-    matrixToNumerical,
     matrixToSpreadsheetData,
     SpreadsheetData,
-    spreadsheetDataToMatrix,
+    toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
@@ -71,7 +70,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const pushNotification = useNotifications();
     const { mutate } = useUpdateVaporModel();
     const handleSave = useCallback(() => {
-        const params = matrixToNumerical(spreadsheetDataToMatrix(data))[0];
+        const params = toNumMatrix(data)[0];
         mutate(
             { compound, model_name: model, params, T_min, T_max },
             {
@@ -112,7 +111,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     </Stack>
                     <FormControl fullWidth>
                         <InputLabel id="model">Model type</InputLabel>
-                        <Select<string>
+                        <Select
                             labelId="model"
                             label="Model type"
                             value={model}

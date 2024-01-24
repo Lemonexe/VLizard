@@ -8,11 +8,10 @@ import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 import {
     checkIsSpreadsheetDataWhole,
+    fromRows,
     generateEmptyCells,
-    matrixToNumerical,
-    matrixToSpreadsheetData,
     SpreadsheetData,
-    spreadsheetDataToMatrix,
+    toNumMatrix,
     transposeMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
@@ -84,7 +83,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         if (!modifyingDataset) return generateEmptyCells(1, 4);
         const ds = findDataset(compound1, compound2, datasetName);
         if (!ds) return generateEmptyCells(1, 4);
-        return matrixToSpreadsheetData(transposeMatrix([ds.p, ds.T, ds.x_1, ds.y_1]));
+        return fromRows([ds.p, ds.T, ds.x_1, ds.y_1]);
     };
     const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
@@ -99,7 +98,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const pushNotification = useNotifications();
     const { mutate } = useUpsertVLEDataset();
     const handleSave = useCallback(() => {
-        const [p, T, x_1, y_1] = matrixToNumerical(transposeMatrix(spreadsheetDataToMatrix(data)));
+        const [p, T, x_1, y_1] = transposeMatrix(toNumMatrix(data));
         const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
         mutate(ds, {
             onSuccess: () => {
