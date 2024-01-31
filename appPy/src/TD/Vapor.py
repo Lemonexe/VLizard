@@ -15,7 +15,7 @@ class Vapor(Result):
         compound (str): compound name
         """
         super().__init__()
-        self.keys_to_serialize = ['compound', 'model_name', 'T_min', 'T_max', 'T_boil', 'T_tab', 'p_tab']
+        self.keys_to_serialize = ['compound', 'model_name', 'T_min', 'T_max', 'T_boil']
 
         self.compound = compound
 

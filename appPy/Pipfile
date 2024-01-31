@@ -10,12 +10,12 @@ click = "*"
 flask = "*"
 pyyaml = "*"
 waitress = "*"
+matplotlib = "*"
 
 [dev-packages]
 yapf = "*"
 pylint = "*"
 pytest = "*"
-matplotlib = "*"
 
 [requires]
 python_version = "3.12"

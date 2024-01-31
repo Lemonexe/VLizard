@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from src.TD.Vapor import Vapor
+from src.plot.Vapor_plot import Vapor_plot
 from src.utils.io.yaml import cast_to_jsonable
 from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound, supported_models
 from .helpers.schema_validation import unpack_request_schema
@@ -45,7 +45,9 @@ def vapor_analysis_api():
     schema = {'compound': True}
     params = unpack_request_schema(request, schema)
     compound = params['compound']
-    payload = Vapor(compound).serialize()
+    vapor_plot = Vapor_plot(compound)
+    payload = vapor_plot.serialize()
+    payload['plot'] = vapor_plot.plot(mode='svg')
     return payload
 
 
