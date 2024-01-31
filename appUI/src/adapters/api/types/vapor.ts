@@ -29,8 +29,7 @@ export type VaporAnalysisResponse = AnalysisResult & {
     T_min: number;
     T_max: number;
     T_boil: number;
-    T_tab: number[];
-    p_tab: number[];
+    plot: string;
 };
 
 /* PUT */

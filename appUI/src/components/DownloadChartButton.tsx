@@ -1,5 +1,5 @@
 import { ElementRef, FC, RefObject, useCallback } from 'react';
-import { downloadSvg } from '../adapters/io/download.ts';
+import { downloadSvg, downloadSvgString } from '../adapters/io/download.ts';
 import { Button } from '@mui/material';
 import { Download } from '@mui/icons-material';
 import { LineChart } from 'recharts';
@@ -10,6 +10,7 @@ type DownloadChartButtonProps = {
     fileName: string;
 };
 
+// TODO REMOVE
 export const DownloadChartButton: FC<DownloadChartButtonProps> = ({ chartRef, fileName }) => {
     const pushNotification = useNotifications();
     const handleDownload = useCallback(() => {
@@ -20,6 +21,21 @@ export const DownloadChartButton: FC<DownloadChartButtonProps> = ({ chartRef, fi
         }
         downloadSvg(svg, fileName);
     }, [chartRef, fileName]);
+
+    return (
+        <Button onClick={handleDownload} variant="outlined" startIcon={<Download />}>
+            Save SVG
+        </Button>
+    );
+};
+
+type DownloadChartButtonProps2 = {
+    svgContent: string;
+    fileName: string;
+};
+
+export const DownloadChartButton2: FC<DownloadChartButtonProps2> = ({ svgContent, fileName }) => {
+    const handleDownload = useCallback(() => downloadSvgString(svgContent, fileName), [svgContent, fileName]);
 
     return (
         <Button onClick={handleDownload} variant="outlined" startIcon={<Download />}>

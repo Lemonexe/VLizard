@@ -15,6 +15,15 @@ export const downloadString = (content: string, filename: string, type: string) 
 };
 
 /**
+ * Download SVG raw content as a file
+ * @param svgContent raw SVG content
+ * @param filename name of the file without extension
+ */
+export const downloadSvgString = (svgContent: string, filename: string) =>
+    downloadString(svgContent, filename, 'image/svg+xml');
+
+// TODO REMOVE
+/**
  * Download an SVG element as a file
  * @param svg SVG element
  * @param filename name of the file without extension
