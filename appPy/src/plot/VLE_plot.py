@@ -1,12 +1,14 @@
 from matplotlib import pyplot as plt
 from src.TD.VLE import VLE
+from src.plot.plot_io import init_plot, finish_plot
 
 
 class VLE_plot(VLE):
 
-    def plot_xy(self, silent=False):
+    def plot_xy(self, mode):
         """Plot x,y diagram."""
-        plt.figure()
+        init_plot(mode)
+
         plt.plot(self.x_1, self.y_1, 'Dk', label='data')
         plt.plot([0, 1], [0, 1], ':k')
         plt.xlim(0, 1)
@@ -14,13 +16,13 @@ class VLE_plot(VLE):
         plt.title(f'xy diagram for {self.get_title()}')
         plt.xlabel('x')
         plt.ylabel('y')
-        if silent: return
-        plt.ion()
-        plt.show()
 
-    def plot_Txy(self, silent=False):
+        return finish_plot(mode)
+
+    def plot_Txy(self, mode):
         """Plot T,x,y diagram."""
-        plt.figure()
+        init_plot(mode)
+
         plt.plot(self.y_1, self.T, 'Dr', label='dew')
         plt.plot(self.x_1, self.T, 'Db', label='boil')
         plt.xlim(0, 1)
@@ -28,13 +30,13 @@ class VLE_plot(VLE):
         plt.xlabel('x, y')
         plt.ylabel('T [K]')
         plt.legend()
-        if silent: return
-        plt.ion()
-        plt.show()
 
-    def plot_gamma(self, silent=False):
+        return finish_plot(mode)
+
+    def plot_gamma(self, mode):
         """Plot diagram of activity coeffs per x."""
-        plt.figure()
+        init_plot(mode)
+
         plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
 
@@ -44,6 +46,5 @@ class VLE_plot(VLE):
         plt.xlabel('$x_1$')
         plt.ylabel('$\\gamma$')
         plt.legend()
-        if silent: return
-        plt.ion()
-        plt.show()
+
+        return finish_plot(mode)

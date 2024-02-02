@@ -8,7 +8,7 @@ def init_plot(mode):
     if mode == 'ion':
         plt.figure()
         return
-    elif mode == 'svg':
+    if mode == 'svg':
         plt.switch_backend('Agg')
         return
 
@@ -17,16 +17,16 @@ def init_plot(mode):
 
 def finish_plot(mode):
     """Finalize plot output in given mode, may return a value."""
-    if mode is None: return
+    if mode is None: return None
 
     # render in interactive mode
     if mode == 'ion':
         plt.ion()
         plt.show()
-        return
+        return None
 
     # render the plot to SVG as raw string content
-    elif mode == 'svg':
+    if mode == 'svg':
         svg_buffer = io.BytesIO()
         plt.savefig(svg_buffer, format='svg')
         svg_content = svg_buffer.getvalue().decode('utf-8')

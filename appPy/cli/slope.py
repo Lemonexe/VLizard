@@ -17,11 +17,11 @@ from src.plot.Slope_plot import Slope_plot
 def cli_slope(compound1, compound2, dataset, plot):
     """Perform slope test for two compound codes."""
 
-    def do_for_dataset(compound1, compound2, dataset):
-        slope_test = Slope_plot(compound1, compound2, dataset)
+    def do_for_dataset(comp1, comp2, ds):
+        slope_test = Slope_plot(comp1, comp2, ds)
         slope_test.report()
 
-        if plot: slope_test.plot()
+        if plot: slope_test.plot(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if plot: pause_to_keep_charts()

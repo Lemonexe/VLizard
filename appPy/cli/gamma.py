@@ -17,11 +17,11 @@ from src.plot.Gamma_plot import Gamma_plot
 def cli_gamma(compound1, compound2, dataset, plot):
     """Perform simple Gamma test for two compound codes."""
 
-    def do_for_dataset(compound1, compound2, dataset):
-        gamma_test = Gamma_plot(compound1, compound2, dataset)
+    def do_for_dataset(comp1, comp2, ds):
+        gamma_test = Gamma_plot(comp1, comp2, ds)
         gamma_test.report()
 
-        if plot: gamma_test.plot_gamma_model()
+        if plot: gamma_test.plot_gamma_model(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if plot: pause_to_keep_charts()

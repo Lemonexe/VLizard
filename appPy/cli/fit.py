@@ -33,9 +33,9 @@ def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamm
 
     if not (xy or txy or gamma): return
     fit.tabulate()
-    if xy: fit.plot_xy_model()
-    if txy: fit.plot_Txy_model()
-    if gamma: fit.plot_gamma_model()
+    if xy: fit.plot_xy_model(mode='ion')
+    if txy: fit.plot_Txy_model(mode='ion')
+    if gamma: fit.plot_gamma_model(mode='ion')
     pause_to_keep_charts()
 
 

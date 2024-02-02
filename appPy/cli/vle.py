@@ -19,13 +19,13 @@ from src.plot.VLE_plot import VLE_plot
 def cli_vle(compound1, compound2, dataset, xy, txy, gamma):
     """Analyze VLE data for two compound codes."""
 
-    def do_for_dataset(compound1, compound2, dataset):
-        vle = VLE_plot(compound1, compound2, dataset)
+    def do_for_dataset(comp1, comp2, ds):
+        vle = VLE_plot(comp1, comp2, ds)
         vle.report()
 
-        if xy: vle.plot_xy()
-        if txy: vle.plot_Txy()
-        if gamma: vle.plot_gamma()
+        if xy: vle.plot_xy(mode='ion')
+        if txy: vle.plot_Txy(mode='ion')
+        if gamma: vle.plot_gamma(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if xy or txy or gamma: pause_to_keep_charts()

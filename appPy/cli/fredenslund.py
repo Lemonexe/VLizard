@@ -20,14 +20,14 @@ from src.plot.Fredenslund_plot import Fredenslund_plot
 def cli_fredenslund(compound1, compound2, dataset, legendre, ge, res):
     """Perform Fredenslund test for two compound codes."""
 
-    def do_for_dataset(compound1, compound2, dataset):
-        fredenslund_test = Fredenslund_plot(compound1, compound2, dataset, legendre)
+    def do_for_dataset(comp1, comp2, ds):
+        fredenslund_test = Fredenslund_plot(comp1, comp2, ds, legendre)
         fredenslund_test.report()
 
-        if ge: fredenslund_test.plot_g_E()
+        if ge: fredenslund_test.plot_g_E(mode='ion')
         if res:
-            fredenslund_test.plot_p_res()
-            fredenslund_test.plot_y_1_res()
+            fredenslund_test.plot_p_res(mode='ion')
+            fredenslund_test.plot_y_1_res(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if ge or res: pause_to_keep_charts()
