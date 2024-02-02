@@ -18,10 +18,11 @@ export type VLEAnalysisRequest = DatasetIdentifier;
 
 export type VLEAnalysisResponse = AnalysisResult &
     DatasetTable & {
-        x_2: number[];
-        y_2: number[];
         gamma_1: number[];
         gamma_2: number[];
+        plot_xy: string;
+        plot_Txy: string;
+        plot_gamma: string;
     };
 
 /* POST UPSERT */

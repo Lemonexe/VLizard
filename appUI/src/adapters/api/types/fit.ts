@@ -1,7 +1,4 @@
-import { AnalysisResult, NamedParams, MultipleDatasetsIdentifier, SystemIdentifier } from './common.ts';
-import { supportedModels } from '../constants.ts';
-
-export type SupportedModelNames = typeof supportedModels;
+import { AnalysisResult, MultipleDatasetsIdentifier, NamedParams, SystemIdentifier } from './common.ts';
 
 /* GET saved optimized models for systems */
 export type PersistedFit = {
@@ -44,12 +41,9 @@ export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
 
 export type TabulatedDataset = AnalysisResult & {
     p_mean: number;
-    x_1: number[];
-    y_1: number[];
-    y_2: number[];
-    T: number[];
-    gamma_1: number[];
-    gamma_2: number[];
+    xy_plot: string;
+    Txy_plot: string;
+    gamma_plot: string;
 };
 
 export type FitAnalysisResponse = AnalysisResult & {

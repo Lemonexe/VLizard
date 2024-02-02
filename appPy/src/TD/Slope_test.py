@@ -16,7 +16,7 @@ class Slope_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['x_1', 'd_ln_gamma_1', 'd_ln_gamma_2', 'P2P_res']
+        self.keys_to_serialize = []
         gamma_1, gamma_2, x_1, x_2 = self.gamma_1, self.gamma_2, self.x_1, self.x_2
 
         # serialize the two gamma vectors below each other (as matrix of two rows)

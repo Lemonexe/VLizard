@@ -5,4 +5,12 @@ react-spreadsheet BUG report with minimal example
 
 read/update api for config (only for user settings)
 
-maybe drop recharts alltogether, and just open the pyplot charts as new windows directly from the python backend..
+rename files vapor.py to vapor_api.py, vapor.ts to vaporTypes.ts
+
+pass data properly to VaporAnalysisDialog, VLEAnalysisDialog
+
+process AnalysisResult as warnings!
+
+Compounds expand all
+
+move Dialogs to some folder called maybe Actions or something?

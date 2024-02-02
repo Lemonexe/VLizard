@@ -17,7 +17,7 @@ def cli_vapor(compound, plot):
     vapor.report()
 
     if plot:
-        vapor.plot()
+        vapor.plot(mode='ion')
         pause_to_keep_charts()
 
 

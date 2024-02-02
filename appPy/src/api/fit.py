@@ -1,5 +1,6 @@
 from flask import Blueprint, request
-from src.fit.Fit import Fit, supported_models
+from src.fit.Fit import supported_models
+from src.plot.Fit_plot import Fit_plot
 from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit
 from src.utils.io.yaml import cast_to_jsonable
 from .helpers.schema_validation import unpack_request_schema
@@ -42,12 +43,23 @@ def fit_VLE_api():
     params = unpack_request_schema(request, param_schema)
     skip_optimization = params.pop('skip_optimization')  # do not pass that to Fit
 
-    fit = Fit(*params.values())
+    # perform fit, persist, enumerate
+    fit = Fit_plot(*params.values())
     if not skip_optimization:
         fit.optimize()
         persist_fit(fit)
     fit.tabulate()
     payload = fit.serialize()
+
+    # populate payload with SVG plots
+    xy_plots = fit.plot_xy_model(mode='svg')
+    Txy_plots = fit.plot_Txy_model(mode='svg')
+    gamma_plots = fit.plot_gamma_model(mode='svg')
+    for (ds, xy, Txy, gamma) in zip(payload['tabulated_datasets'], xy_plots, Txy_plots, gamma_plots):
+        ds['xy_plot'] = xy
+        ds['Txy_plot'] = Txy
+        ds['gamma_plot'] = gamma
+
     return payload
 
 

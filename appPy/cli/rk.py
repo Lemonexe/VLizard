@@ -17,11 +17,11 @@ from src.plot.Redlich_Kister_plot import Redlich_Kister_plot
 def cli_rk(compound1, compound2, dataset, plot):
     """Perform Redlich-Kister test for two compound codes."""
 
-    def do_for_dataset(compound1, compound2, dataset):
-        rk_test = Redlich_Kister_plot(compound1, compound2, dataset)
+    def do_for_dataset(comp1, comp2, ds):
+        rk_test = Redlich_Kister_plot(comp1, comp2, ds)
         rk_test.report()
 
-        if plot: rk_test.plot()
+        if plot: rk_test.plot(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if plot: pause_to_keep_charts()

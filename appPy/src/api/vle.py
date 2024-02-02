@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from werkzeug.exceptions import NotFound
-from src.TD.VLE import VLE
+from src.plot.VLE_plot import VLE_plot
 from src.utils.systems import get_all_system_dir_names, parse_system_dir_name, delete_system
 from src.utils.datasets import get_all_dataset_names, get_dataset_VLE_data, upsert_dataset, delete_dataset
 from src.utils.Result import cast_to_jsonable_recursive
@@ -34,7 +34,11 @@ def vle_analysis_api():
     """Create or update a dataset of a VLE system, create system if not exists."""
     schema = {'compound1': True, 'compound2': True, 'dataset': True}
     params = unpack_request_schema(request, schema)
-    payload = VLE(*params.values()).serialize()
+    vle = VLE_plot(*params.values())
+    payload = vle.serialize()
+    payload['plot_xy'] = vle.plot_xy(mode='svg')
+    payload['plot_Txy'] = vle.plot_Txy(mode='svg')
+    payload['plot_gamma'] = vle.plot_gamma(mode='svg')
     return payload
 
 
