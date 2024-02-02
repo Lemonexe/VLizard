@@ -1,38 +1,17 @@
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
-import { useVaporAnalysis } from '../../../adapters/api/useVapor.ts';
-import { VaporAnalysisResponse } from '../../../adapters/api/types/vaporTypes.ts';
-import { useNotifyErrorMessage } from '../../../adapters/api/helpers/getApiErrorMessage.ts';
-import { VaporAnalysisDialog } from '../../../actions/VaporAnalysis/VaporAnalysisDialog.tsx';
+import { useVaporAnalysisDialog } from '../../../actions/VaporAnalysis/useVaporAnalysisDialog.tsx';
+import { CompoundIdentifier } from '../../../adapters/api/types/common.ts';
 
-type PerformAnalysisButtonProps = { compound: string };
-
-export const PerformAnalysisButton: FC<PerformAnalysisButtonProps> = ({ compound }) => {
-    const [open, setOpen] = useState(false);
-    const [data, setData] = useState<VaporAnalysisResponse | null>(null);
-    const onError = useNotifyErrorMessage();
-    const { mutate } = useVaporAnalysis();
-
-    const performAnalysis = useCallback(() => {
-        mutate(
-            { compound },
-            {
-                onSuccess: (response) => {
-                    setOpen(true);
-                    setData(response);
-                },
-                onError,
-            },
-        );
-    }, [compound, mutate]);
-
+export const PerformAnalysisButton: FC<CompoundIdentifier> = (props) => {
+    const { perform, result } = useVaporAnalysisDialog(props);
     return (
         <>
             <Tooltip title="Perform analysis">
-                <IconButton children={<QueryStats />} onClick={performAnalysis} />
+                <IconButton children={<QueryStats />} onClick={perform} />
             </Tooltip>
-            <VaporAnalysisDialog open={open} handleClose={() => setOpen(false)} data={data} />
+            {result}
         </>
     );
 };

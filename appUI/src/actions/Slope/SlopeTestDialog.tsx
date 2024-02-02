@@ -2,14 +2,15 @@ import { FC } from 'react';
 import { TestDialogProps } from '../types.ts';
 import { Dialog, DialogContent } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { SlopeTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 
-export const SlopeTestDialog: FC<TestDialogProps> = ({ open, handleClose, compound1, compound2, dataset }) => {
+type SlopeTestDialogProps = TestDialogProps & { data: SlopeTestResponse };
+
+export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, data, label }) => {
     return (
         <Dialog fullScreen open={open} onClose={handleClose}>
-            <DialogTitleWithX handleClose={handleClose}>
-                Slope test for {compound1}-{compound2} {dataset}
-            </DialogTitleWithX>
-            <DialogContent>Slope test</DialogContent>
+            <DialogTitleWithX handleClose={handleClose}>Slope test for {label}</DialogTitleWithX>
+            <DialogContent>Slope test {Boolean(data)}</DialogContent>
         </Dialog>
     );
 };
