@@ -11,6 +11,7 @@ class Fit_plot(Fit):
         self.dataset_VLEs = [VLE_plot(vle.compound1, vle.compound2, vle.dataset_name) for vle in self.dataset_VLEs]
 
     def plot_xy_model(self, mode):
+        """Overlay fitted xy curve over VLE data."""
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
@@ -21,6 +22,7 @@ class Fit_plot(Fit):
         return plots if mode == 'svg' else None
 
     def plot_Txy_model(self, mode):
+        """Overlay fitted Txy curve over VLE data."""
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
@@ -32,6 +34,7 @@ class Fit_plot(Fit):
         return plots if mode == 'svg' else None
 
     def plot_gamma_model(self, mode):
+        """Overlay fitted gamma curve over VLE data."""
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
