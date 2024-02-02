@@ -3,7 +3,7 @@ import { Box, Tooltip } from '@mui/material';
 import { K2C } from '../../adapters/logic/units.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton2 } from '../../components/DownloadChartButton.tsx';
+import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
 
 type VaporAnalysisDialogResultsProps = { data: VaporAnalysisResponse };
 
@@ -29,7 +29,7 @@ export const VaporAnalysisDialogResults: FC<VaporAnalysisDialogResultsProps> = (
         </Box>
         <RawHtmlRenderer rawHtml={data.plot} />
         <Box pt={1}>
-            <DownloadChartButton2 svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
+            <DownloadChartButton svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
         </Box>
     </>
 );
