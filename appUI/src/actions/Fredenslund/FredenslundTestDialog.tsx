@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { TestDialogProps } from '../TestDialogProps.ts';
+import { TestDialogProps } from '../types.ts';
 import { Dialog, DialogContent, TextField } from '@mui/material';
-import { DialogTitleWithX } from '../../../../components/Mui/DialogTitle.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 
 export const FredenslundTestDialog: FC<TestDialogProps> = ({ open, handleClose, compound1, compound2, dataset }) => {
     const [legendreOrder, setLegendreOrder] = useState(4);

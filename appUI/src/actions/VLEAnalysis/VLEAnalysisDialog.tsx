@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { TestDialogProps } from '../TestDialogProps.ts';
-import { VLEAnalysisResponse } from '../../../../adapters/api/types/VLETypes.ts';
-import { useVLEAnalysis } from '../../../../adapters/api/useVLE.ts';
-import { useNotifyErrorMessage } from '../../../../adapters/api/helpers/getApiErrorMessage.ts';
+import { TestDialogProps } from '../types.ts';
+import { VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
+import { useVLEAnalysis } from '../../adapters/api/useVLE.ts';
+import { useNotifyErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
 import { Dialog, DialogContent } from '@mui/material';
-import { DialogTitleWithX } from '../../../../components/Mui/DialogTitle.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { VLEAnalysisResults } from './VLEAnalysisResults.tsx';
 
 export const VLEAnalysisDialog: FC<TestDialogProps> = ({ open, handleClose, compound1, compound2, dataset }) => {

@@ -4,7 +4,7 @@ import { QueryStats } from '@mui/icons-material';
 import { useVaporAnalysis } from '../../../adapters/api/useVapor.ts';
 import { VaporAnalysisResponse } from '../../../adapters/api/types/vaporTypes.ts';
 import { useNotifyErrorMessage } from '../../../adapters/api/helpers/getApiErrorMessage.ts';
-import { VaporAnalysisDialog } from '../VaporAnalysisDialog.tsx';
+import { VaporAnalysisDialog } from '../../../actions/VaporAnalysis/VaporAnalysisDialog.tsx';
 
 type PerformAnalysisButtonProps = { compound: string };
 

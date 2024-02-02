@@ -1,10 +1,10 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Box, Stack } from '@mui/material';
-import { fromRows, makeReadOnly } from '../../../../adapters/logic/spreadsheet.ts';
+import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
 import { VLEAnalysisResultsProps } from './VLEAnalysisResultsProps.ts';
-import { RawHtmlRenderer } from '../../../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../../../components/DownloadChartButton.tsx';
+import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
+import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
 
 export const VLEAnalysisResults: FC<VLEAnalysisResultsProps> = ({ label, data }) => {
     const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2'];

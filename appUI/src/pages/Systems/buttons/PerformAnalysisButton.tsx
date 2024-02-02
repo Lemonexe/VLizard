@@ -3,13 +3,13 @@ import { Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Toolti
 import { QueryStats, QuestionMark } from '@mui/icons-material';
 import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 import { DatasetIdentifier } from '../../../adapters/api/types/common.ts';
-import { TestDialogProps } from '../TDTest/TestDialogProps.ts';
-import { VLEAnalysisDialog } from '../TDTest/VLE/VLEAnalysisDialog.tsx';
-import { SlopeTestDialog } from '../TDTest/Slope/SlopeTestDialog.tsx';
-import { GammaTestDialog } from '../TDTest/Gamma/GammaTestDialog.tsx';
-import { RKTestDialog } from '../TDTest/RK/RKTestDialog.tsx';
-import { HeringtonTestDialog } from '../TDTest/Herington/HeringtonTestDialog.tsx';
-import { FredenslundTestDialog } from '../TDTest/Fredenslund/FredenslundTestDialog.tsx';
+import { TestDialogProps } from '../../../actions/types.ts';
+import { VLEAnalysisDialog } from '../../../actions/VLEAnalysis/VLEAnalysisDialog.tsx';
+import { SlopeTestDialog } from '../../../actions/Slope/SlopeTestDialog.tsx';
+import { GammaTestDialog } from '../../../actions/Gamma/GammaTestDialog.tsx';
+import { RKTestDialog } from '../../../actions/RK/RKTestDialog.tsx';
+import { HeringtonTestDialog } from '../../../actions/Herington/HeringtonTestDialog.tsx';
+import { FredenslundTestDialog } from '../../../actions/Fredenslund/FredenslundTestDialog.tsx';
 
 type TDTestInterfaceTemplate = {
     label: string;
