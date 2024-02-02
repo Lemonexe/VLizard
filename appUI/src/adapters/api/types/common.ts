@@ -3,6 +3,14 @@ export type AnalysisResult = {
     warnings: string[];
 };
 
+export type CompoundIdentifier = {
+    compound: string;
+};
+
+export type VaporModelIdentifier = CompoundIdentifier & {
+    model_name: string;
+};
+
 export type SystemIdentifier = {
     compound1: string;
     compound2: string;

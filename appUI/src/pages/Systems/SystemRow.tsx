@@ -3,14 +3,14 @@ import { Collapse, IconButton, Stack, styled, TableCell, TableRow } from '@mui/m
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 import { WarningTooltip } from '../../components/TooltipIcons.tsx';
+import { CompoundIdentifier } from '../../adapters/api/types/common.ts';
 import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
 import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
 
-type ValidatedCompoundNameProps = { compound: string };
-const ValidatedCompoundName: FC<ValidatedCompoundNameProps> = ({ compound }) => {
+const ValidatedCompoundName: FC<CompoundIdentifier> = ({ compound }) => {
     const { compoundNames } = useData();
     return (
         <Stack direction="row" alignItems="center">

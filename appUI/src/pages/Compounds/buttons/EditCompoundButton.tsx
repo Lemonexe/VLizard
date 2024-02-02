@@ -2,10 +2,9 @@ import { FC, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { UpsertCompoundDialog } from '../UpsertCompoundDialog.tsx';
+import { CompoundIdentifier } from '../../../adapters/api/types/common.ts';
 
-type EditCompoundButtonProps = { compound: string };
-
-export const EditCompoundButton: FC<EditCompoundButtonProps> = ({ compound }) => {
+export const EditCompoundButton: FC<CompoundIdentifier> = ({ compound }) => {
     const [open, setOpen] = useState(false);
     return (
         <>
