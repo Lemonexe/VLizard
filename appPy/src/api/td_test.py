@@ -1,9 +1,9 @@
 from flask import Blueprint, request
-from src.TD.Gamma_test import Gamma_test
-from src.TD.Slope_test import Slope_test
-from src.TD.Redlich_Kister_test import Redlich_Kister_test
+from src.plot.Gamma_plot import Gamma_plot
+from src.plot.Slope_plot import Slope_plot
+from src.plot.Redlich_Kister_plot import Redlich_Kister_plot
 from src.TD.Herington_test import Herington_test
-from src.TD.Fredenslund_test import Fredenslund_test
+from src.plot.Fredenslund_plot import Fredenslund_plot
 from .helpers.schema_validation import unpack_request_schema
 
 td_test_blueprint = Blueprint('TD', __name__, url_prefix='/td_test')
@@ -15,7 +15,9 @@ common_schema = {'compound1': True, 'compound2': True, 'dataset': True}
 def gamma_test_api():
     """Perform gamma test & return analysis result for given system and a single dataset."""
     params = unpack_request_schema(request, common_schema)
-    payload = Gamma_test(*params.values()).serialize()
+    gamma = Gamma_plot(*params.values())
+    payload = gamma.serialize()
+    payload['plot'] = gamma.plot_gamma_model(mode='svg')
     return payload
 
 
@@ -23,7 +25,9 @@ def gamma_test_api():
 def slope_test_api():
     """Perform slope test & return analysis result for given system and a single dataset."""
     params = unpack_request_schema(request, common_schema)
-    payload = Slope_test(*params.values()).serialize()
+    slope = Slope_plot(*params.values())
+    payload = slope.serialize()
+    payload['plot'] = slope.plot(mode='svg')
     return payload
 
 
@@ -31,7 +35,9 @@ def slope_test_api():
 def rk_test_api():
     """Perform Redlich-Kister test & return analysis result for given system and a single dataset."""
     params = unpack_request_schema(request, common_schema)
-    payload = Redlich_Kister_test(*params.values()).serialize()
+    rk = Redlich_Kister_plot(*params.values())
+    payload = rk.serialize()
+    payload['plot'] = rk.plot(mode='svg')
     return payload
 
 
@@ -48,5 +54,9 @@ def fredenslund_test_api():
     """Perform Fredenslund test & return analysis result for given system, a single dataset and optionally the order of Legendre polynomials."""
     schema = dict(common_schema, legendre_order=False)
     params = unpack_request_schema(request, schema)
-    payload = Fredenslund_test(*params.values()).serialize()
+    fredenslund = Fredenslund_plot(*params.values())
+    payload = fredenslund.serialize()
+    payload['plot_g_E'] = fredenslund.plot_g_E(mode='svg')
+    payload['plot_p_res'] = fredenslund.plot_p_res(mode='svg')
+    payload['plot_y_1_res'] = fredenslund.plot_y_1_res(mode='svg')
     return payload
