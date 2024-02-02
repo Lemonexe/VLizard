@@ -8,3 +8,5 @@ read/update api for config (only for user settings)
 rename files vapor.py to vapor_api.py, vapor.ts to vaporTypes.ts
 
 pass data properly to VaporAnalysisDialog, VLEAnalysisDialog
+
+process AnalysisResult as warnings!

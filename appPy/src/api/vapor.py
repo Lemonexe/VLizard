@@ -45,9 +45,9 @@ def vapor_analysis_api():
     schema = {'compound': True}
     params = unpack_request_schema(request, schema)
     compound = params['compound']
-    vapor_plot = Vapor_plot(compound)
-    payload = vapor_plot.serialize()
-    payload['plot'] = vapor_plot.plot(mode='svg')
+    vapor = Vapor_plot(compound)
+    payload = vapor.serialize()
+    payload['plot'] = vapor.plot(mode='svg')
     return payload
 
 
