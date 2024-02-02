@@ -3,7 +3,9 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useData } from '../../contexts/DataContext.tsx';
 import { SystemRow } from './SystemRow.tsx';
 
-export const SystemsTable: FC = () => {
+type SystemsTableProps = { expandAll: boolean };
+
+export const SystemsTable: FC<SystemsTableProps> = ({ expandAll }) => {
     const { VLEData } = useData();
 
     if (!VLEData) return 'Loading...';
@@ -21,7 +23,7 @@ export const SystemsTable: FC = () => {
             </TableHead>
             <TableBody>
                 {VLEData.map((system) => (
-                    <SystemRow key={system.system_name} model={system} />
+                    <SystemRow key={system.system_name} model={system} expandAll={expandAll} />
                 ))}
             </TableBody>
         </Table>

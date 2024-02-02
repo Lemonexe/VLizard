@@ -32,7 +32,7 @@ class VLE(Result):
         T_data_bounds = (np.min(self.T), np.max(self.T))
         vapor_1.check_T_bounds(*T_data_bounds)
         vapor_2.check_T_bounds(*T_data_bounds)
-        self.merge_status(vapor_1, vapor_2)
+        self.merge_warnings(vapor_1, vapor_2)
         self.ps_fun_1 = vapor_1.ps_fun
         self.ps_fun_2 = vapor_2.ps_fun
 

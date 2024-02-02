@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.get('/is_it_up')
 def is_it_up():
     """Return OK to check if the server is up."""
-    return {'status': 'ok'}
+    return "OK"
 
 
 @app.errorhandler(HTTPException)

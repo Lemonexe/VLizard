@@ -7,6 +7,7 @@ import { VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { AnalysisWarnings } from '../../components/AnalysisWarnings.tsx';
 
 const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2'];
 
@@ -22,7 +23,8 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
         <Dialog fullScreen open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Visualize data for {label}</DialogTitleWithX>
             <DialogContent>
-                <Stack direction="column" gap={4} pt={1}>
+                <AnalysisWarnings warnings={data.warnings} />
+                <Stack direction="column" gap={3} pt={1}>
                     <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
                     <Box>
                         <RawHtmlRenderer rawHtml={data.plot_xy} />

@@ -1,5 +1,4 @@
 export type AnalysisResult = {
-    status: number;
     warnings: string[];
 };
 

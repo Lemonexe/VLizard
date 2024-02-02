@@ -28,9 +28,9 @@ const CollapsibleTableCell = styled(TableCell)({
 
 const NoBorderCell = styled(TableCell)({ border: 'unset' });
 
-type SystemRowProps = { model: VLESystem };
+type SystemRowProps = { model: VLESystem; expandAll: boolean };
 
-export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets } }) => {
+export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }, expandAll }) => {
     const [expandRow, setExpandRow] = useState(false);
     const [compound1, compound2] = system_name.split('-');
 
@@ -42,7 +42,7 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
         <>
             <TableRow>
                 <NoBorderCell sx={{ width: 40, px: 0 }}>
-                    {datasets.length > 0 && (
+                    {!expandAll && datasets.length > 0 && (
                         <IconButton onClick={() => setExpandRow((prevOpen) => !prevOpen)}>
                             {expandRow ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </IconButton>
@@ -62,8 +62,9 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
             </TableRow>
 
             <TableRow sx={{ '&:last-child td': { border: 0 } }}>
-                <CollapsibleTableCell colSpan={5}>
-                    <Collapse in={expandRow} timeout="auto" unmountOnExit>
+                <NoBorderCell />
+                <CollapsibleTableCell colSpan={4}>
+                    <Collapse in={expandRow || expandAll} timeout="auto" unmountOnExit>
                         <DatasetsSubTable compound1={compound1} compound2={compound2} datasets={datasets} />
                     </Collapse>
                 </CollapsibleTableCell>

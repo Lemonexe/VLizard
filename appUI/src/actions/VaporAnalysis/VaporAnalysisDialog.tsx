@@ -6,6 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { AnalysisWarnings } from '../../components/AnalysisWarnings.tsx';
 
 type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse };
 
@@ -13,6 +14,7 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
     <Dialog fullScreen open={open} onClose={handleClose}>
         <DialogTitleWithX handleClose={handleClose}>Vapor pressure analysis for {data.compound}</DialogTitleWithX>
         <DialogContent>
+            <AnalysisWarnings warnings={data.warnings} />
             <Box pb={3}>
                 <p>Model: {data.model_name}</p>
                 <p>

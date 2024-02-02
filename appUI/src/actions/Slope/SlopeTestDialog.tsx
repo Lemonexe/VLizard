@@ -3,6 +3,7 @@ import { TestDialogProps } from '../types.ts';
 import { Dialog, DialogContent } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
+import { AnalysisWarnings } from '../../components/AnalysisWarnings.tsx';
 
 type SlopeTestDialogProps = TestDialogProps & { data: SlopeTestResponse };
 
@@ -10,7 +11,10 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, d
     return (
         <Dialog fullScreen open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Slope test for {label}</DialogTitleWithX>
-            <DialogContent>Slope test {Boolean(data)}</DialogContent>
+            <DialogContent>
+                <AnalysisWarnings warnings={data.warnings} />
+                Slope test {Boolean(data)}
+            </DialogContent>
         </Dialog>
     );
 };
