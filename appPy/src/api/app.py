@@ -1,10 +1,10 @@
 from flask import Flask
 from werkzeug.exceptions import HTTPException
 from src.utils.errors import AppException
-from src.api.td_test import td_test_blueprint
-from src.api.fit import fit_blueprint
-from src.api.vapor import vapor_blueprint
-from src.api.vle import vle_blueprint
+from src.api.td_test_api import td_test_blueprint
+from src.api.fit_api import fit_blueprint
+from src.api.vapor_api import vapor_blueprint
+from src.api.vle_api import vle_blueprint
 
 app = Flask(__name__)
 

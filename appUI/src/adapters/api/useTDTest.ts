@@ -8,7 +8,7 @@ import {
     RKTestResponse,
     SlopeTestResponse,
     TestRequest,
-} from './types/TDTest.ts';
+} from './types/TDTestTypes.ts';
 import { hostName } from './helpers/hostName.ts';
 
 export const useGammaTest = () =>

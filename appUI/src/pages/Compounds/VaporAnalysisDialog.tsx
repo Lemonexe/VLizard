@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
-import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
+import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { VaporAnalysisDialogResults } from './VaporAnalysisDialogResults.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';

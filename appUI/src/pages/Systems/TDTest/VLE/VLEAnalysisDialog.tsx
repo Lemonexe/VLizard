@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { TestDialogProps } from '../TestDialogProps.ts';
-import { VLEAnalysisResponse } from '../../../../adapters/api/types/VLE.ts';
+import { VLEAnalysisResponse } from '../../../../adapters/api/types/VLETypes.ts';
 import { useVLEAnalysis } from '../../../../adapters/api/useVLE.ts';
 import { useNotifyErrorMessage } from '../../../../adapters/api/helpers/getApiErrorMessage.ts';
 import { Dialog, DialogContent } from '@mui/material';

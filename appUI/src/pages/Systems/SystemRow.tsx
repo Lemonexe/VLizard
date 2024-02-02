@@ -3,7 +3,7 @@ import { Collapse, IconButton, Stack, styled, TableCell, TableRow } from '@mui/m
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 import { WarningTooltip } from '../../components/TooltipIcons.tsx';
-import { VLESystem } from '../../adapters/api/types/VLE.ts';
+import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';

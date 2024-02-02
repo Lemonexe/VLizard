@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
-import { VaporModelDef } from '../../adapters/api/types/vapor.ts';
+import { VaporModelDef } from '../../adapters/api/types/vaporTypes.ts';
 
 type ParamsSpreadsheetProps = {
     data: SpreadsheetData;

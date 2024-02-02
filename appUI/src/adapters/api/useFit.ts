@@ -8,7 +8,7 @@ import {
     FitAnalysisResponse,
     GetPersistedFitsResponse,
     GetVLEModelDefsResponse,
-} from './types/fit.ts';
+} from './types/fitTypes.ts';
 import { hostName } from './helpers/hostName.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 

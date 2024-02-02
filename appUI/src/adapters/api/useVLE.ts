@@ -8,7 +8,7 @@ import {
     UpsertVLEDatasetRequest,
     VLEAnalysisRequest,
     VLEAnalysisResponse,
-} from './types/VLE.ts';
+} from './types/VLETypes.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { hostName } from './helpers/hostName.ts';
 

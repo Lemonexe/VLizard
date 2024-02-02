@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box, Tooltip } from '@mui/material';
 import { K2C } from '../../adapters/logic/units.ts';
-import { VaporAnalysisResponse } from '../../adapters/api/types/vapor.ts';
+import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
 

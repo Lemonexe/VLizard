@@ -9,7 +9,7 @@ import {
     UpdateVaporModelRequest,
     VaporAnalysisRequest,
     VaporAnalysisResponse,
-} from './types/vapor.ts';
+} from './types/vaporTypes.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { hostName } from './helpers/hostName.ts';
 

@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVaporModel } from '../../../adapters/api/useVapor.ts';
-import { DeleteVaporModelRequest } from '../../../adapters/api/types/vapor.ts';
+import { DeleteVaporModelRequest } from '../../../adapters/api/types/vaporTypes.ts';
 import { DeleteIconButton } from '../../../components/Mui/DeleteIconButton.tsx';
 import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 

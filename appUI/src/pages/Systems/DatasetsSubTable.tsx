@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { styled, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
-import { DatasetTable } from '../../adapters/api/types/VLE.ts';
+import { DatasetTable } from '../../adapters/api/types/VLETypes.ts';
 import { PerformTDTestButton } from './buttons/PerformAnalysisButton.tsx';
 import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
 import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
