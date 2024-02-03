@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { AnalysisResult } from '../adapters/api/types/common.ts';
+import { AnalysisResult } from '../../adapters/api/types/common.ts';
 import { Alert, Stack } from '@mui/material';
 
 export const AnalysisWarnings: FC<AnalysisResult> = ({ warnings }) => {

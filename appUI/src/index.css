@@ -28,6 +28,11 @@ h3 {
     color: #444;
 }
 
+code {
+    font-size: 1.0rem;
+    line-height: 1.5;
+}
+
 /* Override gray text for readonly spreadsheet cells */
 .Spreadsheet__cell.Spreadsheet__cell--readonly {
     color: inherit;

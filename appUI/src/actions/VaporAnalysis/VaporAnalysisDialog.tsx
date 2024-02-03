@@ -6,7 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
-import { AnalysisWarnings } from '../../components/AnalysisWarnings.tsx';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
 type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse };
 

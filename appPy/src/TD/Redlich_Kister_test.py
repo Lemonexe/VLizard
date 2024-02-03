@@ -14,7 +14,7 @@ class Redlich_Kister_test(Area):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['D', 'is_consistent', 'criterion']
+        self.keys_to_serialize = ['D', 'is_consistent', 'criterion', 'curve_dif', 'curve_sum']
 
         # the test criterion D [%]
         self.D = self.curve_dif / self.curve_sum * 100

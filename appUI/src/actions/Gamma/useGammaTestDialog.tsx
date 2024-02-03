@@ -1,19 +1,19 @@
 import { ReactElement, useCallback, useState } from 'react';
 import { useNotifyErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
-import { useVaporAnalysis } from '../../adapters/api/useVapor.ts';
-import { VaporAnalysisRequest, VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
+import { useGammaTest } from '../../adapters/api/useTDTest.ts';
+import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
-import { VaporAnalysisDialog } from './VaporAnalysisDialog.tsx';
+import { GammaTestDialog } from './GammaTestDialog.tsx';
 
-export const useVaporAnalysisDialog = (props: VaporAnalysisRequest): UseAnalysisDialogReturn => {
+export const useGammaTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {
     const [open, setOpen] = useState(false);
     const [elem, setElem] = useState<ReactElement | null>(null);
 
-    const { mutate } = useVaporAnalysis();
+    const { mutate } = useGammaTest();
     const onError = useNotifyErrorMessage();
-    const onSuccess = (res: VaporAnalysisResponse) => {
+    const onSuccess = (res: GammaTestResponse) => {
         setOpen(true);
-        setElem(<VaporAnalysisDialog open={true} handleClose={() => setOpen(false)} data={res} />);
+        setElem(<GammaTestDialog open={true} handleClose={() => setOpen(false)} req={props} data={res} />);
     };
 
     const perform = useCallback(() => {

@@ -2,18 +2,20 @@ import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Box, Dialog, DialogContent, Stack } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { TestDialogProps } from '../types.ts';
-import { VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
 import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
-import { AnalysisWarnings } from '../../components/AnalysisWarnings.tsx';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
 const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2'];
 
-type VLEAnalysisDialogProps = TestDialogProps & { data: VLEAnalysisResponse };
+type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
-export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClose, data, label }) => {
+export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClose, req, data }) => {
+    const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
+
     const spreadsheetData = useMemo(
         () => makeReadOnly(fromRows([data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2])),
         [data],
@@ -23,8 +25,8 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
         <Dialog fullScreen open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Visualize data for {label}</DialogTitleWithX>
             <DialogContent>
-                <AnalysisWarnings warnings={data.warnings} />
-                <Stack direction="column" gap={3} pt={1}>
+                <Stack gap={3}>
+                    <AnalysisWarnings warnings={data.warnings} />
                     <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
                     <Box>
                         <RawHtmlRenderer rawHtml={data.plot_xy} />

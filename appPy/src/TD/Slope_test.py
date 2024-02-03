@@ -16,7 +16,7 @@ class Slope_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = []
+        self.keys_to_serialize = ['x_1', 'd_ln_gamma_1', 'd_ln_gamma_2', 'P2P_res', 'P2P_res_avg']
         gamma_1, gamma_2, x_1, x_2 = self.gamma_1, self.gamma_2, self.x_1, self.x_2
 
         # serialize the two gamma vectors below each other (as matrix of two rows)
@@ -28,6 +28,9 @@ class Slope_test(VLE):
 
         # point-to-point residue of Gibbs-Duhem equation as vector
         self.P2P_res = x_1*d_ln_gamma_1 + x_2*d_ln_gamma_2
+
+        # the only summary characteristic of this test, it's not much, but it's honest work
+        self.P2P_res_avg = np.mean(abs(self.P2P_res))
 
     def get_title(self):
         return f'Slope test for {super().get_title()}'
@@ -41,6 +44,5 @@ class Slope_test(VLE):
         table = serialize_cols(self.x_1, self.d_ln_gamma_1, self.d_ln_gamma_2, self.P2P_res)
         echo(matrix2tsv(table, headlines=headlines, format_spec='{:6.3f}'))
 
-        avgR = np.mean(abs(self.P2P_res))  # summary characteristic
-        echo(f'\nMean abs residual = {avgR:.3f}')
+        echo(f'\nMean abs residual = {self.P2P_res_avg:.3f}')
         echo('')
