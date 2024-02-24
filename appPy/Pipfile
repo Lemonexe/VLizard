@@ -21,8 +21,8 @@ pytest = "*"
 python_version = "3.12"
 
 [scripts]
-start = "pipenv run python src/serve.py"
-dev = "pipenv run python src/serve_dev.py debug"
+start = "pipenv run python src/serve.py port=37137"
+dev = "pipenv run python src/serve_dev.py port=37137 debug"
 prettier = "pipenv run yapf -i -r src cli"
 lint = "pipenv run pylint src cli --disable=C"
 test = "pipenv run pytest src"

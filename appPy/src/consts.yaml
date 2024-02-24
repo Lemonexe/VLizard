@@ -11,5 +11,3 @@ cli_fg_ok: 'green'
 cli_fg_err: 'bright_red'
 cli_fg_warn: 'yellow'
 x_points_smooth_plot: 101  # how many x points shall be tabulated when function is plotted
-
-port_number: 4663  # Port number for python backend

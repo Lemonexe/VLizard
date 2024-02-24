@@ -1,16 +1,16 @@
 ###
 # @no-log
-GET http://127.0.0.1:4663/is_it_up
+GET http://127.0.0.1:37137/is_it_up
 Accept: application/json
 
 ###
 # @no-log
-GET http://127.0.0.1:4663/config
+GET http://127.0.0.1:37137/config
 Accept: application/json
 
 ###
 # @no-log
-PUT http://localhost:4663/config
+PUT http://localhost:37137/config
 Content-Type: application/json
 
 {"gamma_abs_tol": 4e-2}
