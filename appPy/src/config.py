@@ -25,13 +25,11 @@ def optional_string_to_num(value):
         return value
 
 
-def load_config():
-    """Read userdata config file, constants file and merge them."""
-    consts = open_yaml(consts_path)
-    user_cfg = open_yaml(config_path)
-    raw_merged_cfg = {**consts, **user_cfg}
-    merged_cfg = {key: optional_string_to_num(value) for key, value in raw_merged_cfg.items()}
-    return DictToClass(**merged_cfg)
+def load_config_file(yaml_path):
+    """Read a config file and parse it."""
+    content = open_yaml(yaml_path)
+    content = {key: optional_string_to_num(value) for key, value in content.items()}
+    return DictToClass(**content)
 
 
 def save_config():
@@ -50,4 +48,5 @@ def amend_config(cfg_patch):
 
 
 # exported merged config
-cfg = load_config()
+cfg = load_config_file(config_path)
+cst = load_config_file(consts_path)

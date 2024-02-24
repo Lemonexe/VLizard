@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import least_squares
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
-from src.config import cfg
+from src.config import cfg, cst
 from .VLE_models.van_Laar import van_Laar_with_error
 from .VLE import VLE
 
@@ -34,7 +34,7 @@ class Gamma_test(VLE):
 
         self.is_consistent = abs(self.err_2) <= cfg.gamma_abs_tol and abs(self.err_1) <= cfg.gamma_abs_tol
 
-        self.x_tab = np.linspace(0, 1, cfg.x_points_smooth_plot)
+        self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
         self.gamma_tab_1, self.gamma_tab_2 = van_Laar_with_error(self.x_tab, 0, *self.params)
 
     def get_title(self):

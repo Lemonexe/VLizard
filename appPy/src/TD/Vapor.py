@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import root
-from src.config import cfg
+from src.config import cfg, cst
 from src.utils.io.echo import echo, underline_echo
 from src.utils.compounds import get_preferred_vapor_model
 from src.utils.Result import Result
@@ -25,14 +25,14 @@ class Vapor(Result):
 
         self.T_boil = self.get_T_boil()
 
-        self.T_tab = np.linspace(self.T_min, self.T_max, cfg.x_points_smooth_plot)
+        self.T_tab = np.linspace(self.T_min, self.T_max, cst.x_points_smooth_plot)
         self.p_tab = self.ps_fun(self.T_tab)
 
     def get_T_boil(self):
         """Numerically calculate normal boiling point from vapor pressure function. """
-        resid = lambda T: self.ps_fun(T) - cfg.atm
+        resid = lambda T: self.ps_fun(T) - cst.atm
         T_boil_init = self.est_T_boil()
-        sol = root(fun=resid, x0=T_boil_init, tol=cfg.T_boil_tol)
+        sol = root(fun=resid, x0=T_boil_init, tol=cst.T_boil_tol)
         return sol.x[0] if sol.success else None
 
     def est_T_boil(self):
@@ -41,7 +41,7 @@ class Vapor(Result):
         p1, p2 = self.ps_fun(T1), self.ps_fun(T2)
         n = np.log(T1 / T2) / np.log(p1 / p2)
         a = np.exp(np.log(T1) - n * np.log(p1))
-        return a * cfg.atm**n
+        return a * cst.atm**n
 
     def check_T_bounds(self, T_min_query, T_max_query=None):
         """
@@ -69,10 +69,10 @@ class Vapor(Result):
 
         T_min, T_max = self.T_min, self.T_max
         echo(f'Vapor pressure function: {self.model.name}')
-        echo(f'T_min = {(T_min-cfg.C2K):5.1f}°C')
-        echo(f'T_max = {(T_max-cfg.C2K):5.1f}°C')
+        echo(f'T_min = {(T_min-cst.C2K):5.1f}°C')
+        echo(f'T_max = {(T_max-cst.C2K):5.1f}°C')
 
         echo(f'ps_min = {self.ps_fun(T_min):.3g} kPa')
         echo(f'ps_max = {self.ps_fun(T_max):.3g} kPa')
-        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-cfg.C2K):.1f}°C')
+        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-cst.C2K):.1f}°C')
         echo('')
