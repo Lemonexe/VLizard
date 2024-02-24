@@ -12,7 +12,7 @@ def get_config_api():
 
 
 @config_blueprint.put('')
-def amend_table_api():
+def amend_config_api():
     """Amend user config."""
     schema = {key: False for key in config_keys}
     params = unpack_request_schema(request, schema)
