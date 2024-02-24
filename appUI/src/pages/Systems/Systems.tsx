@@ -14,7 +14,7 @@ export const Systems: FC = () => {
                 <h2>Binary systems data</h2>
                 <Stack direction="row" gap={1}>
                     <Button
-                        variant="outlined"
+                        variant="text"
                         startIcon={expandAll ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
                         onClick={() => setExpandAll((prev) => !prev)}
                     >

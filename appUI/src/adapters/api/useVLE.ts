@@ -18,7 +18,7 @@ export const useGetVLESystems = () => {
     const pushNotification = useNotifications();
     return useQuery({
         queryKey: getVLESystemsKey,
-        queryFn: async () =>
+        queryFn: () =>
             axiosGetWithHandling<GetVLESystemsResponse>(hostName + '/vle', pushNotification, getVLESystemsKey[0]),
     });
 };

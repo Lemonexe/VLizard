@@ -18,7 +18,7 @@ export const useGetPersistedFits = () => {
     const pushNotification = useNotifications();
     return useQuery({
         queryKey: getPersistedFitsKey,
-        queryFn: async () =>
+        queryFn: () =>
             axiosGetWithHandling<GetPersistedFitsResponse>(hostName + '/fit', pushNotification, getPersistedFitsKey[0]),
     });
 };
@@ -27,8 +27,7 @@ export const useGetVLEModelDefs = () => {
     const pushNotification = useNotifications();
     return useQuery({
         queryKey: ['VLE model definitions'],
-        queryFn: async () =>
-            axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/definitions', pushNotification),
+        queryFn: () => axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/definitions', pushNotification),
     });
 };
 
