@@ -4,3 +4,15 @@ GET http://127.0.0.1:4663/is_it_up
 Accept: application/json
 
 ###
+# @no-log
+GET http://127.0.0.1:4663/config
+Accept: application/json
+
+###
+# @no-log
+PUT http://localhost:4663/config
+Content-Type: application/json
+
+{"gamma_abs_tol": 4e-2}
+
+###
