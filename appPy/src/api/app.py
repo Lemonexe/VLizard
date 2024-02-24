@@ -1,6 +1,7 @@
 from flask import Flask
 from werkzeug.exceptions import HTTPException
 from src.utils.errors import AppException
+from src.api.config_api import config_blueprint
 from src.api.td_test_api import td_test_blueprint
 from src.api.fit_api import fit_blueprint
 from src.api.vapor_api import vapor_blueprint
@@ -34,6 +35,7 @@ def handle_exception_default(err):
 
 
 # register modules and run the app
+app.register_blueprint(config_blueprint)
 app.register_blueprint(td_test_blueprint)
 app.register_blueprint(fit_blueprint)
 app.register_blueprint(vapor_blueprint)

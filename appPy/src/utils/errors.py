@@ -1,5 +1,5 @@
 import click
-from src.config import cfg
+from src.config import cst
 
 
 class AppException(Exception):
@@ -15,4 +15,4 @@ def CLI_error_boundary(callback):
     try:
         callback()
     except AppException as err:
-        raise SystemExit(click.style(f'ERROR: {err}', fg=cfg.cli_fg_err)) from err
+        raise SystemExit(click.style(f'ERROR: {err}', fg=cst.cli_fg_err)) from err

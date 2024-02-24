@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@mui/material';
 import { MUITheme } from './contexts/MUITheme.tsx';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
+import { ConfigContextProvider } from './contexts/ConfigContext.tsx';
 import { DataContextProvider } from './contexts/DataContext.tsx';
 import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
@@ -22,7 +23,9 @@ export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
             <NotificationProvider>
                 <IsItUpWatcher>
                     <ErrorBoundary>
-                        <DataContextProvider>{children}</DataContextProvider>
+                        <ConfigContextProvider>
+                            <DataContextProvider>{children}</DataContextProvider>
+                        </ConfigContextProvider>
                     </ErrorBoundary>
                 </IsItUpWatcher>
             </NotificationProvider>

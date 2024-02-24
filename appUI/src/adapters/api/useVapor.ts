@@ -19,7 +19,7 @@ export const useGetVaporModels = () => {
     const pushNotification = useNotifications();
     return useQuery({
         queryKey: getVaporModelsKey,
-        queryFn: async () =>
+        queryFn: () =>
             axiosGetWithHandling<GetVaporModelsResponse>(hostName + '/vapor', pushNotification, getVaporModelsKey[0]),
     });
 };
@@ -28,7 +28,7 @@ export const useGetVaporModelDefs = () => {
     const pushNotification = useNotifications();
     return useQuery({
         queryKey: ['Vapor pressure model definitions'],
-        queryFn: async () =>
+        queryFn: () =>
             axiosGetWithHandling<GetVaporModelDefsResponse>(hostName + '/vapor/definitions', pushNotification),
     });
 };

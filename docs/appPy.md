@@ -23,7 +23,7 @@ pipenv install --dev
 #### Flask server
 Run server: `pipenv run start`  
 Run development server: `pipenv run dev`  
-Uses port 4663 by default.    
+Uses port 37137 by default (arbitrary number).    
 
 See [http/](../http) for API documentation (as IntelliJ http files).  
 

@@ -1,28 +1,28 @@
 ###
-GET http://localhost:4663/fit
+GET http://localhost:37137/fit
 Accept: application/json
 
 ###
-GET http://127.0.0.1:4663/fit/definitions
+GET http://127.0.0.1:37137/fit/definitions
 Accept: application/json
 
 ###
 
-POST http://localhost:4663/fit
+POST http://localhost:37137/fit
 Content-Type: application/json
 
 {"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar", "datasets":  ["1939vac"], "skip_optimization": false}
 
 ###
 
-POST http://localhost:4663/fit
+POST http://localhost:37137/fit
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "model_name": "NRTL", "datasets":  ["10kPa", "25kPa", "40kPa"], "const_param_names": ["c_12"]}
 
 ###
 # @no-log
-DELETE http://localhost:4663/fit
+DELETE http://localhost:37137/fit
 Content-Type: application/json
 
 {"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar"}

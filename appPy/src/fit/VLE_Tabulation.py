@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import root
 from scipy.interpolate import UnivariateSpline
-from src.config import cfg
+from src.config import cst
 from src.utils.Result import Result
 from src.utils.errors import AppException
 
@@ -18,7 +18,7 @@ class VLE_Tabulation(Result):
         """
         super().__init__()
         self.keys_to_serialize = ['p_mean']
-        n = cfg.x_points_smooth_plot
+        n = cst.x_points_smooth_plot
 
         x_1 = self.x_1 = np.linspace(0, 1, n)
         T = self.T = np.zeros(n)
@@ -69,7 +69,7 @@ def tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1, T_boil_est=400
         return p_1(gamma_1, T) + p_2(gamma_2, T) - p
 
     # find boiling temperature
-    sol = root(fun=resid, x0=np.array([T_boil_est]), tol=cfg.T_boil_tol)
+    sol = root(fun=resid, x0=np.array([T_boil_est]), tol=cst.T_boil_tol)
     if not sol.success: raise AppException(f'Error while tabulating model – could not find T for x_1 = {x_1}')
     T_boil = sol.x
 

@@ -1,6 +1,6 @@
 import numpy as np
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
-from src.config import cfg
+from src.config import cfg, cst
 from .Area import Area
 
 
@@ -21,7 +21,7 @@ class Redlich_Kister_test(Area):
         self.is_consistent = self.D <= cfg.rk_D_criterion
         self.criterion = cfg.rk_D_criterion
 
-        self.x_tab = np.linspace(0, 1, cfg.x_points_smooth_plot)
+        self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
         self.curve_tab = self.curve_spline(self.x_tab)
 
     def get_title(self):

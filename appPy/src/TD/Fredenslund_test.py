@@ -3,7 +3,7 @@ from scipy.optimize import curve_fit
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
-from src.config import cfg
+from src.config import cfg, cst
 from .VLE import VLE
 
 
@@ -82,7 +82,7 @@ class Fredenslund_test(VLE):
         self.criterion = cfg.fredenslund_criterion
 
         # tabulate
-        self.x_tab = np.linspace(0, 1, cfg.x_points_smooth_plot)
+        self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
         self.g_E_tab = self.g_E_fun(self.x_tab, *self.g_E_fun_params)
 
     def get_title(self):
