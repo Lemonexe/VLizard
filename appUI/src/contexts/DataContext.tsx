@@ -1,10 +1,10 @@
 import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
 import { useGetVaporModelDefs, useGetVaporModels } from '../adapters/api/useVapor.ts';
-import { useGetPersistedFits } from '../adapters/api/useFit.ts';
+import { useGetPersistedFits, useGetVLEModelDefs } from '../adapters/api/useFit.ts';
 import { useGetVLESystems } from '../adapters/api/useVLE.ts';
 import { DatasetTable, GetVLESystemsResponse, VLESystem } from '../adapters/api/types/VLETypes.ts';
 import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vaporTypes.ts';
-import { GetPersistedFitsResponse } from '../adapters/api/types/fitTypes.ts';
+import { GetPersistedFitsResponse, GetVLEModelDefsResponse } from '../adapters/api/types/fitTypes.ts';
 import { findCompound, findDataset, findSystem, listCompounds, listSystems } from '../adapters/logic/dataQueries.ts';
 
 export type DataContextType = {
@@ -14,6 +14,7 @@ export type DataContextType = {
     VLEData?: GetVLESystemsResponse;
     fitData?: GetPersistedFitsResponse;
     vaporDefs?: GetVaporModelDefsResponse;
+    VLEModelDefs?: GetVLEModelDefsResponse;
     // utility functions
     findCompound: (comp: string) => VaporModel | null;
     findSystem: (comp1: string, comp2: string) => VLESystem | null;
@@ -33,7 +34,7 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const { data: VLEData } = useGetVLESystems();
     const { data: fitData } = useGetPersistedFits();
     const { data: vaporDefs } = useGetVaporModelDefs();
-    // todo fitDefs
+    const { data: VLEModelDefs } = useGetVLEModelDefs();
 
     const providerValue = useMemo(() => {
         return {
@@ -43,6 +44,7 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
             VLEData,
             fitData,
             vaporDefs,
+            VLEModelDefs,
             findCompound: (comp: string) => findCompound(comp, vaporData),
             findSystem: (comp1: string, comp2: string) => findSystem(comp1, comp2, VLEData),
             findDataset: (comp1: string, comp2: string, dataset: string) => findDataset(comp1, comp2, dataset, VLEData),

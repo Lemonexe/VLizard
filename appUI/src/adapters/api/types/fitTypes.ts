@@ -34,7 +34,7 @@ export type GetVLEModelDefsResponse = VLEModelDef[];
 /* POST ANALYSIS */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
-    params0?: string[];
+    params0?: number[];
     const_param_names?: string[];
     skip_optimization?: boolean;
 };

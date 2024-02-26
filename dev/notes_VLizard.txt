@@ -9,6 +9,11 @@ error boundary: also go to home button, if a page is crashing...
 
 empty table pages
 
+use consistently in hoooks: const onError = useNotifyErrorMessage();
+
+commonInputStyle as CLASS
+    yes it's very cringe, but we need the same CSS across various components
+
 build app
     run python from electron
     make data folder for python

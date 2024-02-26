@@ -6,9 +6,9 @@ import { FittedModelRow } from './FittedModelRow.tsx';
 type FittedModelsTableProps = { expandAll: boolean };
 
 export const FittedModelsTable: FC<FittedModelsTableProps> = ({ expandAll }) => {
-    const { fitData, VLEModelDefs } = useData();
+    const { fitData, VLEModelDefs, VLEData } = useData();
 
-    if (!fitData || !VLEModelDefs) return 'Loading...';
+    if (!fitData || !VLEModelDefs || !VLEData) return 'Loading...';
 
     return (
         <Table>
