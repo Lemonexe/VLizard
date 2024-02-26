@@ -7,6 +7,8 @@ bug with data revert
 
 error boundary: also go to home button, if a page is crashing...
 
+empty table pages
+
 build app
     run python from electron
     make data folder for python
