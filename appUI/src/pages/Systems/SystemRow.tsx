@@ -42,7 +42,7 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
             </TableRow>
 
             <TableRow sx={{ '&:last-child td': { border: 0 } }}>
-                <NoBorderCell />
+                <NoBorderCell style={{ padding: 0 }} />
                 <CollapsibleTableCell colSpan={4}>
                     <Collapse in={expandRow || expandAll} timeout="auto" unmountOnExit>
                         <DatasetsSubTable compound1={compound1} compound2={compound2} datasets={datasets} />

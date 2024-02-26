@@ -5,6 +5,8 @@ react-spreadsheet BUG report with minimal example
 
 bug with data revert
 
+error boundary: also go to home button, if a page is crashing...
+
 build app
     run python from electron
     make data folder for python
