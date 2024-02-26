@@ -1,32 +1,12 @@
 import { FC, useEffect, useState } from 'react';
-import { Collapse, IconButton, Stack, styled, TableCell, TableRow } from '@mui/material';
+import { Collapse, IconButton, TableRow } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { spacingN } from '../../contexts/MUITheme.tsx';
-import { WarningTooltip } from '../../components/TooltipIcons.tsx';
-import { CompoundIdentifier } from '../../adapters/api/types/common.ts';
+import { CollapsibleTableCell, NoBorderCell } from '../../components/Mui/TableComponents.tsx';
+import { ValidatedCompoundName } from '../../components/dataViews/ValidatedCompoundName.tsx';
 import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
-import { useData } from '../../contexts/DataContext.tsx';
 import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
 import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
-
-const ValidatedCompoundName: FC<CompoundIdentifier> = ({ compound }) => {
-    const { compoundNames } = useData();
-    return (
-        <Stack direction="row" alignItems="center">
-            <span>{compound}</span>
-            {!compoundNames.includes(compound) && <WarningTooltip title="Unknown compound (no vapor pressure model)" />}
-        </Stack>
-    );
-};
-
-const CollapsibleTableCell = styled(TableCell)({
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: spacingN(2),
-});
-
-const NoBorderCell = styled(TableCell)({ border: 'unset' });
 
 type SystemRowProps = { model: VLESystem; expandAll: boolean };
 

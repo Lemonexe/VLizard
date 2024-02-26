@@ -4,8 +4,8 @@ import { K2C } from '../../adapters/logic/units.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
+import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
 type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse };

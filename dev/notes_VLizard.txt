@@ -3,6 +3,8 @@ how to use python + electron https://github.com/fyears/electron-python-example
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
+bug with data revert
+
 build app
     run python from electron
     make data folder for python

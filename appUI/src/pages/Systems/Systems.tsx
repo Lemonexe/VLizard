@@ -17,9 +17,8 @@ export const Systems: FC = () => {
                         variant="text"
                         startIcon={expandAll ? <KeyboardDoubleArrowUp /> : <KeyboardDoubleArrowDown />}
                         onClick={() => setExpandAll((prev) => !prev)}
-                    >
-                        {expandAll ? 'Collapse all' : 'Expand all'}
-                    </Button>
+                        children={expandAll ? 'Collapse all' : 'Expand all'}
+                    />
                     <AddSystemButton />
                 </Stack>
             </HeaderStack>

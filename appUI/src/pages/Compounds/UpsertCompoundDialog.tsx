@@ -22,7 +22,7 @@ import {
 } from '../../adapters/logic/spreadsheet.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from './ParamsSpreadsheet.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
