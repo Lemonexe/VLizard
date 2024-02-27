@@ -17,7 +17,7 @@ export const FitsSubTable: FC<FitsSubTableProps> = ({ fitsForSystem: { system_na
                     <TableRow key={fit.model_name}>
                         <DenseTableCell>{fit.model_name}</DenseTableCell>
                         <DenseTableCell>
-                            <PlotFittedModelButton compound1={comp1} compound2={comp2} model_name={fit.model_name} />
+                            <PlotFittedModelButton compound1={comp1} compound2={comp2} fit={fit} />
                             <AlterFittedModelButton compound1={comp1} compound2={comp2} fit={fit} />
                             <DeleteFittedModelButton compound1={comp1} compound2={comp2} model_name={fit.model_name} />
                         </DenseTableCell>

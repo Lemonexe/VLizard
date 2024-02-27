@@ -157,6 +157,9 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                 </Stack>
                 {modelDef && (
                     <Box pt={3}>
+                        <p>
+                            <strong>Model parameters</strong>
+                        </p>
                         <ParamsSpreadsheet data={data} setData={setData} model_param_names={modelDef.param_names} />
                     </Box>
                 )}
