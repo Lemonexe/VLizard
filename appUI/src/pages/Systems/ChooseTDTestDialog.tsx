@@ -10,6 +10,7 @@ import { useGammaTestDialog } from '../../actions/Gamma/useGammaTestDialog.tsx';
 import { useRKTestDialog } from '../../actions/RK/useRKTestDialog.tsx';
 import { useHeringtonTestDialog } from '../../actions/Herington/useHeringtonTestDialog.tsx';
 import { useFredenslundTestDialog } from '../../actions/Fredenslund/useFredenslundTestDialog.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 const VLEAnalysisButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useVLEAnalysisDialog(props);
@@ -72,8 +73,8 @@ const HeringtonTestButton: FC<DatasetIdentifier> = (props) => {
 };
 
 const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
-    // TODO get default=4 from config
-    const [legendre_order, setLegendre_order] = useState(4);
+    const { default_legendre_order } = useConfig();
+    const [legendre_order, setLegendre_order] = useState(default_legendre_order);
     const { perform, result } = useFredenslundTestDialog({ ...props, legendre_order });
     const [nextStep, setNextStep] = useState(false);
     const sendAndReset = () => {

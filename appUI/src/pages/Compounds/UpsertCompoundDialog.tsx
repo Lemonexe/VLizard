@@ -22,9 +22,9 @@ import {
 } from '../../adapters/logic/spreadsheet.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/TooltipIcons.tsx';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
-import { ParamsSpreadsheet } from './ParamsSpreadsheet.tsx';
+import { ParamsSpreadsheet } from '../../components/ParamsSpreadsheet.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 
 const commonInputStyle = { maxWidth: 300 };
@@ -157,7 +157,10 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                 </Stack>
                 {modelDef && (
                     <Box pt={3}>
-                        <ParamsSpreadsheet data={data} setData={setData} model={modelDef} />
+                        <p>
+                            <strong>Model parameters</strong>
+                        </p>
+                        <ParamsSpreadsheet data={data} setData={setData} model_param_names={modelDef.param_names} />
                     </Box>
                 )}
                 {modelDef && !isDataWhole && (

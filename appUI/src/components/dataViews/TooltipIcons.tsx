@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Tooltip } from '@mui/material';
 import { Info, Report, Warning } from '@mui/icons-material';
-import { spacingN } from '../contexts/MUITheme.tsx';
+import { spacingN } from '../../contexts/MUITheme.tsx';
 
 export type TooltipIconProps = { title: string };
 

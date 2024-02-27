@@ -3,41 +3,44 @@ import { Collapse, IconButton, TableRow } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { CollapsibleTableCell, NoBorderCell } from '../../components/Mui/TableComponents.tsx';
 import { ValidatedCompoundName } from '../../components/dataViews/ValidatedCompoundName.tsx';
-import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
-import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
-import { DatasetsSubTable } from './DatasetsSubTable.tsx';
-import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
+import { PerformFitButton } from './buttons/PerformFitButton.tsx';
+import { FitsSubTable } from './FitsSubTable.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
 
-type SystemRowProps = { model: VLESystem; expandAll: boolean };
+type FittedModelRowProps = { fitsForSystem: PersistedFitsForSystem; expandAll: boolean };
 
-export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }, expandAll }) => {
+export const FittedModelRow: FC<FittedModelRowProps> = ({ fitsForSystem, expandAll }) => {
+    const { system_name, fits } = fitsForSystem;
+    const [comp1, comp2] = system_name.split('-');
+
     const [expandRow, setExpandRow] = useState(false);
-    const [compound1, compound2] = system_name.split('-');
+    const { compoundNames } = useData();
+    const isMissingCompound = !compoundNames.includes(comp1) || !compoundNames.includes(comp2);
 
     useEffect(() => {
-        if (datasets.length === 0) setExpandRow(false);
-    }, [datasets.length]);
+        if (fits.length === 0) setExpandRow(false);
+    }, [fits.length]);
 
     return (
         <>
             <TableRow>
                 <NoBorderCell sx={{ width: 40, px: 0 }}>
-                    {!expandAll && datasets.length > 0 && (
+                    {!expandAll && fits.length > 0 && (
                         <IconButton onClick={() => setExpandRow((prevOpen) => !prevOpen)}>
                             {expandRow ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </IconButton>
                     )}
                 </NoBorderCell>
                 <NoBorderCell>
-                    <ValidatedCompoundName compound={compound1} />
+                    <ValidatedCompoundName compound={comp1} />
                 </NoBorderCell>
                 <NoBorderCell>
-                    <ValidatedCompoundName compound={compound2} />
+                    <ValidatedCompoundName compound={comp2} />
                 </NoBorderCell>
-                <NoBorderCell>{datasets.length}</NoBorderCell>
+                <NoBorderCell>{fits.length}</NoBorderCell>
                 <NoBorderCell>
-                    <AddDatasetButton compound1={compound1} compound2={compound2} />
-                    <DeleteSystemButton compound1={compound1} compound2={compound2} n_datasets={datasets.length} />
+                    <PerformFitButton compound1={comp1} compound2={comp2} disabled={isMissingCompound} />
                 </NoBorderCell>
             </TableRow>
 
@@ -45,7 +48,7 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
                 <NoBorderCell style={{ padding: 0 }} />
                 <CollapsibleTableCell colSpan={4}>
                     <Collapse in={expandRow || expandAll} timeout="auto" unmountOnExit>
-                        <DatasetsSubTable compound1={compound1} compound2={compound2} datasets={datasets} />
+                        <FitsSubTable fitsForSystem={fitsForSystem} />
                     </Collapse>
                 </CollapsibleTableCell>
             </TableRow>

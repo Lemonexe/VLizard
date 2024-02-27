@@ -34,12 +34,13 @@ export type GetVLEModelDefsResponse = VLEModelDef[];
 /* POST ANALYSIS */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
-    params0?: string[];
+    params0?: number[];
     const_param_names?: string[];
     skip_optimization?: boolean;
 };
 
 export type TabulatedDataset = AnalysisResult & {
+    name: string;
     p_mean: number;
     xy_plot: string;
     Txy_plot: string;
@@ -49,7 +50,7 @@ export type TabulatedDataset = AnalysisResult & {
 export type FitAnalysisResponse = AnalysisResult & {
     is_optimized: boolean;
     resid_init: number;
-    resid_final: number;
+    resid_final: number | null;
     result_params: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };

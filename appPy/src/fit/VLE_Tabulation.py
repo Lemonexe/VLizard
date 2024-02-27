@@ -17,7 +17,8 @@ class VLE_Tabulation(Result):
         vle (VLE): instance of VLE analysis for one dataset of binary system
         """
         super().__init__()
-        self.keys_to_serialize = ['p_mean']
+        self.keys_to_serialize = ['p_mean', 'name']
+        self.name = vle.dataset_name
         n = cst.x_points_smooth_plot
 
         x_1 = self.x_1 = np.linspace(0, 1, n)

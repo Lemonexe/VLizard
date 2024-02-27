@@ -5,8 +5,8 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
-import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
+import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
 const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2'];

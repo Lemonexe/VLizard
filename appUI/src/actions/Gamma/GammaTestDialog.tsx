@@ -4,8 +4,8 @@ import { Box, Dialog, DialogContent } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
+import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { toPercent } from '../../adapters/logic/numbers.ts';
 
 type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestResponse };

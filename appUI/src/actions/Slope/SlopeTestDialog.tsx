@@ -5,8 +5,8 @@ import { Box, Dialog, DialogContent } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { RawHtmlRenderer } from '../../components/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/DownloadChartButton.tsx';
+import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
+import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 

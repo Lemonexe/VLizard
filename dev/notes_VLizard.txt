@@ -3,6 +3,17 @@ how to use python + electron https://github.com/fyears/electron-python-example
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
+bug with data revert
+
+error boundary: also go to home button, if a page is crashing...
+
+empty table pages
+
+use consistently in hoooks: const onError = useNotifyErrorMessage();
+
+commonInputStyle as CLASS
+    yes it's very cringe, but we need the same CSS across various components
+
 build app
     run python from electron
     make data folder for python

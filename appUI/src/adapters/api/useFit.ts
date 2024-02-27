@@ -33,12 +33,14 @@ export const useGetVLEModelDefs = () => {
 
 export const useFitAnalysis = () => {
     const queryClient = useQueryClient();
+    const onError = useNotifyErrorMessage();
     return useMutation({
         mutationFn: async (payload: FitAnalysisRequest) => {
             const { data } = await axios.post<FitAnalysisResponse>(hostName + '/fit', payload);
             return data;
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }),
+        onError,
     });
 };
 
