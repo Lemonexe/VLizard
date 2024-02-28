@@ -1,26 +1,17 @@
-import { Dispatch, FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 
-type RestoreButtonProps = {
-    initialData: SpreadsheetData;
-    setData: SetSpreadsheetData;
-    setTouched: Dispatch<boolean>;
+type RestoreDataButtonProps = {
+    handleRestoreData: () => void;
 };
 
-export const RestoreButton: FC<RestoreButtonProps> = ({ initialData, setData, setTouched }) => {
+export const RestoreDataButton: FC<RestoreDataButtonProps> = ({ handleRestoreData }) => {
     const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
-
-    const handleRestore = () => {
-        setShowRestoreConfirm(false);
-        setData(initialData);
-        setTouched(false);
-    };
 
     return showRestoreConfirm ? (
         <span>
-            <Button onClick={handleRestore} variant="text">
+            <Button onClick={handleRestoreData} variant="text">
                 Confirm
             </Button>
             <Button onClick={() => setShowRestoreConfirm(false)} variant="text">

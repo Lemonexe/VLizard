@@ -88,6 +88,14 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
     const [touched, setTouched] = useState(false);
+    const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
+    const handleRestoreData = useCallback(() => {
+        setData(initialData);
+        setTouched(false);
+        // see TableSpreadsheet.ts, it rerenders 1) when table dimensions change, 2) when we force it (otherwise Restore Data would not take effect)
+        setForceUpdateVersion((prev) => prev + 1);
+    }, [initialData]);
+
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
     const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
@@ -172,12 +180,16 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                 </Stack>
                 <Box pt={2}>
                     <Stack direction="row" gap={2}>
-                        <TableSpreadsheet data={data} setData={setData} setTouched={setTouched} />
-                        <SpreadsheetControls
-                            initialData={modifyingDataset ? initialData : undefined}
+                        <TableSpreadsheet
+                            data={data}
                             setData={setData}
-                            touched={touched}
                             setTouched={setTouched}
+                            forceUpdateVersion={forceUpdateVersion}
+                        />
+                        <SpreadsheetControls
+                            setData={setData}
+                            showRestoreData={modifyingDataset && touched}
+                            handleRestoreData={handleRestoreData}
                         />
                     </Stack>
                 </Box>

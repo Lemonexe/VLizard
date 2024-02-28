@@ -8,9 +8,10 @@ type TableSpreadsheetProps = {
     data: SpreadsheetData;
     setData: Dispatch<SetStateAction<SpreadsheetData>>;
     setTouched: Dispatch<boolean>;
+    forceUpdateVersion: number;
 };
 
-export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({ data, setData, setTouched }) => {
+export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({ data, setData, setTouched, forceUpdateVersion }) => {
     const COLS = 4; // restrict table to 4 columns
     const n_R = data.length;
     const n_C = data[0]?.length ?? 0;
@@ -27,7 +28,7 @@ export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({ data, setData, set
 
     // see ParamsSpreadsheet.tsx for explanation of this weirdness
     return useMemo(
-        () => <Spreadsheet data={data} onChange={handleChange} columnLabels={spreadsheetHeaders} />,
-        [n_R, n_C],
+        () => <Spreadsheet data={[...data]} onChange={handleChange} columnLabels={spreadsheetHeaders} />,
+        [n_R, n_C, forceUpdateVersion],
     );
 };

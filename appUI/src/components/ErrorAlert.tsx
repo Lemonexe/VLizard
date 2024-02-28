@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Alert, Box, Button } from '@mui/material';
-import { Loop } from '@mui/icons-material';
+import { Home, Loop } from '@mui/icons-material';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 
 interface ErrorAlertProps {
@@ -22,8 +22,13 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ message }) => (
                 You may try to{' '}
                 <Button endIcon={<Loop />} onClick={pageReload} variant="text">
                     Reload the page
+                </Button>{' '}
+                or
+                <Button endIcon={<Home />} href="/" variant="text">
+                    Go to homepage
                 </Button>
-                <br />
+            </p>
+            <p>
                 In case the error persists, please report it to the{' '}
                 <a href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/bug_tracking.md">app maintainer</a>.
             </p>

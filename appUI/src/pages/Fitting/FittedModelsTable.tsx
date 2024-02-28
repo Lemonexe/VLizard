@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useData } from '../../contexts/DataContext.tsx';
+import { EmptyData } from '../../components/dataViews/EmptyData.tsx';
 import { FittedModelRow } from './FittedModelRow.tsx';
 
 type FittedModelsTableProps = { expandAll: boolean };
@@ -9,6 +10,8 @@ export const FittedModelsTable: FC<FittedModelsTableProps> = ({ expandAll }) => 
     const { fitData, VLEModelDefs, VLEData } = useData();
 
     if (!fitData || !VLEModelDefs || !VLEData) return 'Loading...';
+    if (fitData.length === 0)
+        return <EmptyData children="Add a binary VLE system and its vapor pressure models to get started."></EmptyData>;
 
     return (
         <Table>

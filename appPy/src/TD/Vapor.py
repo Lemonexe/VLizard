@@ -53,7 +53,7 @@ class Vapor(Result):
         """
         if not T_max_query: T_max_query = T_min_query
         T_int = self.T_max - self.T_min
-        template = lambda extrem, T_query, T_data: f'Temperature extrapolation of vapor pressure for {self.compound}: queried T = {T_query:.1f} K, while T_{extrem} = {T_data:.1f} K'
+        template = lambda extrem, T_query, T_data: f'Temperature extrapolation of vapor pressure model for {self.compound}: need to calculate T = {T_query:.1f} K, but model T_{extrem} = {T_data:.1f} K'
 
         rel_tol = cfg.T_bounds_rel_tol / 100
         if T_min_query < self.T_min - rel_tol*T_int:

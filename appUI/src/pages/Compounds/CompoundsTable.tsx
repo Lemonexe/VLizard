@@ -1,12 +1,14 @@
 import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useData } from '../../contexts/DataContext.tsx';
+import { EmptyData } from '../../components/dataViews/EmptyData.tsx';
 import { CompoundRow } from './CompoundRow.tsx';
 
 export const CompoundsTable: FC = () => {
     const { vaporData, vaporDefs } = useData();
 
     if (!vaporData || !vaporDefs) return 'Loading...';
+    if (vaporData.length === 0) return <EmptyData children="Click Add New to get started." />;
 
     return (
         <Table>

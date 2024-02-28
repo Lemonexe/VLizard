@@ -1,18 +1,17 @@
-import { Dispatch, FC } from 'react';
+import { FC } from 'react';
 import { Box, Stack } from '@mui/material';
-import { SetSpreadsheetData, SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { SetSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { AddRowsButton } from './AddRowsButton.tsx';
 import { TrimButton } from './TrimButton.tsx';
-import { RestoreButton } from './RestoreButton.tsx';
+import { RestoreDataButton } from './RestoreDataButton.tsx';
 
 type SpreadsheetControlsProps = {
     setData: SetSpreadsheetData;
-    touched: boolean;
-    setTouched: Dispatch<boolean>;
-    initialData?: SpreadsheetData;
+    showRestoreData: boolean;
+    handleRestoreData: () => void;
 };
 
-export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, touched, setTouched, initialData }) => (
+export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, showRestoreData, handleRestoreData }) => (
     <Stack direction="column" gap={1}>
         <Box>
             <AddRowsButton setData={setData} />
@@ -20,10 +19,6 @@ export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, tou
         <Box>
             <TrimButton setData={setData} />
         </Box>
-        <Box>
-            {initialData && touched && (
-                <RestoreButton initialData={initialData} setData={setData} setTouched={setTouched} />
-            )}
-        </Box>
+        <Box>{showRestoreData && <RestoreDataButton handleRestoreData={handleRestoreData} />}</Box>
     </Stack>
 );

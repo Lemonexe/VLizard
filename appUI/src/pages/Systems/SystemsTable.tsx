@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useData } from '../../contexts/DataContext.tsx';
+import { EmptyData } from '../../components/dataViews/EmptyData.tsx';
 import { SystemRow } from './SystemRow.tsx';
 
 type SystemsTableProps = { expandAll: boolean };
@@ -9,6 +10,7 @@ export const SystemsTable: FC<SystemsTableProps> = ({ expandAll }) => {
     const { VLEData } = useData();
 
     if (!VLEData) return 'Loading...';
+    if (VLEData.length === 0) return <EmptyData children="Click Add New to get started." />;
 
     return (
         <Table>
