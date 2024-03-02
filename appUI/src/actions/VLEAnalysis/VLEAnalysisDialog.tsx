@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Box, Dialog, DialogContent, Stack } from '@mui/material';
+import { Box, DialogContent, Stack } from '@mui/material';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
@@ -22,7 +23,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
     );
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Visualize data for {label}</DialogTitleWithX>
             <DialogContent>
                 <Stack gap={3}>
@@ -42,6 +43,6 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
                     </Box>
                 </Stack>
             </DialogContent>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };

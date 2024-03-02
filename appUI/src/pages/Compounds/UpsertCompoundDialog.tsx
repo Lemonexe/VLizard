@@ -2,7 +2,6 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import {
     Box,
     Button,
-    Dialog,
     DialogActions,
     DialogContent,
     FormControl,
@@ -21,6 +20,7 @@ import {
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
@@ -84,7 +84,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const isError = !compound || tempError || !isDataWhole;
 
     return (
-        <Dialog fullScreen open={open}>
+        <ResponsiveDialog fullWidth maxWidth="sm" open={open}>
             <DialogTitleWithX handleClose={handleClose}>
                 {isEdit ? 'Edit' : 'Add'} vapor pressure model
             </DialogTitleWithX>
@@ -167,7 +167,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     </Box>
                 )}
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ pt: 4 }}>
                 <Button onClick={handleClose} variant="outlined">
                     Cancel
                 </Button>
@@ -175,6 +175,6 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     Save
                 </Button>
             </DialogActions>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { Box, Dialog, DialogContent } from '@mui/material';
+import { Box, DialogContent } from '@mui/material';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
@@ -19,7 +20,7 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
     ];
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Fredenslund test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
@@ -53,6 +54,6 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                     />
                 </Box>
             </DialogContent>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };

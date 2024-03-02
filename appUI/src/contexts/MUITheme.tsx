@@ -26,9 +26,10 @@ export const MUITheme = createTheme({
         MuiDialogActions: {
             styleOverrides: {
                 root: {
-                    padding: spacingN(8),
-                    paddingTop: 0,
-                    paddingBottom: spacingN(2),
+                    padding: spacingN(2),
+                    paddingTop: spacingN(1),
+                    justifyContent: 'flex-start',
+                    gap: spacingN(1),
                 },
             },
         },

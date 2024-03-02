@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Alert, Box, Dialog, DialogContent } from '@mui/material';
+import { Alert, Box, DialogContent } from '@mui/material';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FitAnalysisRequest, FitAnalysisResponse, TabulatedDataset } from '../../adapters/api/types/fitTypes.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
@@ -44,7 +45,7 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
     );
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>
                 Non-linear regression of {req.model_name} on {system}, {req.datasets.join(', ')}
             </DialogTitleWithX>
@@ -65,6 +66,6 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
                     <DatasetDisplay key={ds.name} label={label} ds={ds} />
                 ))}
             </DialogContent>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };

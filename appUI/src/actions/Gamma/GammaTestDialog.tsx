@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { Box, Dialog, DialogContent } from '@mui/material';
+import { Box, DialogContent } from '@mui/material';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
@@ -19,7 +20,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
     if (Math.abs(data.err_2) > data.gamma_abs_tol) reasons.push('γ2(x2=1) must be 1' + commonMessage);
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Gamma test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
@@ -40,6 +41,6 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     <DownloadChartButton svgContent={data.plot} fileName={`gamma test chart ${label}`} />
                 </Box>
             </DialogContent>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };

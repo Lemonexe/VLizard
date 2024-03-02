@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import { Box, Dialog, DialogContent, Tooltip } from '@mui/material';
+import { Box, DialogContent, Tooltip } from '@mui/material';
 import { K2C } from '../../adapters/logic/units.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
@@ -11,7 +12,7 @@ import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarni
 type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse };
 
 export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, handleClose }) => (
-    <Dialog fullScreen open={open} onClose={handleClose}>
+    <ResponsiveDialog maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitleWithX handleClose={handleClose}>Vapor pressure analysis for {data.compound}</DialogTitleWithX>
         <DialogContent>
             <AnalysisWarnings warnings={data.warnings} />
@@ -38,5 +39,5 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
                 <DownloadChartButton svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
             </Box>
         </DialogContent>
-    </Dialog>
+    </ResponsiveDialog>
 );

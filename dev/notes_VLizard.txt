@@ -7,8 +7,6 @@ react-spreadsheet BUG report with minimal example
 
 fitting AAD, RMS
 
-DialogActions sometimes merge into DialogContent for fullscreen dialogs
-
 build app
     run python from electron
     make data folder for python

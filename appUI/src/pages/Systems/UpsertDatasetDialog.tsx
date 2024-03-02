@@ -1,8 +1,7 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Autocomplete, Box, Button, Dialog, DialogContent, Stack, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
-import { ProminentDialogActions } from '../../components/Mui/ProminentDialogActions.tsx';
 import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
@@ -198,14 +197,14 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     </Box>
                 )}
             </DialogContent>
-            <ProminentDialogActions>
+            <DialogActions>
                 <Button onClick={handleClose} variant="outlined">
                     Cancel
                 </Button>
                 <Button onClick={handleSave} variant="contained" disabled={isError()}>
                     Save
                 </Button>
-            </ProminentDialogActions>
+            </DialogActions>
         </Dialog>
     );
 };

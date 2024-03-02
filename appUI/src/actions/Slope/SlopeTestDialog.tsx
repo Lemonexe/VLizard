@@ -1,7 +1,8 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { Box, Dialog, DialogContent } from '@mui/material';
+import { Box, DialogContent } from '@mui/material';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
@@ -23,7 +24,7 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
     );
 
     return (
-        <Dialog fullScreen open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Slope test for {label}</DialogTitleWithX>
             <DialogContent>
                 <AnalysisWarnings warnings={data.warnings} />
@@ -36,6 +37,6 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
                     <DownloadChartButton svgContent={data.plot} fileName={`slope test chart ${label}`} />
                 </Box>
             </DialogContent>
-        </Dialog>
+        </ResponsiveDialog>
     );
 };
