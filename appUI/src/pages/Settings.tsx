@@ -33,7 +33,8 @@ export const Settings: FC = () => {
     );
 
     const createProps = (key: keyof Config, isPercent?: boolean): Partial<TextFieldProps> => ({
-        style: { width: 150, marginTop: spacingN(0.5) },
+        style: { marginTop: spacingN(0.5) },
+        className: 'num-input',
         size: 'small',
         value: cfg[key],
         onChange: (e: ChangeEvent<HTMLInputElement>) => setCfg((prev) => ({ ...prev, [key]: e.target.value })),

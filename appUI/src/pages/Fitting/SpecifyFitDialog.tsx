@@ -26,8 +26,6 @@ import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
 import { ParamsSpreadsheet } from '../../components/ParamsSpreadsheet.tsx';
 import { useFitResultsDialog } from '../../actions/Fit/useFitResultsDialog.tsx';
 
-const commonInputStyle = { maxWidth: 300 };
-
 type UpsertDatasetDialogProps = DialogProps &
     SystemIdentifier & {
         // defined for Alter fit, undefined for Perform fit
@@ -86,7 +84,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                 <DialogContent>
                     <Stack direction="column" gap={2} pt={1}>
                         <Stack direction="row" gap={1} alignItems="center">
-                            <FormControl fullWidth style={commonInputStyle}>
+                            <FormControl fullWidth className="medium-input">
                                 <InputLabel id="datasets">Datasets</InputLabel>
                                 <Select
                                     multiple
@@ -102,7 +100,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             </FormControl>
                             {datasets.length === 0 && <ErrorLabel title="No datasets selected!" />}
                         </Stack>
-                        <FormControl fullWidth style={commonInputStyle}>
+                        <FormControl fullWidth className="medium-input">
                             <InputLabel id="model">Model type</InputLabel>
                             <Select
                                 labelId="model"
@@ -121,7 +119,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                         </FormControl>
                         {modelDef && (
                             <Stack direction="row" gap={1} alignItems="center">
-                                <FormControl fullWidth style={commonInputStyle}>
+                                <FormControl fullWidth className="medium-input">
                                     <InputLabel id="keepConstant">Params to keep constant</InputLabel>
                                     <Select
                                         multiple

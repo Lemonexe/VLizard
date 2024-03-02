@@ -21,14 +21,13 @@ import { TableSpreadsheet } from './TableSpreadsheet.tsx';
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
-const commonInputStyle = { maxWidth: 300 };
 const commonAutoCompleteProps = {
     freeSolo: true,
     fullWidth: true,
-    style: commonInputStyle,
     forcePopupIcon: true,
     autoHighlight: true,
     autoSelect: true,
+    className: 'medium-input',
 };
 
 type UpsertDatasetDialogProps = DialogProps & {
@@ -152,7 +151,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                             value={datasetName}
                             onChange={(e) => setDatasetName(e.target.value)}
                             fullWidth
-                            style={commonInputStyle}
+                            className="medium-input"
                         />
                         {willOverwriteDataset(datasetName) && (
                             <WarningLabel title="This will overwrite an existing dataset." />

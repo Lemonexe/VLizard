@@ -27,8 +27,6 @@ import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from '../../components/ParamsSpreadsheet.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 
-const commonInputStyle = { maxWidth: 300 };
-const numInputStyle = { width: 100 };
 type UpsertCompoundDialogProps = DialogProps & { origCompound?: string };
 
 export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompound, open, handleClose }) => {
@@ -99,7 +97,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                             value={compound}
                             onChange={(e) => setCompound(e.target.value)}
                             fullWidth
-                            style={commonInputStyle}
+                            className="medium-input"
                         />
                         {isCompoundChanged && !willReplace && (
                             <div>
@@ -119,7 +117,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 setModel(e.target.value);
                                 setData(getInitialData(e.target.value));
                             }}
-                            style={commonInputStyle}
+                            className="medium-input"
                         >
                             {vaporDefs!.map((v) => (
                                 <MenuItem key={v.name} value={v.name}>
@@ -138,7 +136,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     value={T_min}
                                     onChange={(e) => setT_min(Number(e.target.value))}
                                     size="small"
-                                    style={numInputStyle}
+                                    className="num-input"
                                     inputProps={{ min: 0 }}
                                 />
                                 <TextField
@@ -147,7 +145,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     value={T_max}
                                     onChange={(e) => setT_max(Number(e.target.value))}
                                     size="small"
-                                    style={numInputStyle}
+                                    className="num-input"
                                     inputProps={{ min: 0 }}
                                 />
                                 {tempError && <ErrorLabel title="Invalid values." />}

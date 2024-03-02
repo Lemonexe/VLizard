@@ -43,3 +43,11 @@ code {
 .Spreadsheet__cell.Spreadsheet__cell--readonly {
     color: inherit;
 }
+
+/* Common MUI Input variants; better to use class than comp hierarchy, because it's for various component types, and used only sometimes */
+.medium-input {
+    max-width: 300px;
+}
+.num-input {
+    max-width: 150px;
+}

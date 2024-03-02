@@ -7,8 +7,7 @@ react-spreadsheet BUG report with minimal example
 
 fitting AAD, RMS
 
-commonInputStyle as CLASS
-    yes it's very cringe, but we need the same CSS across various components
+DialogActions sometimes merge into DialogContent for fullscreen dialogs
 
 build app
     run python from electron
