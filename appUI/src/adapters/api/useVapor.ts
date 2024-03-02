@@ -33,13 +33,16 @@ export const useGetVaporModelDefs = () => {
     });
 };
 
-export const useVaporAnalysis = () =>
-    useMutation({
+export const useVaporAnalysis = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
         mutationFn: async (payload: VaporAnalysisRequest) => {
             const { data } = await axios.post<VaporAnalysisResponse>(hostName + '/vapor/analysis', payload);
             return data;
         },
+        onError,
     });
+};
 
 export const useUpdateVaporModel = () => {
     const queryClient = useQueryClient();

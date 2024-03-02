@@ -1,5 +1,4 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useNotifyErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
 import { useHeringtonTest } from '../../adapters/api/useTDTest.ts';
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
@@ -10,14 +9,13 @@ export const useHeringtonTestDialog = (props: TestRequest): UseAnalysisDialogRet
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useHeringtonTest();
-    const onError = useNotifyErrorMessage();
     const onSuccess = (res: HeringtonTestResponse) => {
         setOpen(true);
         setElem(<HeringtonTestDialog open={true} handleClose={() => setOpen(false)} req={props} data={res} />);
     };
 
     const perform = useCallback(() => {
-        mutate(props, { onSuccess, onError });
+        mutate(props, { onSuccess });
     }, [props, mutate]);
 
     return { perform, result: open ? elem : null };

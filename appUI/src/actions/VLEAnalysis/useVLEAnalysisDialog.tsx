@@ -1,5 +1,4 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useNotifyErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
 import { useVLEAnalysis } from '../../adapters/api/useVLE.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
@@ -10,14 +9,13 @@ export const useVLEAnalysisDialog = (props: VLEAnalysisRequest): UseAnalysisDial
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useVLEAnalysis();
-    const onError = useNotifyErrorMessage();
     const onSuccess = (res: VLEAnalysisResponse) => {
         setOpen(true);
         setElem(<VLEAnalysisDialog open={true} handleClose={() => setOpen(false)} req={props} data={res} />);
     };
 
     const perform = useCallback(() => {
-        mutate(props, { onSuccess, onError });
+        mutate(props, { onSuccess });
     }, [props, mutate]);
 
     return { perform, result: open ? elem : null };

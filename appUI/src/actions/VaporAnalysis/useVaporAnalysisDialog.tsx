@@ -1,5 +1,4 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useNotifyErrorMessage } from '../../adapters/api/helpers/getApiErrorMessage.ts';
 import { useVaporAnalysis } from '../../adapters/api/useVapor.ts';
 import { VaporAnalysisRequest, VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
@@ -10,14 +9,13 @@ export const useVaporAnalysisDialog = (props: VaporAnalysisRequest): UseAnalysis
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useVaporAnalysis();
-    const onError = useNotifyErrorMessage();
     const onSuccess = (res: VaporAnalysisResponse) => {
         setOpen(true);
         setElem(<VaporAnalysisDialog open={true} handleClose={() => setOpen(false)} data={res} />);
     };
 
     const perform = useCallback(() => {
-        mutate(props, { onSuccess, onError });
+        mutate(props, { onSuccess });
     }, [props, mutate]);
 
     return { perform, result: open ? elem : null };

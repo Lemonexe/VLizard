@@ -3,9 +3,6 @@ how to use python + electron https://github.com/fyears/electron-python-example
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
-use consistently in hoooks: const onError = useNotifyErrorMessage();
-refactor perform() in action hooks – return Promise so that the caller can display a loader (that shouldn't be a concern of an action hook)
-
 čtvercový grafy, ticks on outside, title rozhodně off, dle settings optional legenda
 
 fitting AAD, RMS

@@ -23,13 +23,16 @@ export const useGetVLESystems = () => {
     });
 };
 
-export const useVLEAnalysis = () =>
-    useMutation({
+export const useVLEAnalysis = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
         mutationFn: async (payload: VLEAnalysisRequest) => {
             const { data } = await axios.post<VLEAnalysisResponse>(hostName + '/vle/analysis', payload);
             return data;
         },
+        onError,
     });
+};
 
 export const useUpsertVLEDataset = () => {
     const queryClient = useQueryClient();
