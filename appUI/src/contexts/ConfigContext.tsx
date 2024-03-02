@@ -1,4 +1,5 @@
 import { createContext, FC, PropsWithChildren, useContext } from 'react';
+import { Loader } from '../components/Loader.tsx';
 import { useGetConfig } from '../adapters/api/useConfigApi.ts';
 import { Config } from '../adapters/api/types/configTypes.tsx';
 
@@ -12,6 +13,6 @@ export const useConfig = (): Config => {
 
 export const ConfigContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const { data } = useGetConfig();
-    if (!data) return 'Loading...';
+    if (!data) return <Loader />;
     return <ConfigContext.Provider value={data}>{children}</ConfigContext.Provider>;
 };
