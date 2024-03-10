@@ -1,5 +1,6 @@
 import io
 from matplotlib import pyplot as plt
+from src.config import cfg
 
 
 def init_plot(mode):
@@ -21,12 +22,14 @@ def finish_plot(mode):
 
     # render in interactive mode
     if mode == 'ion':
+        final_styles()
         plt.ion()
         plt.show()
         return None
 
     # render the plot to SVG as raw string content
     if mode == 'svg':
+        final_styles()
         svg_buffer = io.BytesIO()
         plt.savefig(svg_buffer, format='svg')
         svg_content = svg_buffer.getvalue().decode('utf-8')
@@ -36,3 +39,18 @@ def finish_plot(mode):
         return svg_content[svg_tag_index:] if svg_tag_index > 0 else svg_content
 
     raise ValueError(f'Unknown output mode {mode}')
+
+
+def final_styles():
+    """Apply final styles to plot before rendering."""
+    ax = plt.gca()
+    ax.tick_params(direction='in')
+
+    # hack to ensure square aspect ratio, see https://stackoverflow.com/a/57249253/19120862
+    x_left, x_right = ax.get_xlim()
+    y_bottom, y_top = ax.get_ylim()
+    ax.set_aspect(abs((x_right-x_left) / (y_bottom-y_top)) / cfg.chart_aspect_ratio)
+
+    # hide legend & title if requested
+    if not cfg.chart_legend: plt.legend().set_visible(False)
+    if not cfg.chart_title: plt.title(None)

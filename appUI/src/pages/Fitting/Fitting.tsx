@@ -1,12 +1,14 @@
 import { FC, useState } from 'react';
 import { Button, Stack } from '@mui/material';
 import { KeyboardDoubleArrowDown, KeyboardDoubleArrowUp } from '@mui/icons-material';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { DefaultLayout } from '../../components/DefaultLayout.tsx';
 import { HeaderStack } from '../../components/Mui/HeaderStack.tsx';
 import { FittedModelsTable } from './FittedModelsTable.tsx';
 
 export const Fitting: FC = () => {
-    const [expandAll, setExpandAll] = useState(false);
+    const cfg = useConfig();
+    const [expandAll, setExpandAll] = useState(cfg.UI_expandAll);
     return (
         <DefaultLayout>
             <HeaderStack>

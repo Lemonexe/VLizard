@@ -1,7 +1,6 @@
 # This is the default config file, which is initialized in user data folder at first run
 
 ## CALCULATIONS – arbitrary tolerances & criteria
-
 # gamma tolerance for simple gamma test
 gamma_abs_tol: 3e-2
 # [%] when extrapolating vapor pressure, allow temp to be out bounds by = this * (vapor pressure fun temp interval)
@@ -16,3 +15,13 @@ rk_quad_rel_tol: 1e-4
 fredenslund_criterion: 1
 # default maximum order of Legendre polynomials in Fredenslund test
 default_legendre_order: 4
+
+
+## UI
+# whether to render chart title, legend
+chart_title: false
+chart_legend: true
+# chart default aspect ratio
+chart_aspect_ratio: 1.0
+# whether to expand all nodes in tree view
+UI_expandAll: true
