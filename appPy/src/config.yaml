@@ -1,3 +1,5 @@
+# This is the default config file, which is initialized in user data folder at first run
+
 ## CALCULATIONS – arbitrary tolerances & criteria
 
 # gamma tolerance for simple gamma test

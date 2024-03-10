@@ -5,3 +5,6 @@ analysis/
 
 # temporary testdata folder that cannot be shared
 appPy/data/VLE/MBuOH-MBuAc/
+
+# userdata
+appPy/data/config.yaml

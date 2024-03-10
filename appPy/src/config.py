@@ -1,7 +1,10 @@
+import os
 from src.utils.io.yaml import open_yaml, save_yaml
 
-consts_path = 'src/consts.yaml'
-config_path = 'data/config.yaml'
+consts_path = os.path.join('src', 'consts.yaml')
+config_path = os.path.join('data', 'config.yaml')
+default_config_path = os.path.join('src', 'config.yaml')
+
 # expected keys of user config
 config_keys = [
     'gamma_abs_tol', 'T_bounds_rel_tol', 'rk_D_criterion', 'herington_DJ_criterion', 'rk_quad_rel_tol',
@@ -32,11 +35,18 @@ def load_config_file(yaml_path):
     return DictToClass(**content)
 
 
-def save_config():
+def save_config(cfg2save):
     """Save userdata config to file."""
-    user_cfg = open_yaml(config_path)  # only to know which keys do we need to save
-    user_cfg = {key: value for key, value in cfg.__dict__.items() if key in user_cfg}  # actual values from memory
-    save_yaml(user_cfg, config_path, save_format='yaml')
+    save_yaml(cfg2save.__dict__, config_path, save_format='yaml')
+
+
+def load_config_or_default():
+    """Load user config if exists, else load default config and initialize user config from it."""
+    if os.path.exists(config_path):
+        return load_config_file(config_path)
+    default_cfg = load_config_file(default_config_path)
+    save_config(default_cfg)
+    return default_cfg
 
 
 def amend_config(cfg_patch):
@@ -44,9 +54,9 @@ def amend_config(cfg_patch):
     for key, value in cfg_patch.items():
         if value is not None:
             setattr(cfg, key, value)
-    save_config()
+    save_config(cfg)
 
 
 # exported merged config
-cfg = load_config_file(config_path)
+cfg = load_config_or_default()
 cst = load_config_file(consts_path)

@@ -7,6 +7,8 @@ react-spreadsheet BUG report with minimal example
 
 fitting AAD, RMS
 
+možnost volby kPa, K na view
+
 build app
     run python from electron
     make data folder for python
