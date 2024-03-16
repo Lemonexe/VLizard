@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.optimize import root
 from src.config import cfg, cst
+from src.utils.UoM import convert_T, convert_p
 from src.utils.io.echo import echo, underline_echo
 from src.utils.compounds import get_preferred_vapor_model
 from src.utils.Result import Result
@@ -70,10 +71,12 @@ class Vapor(Result):
 
         T_min, T_max = self.T_min, self.T_max
         echo(f'Vapor pressure function: {self.model.name}')
-        echo(f'T_min = {(T_min-cst.C2K):5.1f}°C')
-        echo(f'T_max = {(T_max-cst.C2K):5.1f}°C')
+        echo(f'T_min = {convert_T(T_min):5.1f} {cfg.UoM_T}')
+        echo(f'T_max = {convert_T(T_max):5.1f} {cfg.UoM_T}')
 
-        echo(f'ps_min = {self.ps_fun(T_min):.3g} kPa')
-        echo(f'ps_max = {self.ps_fun(T_max):.3g} kPa')
-        if self.T_boil: echo(f'T_boil(atm) = {(self.T_boil-cst.C2K):.1f}°C')
+        ps_min = self.ps_fun(T_min)
+        ps_max = self.ps_fun(T_max)
+        echo(f'ps_min = {convert_p(ps_min):.3g} {cfg.UoM_p}')
+        echo(f'ps_max = {convert_p(ps_max):.3g} {cfg.UoM_p}')
+        if self.T_boil: echo(f'T_boil(atm) = {convert_T(self.T_boil):.1f} {cfg.UoM_T}')
         echo('')

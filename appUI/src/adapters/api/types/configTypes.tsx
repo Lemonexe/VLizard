@@ -13,6 +13,8 @@ export type Config = {
     chart_legend: boolean;
     chart_aspect_ratio: boolean;
     UI_expandAll: boolean;
+    UoM_p: string;
+    UoM_T: string;
 };
 
 export type UpdateConfigRequest = Partial<Config>;

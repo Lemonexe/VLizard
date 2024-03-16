@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+from src.utils.UoM import convert_T
 from src.fit.Fit import Fit
 from .VLE_plot import VLE_plot
 from src.plot.plot_io import init_plot, finish_plot
@@ -27,8 +28,9 @@ class Fit_plot(Fit):
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
             vle.plot_Txy(mode=None)
-            plt.plot(tab.y_1, tab.T, '-r', label=f'dew {self.model.display_name}')
-            plt.plot(tab.x_1, tab.T, '-b', label=f'boil {self.model.display_name}')
+            T_disp = convert_T(tab.T)
+            plt.plot(tab.y_1, T_disp, '-r', label=f'dew {self.model.display_name}')
+            plt.plot(tab.x_1, T_disp, '-b', label=f'boil {self.model.display_name}')
             plt.legend()
             plots.append(finish_plot(mode))
         return plots if mode == 'svg' else None

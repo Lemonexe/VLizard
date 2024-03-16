@@ -1,4 +1,6 @@
 from matplotlib import pyplot as plt
+from src.config import cfg
+from src.utils.UoM import convert_T
 from src.TD.VLE import VLE
 from src.plot.plot_io import init_plot, finish_plot
 
@@ -22,13 +24,13 @@ class VLE_plot(VLE):
     def plot_Txy(self, mode):
         """Plot T,x,y diagram."""
         init_plot(mode)
-
-        plt.plot(self.y_1, self.T, 'Dr', label='dew')
-        plt.plot(self.x_1, self.T, 'Db', label='boil')
+        T_disp = convert_T(self.T)
+        plt.plot(self.y_1, T_disp, 'Dr', label='dew')
+        plt.plot(self.x_1, T_disp, 'Db', label='boil')
         plt.xlim(0, 1)
         plt.title(f'Txy diagram for {self.get_title()}')
         plt.xlabel('x, y')
-        plt.ylabel('T [K]')
+        plt.ylabel(f'T [{cfg.UoM_T}]')
         plt.legend()
 
         return finish_plot(mode)

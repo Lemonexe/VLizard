@@ -25,3 +25,7 @@ chart_legend: true
 chart_aspect_ratio: 1.0
 # whether to expand all nodes in tree view
 UI_expandAll: true
+
+# Units of Measurement
+UoM_p: 'kPa'
+UoM_T: '°C'

@@ -7,13 +7,15 @@
 ### Variable naming
 Since this software is highly mathematical, variable naming is often conventional rather than descriptive or semantical.  
 Standard signs for quantities or operators are used, and indexes are marked using `_`, some indexes are used to mark purpose or origin:  
-***dif***ference, ***res***idual, ***sum***, ***exp***erimental values, ***cal***culated, ***tab***elated, ***int***erval,  
-***M***atrix _(where it'd be unexpected, e.g. serializing vectors to a matrix)_
+***dif***ference, ***res***idual, ***sum***, ***exp***erimental values, ***cal***culated, ***tab***elated, ***disp***lay,  ***int***erval,  
+***M***atrix _(in cases where it may not be expected, e.g. serializing vectors to a matrix)_
 
 ### Units of measurement
 Following units of measurement are used, unless explicitly stated otherwise:
 - pressure: `kPa` _(in logarithmic form as well)_
-- temperature: `K` everywhere in code except UI, where it's `°C`
+- temperature: `K`
+
+In UI, units are converted to user's preference as per config, but only values for display, not inputs. 
 
 ### Styles
 Visual language of charts is following: **black** is main data series, **green** is calculated model.  

@@ -7,8 +7,6 @@ fitting AAD, RMS
 
 display vapor pressure in VLE table
 
-možnost volby kPa, K na view
-
 build app
     run python from electron
     make data folder for python

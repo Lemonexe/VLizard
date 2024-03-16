@@ -9,7 +9,7 @@ default_config_path = os.path.join('src', 'config.yaml')
 config_keys = [
     'gamma_abs_tol', 'T_bounds_rel_tol', 'rk_D_criterion', 'herington_DJ_criterion', 'rk_quad_rel_tol',
     'fredenslund_criterion', 'default_legendre_order', 'chart_title', 'chart_legend', 'chart_aspect_ratio',
-    'UI_expandAll'
+    'UI_expandAll', 'UoM_p', 'UoM_T'
 ]
 
 

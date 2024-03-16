@@ -4,6 +4,9 @@ import {
     Checkbox,
     CheckboxProps,
     FormControlLabel,
+    MenuItem,
+    Select,
+    SelectProps,
     Stack,
     Tab,
     Tabs,
@@ -45,6 +48,19 @@ const getCreateCBProps: GeneratorFn<CreateCBPropsFn> = (formConfig, patchConfig,
     return (key) => ({
         checked: Boolean(formConfig[key]),
         onChange: (e: ChE) => patchConfig(key, e.target.checked),
+        onBlur: send,
+    });
+};
+
+// same for Select
+type CreateSelectPropsFn = (key: keyof Config) => Partial<SelectProps>;
+const getCreateSelectProps: GeneratorFn<CreateSelectPropsFn> = (formConfig, patchConfig, send) => {
+    return (key) => ({
+        size: 'small',
+        sx: { ml: 2, mb: 1 },
+        className: 'num-input',
+        value: formConfig[key],
+        onChange: (e) => patchConfig(key, e.target.value as string),
         onBlur: send,
     });
 };
@@ -102,14 +118,35 @@ const CalcSettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
 const UISettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
     const createTFProps = getCreateTFProps(formConfig, patchConfig, send);
     const createCBProps = getCreateCBProps(formConfig, patchConfig, send);
+    const createSlProps = getCreateSelectProps(formConfig, patchConfig, send);
     return (
         <Stack direction="column" gap={2.5} pt={3}>
-            <FormControlLabel
-                control={<Checkbox {...createCBProps('UI_expandAll')} />}
-                label="Always expand all data subtables"
-            />
-            <FormControlLabel control={<Checkbox {...createCBProps('chart_title')} />} label="Show chart title" />
-            <FormControlLabel control={<Checkbox {...createCBProps('chart_legend')} />} label="Show chart legend" />
+            <div>
+                <FormControlLabel
+                    control={<Checkbox {...createCBProps('UI_expandAll')} />}
+                    label="Always expand all data subtables"
+                />
+                <br />
+                <FormControlLabel control={<Checkbox {...createCBProps('chart_title')} />} label="Show chart title" />
+                <br />
+                <FormControlLabel control={<Checkbox {...createCBProps('chart_legend')} />} label="Show chart legend" />
+            </div>
+
+            <div>
+                Pressure units
+                <Select {...createSlProps('UoM_p')}>
+                    <MenuItem value="Pa" children="Pa" />
+                    <MenuItem value="kPa" children="kPa" />
+                    <MenuItem value="bar" children="bar" />
+                    <MenuItem value="MPa" children="MPa" />
+                </Select>
+                <br />
+                Temperature units
+                <Select {...createSlProps('UoM_T')}>
+                    <MenuItem value="K" children="K" />
+                    <MenuItem value="°C" children="°C" />
+                </Select>
+            </div>
 
             <div>
                 Aspect ratio for all charts <em>(set 1.0 for square)</em>
