@@ -18,6 +18,9 @@ supported_model_names = [model.name for model in supported_models]
 # squash a selected VLE property from list of VLEs into a single array
 squash = lambda vle_list, prop: np.concatenate([getattr(vle, prop) for vle in vle_list])
 
+RMS = lambda resid_vec: np.mean(np.square(resid_vec))**0.5
+AAD = lambda resid_vec: np.mean(np.abs(resid_vec))
+
 
 class Fit(Result):
 
@@ -33,7 +36,9 @@ class Fit(Result):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__()
-        self.keys_to_serialize = ['is_optimized', 'result_params', 'resid_final', 'resid_init', 'tabulated_datasets']
+        self.keys_to_serialize = [
+            'is_optimized', 'result_params', 'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'tabulated_datasets'
+        ]
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_names = parse_datasets(compound1, compound2, datasets)
@@ -54,8 +59,10 @@ class Fit(Result):
         self.gamma_2 = squash(self.dataset_VLEs, 'gamma_2')
 
         # initial and final objective function values
-        self.resid_init = np.sum(np.square(self.get_residual(self.params0)))
-        self.resid_final = None
+        self.RMS_init = RMS(self.get_residual(self.params0))
+        self.AAD_init = AAD(self.get_residual(self.params0))
+        self.RMS_final = None
+        self.AAD_final = None
 
     def __set_named_params(self):
         """Compose result_params vector into a self-descriptive dict."""
@@ -114,7 +121,8 @@ class Fit(Result):
         self.result_params = self.__set_named_params()
 
         # final objective function value, log optimization as complete
-        self.resid_final = np.sum(np.square(result.fun))
+        self.RMS_final = RMS(result.fun)
+        self.AAD_final = AAD(result.fun)
         self.is_optimized = True
 
     def tabulate(self):
@@ -131,8 +139,11 @@ class Fit(Result):
             echo(f'  {name} = {value:.4g}')
 
         echo('')
-        echo(f'Initial residual = {self.resid_init:.3g}')
-        if self.is_optimized: echo(f'Final residual   = {self.resid_final:.3g}')
+        echo(f'Initial RMS = {self.RMS_init:.3g}')
+        echo(f'Initial AAD = {self.AAD_init:.3g}')
+        if self.is_optimized:
+            echo(f'Final RMS   = {self.RMS_final:.3g}')
+            echo(f'Final AAD   = {self.AAD_final:.3g}')
 
     def get_title(self):
         return f'Regression of {self.model.display_name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'

@@ -20,6 +20,8 @@ export type VLEAnalysisResponse = AnalysisResult &
     DatasetTable & {
         gamma_1: number[];
         gamma_2: number[];
+        ps_1: number[];
+        ps_2: number[];
         plot_xy: string;
         plot_Txy: string;
         plot_gamma: string;

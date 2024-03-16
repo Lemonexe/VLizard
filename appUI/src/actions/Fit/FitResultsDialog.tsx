@@ -45,7 +45,7 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
     );
 
     return (
-        <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
+        <ResponsiveDialog maxWidth="xl" fullWidth open={open}>
             <DialogTitleWithX handleClose={handleClose}>
                 Non-linear regression of {req.model_name} on {system}, {req.datasets.join(', ')}
             </DialogTitleWithX>
@@ -53,9 +53,10 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
                 {!data.is_optimized && <Alert severity="info" children="Optimization not performed this time" />}
                 <AnalysisWarnings warnings={data.warnings} />
                 <Box my={6}>
-                    initial residual = {toSigDgts(data.resid_init, 3)}
-                    <br />
-                    {data.is_optimized && <>final residual = {toSigDgts(data.resid_final ?? NaN, 3)}</>}
+                    <p>initial RMS = {toSigDgts(data.RMS_init, 3)}</p>
+                    {data.is_optimized && <p>final RMS = {toSigDgts(data.RMS_final ?? NaN, 3)}</p>}
+                    <p>initial AAD = {toSigDgts(data.AAD_init, 3)}</p>
+                    {data.is_optimized && <p>final AAD = {toSigDgts(data.AAD_final ?? NaN, 3)}</p>}
                 </Box>
                 <p>
                     <h4>Fitted model parameters</h4>

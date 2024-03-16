@@ -9,7 +9,8 @@ export type PersistedFit = {
         const_param_names: string[];
     };
     results: {
-        resid_final: number;
+        RMS_final: number;
+        AAD_final: number;
         result_params: NamedParams;
     };
 };
@@ -49,8 +50,10 @@ export type TabulatedDataset = AnalysisResult & {
 
 export type FitAnalysisResponse = AnalysisResult & {
     is_optimized: boolean;
-    resid_init: number;
-    resid_final: number | null;
+    RMS_init: number;
+    RMS_final: number | null;
+    AAD_init: number;
+    AAD_final: number | null;
     result_params: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };

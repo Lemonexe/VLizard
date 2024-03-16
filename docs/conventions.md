@@ -8,7 +8,7 @@
 Since this software is highly mathematical, variable naming is often conventional rather than descriptive or semantical.  
 Standard signs for quantities or operators are used, and indexes are marked using `_`, some indexes are used to mark purpose or origin:  
 ***dif***ference, ***res***idual, ***sum***, ***exp***erimental values, ***cal***culated, ***tab***elated, ***disp***lay,  ***int***erval,  
-***M***atrix _(in cases where it may not be expected, e.g. serializing vectors to a matrix)_
+***vec***tor, ***M***atrix _(in cases where it may not be expected, e.g. serializing vectors to a matrix)_
 
 ### Units of measurement
 Following units of measurement are used, unless explicitly stated otherwise:

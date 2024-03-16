@@ -36,7 +36,8 @@ def persist_fit(fit):
         },
         'results': {
             'result_params': zip_params(fit.params),
-            'resid_final': fit.resid_final
+            'RMS_final': fit.RMS_final,
+            'AAD_final': fit.AAD_final
         }
     }
     payload = cast_to_jsonable_recursive(payload)

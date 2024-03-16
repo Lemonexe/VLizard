@@ -10,7 +10,7 @@ import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
-const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2'];
+const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2', 'ps_1', 'ps_2'];
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
@@ -18,7 +18,10 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
 
     const spreadsheetData = useMemo(
-        () => makeReadOnly(fromRows([data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2])),
+        () =>
+            makeReadOnly(
+                fromRows([data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2, data.ps_1, data.ps_2]),
+            ),
         [data],
     );
 

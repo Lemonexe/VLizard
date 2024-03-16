@@ -3,10 +3,6 @@ how to use python + electron https://github.com/fyears/electron-python-example
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
-fitting AAD, RMS
-
-display vapor pressure in VLE table
-
 build app
     run python from electron
     make data folder for python

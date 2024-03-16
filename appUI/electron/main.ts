@@ -24,6 +24,8 @@ function getRootUrl(fullUrl: string) {
 }
 function createWindow() {
     win = new BrowserWindow({
+        width: 1280,
+        height: 1024,
         icon: path.join(process.env.PUBLIC, 'icon.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
