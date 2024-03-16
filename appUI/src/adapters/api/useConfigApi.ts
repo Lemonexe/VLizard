@@ -19,15 +19,11 @@ export const useGetConfig = () => {
 export const useUpdateConfig = () => {
     const queryClient = useQueryClient();
     const onError = useNotifyErrorMessage();
-    const pushNotification = useNotifications();
     return useMutation({
         mutationFn: async (payload: UpdateConfigRequest) => {
             await axios.put(hostName + '/config', payload);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: getConfigKey });
-            pushNotification({ message: 'Settings saved.', severity: 'success' });
-        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: getConfigKey }),
         onError,
     });
 };

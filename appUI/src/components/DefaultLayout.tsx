@@ -20,10 +20,10 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                         </DenseIconButton>
                     </Tooltip>
                     <Button color="inherit" onClick={() => navigate('/compounds')}>
-                        Pure Data
+                        Pure Compounds
                     </Button>
                     <Button color="inherit" onClick={() => navigate('/systems')}>
-                        Binary Data
+                        Binary Systems
                     </Button>
                     <Button color="inherit" onClick={() => navigate('/fitting')}>
                         Fitting

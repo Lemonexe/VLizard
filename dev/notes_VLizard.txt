@@ -5,8 +5,6 @@ react-spreadsheet BUG report with minimal example
 
 fitting AAD, RMS
 
-remake Settings as a fullscreen Dialog
-
 display vapor pressure in VLE table
 
 možnost volby kPa, K na view
