@@ -1,7 +1,4 @@
 import sys
-
-sys.path.append(sys.path[0] + '/..')
-
 from src.api.app import app
 
 if __name__ == '__main__':

@@ -5,8 +5,9 @@ all algorithms for thermodynamic consistency tests, non-linear regression and th
 
 I/O is provided either via **Flask server** (for Electron app) or **CLI** (local development, may be outdated).
 
-~~It is packed together with the Electron app, running silently.~~
-~~See [Typescript frontend](appUI.md) for build process.~~
+The server application can be built as a single executable using `pyinstaller`.
+That is then packed together with the Electron app, running silently.
+See [Typescript frontend](appUI.md) for build process of the Electron app.
 
 Uses `pipenv` for dependency management, see [Pipfile](../appPy/Pipfile) _(also specifies python version)_.
 
@@ -18,12 +19,20 @@ pip install --user pipenv
 pipenv install --dev
 ```
 
+### Build
+```
+pipenv shell
+pyinstaller --onefile serve.py
+exit
+```
+
 ### Local run
 
 #### Flask server
-Run server: `pipenv run start`  
+Run built production server: `dist\serve.exe`  
+Run production server: `pipenv run start`  
 Run development server: `pipenv run dev`  
-Uses port 37137 by default (arbitrary number).    
+Uses port 37137 by default _(an arbitrary number)_.    
 
 See [http/](../http) for API documentation (as IntelliJ http files).  
 
