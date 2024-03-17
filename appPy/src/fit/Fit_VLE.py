@@ -4,6 +4,7 @@ from src.TD.VLE_models.NRTL import NRTL_model, NRTL10_model
 from src.TD.VLE_models.van_Laar import van_Laar_model
 from src.TD.VLE_models.margules import margules_model
 from src.TD.VLE import VLE
+from src.utils.io.echo import echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
@@ -33,7 +34,9 @@ class Fit_VLE(Fit):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__(supported_models, model_name, params0, const_param_names)
-        self.keys_to_serialize = self.keys_to_serialize + ['RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'tabulated_datasets']
+        self.keys_to_serialize = self.keys_to_serialize + [
+            'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'tabulated_datasets'
+        ]
         self.compound1 = compound1
         self.compound2 = compound2
 
@@ -86,3 +89,22 @@ class Fit_VLE(Fit):
     def tabulate(self):
         """Tabulate model using result_params for each dataset."""
         self.tabulated_datasets = [VLE_Tabulation(self.model, self.params, vle) for vle in self.dataset_VLEs]
+
+    def report(self):
+        underline_echo(self.get_title())
+        self.report_warnings()
+
+        if self.is_optimized: echo('Optimization complete with following parameters:')
+        else: echo('Optimization skipped, using initial parameters:')
+        for (name, value) in zip(self.model.param_names, self.params):
+            echo(f'  {name} = {value:.4g}')
+
+        echo('')
+        echo(f'Initial RMS = {self.RMS_init:.3g}')
+        echo(f'Initial AAD = {self.AAD_init:.3g}')
+        if self.is_optimized:
+            echo(f'Final RMS   = {self.RMS_final:.3g}')
+            echo(f'Final AAD   = {self.AAD_final:.3g}')
+
+    def get_title(self):
+        return f'Regression of {self.model.display_name} on {self.compound1}-{self.compound2} ({", ".join(self.dataset_names)})'

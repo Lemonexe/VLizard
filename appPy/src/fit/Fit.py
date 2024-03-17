@@ -1,6 +1,5 @@
 from src.utils.Result import Result
 from src.utils.errors import AppException
-from src.utils.io.echo import echo, underline_echo
 
 
 class Fit(Result):
@@ -63,22 +62,3 @@ class Fit(Result):
             if name not in model.param_names:
                 raise AppException(f'{model.display_name} has parameters {", ".join(model.param_names)}, got {name}!')
         return const_param_names
-
-    def report(self):
-        underline_echo(self.get_title())
-        self.report_warnings()
-
-        if self.is_optimized: echo('Optimization complete with following parameters:')
-        else: echo('Optimization skipped, using initial parameters:')
-        for (name, value) in zip(self.model.param_names, self.params):
-            echo(f'  {name} = {value:.4g}')
-
-        echo('')
-        echo(f'Initial RMS = {self.RMS_init:.3g}')
-        echo(f'Initial AAD = {self.AAD_init:.3g}')
-        if self.is_optimized:
-            echo(f'Final RMS   = {self.RMS_final:.3g}')
-            echo(f'Final AAD   = {self.AAD_final:.3g}')
-
-    def get_title(self):
-        return f'Regression of {self.model.display_name}'
