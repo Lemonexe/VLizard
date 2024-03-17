@@ -3,7 +3,7 @@ from src.utils.errors import AppException
 from src.utils.io.echo import echo, underline_echo
 
 
-class GeneralFit(Result):
+class Fit(Result):
 
     def __init__(self, supported_models, model_name, params0, const_param_names=None):
         """

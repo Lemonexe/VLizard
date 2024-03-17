@@ -7,7 +7,7 @@ from src.TD.VLE import VLE
 from src.utils.errors import AppException
 from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
-from .GeneralFit import GeneralFit
+from .Fit import Fit
 from .VLE_Tabulation import VLE_Tabulation
 from .utils import RMS, AAD
 
@@ -19,7 +19,7 @@ supported_model_names = [model.name for model in supported_models]
 squash = lambda vle_list, prop: np.concatenate([getattr(vle, prop) for vle in vle_list])
 
 
-class Fit_VLE(GeneralFit):
+class Fit_VLE(Fit):
 
     def __init__(self, compound1, compound2, model_name, datasets, params0, const_param_names):
         """
