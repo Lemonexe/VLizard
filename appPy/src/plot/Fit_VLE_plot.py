@@ -1,11 +1,11 @@
 from matplotlib import pyplot as plt
 from src.utils.UoM import convert_T
-from src.fit.Fit import Fit
+from src.fit.Fit_VLE import Fit_VLE
 from .VLE_plot import VLE_plot
 from src.plot.plot_io import init_plot, finish_plot
 
 
-class Fit_plot(Fit):
+class Fit_VLE_plot(Fit_VLE):
 
     def __init__(self, *params):
         super().__init__(*params)
