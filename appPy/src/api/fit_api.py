@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from src.fit.Fit import supported_models
-from src.plot.Fit_plot import Fit_plot
+from src.fit.Fit_VLE import supported_models
+from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit
 from src.utils.io.yaml import cast_to_jsonable
 from .helpers.schema_validation import unpack_request_schema
@@ -44,7 +44,7 @@ def fit_VLE_api():
     skip_optimization = params.pop('skip_optimization')  # do not pass that to Fit
 
     # perform fit, persist, enumerate
-    fit = Fit_plot(*params.values())
+    fit = Fit_VLE_plot(*params.values())
     if not skip_optimization:
         fit.optimize()
         persist_fit(fit)

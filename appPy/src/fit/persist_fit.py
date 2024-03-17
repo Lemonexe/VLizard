@@ -2,7 +2,7 @@ import os
 from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.Result import cast_to_jsonable_recursive
 from src.utils.systems import get_all_system_dir_names, get_system_path, parse_system_dir_name
-from .Fit import supported_model_names
+from .Fit_VLE import supported_model_names
 
 # generate json analysis directory path & file name for given system
 get_analysis_dir_path = lambda compound1, compound2: os.path.join(get_system_path(compound1, compound2), 'analysis')
