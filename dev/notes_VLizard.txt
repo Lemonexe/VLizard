@@ -7,3 +7,7 @@ build app
     run python from electron
     make data folder for python
     make default config on install
+
+make a convention that params is always a dict (named_params)
+    also params_final not result_params
+    while params_vec is a list (positional_params)

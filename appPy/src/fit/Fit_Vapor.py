@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import least_squares, root
+from src.config import cst
 from src.TD.vapor_models.wagner import wagner_model
 from src.TD.vapor_models.antoine import antoine_model
 from src.utils.errors import AppException
@@ -26,7 +27,7 @@ class Fit_Vapor(Fit):
         """
         super().__init__(supported_models, model_name, params0)
         self.keys_to_serialize = self.keys_to_serialize + [
-            'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'tabulated_data'
+            'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'result_inter_params'
         ]
         self.compound = compound
         self.p_data = np.array(p_data)
@@ -34,7 +35,8 @@ class Fit_Vapor(Fit):
         self.T_min = np.min(T_data)
         self.T_max = np.max(T_data)
 
-        self.params_inter = None
+        self.T_tab = self.p_tab_inter = self.p_tab_final = None
+        self.result_inter_params = self.params_inter = None
         self.RMS_init = RMS(self.get_T_p_residuals(self.params0))
         self.AAD_init = AAD(self.get_T_p_residuals(self.params0))
 
@@ -64,6 +66,7 @@ class Fit_Vapor(Fit):
         result = least_squares(self.get_p_residuals, self.params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.params_inter = result.x
+        self.result_inter_params = self.set_named_params(self.params_inter)
 
     def optimize_T_p(self):
         """Perform optimization of the model."""
@@ -77,6 +80,11 @@ class Fit_Vapor(Fit):
         self.is_optimized = True
         self.RMS_final = RMS(self.get_T_p_residuals(self.params))
         self.AAD_final = AAD(self.get_T_p_residuals(self.params))
+
+    def tabulate(self):
+        self.T_tab = np.linspace(self.T_min, self.T_max, cst.x_points_smooth_plot)
+        self.p_tab_inter = self.model.fun(self.T_tab, *self.params_inter)
+        self.p_tab_final = self.model.fun(self.T_tab, *self.params)
 
     def report(self):
         underline_echo(self.get_title())

@@ -3,6 +3,7 @@ from src.utils.UoM import convert_T
 from src.fit.Fit_VLE import Fit_VLE
 from .VLE_plot import VLE_plot
 from src.plot.plot_io import init_plot, finish_plot
+from src.utils.errors import AppException
 
 
 class Fit_VLE_plot(Fit_VLE):
@@ -11,8 +12,13 @@ class Fit_VLE_plot(Fit_VLE):
         super().__init__(*params)
         self.dataset_VLEs = [VLE_plot(vle.compound1, vle.compound2, vle.dataset_name) for vle in self.dataset_VLEs]
 
+    def __check_is_tabulated(self):
+        if self.tabulated_datasets is None:
+            raise AppException('No tabulated data to plot, must call tabulate() first!')
+
     def plot_xy_model(self, mode):
         """Overlay fitted xy curve over VLE data."""
+        self.__check_is_tabulated()
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
@@ -24,6 +30,7 @@ class Fit_VLE_plot(Fit_VLE):
 
     def plot_Txy_model(self, mode):
         """Overlay fitted Txy curve over VLE data."""
+        self.__check_is_tabulated()
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
@@ -37,6 +44,7 @@ class Fit_VLE_plot(Fit_VLE):
 
     def plot_gamma_model(self, mode):
         """Overlay fitted gamma curve over VLE data."""
+        self.__check_is_tabulated()
         plots = []
         for (vle, tab) in zip(self.dataset_VLEs, self.tabulated_datasets):
             init_plot(mode)
