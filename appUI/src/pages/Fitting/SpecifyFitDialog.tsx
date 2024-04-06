@@ -18,6 +18,7 @@ import {
     SpreadsheetData,
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
@@ -58,8 +59,8 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     // SPREADSHEET
     const getInitialParams = (newModelName: string): number[] =>
         isEdit && newModelName === currentFit?.model_name
-            ? Object.values(currentFit.results.result_params)
-            : findModelDef(newModelName)?.params0 ?? [0];
+            ? fromNamedParams(currentFit.results.nparams)[1]
+            : fromNamedParams(findModelDef(newModelName)?.nparams0)[1];
     const getInitialData = (newModelName: string) => matrixToSpreadsheetData([getInitialParams(newModelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
@@ -68,7 +69,8 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const { perform, result } = useFitResultsDialog();
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
-        perform({ compound1, compound2, datasets, model_name, params0, const_param_names });
+        const nparams0 = toNamedParams(modelDef!.param_names, params0);
+        perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names });
         handleClose();
     }, [data, compound1, compound2, datasets, model_name, const_param_names, perform]);
 

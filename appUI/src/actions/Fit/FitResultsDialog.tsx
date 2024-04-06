@@ -9,6 +9,7 @@ import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarni
 import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type DatasetDisplayProps = {
@@ -39,10 +40,9 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
     const system = `${req.compound1}-${req.compound2}`;
     const label = `${system} ${req.model_name}`;
 
-    const spreadsheetData = useMemo(
-        () => makeReadOnly(matrixToSpreadsheetData([Object.values(data.result_params)])),
-        [data.result_params],
-    );
+    const [param_names, params] = useMemo(() => fromNamedParams(data.nparams), [data.nparams]);
+
+    const spreadsheetData = useMemo(() => makeReadOnly(matrixToSpreadsheetData([params])), [params]);
 
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open}>
@@ -61,7 +61,7 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
                 <p>
                     <h4>Fitted model parameters</h4>
                 </p>
-                <Spreadsheet data={spreadsheetData} columnLabels={Object.keys(data.result_params)} />
+                <Spreadsheet data={spreadsheetData} columnLabels={param_names} />
 
                 {data.tabulated_datasets.map((ds) => (
                     <DatasetDisplay key={ds.name} label={label} ds={ds} />

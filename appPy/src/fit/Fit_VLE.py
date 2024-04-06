@@ -79,7 +79,7 @@ class Fit_VLE(Fit):
         result = least_squares(callback, picked_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.params = overlay_vectors(const_params, const_param_idxs, result.x)
-        self.result_params = self.set_named_params(self.params)
+        self.nparams = self.set_named_params(self.params)
 
         # final objective function value, log optimization as complete
         self.RMS_final = RMS(result.fun)
@@ -87,7 +87,7 @@ class Fit_VLE(Fit):
         self.is_optimized = True
 
     def tabulate(self):
-        """Tabulate model using result_params for each dataset."""
+        """Tabulate model using final params for each dataset."""
         self.tabulated_datasets = [VLE_Tabulation(self.model, self.params, vle) for vle in self.dataset_VLEs]
 
     def report(self):

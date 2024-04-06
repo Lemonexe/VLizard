@@ -16,7 +16,7 @@ export const PlotFittedModelButton: FC<PlotFittedModelButtonProps> = ({ compound
                 compound2,
                 datasets: fit.input.datasets,
                 model_name: fit.model_name,
-                params0: Object.values(fit.results.result_params),
+                nparams0: fit.results.nparams,
                 const_param_names: fit.input.const_param_names,
                 skip_optimization: true,
             }),

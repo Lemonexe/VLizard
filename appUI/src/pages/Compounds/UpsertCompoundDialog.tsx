@@ -19,6 +19,7 @@ import {
     SpreadsheetData,
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
@@ -41,6 +42,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
     // currently selected model definition
     const modelDef = useMemo(() => findModelDef(model), [model]);
+    const [paramNames, _params0] = useMemo(() => fromNamedParams(modelDef?.nparams0), [modelDef]);
 
     // CHECKS
     const isEdit = Boolean(origCompound);
@@ -53,12 +55,12 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
 
     // SPREADSHEET
     const getInitialParams = (modelName: string): number[] => {
-        const modelParams0 = findModelDef(modelName)?.params0 ?? [0];
+        const modelParams0 = Object.values(findModelDef(modelName)?.nparams0 ?? [0]);
         // use model defaults, unless it's Editing existing compounds, using its original model
         if (!origCompound) return modelParams0;
         const origModel = findCompound(origCompound);
         if (!origModel || origModel.model_name !== modelName) return modelParams0;
-        return Object.values(origModel.params);
+        return Object.values(origModel.nparams);
     };
     const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
@@ -68,9 +70,10 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const pushNotification = useNotifications();
     const { mutate } = useUpdateVaporModel();
     const handleSave = useCallback(() => {
-        const params = toNumMatrix(data)[0];
+        const values = toNumMatrix(data)[0];
+        const nparams = toNamedParams(paramNames, values);
         mutate(
-            { compound, model_name: model, params, T_min, T_max },
+            { compound, model_name: model, nparams, T_min, T_max },
             {
                 onSuccess: () => {
                     pushNotification({ message: `Model ${model} for ${compound} saved.`, severity: 'success' });
@@ -158,7 +161,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         <p>
                             <strong>Model parameters</strong>
                         </p>
-                        <ParamsSpreadsheet data={data} setData={setData} model_param_names={modelDef.param_names} />
+                        <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
                     </Box>
                 )}
                 {modelDef && !isDataWhole && (

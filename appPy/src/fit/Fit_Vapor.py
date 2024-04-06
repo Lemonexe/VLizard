@@ -76,7 +76,7 @@ class Fit_Vapor(Fit):
         result = least_squares(self.get_T_p_residuals, self.params_inter, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         self.params = result.x
-        self.result_params = self.set_named_params(self.params)
+        self.nparams = self.set_named_params(self.params)
         self.is_optimized = True
         self.RMS_final = RMS(self.get_T_p_residuals(self.params))
         self.AAD_final = AAD(self.get_T_p_residuals(self.params))

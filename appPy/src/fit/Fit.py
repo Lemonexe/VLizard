@@ -12,20 +12,21 @@ class Fit(Result):
         supported_models (list of Vapor_Model or VLE_Model): list of supported models.
         model_name (str): name of the model to be fitted.
         params0 (list of float): initial estimate of model parameters (ordered).
+        const_param_names (list of str): names of parameter names to be kept constant during optimization.
         """
         super().__init__()
-        self.keys_to_serialize = ['is_optimized', 'result_params']
+        self.keys_to_serialize = ['is_optimized', 'nparams', 'nparams0']
         self.supported_models = supported_models
         self.supported_model_names = [model.name for model in supported_models]
+        self.is_optimized = False  # whether optimization has been performed
 
         self.model = self.__parse_model(model_name)
-        self.params0 = self.__parse_params0(params0)  # initial params
+        self.params0 = self.__parse_params0(params0)  # initial params as np.array
+        self.nparams0 = self.set_named_params(self.params0)
+        self.params = self.params0  # optimization result params as np.array
+        self.nparams = self.nparams0
 
-        self.const_param_names = self.__parse_const_param_names(const_param_names)  # param names to be kept constant
-
-        self.params = self.params0  # result of optimization as vector of values
-        self.result_params = self.set_named_params(self.params0)  # result of optimization as a dict of named values
-        self.is_optimized = False  # whether optimization has been performed
+        self.const_param_names = self.__parse_const_param_names(const_param_names)
 
         # initial and final objective function values
         self.RMS_init = None
@@ -34,7 +35,7 @@ class Fit(Result):
         self.AAD_final = None
 
     def set_named_params(self, params):
-        """Compose result_params vector into a self-descriptive dict."""
+        """Compose vector of ordered params into an ordered dict of named params."""
         return dict(zip(self.model.param_names, params))
 
     def __parse_model(self, model_name):

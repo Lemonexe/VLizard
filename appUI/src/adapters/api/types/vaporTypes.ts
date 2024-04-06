@@ -2,7 +2,7 @@ import { AnalysisResult, CompoundIdentifier, NamedParams, VaporModelIdentifier }
 
 /* GET instance of model for compound */
 export type VaporModel = VaporModelIdentifier & {
-    params: NamedParams;
+    nparams: NamedParams;
     T_min: number;
     T_max: number;
 };
@@ -12,8 +12,7 @@ export type GetVaporModelsResponse = VaporModel[];
 /* GET general definitions of model types */
 export type VaporModelDef = {
     name: string;
-    params0: number[];
-    param_names: string[];
+    nparams0: NamedParams;
 };
 
 export type GetVaporModelDefsResponse = VaporModelDef[];
@@ -33,7 +32,7 @@ export type VaporAnalysisResponse = AnalysisResult &
 export type UpdateVaporModelRequest = VaporModelIdentifier & {
     T_min: number;
     T_max: number;
-    params: number[];
+    nparams: NamedParams;
 };
 
 /* DELETE */

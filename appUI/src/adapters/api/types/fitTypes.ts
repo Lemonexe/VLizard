@@ -5,13 +5,13 @@ export type PersistedFit = {
     model_name: string;
     input: {
         datasets: string[];
-        params0: NamedParams;
+        nparams0: NamedParams;
         const_param_names: string[];
     };
     results: {
         RMS_final: number;
         AAD_final: number;
-        result_params: NamedParams;
+        nparams: NamedParams;
     };
 };
 
@@ -25,7 +25,7 @@ export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 /* GET general definitions of model types */
 export type VLEModelDef = {
     name: string;
-    params0: number[];
+    nparams0: NamedParams;
     param_names: string[];
     is_gamma_T_fun: boolean;
 };
@@ -35,7 +35,7 @@ export type GetVLEModelDefsResponse = VLEModelDef[];
 /* POST ANALYSIS */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
-    params0?: number[];
+    nparams0?: NamedParams;
     const_param_names?: string[];
     skip_optimization?: boolean;
 };
@@ -54,7 +54,8 @@ export type FitAnalysisResponse = AnalysisResult & {
     RMS_final: number | null;
     AAD_init: number;
     AAD_final: number | null;
-    result_params: NamedParams;
+    nparams0: NamedParams;
+    nparams: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };
 

@@ -26,16 +26,15 @@ def get_all_persisted_fits():
 
 
 def persist_fit(fit):
-    zip_params = lambda params: dict(zip(fit.model.param_names, params))
     payload = {
         'model_name': fit.model.name,
         'input': {
             'datasets': fit.dataset_names,
-            'params0': zip_params(fit.params0),
+            'nparams0': fit.nparams0,
             'const_param_names': fit.const_param_names
         },
         'results': {
-            'result_params': zip_params(fit.params),
+            'nparams': fit.nparams,
             'RMS_final': fit.RMS_final,
             'AAD_final': fit.AAD_final
         }
