@@ -4,7 +4,7 @@ import { spacingN } from '../../contexts/MUITheme.tsx';
 export const CollapsibleTableCell = styled(TableCell)({
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: spacingN(2),
+    paddingLeft: spacingN(3),
 });
 
 export const NoBorderCell = styled(TableCell)({ border: 'unset' });
