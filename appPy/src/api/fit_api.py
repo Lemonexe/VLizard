@@ -3,7 +3,6 @@ from src.fit.Fit_VLE import supported_models
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.plot.Fit_Vapor_plot import Fit_Vapor_plot
 from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit
-from src.utils.io.yaml import cast_to_jsonable
 from .helpers.schema_validation import unpack_request_schema
 
 fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
@@ -20,8 +19,7 @@ def get_VLE_model_definitions_api():
     """Return all supported VLE_Model definitions."""
     model2dict = lambda model: {
         'name': model.name,
-        'params0': cast_to_jsonable(model.params0),
-        'param_names': model.param_names,
+        'nparams0': dict(zip(model.param_names, model.params0)),
         'is_gamma_T_fun': model.is_gamma_T_fun,
     }
     payload = [model2dict(model) for model in supported_models]
@@ -36,7 +34,7 @@ def fit_VLE_api():
         'compound2': True,
         'model_name': True,
         'datasets': True,
-        'params0': False,
+        'nparams0': False,
         'const_param_names': False,
         'skip_optimization': False
     }
@@ -66,7 +64,7 @@ def fit_VLE_api():
 
 @fit_blueprint.post('vapor')
 def fit_Vapor_api():
-    params_schema = {'compound': True, 'model_name': True, 'p_data': True, 'T_data': True, 'params0': False}
+    params_schema = {'compound': True, 'model_name': True, 'p_data': True, 'T_data': True, 'nparams0': False}
     params = unpack_request_schema(request, params_schema)
 
     fit = Fit_Vapor_plot(*params.values())

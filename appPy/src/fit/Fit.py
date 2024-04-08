@@ -21,8 +21,7 @@ class Fit(Result):
         self.is_optimized = False  # whether optimization has been performed
 
         self.model = self.__parse_model(model_name)
-        self.params0 = self.__parse_params0(params0)  # initial params as np.array
-        self.nparams0 = self.set_named_params(self.params0)
+        self.params0, self.nparams0 = self.__parse_params0(params0)  # initial params as np.array, and as dict
         self.params = self.params0  # optimization result params as np.array
         self.nparams = self.nparams0
 
@@ -48,12 +47,20 @@ class Fit(Result):
         return self.supported_models[supported_model_names_lcase.index(model_name.lower())]
 
     def __parse_params0(self, params0):
-        """Parse & validate params0, use either given params or default model params as initial estimate."""
+        """
+        Parse & validate initial params, use either given params or default model params as initial estimate.
+        params0: either ordered list of float, or named params as ordered key:value dict
+        """
         model = self.model
-        if not params0: return model.params0
+        if not params0: return model.params0, dict(zip(model.param_names, model.params0))
+        if isinstance(params0, dict):
+            nparams0 = params0
+            params0 = list(params0.values())
+        else:
+            nparams0 = dict(zip(model.param_names, params0))
         if len(params0) != model.n_params:
             raise AppException(f'{model.display_name} model expects {model.n_params} parameters, got {len(params0)}!')
-        return params0
+        return params0, nparams0
 
     def __parse_const_param_names(self, const_param_names):
         """Parse & validate const_param_names."""

@@ -54,7 +54,8 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
 
-    const isFreedom = modelDef && modelDef.param_names.length - const_param_names.length > 0;
+    const paramNames = modelDef ? fromNamedParams(modelDef.nparams0)[0] : [];
+    const isFreedom = modelDef && paramNames.length - const_param_names.length > 0;
 
     // SPREADSHEET
     const getInitialParams = (newModelName: string): number[] =>
@@ -69,10 +70,10 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const { perform, result } = useFitResultsDialog();
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
-        const nparams0 = toNamedParams(modelDef!.param_names, params0);
+        const nparams0 = toNamedParams(paramNames, params0);
         perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names });
         handleClose();
-    }, [data, compound1, compound2, datasets, model_name, const_param_names, perform]);
+    }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, perform]);
 
     // OVERALL ERROR CHECK
     const isError = !isFreedom || !isDataWhole || !datasets.length;
@@ -130,7 +131,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                         value={const_param_names}
                                         onChange={(e) => setConst_param_names(e.target.value as string[])}
                                     >
-                                        {modelDef.param_names.map((name) => (
+                                        {paramNames.map((name) => (
                                             <MenuItem key={name} value={name} children={name} />
                                         ))}
                                     </Select>
@@ -144,7 +145,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             <p>
                                 <strong>Model parameters</strong>
                             </p>
-                            <ParamsSpreadsheet data={data} setData={setData} model_param_names={modelDef.param_names} />
+                            <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
                         </Box>
                     )}
                     {modelDef && !isDataWhole && (

@@ -8,8 +8,8 @@ from src.utils.errors import AppException
 
 class Fit_VLE_plot(Fit_VLE):
 
-    def __init__(self, *params):
-        super().__init__(*params)
+    def __init__(self, *args):
+        super().__init__(*args)
         self.dataset_VLEs = [VLE_plot(vle.compound1, vle.compound2, vle.dataset_name) for vle in self.dataset_VLEs]
 
     def __check_is_tabulated(self):
