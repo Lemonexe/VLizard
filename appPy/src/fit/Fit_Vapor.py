@@ -51,6 +51,7 @@ class Fit_Vapor(Fit):
         # as if we were calculating boiling point at a given pressure
         T_calc = np.zeros(len(self.T_data))
         for i in range(len(self.T_data)):
+            # pylint: disable=cell-var-from-loop
             T_boil_resid = lambda T: self.model.fun(T, *params) - self.p_data[i]
             sol = root(fun=T_boil_resid, x0=self.T_data[i], tol=1e-6)
             if not sol.success:

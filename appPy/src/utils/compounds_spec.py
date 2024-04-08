@@ -13,7 +13,7 @@ test_model = Vapor_Model(
     n_params=3,
     param_names=['A', 'B', 'C'],
     fun=None,
-    params0=None,
+    params0=[1, 2, 3],
 )
 
 

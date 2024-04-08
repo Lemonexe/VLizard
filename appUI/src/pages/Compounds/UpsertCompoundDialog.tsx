@@ -42,7 +42,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
     // currently selected model definition
     const modelDef = useMemo(() => findModelDef(model), [model]);
-    const [paramNames, _params0] = useMemo(() => fromNamedParams(modelDef?.nparams0), [modelDef]);
+    const [paramNames] = useMemo(() => fromNamedParams(modelDef?.nparams0), [modelDef]);
 
     // CHECKS
     const isEdit = Boolean(origCompound);

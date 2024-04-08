@@ -5,6 +5,7 @@ from src.fit.Fit_Vapor import Fit_Vapor
 from src.plot.plot_io import init_plot, finish_plot
 from src.utils.errors import AppException
 
+
 class Fit_Vapor_plot(Fit_Vapor):
 
     def __check_is_tabulated(self):
