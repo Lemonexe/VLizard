@@ -11,13 +11,15 @@ export const EditDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound2,
             <Tooltip title="Edit dataset table">
                 <IconButton children={<TableView />} onClick={() => setOpen(true)} />
             </Tooltip>
-            <UpsertDatasetDialog
-                open={open}
-                handleClose={() => setOpen(false)}
-                origCompound1={compound1}
-                origCompound2={compound2}
-                origDataset={dataset}
-            />
+            {open && (
+                <UpsertDatasetDialog
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                    origCompound1={compound1}
+                    origCompound2={compound2}
+                    origDataset={dataset}
+                />
+            )}
         </>
     );
 };

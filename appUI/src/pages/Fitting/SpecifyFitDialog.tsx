@@ -20,7 +20,7 @@ import {
 } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { ErrorLabel, InfoLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
@@ -71,12 +71,13 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
         const nparams0 = toNamedParams(paramNames, params0);
-        perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names });
+        const skip_optimization = !isFreedom;
+        perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names, skip_optimization });
         handleClose();
     }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, perform]);
 
     // OVERALL ERROR CHECK
-    const isError = !isFreedom || !isDataWhole || !datasets.length;
+    const isError = !isDataWhole || !datasets.length;
 
     return (
         <>
@@ -136,7 +137,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                         ))}
                                     </Select>
                                 </FormControl>
-                                {!isFreedom && <ErrorLabel title="No params left to optimize!" />}
+                                {!isFreedom && <InfoLabel title="No params left to optimize." />}
                             </Stack>
                         )}
                     </Stack>
