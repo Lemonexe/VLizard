@@ -8,7 +8,7 @@ import { RestoreDataButton } from './RestoreDataButton.tsx';
 type SpreadsheetControlsProps = {
     setData: SetSpreadsheetData;
     showRestoreData: boolean;
-    handleRestoreData: () => void;
+    handleRestoreData?: () => void;
 };
 
 export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, showRestoreData, handleRestoreData }) => (
@@ -19,6 +19,6 @@ export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, sho
         <Box>
             <TrimButton setData={setData} />
         </Box>
-        <Box>{showRestoreData && <RestoreDataButton handleRestoreData={handleRestoreData} />}</Box>
+        <Box>{showRestoreData && handleRestoreData && <RestoreDataButton handleRestoreData={handleRestoreData} />}</Box>
     </Stack>
 );

@@ -2,6 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import {
     Box,
     Button,
+    Dialog,
     DialogActions,
     DialogContent,
     FormControl,
@@ -11,6 +12,7 @@ import {
     Stack,
     TextField,
 } from '@mui/material';
+import { TableView } from '@mui/icons-material';
 import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
@@ -21,12 +23,12 @@ import {
 } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from '../../components/ParamsSpreadsheet.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { InputVaporFitDialog } from './InputVaporFitDialog.tsx';
 
 type UpsertCompoundDialogProps = DialogProps & { origCompound?: string };
 
@@ -65,13 +67,13 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);
 
     // MUTATION
     const pushNotification = useNotifications();
     const { mutate } = useUpdateVaporModel();
     const handleSave = useCallback(() => {
-        const values = toNumMatrix(data)[0];
-        const nparams = toNamedParams(paramNames, values);
+        const nparams = toNamedParams(paramNames, numData);
         mutate(
             { compound, model_name: model, nparams, T_min, T_max },
             {
@@ -81,103 +83,122 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                 },
             },
         );
-    }, [compound, data, model, T_min, T_max]);
+    }, [compound, numData, model, T_min, T_max]);
+
+    // FITTING
+    const [fittingOpen, setFittingOpen] = useState(false);
+    const handleOpenFitting = useCallback(() => setFittingOpen(true), []);
+    const handleCloseFitting = useCallback(() => setFittingOpen(false), []);
 
     // OVERALL ERROR CHECK
     const isError = !compound || tempError || !isDataWhole;
 
     return (
-        <ResponsiveDialog fullWidth maxWidth="sm" open={open}>
-            <DialogTitleWithX handleClose={handleClose}>
-                {isEdit ? 'Edit' : 'Add'} vapor pressure model
-            </DialogTitleWithX>
-            <DialogContent>
-                <Stack direction="column" gap={2} pt={1}>
-                    <Stack direction="row" gap={1} alignItems="center">
-                        <TextField
-                            label="Compound name"
-                            variant="outlined"
-                            value={compound}
-                            onChange={(e) => setCompound(e.target.value)}
-                            fullWidth
-                            className="medium-input"
-                        />
-                        {isCompoundChanged && !willReplace && (
-                            <div>
-                                <InfoLabel title="Compound name was changed (will be saved as a new one). Restore?" />
-                                <RestoreButton onClick={restoreOrig} />
-                            </div>
+        <>
+            <Dialog fullScreen open={open}>
+                <DialogTitleWithX handleClose={handleClose}>
+                    {isEdit ? 'Edit' : 'Add'} vapor pressure model
+                </DialogTitleWithX>
+                <DialogContent>
+                    <Stack direction="column" gap={2} pt={1}>
+                        <Stack direction="row" gap={1} alignItems="center">
+                            <TextField
+                                label="Compound name"
+                                variant="outlined"
+                                value={compound}
+                                onChange={(e) => setCompound(e.target.value)}
+                                fullWidth
+                                className="medium-input"
+                            />
+                            {isCompoundChanged && !willReplace && (
+                                <div>
+                                    <InfoLabel title="Compound name was changed (will be saved as a new one). Restore?" />
+                                    <RestoreButton onClick={restoreOrig} />
+                                </div>
+                            )}
+                            {willReplace && <WarningLabel title="This will overwrite existing compound." />}
+                        </Stack>
+                        <FormControl fullWidth>
+                            <InputLabel id="model">Model type</InputLabel>
+                            <Select
+                                labelId="model"
+                                label="Model type"
+                                value={model}
+                                onChange={(e) => {
+                                    setModel(e.target.value);
+                                    setData(getInitialData(e.target.value));
+                                }}
+                                className="medium-input"
+                            >
+                                {vaporDefs!.map((v) => (
+                                    <MenuItem key={v.name} value={v.name}>
+                                        {v.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {modelDef && (
+                            <Box>
+                                <span>Temperature bounds of model validity (in Kelvin)</span>
+                                <Stack direction="row" gap={1} alignItems="center" pt={1}>
+                                    <TextField
+                                        type="number"
+                                        label="min"
+                                        value={T_min}
+                                        onChange={(e) => setT_min(Number(e.target.value))}
+                                        size="small"
+                                        className="num-input"
+                                        inputProps={{ min: 0 }}
+                                    />
+                                    <TextField
+                                        type="number"
+                                        label="max"
+                                        value={T_max}
+                                        onChange={(e) => setT_max(Number(e.target.value))}
+                                        size="small"
+                                        className="num-input"
+                                        inputProps={{ min: 0 }}
+                                    />
+                                    {tempError && <ErrorLabel title="Invalid values." />}
+                                </Stack>
+                            </Box>
                         )}
-                        {willReplace && <WarningLabel title="This will overwrite existing compound." />}
+                        {modelDef && (
+                            <Box mt={3}>
+                                <h4>Model parameters</h4>
+                                <p>
+                                    Either fill in known values, <b>or</b> perform FITTING using measured <i>p, T</i>{' '}
+                                    data, using these values as initial estimate.
+                                    <br />
+                                    Either way, don't forget to SAVE afterwards.
+                                </p>
+                                <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
+                            </Box>
+                        )}
+                        {modelDef && !isDataWhole && <ErrorLabel title="Data is incomplete!" />}
                     </Stack>
-                    <FormControl fullWidth>
-                        <InputLabel id="model">Model type</InputLabel>
-                        <Select
-                            labelId="model"
-                            label="Model type"
-                            value={model}
-                            onChange={(e) => {
-                                setModel(e.target.value);
-                                setData(getInitialData(e.target.value));
-                            }}
-                            className="medium-input"
-                        >
-                            {vaporDefs!.map((v) => (
-                                <MenuItem key={v.name} value={v.name}>
-                                    {v.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    {modelDef && (
-                        <Box>
-                            <span>Temperature bounds of model validity (in Kelvin)</span>
-                            <Stack direction="row" gap={1} alignItems="center" pt={1}>
-                                <TextField
-                                    type="number"
-                                    label="min"
-                                    value={T_min}
-                                    onChange={(e) => setT_min(Number(e.target.value))}
-                                    size="small"
-                                    className="num-input"
-                                    inputProps={{ min: 0 }}
-                                />
-                                <TextField
-                                    type="number"
-                                    label="max"
-                                    value={T_max}
-                                    onChange={(e) => setT_max(Number(e.target.value))}
-                                    size="small"
-                                    className="num-input"
-                                    inputProps={{ min: 0 }}
-                                />
-                                {tempError && <ErrorLabel title="Invalid values." />}
-                            </Stack>
-                        </Box>
-                    )}
-                </Stack>
-                {modelDef && (
-                    <Box pt={3}>
-                        <p>
-                            <strong>Model parameters</strong>
-                        </p>
-                        <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
-                    </Box>
-                )}
-                {modelDef && !isDataWhole && (
-                    <Box pt={2}>
-                        <ErrorLabel title="Data is incomplete!" />
-                    </Box>
-                )}
-            </DialogContent>
-            <DialogActions sx={{ pt: 4 }}>
-                <Button onClick={handleClose} variant="outlined">
-                    Cancel
-                </Button>
-                <Button onClick={handleSave} variant="contained" disabled={isError}>
-                    Save
-                </Button>
-            </DialogActions>
-        </ResponsiveDialog>
+                </DialogContent>
+                <DialogActions sx={{ pt: 4 }}>
+                    <Button onClick={handleClose} variant="outlined">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleOpenFitting} variant="outlined" disabled={isError} startIcon={<TableView />}>
+                        Fitting
+                    </Button>
+                    <Button onClick={handleSave} variant="contained" disabled={isError}>
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {modelDef && (
+                <InputVaporFitDialog
+                    open={fittingOpen}
+                    handleClose={handleCloseFitting}
+                    compound={compound}
+                    modelDef={modelDef}
+                    params0={numData}
+                />
+            )}
+        </>
     );
 };
