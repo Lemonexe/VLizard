@@ -1,4 +1,10 @@
-import { AnalysisResult, MultipleDatasetsIdentifier, NamedParams, SystemIdentifier } from './common.ts';
+import {
+    AnalysisResult,
+    CompoundIdentifier,
+    MultipleDatasetsIdentifier,
+    NamedParams,
+    SystemIdentifier,
+} from './common.ts';
 
 /* GET saved optimized models for systems */
 export type PersistedFit = {
@@ -31,7 +37,7 @@ export type VLEModelDef = {
 
 export type GetVLEModelDefsResponse = VLEModelDef[];
 
-/* POST ANALYSIS */
+/* POST VLE FIT */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
     nparams0?: NamedParams;
@@ -47,18 +53,42 @@ export type TabulatedDataset = AnalysisResult & {
     gamma_plot: string;
 };
 
-export type FitAnalysisResponse = AnalysisResult & {
+type FitMetrics = AnalysisResult & {
     is_optimized: boolean;
     RMS_init: number;
     RMS_final: number | null;
     AAD_init: number;
     AAD_final: number | null;
+};
+
+export type FitAnalysisResponse = FitMetrics & {
     nparams0: NamedParams;
     nparams: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };
 
-/* DELETE */
+/* DELETE VLE FIT */
 export type DeleteFitRequest = SystemIdentifier & {
     model_name: string;
+};
+
+/* POST VAPOR FIT */
+export type VaporFitRequest = CompoundIdentifier & {
+    model_name: string;
+    p_data: number[];
+    T_data: number[];
+    nparams0?: NamedParams;
+    skip_T_p_optimization?: boolean;
+};
+
+export type VaporFitResponse = FitMetrics & {
+    is_T_p_optimized: boolean;
+    RMS_inter: number | null;
+    AAD_inter: number | null;
+    nparams0: NamedParams;
+    nparams_inter: NamedParams;
+    nparams: NamedParams;
+    T_min: number;
+    T_max: number;
+    plot: string;
 };

@@ -15,7 +15,7 @@ supported_model_names = [model.name for model in supported_models]
 
 class Fit_Vapor(Fit):
 
-    def __init__(self, compound, model_name, p_data, T_data, params0):
+    def __init__(self, compound, model_name, p_data, T_data, params0, skip_T_p_optimization=False):
         """
         Create non-linear regression problem for given vapor pressure datasets and a selected model.
 
@@ -24,21 +24,30 @@ class Fit_Vapor(Fit):
         p_data (list of float): vector of pressure data.
         T_data (list of float): vector of temperature data.
         params0 (list of float): initial estimate of model parameters (ordered).
+        skip_T_p_optimization (bool): if True, only p residuals will be optimized.
         """
         super().__init__(supported_models, model_name, params0)
-        self.keys_to_serialize = self.keys_to_serialize + [
-            'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'result_inter_params'
-        ]
+        self.keys_to_serialize.extend(['is_T_p_optimized', 'RMS_inter', 'AAD_inter', 'nparams_inter', 'T_min', 'T_max'])
         self.compound = compound
         self.p_data = np.array(p_data)
         self.T_data = np.array(T_data)
         self.T_min = np.min(T_data)
         self.T_max = np.max(T_data)
 
+        # calculate weight factor for T residuals
+        p_span = np.max(self.p_data) - np.min(self.p_data)
+        T_span = self.T_max - self.T_min
+        self.T_wt_factor = p_span / T_span
+
         self.T_tab = self.p_tab_inter = self.p_tab_final = None
-        self.result_inter_params = self.params_inter = None
-        self.RMS_init = RMS(self.get_T_p_residuals(self.params0))
-        self.AAD_init = AAD(self.get_T_p_residuals(self.params0))
+        self.nparams_inter = self.params_inter = None
+        self.RMS_inter = self.AAD_inter = None
+        self.is_T_p_optimized = False  # in case of Fit_Vapor, Fit.is_optimized means is_p_optimized
+
+        # in order to be consistent: if optimizing T,p, ALWAYS aim for T,p-residual, and if not, then always p-residual
+        self.resid_fun = self.get_p_residuals if skip_T_p_optimization else self.get_T_p_residuals
+        self.RMS_init = RMS(self.resid_fun(self.params0))
+        self.AAD_init = AAD(self.resid_fun(self.params0))
 
     def get_p_residuals(self, params):
         """Calculate residuals for given params."""
@@ -53,39 +62,46 @@ class Fit_Vapor(Fit):
         for i in range(len(self.T_data)):
             # pylint: disable=cell-var-from-loop
             T_boil_resid = lambda T: self.model.fun(T, *params) - self.p_data[i]
-            sol = root(fun=T_boil_resid, x0=self.T_data[i], tol=1e-6)
+            sol = root(fun=T_boil_resid, x0=self.T_data[i], tol=cst.T_boil_tol)
             if not sol.success:
-                raise AppException(f'Failed to find boiling point at {self.p_data[i]} kPa (to get regression residual)')
+                raise AppException(f'Cannot get T,p residual – failed to find boiling point at {self.p_data[i]} kPa')
             T_calc[i] = sol.x[0]
         return T_calc - self.T_data
 
     def get_T_p_residuals(self, params):
-        return np.concatenate((self.get_T_residuals(params), self.get_p_residuals(params)))
+        return np.concatenate((self.get_T_residuals(params) * self.T_wt_factor, self.get_p_residuals(params)))
 
     def optimize_p(self):
-        """Perform optimization of the model."""
+        """Optimize the model params, considering only error of dependent variable (p). When T,p-optimization is skipped, we are done, and the inter results stay as final."""
         result = least_squares(self.get_p_residuals, self.params0, method='lm')
-        if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        self.params_inter = result.x
-        self.result_inter_params = self.set_named_params(self.params_inter)
+        if result.status <= 0: raise AppException(f'p-optimization failed! Status {result.status}: {result.message}')
+        self.is_optimized = True
+        self.params_inter = self.params = result.x
+        self.nparams_inter = self.nparams = self.set_named_params(self.params_inter)
+        self.RMS_inter = self.RMS_final = RMS(self.resid_fun(self.params))
+        self.AAD_inter = self.AAD_final = AAD(self.resid_fun(self.params))
 
     def optimize_T_p(self):
-        """Perform optimization of the model."""
-        if self.params_inter is None:
-            raise AppException('Optimization of p residuals must be performed first')
-
-        result = least_squares(self.get_T_p_residuals, self.params_inter, method='lm')
-        if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
+        """Optimize the model params, considering errors of both dependent (p) & independent (T) variables. Overwrite the final results."""
+        if not self.is_optimized: raise AppException('Optimization of p residuals must be performed first')
+        try:
+            result = least_squares(self.get_T_p_residuals, self.params_inter, method='lm')
+            if result.status <= 0:
+                raise AppException(f'T,p-optimization failed! Status {result.status}: {result.message}')
+        except AppException as e:
+            self.warn(f'T,p-optimization failed with error: {e}')
+            return
+        self.is_T_p_optimized = True
         self.params = result.x
         self.nparams = self.set_named_params(self.params)
-        self.is_optimized = True
-        self.RMS_final = RMS(self.get_T_p_residuals(self.params))
-        self.AAD_final = AAD(self.get_T_p_residuals(self.params))
+        self.RMS_final = RMS(self.resid_fun(self.params))
+        self.AAD_final = AAD(self.resid_fun(self.params))
 
     def tabulate(self):
         self.T_tab = np.linspace(self.T_min, self.T_max, cst.x_points_smooth_plot)
         self.p_tab_inter = self.model.fun(self.T_tab, *self.params_inter)
-        self.p_tab_final = self.model.fun(self.T_tab, *self.params)
+        if self.is_T_p_optimized:
+            self.p_tab_final = self.model.fun(self.T_tab, *self.params)
 
     def report(self):
         underline_echo(self.get_title())

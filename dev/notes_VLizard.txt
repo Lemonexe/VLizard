@@ -7,3 +7,5 @@ build app
     run python from electron
     make data folder for python
     make default config on install
+
+add logo to readme :)

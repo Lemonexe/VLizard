@@ -34,9 +34,7 @@ class Fit_VLE(Fit):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__(supported_models, model_name, params0, const_param_names)
-        self.keys_to_serialize = self.keys_to_serialize + [
-            'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final', 'tabulated_datasets'
-        ]
+        self.keys_to_serialize.extend(['tabulated_datasets'])
         self.compound1 = compound1
         self.compound2 = compound2
 

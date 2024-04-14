@@ -64,12 +64,19 @@ def fit_VLE_api():
 
 @fit_blueprint.post('vapor')
 def fit_Vapor_api():
-    params_schema = {'compound': True, 'model_name': True, 'p_data': True, 'T_data': True, 'nparams0': False}
+    params_schema = {
+        'compound': True,
+        'model_name': True,
+        'p_data': True,
+        'T_data': True,
+        'nparams0': False,
+        'skip_T_p_optimization': False
+    }
     params = unpack_request_schema(request, params_schema)
 
     fit = Fit_Vapor_plot(*params.values())
     fit.optimize_p()
-    fit.optimize_T_p()
+    if not params['skip_T_p_optimization']: fit.optimize_T_p()
     payload = fit.serialize()
     fit.tabulate()
     payload['plot'] = fit.plot(mode='svg')

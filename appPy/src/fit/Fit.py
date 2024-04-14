@@ -15,7 +15,9 @@ class Fit(Result):
         const_param_names (list of str): names of parameter names to be kept constant during optimization.
         """
         super().__init__()
-        self.keys_to_serialize = ['is_optimized', 'nparams', 'nparams0']
+        self.keys_to_serialize = [
+            'is_optimized', 'nparams', 'nparams0', 'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final'
+        ]
         self.supported_models = supported_models
         self.supported_model_names = [model.name for model in supported_models]
         self.is_optimized = False  # whether optimization has been performed
