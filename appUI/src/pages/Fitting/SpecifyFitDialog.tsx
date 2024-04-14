@@ -18,8 +18,9 @@ import {
     SpreadsheetData,
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { ErrorLabel, InfoLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
@@ -53,13 +54,14 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
 
-    const isFreedom = modelDef && modelDef.param_names.length - const_param_names.length > 0;
+    const paramNames = fromNamedParams(modelDef?.nparams0)[0];
+    const isFreedom = modelDef && paramNames.length - const_param_names.length > 0;
 
     // SPREADSHEET
     const getInitialParams = (newModelName: string): number[] =>
         isEdit && newModelName === currentFit?.model_name
-            ? Object.values(currentFit.results.result_params)
-            : findModelDef(newModelName)?.params0 ?? [0];
+            ? fromNamedParams(currentFit.results.nparams)[1]
+            : fromNamedParams(findModelDef(newModelName)?.nparams0)[1];
     const getInitialData = (newModelName: string) => matrixToSpreadsheetData([getInitialParams(newModelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
@@ -68,12 +70,14 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const { perform, result } = useFitResultsDialog();
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
-        perform({ compound1, compound2, datasets, model_name, params0, const_param_names });
+        const nparams0 = toNamedParams(paramNames, params0);
+        const skip_optimization = !isFreedom;
+        perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names, skip_optimization });
         handleClose();
-    }, [data, compound1, compound2, datasets, model_name, const_param_names, perform]);
+    }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, perform]);
 
     // OVERALL ERROR CHECK
-    const isError = !isFreedom || !isDataWhole || !datasets.length;
+    const isError = !isDataWhole || !datasets.length;
 
     return (
         <>
@@ -128,12 +132,12 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                         value={const_param_names}
                                         onChange={(e) => setConst_param_names(e.target.value as string[])}
                                     >
-                                        {modelDef.param_names.map((name) => (
+                                        {paramNames.map((name) => (
                                             <MenuItem key={name} value={name} children={name} />
                                         ))}
                                     </Select>
                                 </FormControl>
-                                {!isFreedom && <ErrorLabel title="No params left to optimize!" />}
+                                {!isFreedom && <InfoLabel title="No params left to optimize." />}
                             </Stack>
                         )}
                     </Stack>
@@ -142,7 +146,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             <p>
                                 <strong>Model parameters</strong>
                             </p>
-                            <ParamsSpreadsheet data={data} setData={setData} model_param_names={modelDef.param_names} />
+                            <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
                         </Box>
                     )}
                     {modelDef && !isDataWhole && (

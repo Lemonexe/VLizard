@@ -13,7 +13,7 @@ export const PerformTDTestButton: FC<DatasetIdentifier> = (props) => {
             <Tooltip title="Perform analysis">
                 <IconButton children={<QueryStats />} onClick={() => setOpen(true)} />
             </Tooltip>
-            <ChooseTDTestDialog open={open} handleClose={handleClose} {...props} />
+            {open && <ChooseTDTestDialog open={open} handleClose={handleClose} {...props} />}
         </>
     );
 };

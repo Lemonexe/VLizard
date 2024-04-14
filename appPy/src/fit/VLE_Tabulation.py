@@ -72,7 +72,7 @@ def tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1, T_boil_est=400
     # find boiling temperature
     sol = root(fun=resid, x0=np.array([T_boil_est]), tol=cst.T_boil_tol)
     if not sol.success: raise AppException(f'Error while tabulating model – could not find T for x_1 = {x_1}')
-    T_boil = sol.x
+    T_boil = sol.x[0]
 
     # calculate activity coefficients at boiling temperature and vapor phase composition
     gamma_1_final, gamma_2_final = get_gamma_12(T_boil)

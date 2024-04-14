@@ -1,4 +1,4 @@
-# VLizard
+# <img align="left" src="appUI/public/icon.png" width="48" height="48">VLizard
 **a VLE wizard** 🧙‍♂️⚗🦎
 
 A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibrium) data, which comprises tests of thermodynamic consistency & model fitting using non-linear regression.

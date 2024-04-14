@@ -2,7 +2,7 @@ import os
 from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.Result import cast_to_jsonable_recursive
 from src.utils.systems import get_all_system_dir_names, get_system_path, parse_system_dir_name
-from .Fit import supported_model_names
+from .Fit_VLE import supported_model_names
 
 # generate json analysis directory path & file name for given system
 get_analysis_dir_path = lambda compound1, compound2: os.path.join(get_system_path(compound1, compound2), 'analysis')
@@ -26,16 +26,15 @@ def get_all_persisted_fits():
 
 
 def persist_fit(fit):
-    zip_params = lambda params: dict(zip(fit.model.param_names, params))
     payload = {
         'model_name': fit.model.name,
         'input': {
             'datasets': fit.dataset_names,
-            'params0': zip_params(fit.params0),
+            'nparams0': fit.nparams0,
             'const_param_names': fit.const_param_names
         },
         'results': {
-            'result_params': zip_params(fit.params),
+            'nparams': fit.nparams,
             'RMS_final': fit.RMS_final,
             'AAD_final': fit.AAD_final
         }

@@ -1,17 +1,23 @@
-import { AnalysisResult, MultipleDatasetsIdentifier, NamedParams, SystemIdentifier } from './common.ts';
+import {
+    AnalysisResult,
+    CompoundIdentifier,
+    MultipleDatasetsIdentifier,
+    NamedParams,
+    SystemIdentifier,
+} from './common.ts';
 
 /* GET saved optimized models for systems */
 export type PersistedFit = {
     model_name: string;
     input: {
         datasets: string[];
-        params0: NamedParams;
+        nparams0: NamedParams;
         const_param_names: string[];
     };
     results: {
         RMS_final: number;
         AAD_final: number;
-        result_params: NamedParams;
+        nparams: NamedParams;
     };
 };
 
@@ -25,17 +31,16 @@ export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 /* GET general definitions of model types */
 export type VLEModelDef = {
     name: string;
-    params0: number[];
-    param_names: string[];
+    nparams0: NamedParams;
     is_gamma_T_fun: boolean;
 };
 
 export type GetVLEModelDefsResponse = VLEModelDef[];
 
-/* POST ANALYSIS */
+/* POST VLE FIT */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
-    params0?: number[];
+    nparams0?: NamedParams;
     const_param_names?: string[];
     skip_optimization?: boolean;
 };
@@ -48,17 +53,42 @@ export type TabulatedDataset = AnalysisResult & {
     gamma_plot: string;
 };
 
-export type FitAnalysisResponse = AnalysisResult & {
+type FitMetrics = AnalysisResult & {
     is_optimized: boolean;
     RMS_init: number;
     RMS_final: number | null;
     AAD_init: number;
     AAD_final: number | null;
-    result_params: NamedParams;
+};
+
+export type FitAnalysisResponse = FitMetrics & {
+    nparams0: NamedParams;
+    nparams: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };
 
-/* DELETE */
+/* DELETE VLE FIT */
 export type DeleteFitRequest = SystemIdentifier & {
     model_name: string;
+};
+
+/* POST VAPOR FIT */
+export type VaporFitRequest = CompoundIdentifier & {
+    model_name: string;
+    p_data: number[];
+    T_data: number[];
+    nparams0?: NamedParams;
+    skip_T_p_optimization?: boolean;
+};
+
+export type VaporFitResponse = FitMetrics & {
+    is_T_p_optimized: boolean;
+    RMS_inter: number | null;
+    AAD_inter: number | null;
+    nparams0: NamedParams;
+    nparams_inter: NamedParams;
+    nparams: NamedParams;
+    T_min: number;
+    T_max: number;
+    plot: string;
 };

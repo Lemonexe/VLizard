@@ -70,7 +70,7 @@ def get_model_and_table(model_name):
     return model, table_path, table
 
 
-def amend_model_table(model_name, compound, T_min, T_max, params):
+def amend_model_table(model_name, compound, T_min, T_max, nparams):
     """
     Add new row to model table, or update existing row.
     If the compound exists in other model table, delete it from there.
@@ -84,6 +84,7 @@ def amend_model_table(model_name, compound, T_min, T_max, params):
     model, table_path, table = get_model_and_table(model_name)
 
     # validate params
+    params = list(nparams.values())
     if len(params) != model.n_params:
         raise AppException(f'Expected {model.n_params} parameters for {model_name}, got {len(params)}!')
 
