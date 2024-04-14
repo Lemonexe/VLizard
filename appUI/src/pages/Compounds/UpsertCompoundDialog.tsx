@@ -55,12 +55,12 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
 
     // SPREADSHEET
     const getInitialParams = (modelName: string): number[] => {
-        const modelParams0 = Object.values(findModelDef(modelName)?.nparams0 ?? [0]);
+        const [, modelParams0] = fromNamedParams(findModelDef(modelName)?.nparams0);
         // use model defaults, unless it's Editing existing compounds, using its original model
         if (!origCompound) return modelParams0;
         const origModel = findCompound(origCompound);
         if (!origModel || origModel.model_name !== modelName) return modelParams0;
-        return Object.values(origModel.nparams);
+        return fromNamedParams(origModel.nparams)[1];
     };
     const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));

@@ -54,7 +54,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
 
-    const paramNames = modelDef ? fromNamedParams(modelDef.nparams0)[0] : [];
+    const paramNames = fromNamedParams(modelDef?.nparams0)[0];
     const isFreedom = modelDef && paramNames.length - const_param_names.length > 0;
 
     // SPREADSHEET
