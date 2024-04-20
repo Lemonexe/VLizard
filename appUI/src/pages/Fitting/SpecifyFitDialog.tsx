@@ -24,7 +24,7 @@ import { ErrorLabel, InfoLabel } from '../../components/dataViews/TooltipIcons.t
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
-import { ParamsSpreadsheet } from '../../components/ParamsSpreadsheet.tsx';
+import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
 import { useFitResultsDialog } from '../../actions/Fit/useFitResultsDialog.tsx';
 
 type UpsertDatasetDialogProps = DialogProps &
@@ -146,7 +146,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             <p>
                                 <strong>Model parameters</strong>
                             </p>
-                            <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
+                            <ParamsSpreadsheet data={data} setData={setData} columnLabels={paramNames} />
                         </Box>
                     )}
                     {modelDef && !isDataWhole && (

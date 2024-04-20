@@ -12,6 +12,8 @@ import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spre
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
+const fitQualityMetrics = ['Root mean square', 'Average absolute deviation'];
+
 type DatasetDisplayProps = {
     label: string;
     ds: TabulatedDataset;
@@ -37,12 +39,31 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
 type FitResultsDialogProps = DialogProps & { req: FitAnalysisRequest; data: FitAnalysisResponse };
 
 export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose, req, data }) => {
+    const optimized = data.is_optimized;
     const system = `${req.compound1}-${req.compound2}`;
     const label = `${system} ${req.model_name}`;
 
-    const [param_names, params] = useMemo(() => fromNamedParams(data.nparams), [data.nparams]);
+    const param_names = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
 
-    const spreadsheetData = useMemo(() => makeReadOnly(matrixToSpreadsheetData([params])), [params]);
+    const rowLabels = useMemo(() => {
+        const rows = ['initial'];
+        if (optimized) rows.push('optimized');
+        return rows;
+    }, [data]);
+
+    const metricsSpreadsheetData = useMemo(() => {
+        const rows = [[data.RMS_init, data.AAD_init]];
+        if (optimized) rows.push([data.RMS_final!, data.AAD_final!]);
+        return makeReadOnly(matrixToSpreadsheetData(rows));
+    }, [data]);
+
+    const paramsSpreadsheetData = useMemo(() => {
+        const params0 = fromNamedParams(data.nparams0)[1];
+        const params = fromNamedParams(data.nparams)[1];
+        const rows = [params0];
+        if (optimized) rows.push(params);
+        return makeReadOnly(matrixToSpreadsheetData(rows));
+    }, [data]);
 
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open}>
@@ -50,19 +71,12 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
                 Non-linear regression of {req.model_name} on {system}, {req.datasets.join(', ')}
             </DialogTitleWithX>
             <DialogContent>
-                {!data.is_optimized && <Alert severity="info" children="Optimization not performed this time" />}
+                {!optimized && <Alert severity="info" children="Optimization not performed this time" />}
                 <AnalysisWarnings warnings={data.warnings} />
-                <Box my={6}>
-                    <p>initial RMS = {toSigDgts(data.RMS_init, 3)}</p>
-                    {data.is_optimized && <p>final RMS = {toSigDgts(data.RMS_final ?? NaN, 3)}</p>}
-                    <p>initial AAD = {toSigDgts(data.AAD_init, 3)}</p>
-                    {data.is_optimized && <p>final AAD = {toSigDgts(data.AAD_final ?? NaN, 3)}</p>}
-                </Box>
-                <p>
-                    <h4>Fitted model parameters</h4>
-                </p>
-                <Spreadsheet data={spreadsheetData} columnLabels={param_names} />
-
+                <h4 className="h-margin">Regression quality metrics</h4>
+                <Spreadsheet data={metricsSpreadsheetData} columnLabels={fitQualityMetrics} rowLabels={rowLabels} />
+                <h4 className="h-margin">Fitted model parameters</h4>
+                <Spreadsheet data={paramsSpreadsheetData} columnLabels={param_names} rowLabels={rowLabels} />
                 {data.tabulated_datasets.map((ds) => (
                     <DatasetDisplay key={ds.name} label={label} ds={ds} />
                 ))}

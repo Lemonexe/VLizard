@@ -16,7 +16,9 @@ import {
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { TableSpreadsheet } from './TableSpreadsheet.tsx';
+import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
+
+const tableSpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
@@ -177,8 +179,10 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     </Stack>
                 </Stack>
                 <Box pt={2}>
+                    <p>Enter your measured VLE data points:</p>
                     <Stack direction="row" gap={2}>
                         <TableSpreadsheet
+                            columnLabels={tableSpreadsheetHeaders}
                             data={data}
                             setData={setData}
                             setTouched={setTouched}
