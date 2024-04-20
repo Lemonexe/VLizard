@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { SpreadsheetData } from '../adapters/logic/spreadsheet.ts';
+import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 
 type ParamsSpreadsheetProps = {
     data: SpreadsheetData;

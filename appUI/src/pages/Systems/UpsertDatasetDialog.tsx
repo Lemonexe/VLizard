@@ -16,7 +16,7 @@ import {
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { TableSpreadsheet } from './TableSpreadsheet.tsx';
+import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
 
 const tableSpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
 

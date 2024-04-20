@@ -15,9 +15,6 @@ rename /fit to /fit/VLE
 3 charts for Fit_Vapor_plot
 try including InputVaporFit as a component in UpsertCompoundDialog
 
-
-move both Spreadsheet components...
-
 UI QoL:
     constant sigDigits in results spreadsheets
     use rowLabels in param inputs

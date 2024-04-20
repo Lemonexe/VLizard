@@ -3,7 +3,7 @@ import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, FormContro
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporModelDef } from '../../adapters/api/types/vaporTypes.ts';
-import { TableSpreadsheet } from '../Systems/TableSpreadsheet.tsx';
+import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
 import {
     checkIsSpreadsheetDataWhole,
     generateEmptyCells,
