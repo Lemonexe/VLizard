@@ -1,15 +1,5 @@
 import { Dispatch, FC, useCallback, useMemo, useState } from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    FormControlLabel,
-    IconButton,
-    Stack,
-} from '@mui/material';
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, FormControlLabel, Stack } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporModelDef } from '../../adapters/api/types/vaporTypes.ts';
@@ -25,32 +15,6 @@ import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
 import { useFitVaporResultsDialog } from '../../actions/FitVapor/useFitVaporResultsDialog.tsx';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
-import { HelpOutline } from '@mui/icons-material';
-
-const AlgorithmInfoDialog: FC<DialogProps> = ({ open, handleClose }) => (
-    <Dialog open={open} onClose={handleClose}>
-        <DialogTitleWithX handleClose={handleClose}>
-            <strong>Two algorithms</strong> are available:
-        </DialogTitleWithX>
-        <DialogContent>
-            <ul style={{ margin: 0 }}>
-                <li>
-                    <u>p-optimization</u>: standard curve fitting, which only considers dependent variable residuals (
-                    <i>p</i>).
-                    <br />
-                    It is performed always.
-                </li>
-                <li>
-                    <u>T,p-optimization</u>: considers both variables residuals (<i>T</i>, <i>p</i>).
-                    <br />
-                    When enabled, it's done as second step, starting from the p-optimized parameters.
-                    <br />
-                    Please note it can be unstable.
-                </li>
-            </ul>
-        </DialogContent>
-    </Dialog>
-);
 
 const tableSpreadsheetHeaders = ['p/kPa', 'T/K'];
 
@@ -61,10 +25,15 @@ type InputVaporFitProps = DialogProps & {
     setFittedParams: Dispatch<number[]>;
 };
 
-export const InputVaporFitDialog: FC<InputVaporFitProps> = ({ compound, modelDef, params0, setFittedParams }) => {
+export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
+    open,
+    handleClose,
+    compound,
+    modelDef,
+    params0,
+    setFittedParams,
+}) => {
     const paramNames = fromNamedParams(modelDef.nparams0)[0];
-
-    const [infoOpen, setInfoOpen] = useState(false);
 
     const [optimizeTp, setOptimizeTp] = useState(false);
 
@@ -87,31 +56,56 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({ compound, modelDef
     const isError = !isDataWhole;
 
     return (
-        <Box>
-            <p>Enter your measured pressure &amp; temperature data points and click OPTIMIZE.</p>
+        <>
+            <Dialog fullScreen open={open}>
+                <DialogTitleWithX handleClose={handleClose}>
+                    Perform {modelDef.name} model fitting for {compound}
+                </DialogTitleWithX>
+                <DialogContent>
+                    <p>Enter your measured pressure &amp; temperature data points and click OPTIMIZE.</p>
+                    <p>
+                        <strong>Two algorithms</strong> are available:
+                    </p>
+                    <ul style={{ margin: 0 }}>
+                        <li>
+                            <u>p-optimization</u>: standard curve fitting, which only considers dependent variable
+                            residuals (<i>p</i>).
+                            <br />
+                            It is performed always.
+                        </li>
+                        <li>
+                            <u>T,p-optimization</u>: considers both variables residuals (<i>T</i>, <i>p</i>).
+                            <br />
+                            When enabled, it's done as second step, starting from the p-optimized parameters.
+                            <br />
+                            Please note it can be unstable.
+                        </li>
+                    </ul>
+                    <FormControlLabel
+                        control={<Checkbox checked={optimizeTp} onChange={(e) => setOptimizeTp(e.target.checked)} />}
+                        label="Enable T,p-optimization"
+                    />
 
-            <FormControlLabel
-                control={<Checkbox checked={optimizeTp} onChange={(e) => setOptimizeTp(e.target.checked)} />}
-                label="Enable T,p-optimization"
-            />
-            <IconButton onClick={() => setInfoOpen(true)}>
-                <HelpOutline />
-            </IconButton>
-            <AlgorithmInfoDialog open={infoOpen} handleClose={() => setInfoOpen(false)} />
-
-            <Stack direction="row" gap={2} mt={4}>
-                <TableSpreadsheet columnLabels={tableSpreadsheetHeaders} data={data} setData={setData} />
-                <SpreadsheetControls setData={setData} showRestoreData={false} />
-            </Stack>
-            {!isDataWhole && data.length > 1 && (
-                <Box pt={2}>
-                    <ErrorLabel title="Data is incomplete!" />
-                </Box>
-            )}
-            <Button onClick={handleOptimize} variant="contained" disabled={isError}>
-                Optimize
-            </Button>
+                    <Stack direction="row" gap={2} mt={4}>
+                        <TableSpreadsheet columnLabels={tableSpreadsheetHeaders} data={data} setData={setData} />
+                        <SpreadsheetControls setData={setData} showRestoreData={false} />
+                    </Stack>
+                    {!isDataWhole && data.length > 1 && (
+                        <Box pt={2}>
+                            <ErrorLabel title="Data is incomplete!" />
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions sx={{ pt: 4 }}>
+                    <Button onClick={handleClose} variant="outlined">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleOptimize} variant="contained" disabled={isError}>
+                        Optimize
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {result}
-        </Box>
+        </>
     );
 };
