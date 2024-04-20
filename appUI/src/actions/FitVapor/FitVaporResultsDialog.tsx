@@ -6,8 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 
@@ -94,16 +93,11 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                     )}
                 </Stack>
                 <h4 className="h-margin">Plot p-optimized model</h4>
-                <RawHtmlRenderer rawHtml={data.plot_p} />
-                <DownloadChartButton
-                    svgContent={data.plot_p}
-                    fileName={`fit chart ${req.compound} ${req.model_name}`}
-                />
+                <PlotWithDownload svgContent={data.plot_p} fileName={`fit chart ${req.compound} ${req.model_name}`} />
                 {data.plot_T_p && (
                     <>
                         <h4 className="h-margin">Plot T,p-optimized model</h4>
-                        <RawHtmlRenderer rawHtml={data.plot_T_p} />
-                        <DownloadChartButton
+                        <PlotWithDownload
                             svgContent={data.plot_T_p}
                             fileName={`fit chart ${req.compound} ${req.model_name}`}
                         />

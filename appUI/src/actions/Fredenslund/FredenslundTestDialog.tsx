@@ -5,8 +5,7 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type FredenslundTestDialogProps = DialogProps & { req: FredenslundTestRequest; data: FredenslundTestResponse };
@@ -39,19 +38,13 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                     <code>criterion = {toSigDgts(data.criterion, 2)}</code>
                 </Box>
                 <Box mt={3}>
-                    <RawHtmlRenderer rawHtml={data.plot_g_E} />
-                    <DownloadChartButton svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />
+                    <PlotWithDownload svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />
                 </Box>
                 <Box mt={3}>
-                    <RawHtmlRenderer rawHtml={data.plot_p_res} />
-                    <DownloadChartButton svgContent={data.plot_p_res} fileName={`Fredenslund p res chart ${label}`} />
+                    <PlotWithDownload svgContent={data.plot_p_res} fileName={`Fredenslund p res chart ${label}`} />
                 </Box>
                 <Box mt={3}>
-                    <RawHtmlRenderer rawHtml={data.plot_y_1_res} />
-                    <DownloadChartButton
-                        svgContent={data.plot_y_1_res}
-                        fileName={`Fredenslund y1 res chart ${label}`}
-                    />
+                    <PlotWithDownload svgContent={data.plot_y_1_res} fileName={`Fredenslund y1 res chart ${label}`} />
                 </Box>
             </DialogContent>
         </ResponsiveDialog>

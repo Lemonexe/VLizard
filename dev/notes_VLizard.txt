@@ -12,5 +12,4 @@ UI QoL:
     constant sigDigits in results spreadsheets
     use rowLabels in param inputs
     autotrim rows, data is incomplete only when partial rows
-    Save SVG Button next to chart, not below
     remove ugly <code> tags from results

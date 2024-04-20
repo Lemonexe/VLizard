@@ -3,7 +3,7 @@ import { downloadSvgString } from '../../adapters/io/download.ts';
 import { Button } from '@mui/material';
 import { Download } from '@mui/icons-material';
 
-type DownloadChartButtonProps = {
+export type DownloadChartButtonProps = {
     svgContent: string;
     fileName: string;
 };

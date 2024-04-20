@@ -6,8 +6,7 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
@@ -32,10 +31,7 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
                     <code>avg residual = {toSigDgts(data.P2P_res_avg, 3)}</code>
                 </Box>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
-                <Box mt={3}>
-                    <RawHtmlRenderer rawHtml={data.plot} />
-                    <DownloadChartButton svgContent={data.plot} fileName={`slope test chart ${label}`} />
-                </Box>
+                <PlotWithDownload svgContent={data.plot} fileName={`slope test chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>
     );

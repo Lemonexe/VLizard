@@ -5,8 +5,7 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse };
@@ -31,10 +30,7 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
                     <br />
                     <code>D criterion = {toSigDgts(data.criterion, 3)}</code>
                 </Box>
-                <Box>
-                    <RawHtmlRenderer rawHtml={data.plot} />
-                    <DownloadChartButton svgContent={data.plot} fileName={`RK test chart ${label}`} />
-                </Box>
+                <PlotWithDownload svgContent={data.plot} fileName={`RK test chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>
     );

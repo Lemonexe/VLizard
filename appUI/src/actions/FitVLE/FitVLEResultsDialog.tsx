@@ -6,8 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FitAnalysisRequest, FitAnalysisResponse, TabulatedDataset } from '../../adapters/api/types/fitTypes.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
@@ -27,12 +26,9 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
         <Box mt={1}>
             <em>mean pressure:</em> {toSigDgts(ds.p_mean, 3)} kPa
         </Box>
-        <RawHtmlRenderer rawHtml={ds.xy_plot} />
-        <DownloadChartButton svgContent={ds.xy_plot} fileName={`xy fit chart ${label} ${ds.name}`} />
-        <RawHtmlRenderer rawHtml={ds.Txy_plot} />
-        <DownloadChartButton svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />
-        <RawHtmlRenderer rawHtml={ds.gamma_plot} />
-        <DownloadChartButton svgContent={ds.gamma_plot} fileName={`gamma fit chart ${label} ${ds.name}`} />
+        <PlotWithDownload svgContent={ds.xy_plot} fileName={`xy fit chart ${label} ${ds.name}`} />
+        <PlotWithDownload svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />
+        <PlotWithDownload svgContent={ds.gamma_plot} fileName={`gamma fit chart ${label} ${ds.name}`} />
     </Box>
 );
 

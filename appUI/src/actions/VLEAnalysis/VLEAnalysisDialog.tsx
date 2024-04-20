@@ -1,14 +1,13 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Box, DialogContent, Stack } from '@mui/material';
+import { DialogContent, Stack } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 
 const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2', 'ps_1', 'ps_2'];
 
@@ -32,18 +31,9 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
                 <Stack gap={3}>
                     <AnalysisWarnings warnings={data.warnings} />
                     <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
-                    <Box>
-                        <RawHtmlRenderer rawHtml={data.plot_xy} />
-                        <DownloadChartButton svgContent={data.plot_xy} fileName={`xy chart ${label}`} />
-                    </Box>
-                    <Box>
-                        <RawHtmlRenderer rawHtml={data.plot_Txy} />
-                        <DownloadChartButton svgContent={data.plot_Txy} fileName={`Txy chart ${label}`} />
-                    </Box>
-                    <Box>
-                        <RawHtmlRenderer rawHtml={data.plot_gamma} />
-                        <DownloadChartButton svgContent={data.plot_gamma} fileName={`gamma chart ${label}`} />
-                    </Box>
+                    <PlotWithDownload svgContent={data.plot_xy} fileName={`xy chart ${label}`} />
+                    <PlotWithDownload svgContent={data.plot_Txy} fileName={`Txy chart ${label}`} />
+                    <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma chart ${label}`} />
                 </Stack>
             </DialogContent>
         </ResponsiveDialog>

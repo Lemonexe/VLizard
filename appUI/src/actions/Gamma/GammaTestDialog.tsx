@@ -5,8 +5,7 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { toPercent } from '../../adapters/logic/numbers.ts';
 
 type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestResponse };
@@ -36,10 +35,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     <br />
                     <code>&Delta; criterion = {toPercent(data.gamma_abs_tol, 1)}</code>
                 </Box>
-                <Box mt={3}>
-                    <RawHtmlRenderer rawHtml={data.plot} />
-                    <DownloadChartButton svgContent={data.plot} fileName={`gamma test chart ${label}`} />
-                </Box>
+                <PlotWithDownload svgContent={data.plot} fileName={`gamma test chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>
     );

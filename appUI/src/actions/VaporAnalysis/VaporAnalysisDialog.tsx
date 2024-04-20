@@ -5,8 +5,7 @@ import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
-import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 
 type VaporAnalysisDialogProps = DialogProps & { data: VaporAnalysisResponse };
@@ -36,13 +35,7 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
                         </Tooltip>
                     </p>
                 </Box>
-                <RawHtmlRenderer rawHtml={data.plot} />
-                <Box pt={1}>
-                    <DownloadChartButton
-                        svgContent={data.plot}
-                        fileName={`chart ${data.compound} ${data.model_name}`}
-                    />
-                </Box>
+                <PlotWithDownload svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
             </DialogContent>
         </ResponsiveDialog>
     );
