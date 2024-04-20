@@ -1,14 +1,9 @@
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo } from 'react';
+import { Dispatch, FC, useCallback, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { SpreadsheetWrapperProps } from './types.ts';
 
-type TableSpreadsheetProps = {
-    columnLabels: string[];
-    data: SpreadsheetData;
-    setData: Dispatch<SetStateAction<SpreadsheetData>>;
-    setTouched?: Dispatch<boolean>;
-    forceUpdateVersion?: number;
-};
+type TableSpreadsheetProps = SpreadsheetWrapperProps & { setTouched?: Dispatch<boolean> };
 
 export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({
     columnLabels,

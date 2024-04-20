@@ -1,15 +1,8 @@
-import { Dispatch, FC, SetStateAction, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { SpreadsheetWrapperProps } from './types.ts';
 
-type ParamsSpreadsheetProps = {
-    data: SpreadsheetData;
-    setData: Dispatch<SetStateAction<SpreadsheetData>>;
-    columnLabels: string[];
-    forceUpdateVersion?: number;
-};
-
-export const ParamsSpreadsheet: FC<ParamsSpreadsheetProps> = ({ data, setData, columnLabels, forceUpdateVersion }) => {
+export const ParamsSpreadsheet: FC<SpreadsheetWrapperProps> = ({ data, setData, columnLabels, forceUpdateVersion }) => {
     const n_p = columnLabels.length;
     const n_R = data.length;
     const n_C = data[0]?.length ?? 0;
