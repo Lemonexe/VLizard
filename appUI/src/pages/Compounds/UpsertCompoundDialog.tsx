@@ -173,8 +173,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                             <Box mt={3}>
                                 <h4>Model parameters</h4>
                                 <p>
-                                    Either fill in known values, <b>or</b> leave initial estimates and perform FITTING
-                                    using measured <i>p, T</i> data
+                                    Either fill in known values, <b>or</b> perform fitting using measured data, (then
+                                    these values will be taken as initial estimate).
                                     <br />
                                     Either way, don't forget to SAVE afterwards.
                                 </p>
@@ -184,6 +184,16 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     columnLabels={paramNames}
                                     forceUpdateVersion={forceUpdateVersion}
                                 />
+                                <Box mt={1}>
+                                    <Button
+                                        onClick={handleOpenFitting}
+                                        variant="outlined"
+                                        disabled={isError}
+                                        startIcon={<TableView />}
+                                    >
+                                        Perform fitting
+                                    </Button>
+                                </Box>
                             </Box>
                         )}
                         {modelDef && !isDataWhole && <ErrorLabel title="Data is incomplete!" />}
@@ -193,9 +203,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     <Button onClick={handleClose} variant="outlined">
                         Cancel
                     </Button>
-                    <Button onClick={handleOpenFitting} variant="outlined" disabled={isError} startIcon={<TableView />}>
-                        Fitting
-                    </Button>
+
                     <Button onClick={handleSave} variant="contained" disabled={isError}>
                         Save
                     </Button>

@@ -12,10 +12,11 @@ export const useFitVaporResultsDialog = () => {
     const { mutate } = useVaporFit();
 
     const perform = useCallback(
-        (props: VaporFitRequest, setFittedParams: Dispatch<number[]>) => {
+        (props: VaporFitRequest, setFittedParams: Dispatch<number[]>, onSettled: () => void) => {
             setOpen(true);
             setElem(<LoadingDialog />);
             mutate(props, {
+                onSettled,
                 onSuccess: (res) => {
                     setElem(
                         <FitVaporResultsDialog

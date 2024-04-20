@@ -1,10 +1,10 @@
 import { Dispatch, FC, useCallback, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Button, DialogContent, Stack } from '@mui/material';
+import { Button, DialogContent, Stack, styled } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { RawHtmlRenderer } from '../../components/charts/RawHtmlRenderer.tsx';
 import { DownloadChartButton } from '../../components/charts/DownloadChartButton.tsx';
@@ -12,6 +12,10 @@ import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spre
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];
+
+const NormalCaseButton = styled(Button)({
+    textTransform: 'initial',
+});
 
 type FitVaporResultsDialogProps = DialogProps & {
     req: VaporFitRequest;
@@ -77,16 +81,16 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                 <Spreadsheet data={paramsSpreadsheetData} columnLabels={param_names} rowLabels={rowLabels} />
                 <h4 className="h-margin">What to do with the results?</h4>
                 <Stack direction="row" gap={2} mb={4}>
-                    <Button variant="contained" color="warning" onClick={handleClose}>
+                    <NormalCaseButton variant="contained" color="error" onClick={handleClose}>
                         Reject
-                    </Button>
-                    <Button variant="contained" onClick={acceptP}>
-                        Accept {optimizedTP && 'intermediate'}
-                    </Button>
+                    </NormalCaseButton>
+                    <NormalCaseButton variant="contained" onClick={acceptP}>
+                        Accept {optimizedTP && 'p-optimized'}
+                    </NormalCaseButton>
                     {optimizedTP && (
-                        <Button variant="contained" onClick={acceptTP}>
-                            Accept final
-                        </Button>
+                        <NormalCaseButton variant="contained" onClick={acceptTP}>
+                            Accept T,p-optimized
+                        </NormalCaseButton>
                     )}
                 </Stack>
                 <h4 className="h-margin">Plot p-optimized model</h4>

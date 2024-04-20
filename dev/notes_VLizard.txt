@@ -11,8 +11,6 @@ build app
 rename /fit to /fit/VLE
     incl. folders, files, like src/actions/FIT
 
-try including InputVaporFit as a component in UpsertCompoundDialog
-
 UI QoL:
     constant sigDigits in results spreadsheets
     use rowLabels in param inputs
