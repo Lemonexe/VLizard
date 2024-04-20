@@ -90,5 +90,6 @@ export type VaporFitResponse = FitMetrics & {
     nparams: NamedParams;
     T_min: number;
     T_max: number;
-    plot: string;
+    plot_p: string;
+    plot_T_p?: string;
 };

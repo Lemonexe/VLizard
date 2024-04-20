@@ -79,7 +79,8 @@ def fit_Vapor_api():
     if not params['skip_T_p_optimization']: fit.optimize_T_p()
     payload = fit.serialize()
     fit.tabulate()
-    payload['plot'] = fit.plot(mode='svg')
+    payload['plot_p'] = fit.plot_p(mode='svg')
+    payload['plot_T_p'] = fit.plot_T_p(mode='svg')
     return payload
 
 

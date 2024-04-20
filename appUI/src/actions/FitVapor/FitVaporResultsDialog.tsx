@@ -89,9 +89,22 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                         </Button>
                     )}
                 </Stack>
-                <h4 className="h-margin">Plot</h4>
-                <RawHtmlRenderer rawHtml={data.plot} />
-                <DownloadChartButton svgContent={data.plot} fileName={`fit chart ${req.compound} ${req.model_name}`} />
+                <h4 className="h-margin">Plot p-optimized model</h4>
+                <RawHtmlRenderer rawHtml={data.plot_p} />
+                <DownloadChartButton
+                    svgContent={data.plot_p}
+                    fileName={`fit chart ${req.compound} ${req.model_name}`}
+                />
+                {data.plot_T_p && (
+                    <>
+                        <h4 className="h-margin">Plot T,p-optimized model</h4>
+                        <RawHtmlRenderer rawHtml={data.plot_T_p} />
+                        <DownloadChartButton
+                            svgContent={data.plot_T_p}
+                            fileName={`fit chart ${req.compound} ${req.model_name}`}
+                        />
+                    </>
+                )}
             </DialogContent>
         </ResponsiveDialog>
     );

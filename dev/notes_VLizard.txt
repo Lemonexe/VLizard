@@ -11,8 +11,6 @@ build app
 rename /fit to /fit/VLE
     incl. folders, files, like src/actions/FIT
 
-
-3 charts for Fit_Vapor_plot
 try including InputVaporFit as a component in UpsertCompoundDialog
 
 UI QoL:
