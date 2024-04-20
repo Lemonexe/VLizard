@@ -25,7 +25,7 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
-import { useFitResultsDialog } from '../../actions/Fit/useFitResultsDialog.tsx';
+import { useFitVLEResultsDialog } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
 
 type UpsertDatasetDialogProps = DialogProps &
     SystemIdentifier & {
@@ -67,7 +67,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
 
     // GET RESULTS DIALOG
-    const { perform, result } = useFitResultsDialog();
+    const { perform, result } = useFitVLEResultsDialog();
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
         const nparams0 = toNamedParams(paramNames, params0);

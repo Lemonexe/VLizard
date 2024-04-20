@@ -2,13 +2,13 @@ import { FC, useCallback } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
-import { useFitResultsDialog } from '../../../actions/Fit/useFitResultsDialog.tsx';
+import { useFitVLEResultsDialog } from '../../../actions/FitVLE/useFitVLEResultsDialog.tsx';
 import { PersistedFit } from '../../../adapters/api/types/fitTypes.ts';
 
 type PlotFittedModelButtonProps = SystemIdentifier & { fit: PersistedFit };
 
 export const PlotFittedModelButton: FC<PlotFittedModelButtonProps> = ({ compound1, compound2, fit }) => {
-    const { perform, result } = useFitResultsDialog();
+    const { perform, result } = useFitVLEResultsDialog();
     const handleClick = useCallback(
         () =>
             perform({

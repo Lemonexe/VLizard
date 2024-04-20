@@ -1,14 +1,14 @@
 ###
-GET http://localhost:37137/fit
+GET http://localhost:37137/fit/vle
 Accept: application/json
 
 ###
-GET http://127.0.0.1:37137/fit/definitions
+GET http://127.0.0.1:37137/fit/vle/definitions
 Accept: application/json
 
 ###
 
-POST http://localhost:37137/fit
+POST http://localhost:37137/fit/vle
 Content-Type: application/json
 
 {"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar", "datasets":  ["1939vac"],
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:37137/fit
+POST http://localhost:37137/fit/vle
 Content-Type: application/json
 
 {"compound1": "CHOL", "compound2": "CHF", "model_name": "NRTL", "datasets":  ["10kPa", "25kPa", "40kPa"],
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 # @no-log
-DELETE http://localhost:37137/fit
+DELETE http://localhost:37137/fit/vle
 Content-Type: application/json
 
 {"compound1": "EtOH", "compound2": "H2O", "model_name": "vanLaar"}

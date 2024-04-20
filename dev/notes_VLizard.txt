@@ -8,9 +8,6 @@ build app
     make data folder for python
     make default config on install
 
-rename /fit to /fit/VLE
-    incl. folders, files, like src/actions/FIT
-
 UI QoL:
     constant sigDigits in results spreadsheets
     use rowLabels in param inputs

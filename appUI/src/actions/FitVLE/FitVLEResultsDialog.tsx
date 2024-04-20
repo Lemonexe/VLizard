@@ -38,7 +38,7 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
 
 type FitResultsDialogProps = DialogProps & { req: FitAnalysisRequest; data: FitAnalysisResponse };
 
-export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose, req, data }) => {
+export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose, req, data }) => {
     const optimized = data.is_optimized;
     const system = `${req.compound1}-${req.compound2}`;
     const label = `${system} ${req.model_name}`;
