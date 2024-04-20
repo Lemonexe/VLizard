@@ -68,6 +68,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
     const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
     const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);
+    const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
 
     // MUTATION
     const pushNotification = useNotifications();
@@ -89,6 +90,11 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const [fittingOpen, setFittingOpen] = useState(false);
     const handleOpenFitting = useCallback(() => setFittingOpen(true), []);
     const handleCloseFitting = useCallback(() => setFittingOpen(false), []);
+    const setFittedParams = useCallback((newParams: number[]) => {
+        setData(matrixToSpreadsheetData([newParams]));
+        // forcefully rerender memoized Spreadsheet, see ParamsSpreadsheet.ts
+        setForceUpdateVersion((prev) => prev + 1);
+    }, []);
 
     // OVERALL ERROR CHECK
     const isError = !compound || tempError || !isDataWhole;
@@ -167,12 +173,17 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                             <Box mt={3}>
                                 <h4>Model parameters</h4>
                                 <p>
-                                    Either fill in known values, <b>or</b> perform FITTING using measured <i>p, T</i>{' '}
-                                    data, using these values as initial estimate.
+                                    Either fill in known values, <b>or</b> leave initial estimates and perform FITTING
+                                    using measured <i>p, T</i> data
                                     <br />
                                     Either way, don't forget to SAVE afterwards.
                                 </p>
-                                <ParamsSpreadsheet data={data} setData={setData} model_param_names={paramNames} />
+                                <ParamsSpreadsheet
+                                    data={data}
+                                    setData={setData}
+                                    columnLabels={paramNames}
+                                    forceUpdateVersion={forceUpdateVersion}
+                                />
                             </Box>
                         )}
                         {modelDef && !isDataWhole && <ErrorLabel title="Data is incomplete!" />}
@@ -197,6 +208,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     compound={compound}
                     modelDef={modelDef}
                     params0={numData}
+                    setFittedParams={setFittedParams}
                 />
             )}
         </>

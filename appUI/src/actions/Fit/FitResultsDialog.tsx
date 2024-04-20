@@ -58,9 +58,7 @@ export const FitResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose,
                     <p>initial AAD = {toSigDgts(data.AAD_init, 3)}</p>
                     {data.is_optimized && <p>final AAD = {toSigDgts(data.AAD_final ?? NaN, 3)}</p>}
                 </Box>
-                <p>
-                    <h4>Fitted model parameters</h4>
-                </p>
+                <h4>Fitted model parameters</h4>
                 <Spreadsheet data={spreadsheetData} columnLabels={param_names} />
 
                 {data.tabulated_datasets.map((ds) => (

@@ -7,3 +7,20 @@ build app
     run python from electron
     make data folder for python
     make default config on install
+
+rename /fit to /fit/VLE
+    incl. folders, files, like src/actions/FIT
+
+
+3 charts for Fit_Vapor_plot
+try including InputVaporFit as a component in UpsertCompoundDialog
+
+
+move both Spreadsheet components...
+
+UI QoL:
+    constant sigDigits in results spreadsheets
+    use rowLabels in param inputs
+    autotrim rows, data is incomplete only when partial rows
+    Save SVG Button next to chart, not below
+    remove ugly <code> tags from results

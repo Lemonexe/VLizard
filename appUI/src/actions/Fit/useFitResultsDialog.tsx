@@ -1,6 +1,6 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { LoadingDialog } from '../../components/Loader.tsx';
-import { useFitAnalysis } from '../../adapters/api/useFit.ts';
+import { useVLEFit } from '../../adapters/api/useFit.ts';
 import { FitAnalysisRequest } from '../../adapters/api/types/fitTypes.ts';
 import { FitResultsDialog } from './FitResultsDialog.tsx';
 
@@ -9,7 +9,7 @@ export const useFitResultsDialog = () => {
     const handleClose = useCallback(() => setOpen(false), []);
     const [elem, setElem] = useState<ReactElement | null>(null);
 
-    const { mutate } = useFitAnalysis();
+    const { mutate } = useVLEFit();
 
     const perform = useCallback(
         (props: FitAnalysisRequest) => {

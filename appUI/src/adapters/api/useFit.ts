@@ -8,6 +8,8 @@ import {
     FitAnalysisResponse,
     GetPersistedFitsResponse,
     GetVLEModelDefsResponse,
+    VaporFitRequest,
+    VaporFitResponse,
 } from './types/fitTypes.ts';
 import { hostName } from './helpers/hostName.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
@@ -31,7 +33,7 @@ export const useGetVLEModelDefs = () => {
     });
 };
 
-export const useFitAnalysis = () => {
+export const useVLEFit = () => {
     const queryClient = useQueryClient();
     const onError = useNotifyErrorMessage();
     return useMutation({
@@ -40,6 +42,17 @@ export const useFitAnalysis = () => {
             return data;
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }),
+        onError,
+    });
+};
+
+export const useVaporFit = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
+        mutationFn: async (payload: VaporFitRequest) => {
+            const { data } = await axios.post<VaporFitResponse>(hostName + '/fit/vapor', payload);
+            return data;
+        },
         onError,
     });
 };
