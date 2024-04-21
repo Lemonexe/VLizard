@@ -146,7 +146,12 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             <p>
                                 <strong>Model parameters</strong>
                             </p>
-                            <ParamsSpreadsheet data={data} setData={setData} columnLabels={paramNames} />
+                            <ParamsSpreadsheet
+                                data={data}
+                                setData={setData}
+                                rowLabels={['initial']}
+                                columnLabels={paramNames}
+                            />
                         </Box>
                     )}
                     {modelDef && !isDataWhole && (

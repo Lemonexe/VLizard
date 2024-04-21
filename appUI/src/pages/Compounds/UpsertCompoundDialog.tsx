@@ -181,6 +181,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 <ParamsSpreadsheet
                                     data={data}
                                     setData={setData}
+                                    rowLabels={['values']}
                                     columnLabels={paramNames}
                                     forceUpdateVersion={forceUpdateVersion}
                                 />

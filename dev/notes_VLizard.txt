@@ -10,5 +10,5 @@ build app
 
 UI QoL:
     constant sigDigits in results spreadsheets
-    use rowLabels in param inputs
     remove ugly <code> tags from results
+    add UoMs to ParamsSpreadsheet headers
