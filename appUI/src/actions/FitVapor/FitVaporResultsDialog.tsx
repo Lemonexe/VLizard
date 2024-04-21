@@ -93,11 +93,11 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                         </NormalCaseButton>
                     )}
                 </Stack>
-                <h4 className="h-margin">Plot p-optimized model</h4>
+                <h4 className="h-margin">p-optimized model plot</h4>
                 <PlotWithDownload svgContent={data.plot_p} fileName={`fit chart ${req.compound} ${req.model_name}`} />
                 {data.plot_T_p && (
                     <>
-                        <h4 className="h-margin">Plot T,p-optimized model</h4>
+                        <h4 className="h-margin">T,p-optimized model plot</h4>
                         <PlotWithDownload
                             svgContent={data.plot_T_p}
                             fileName={`fit chart ${req.compound} ${req.model_name}`}

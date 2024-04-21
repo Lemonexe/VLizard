@@ -22,3 +22,4 @@ export const toSigDgts = (num: number, sigDgts: number): string => {
  * @param precision integer number of decimal places
  */
 export const toPercent = (num: number, precision = 0): string => (num * 100).toFixed(precision) + ' %';
+export const toPercentSigned = (num: number, precision = 0): string => (num > 0 ? '+' : '') + toPercent(num, precision);

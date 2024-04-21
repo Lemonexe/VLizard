@@ -23,29 +23,40 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
             <DialogTitleWithX handleClose={handleClose}>Fredenslund test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
-                <Box m={2}>
+                <h4 className="h-margin">Results</h4>
+                <Box ml={2} mb={4}>
                     <p>
                         Using Legendre polynomial of order <strong>{data.legendre_order}</strong>
                     </p>
                     <p>Average residuals:</p>
-                    <code>p : {toSigDgts(data.p_res_avg, sigDgtsMetrics)} %</code>
-                    <br />
-                    <code>y1: {toSigDgts(data.y_1_res_avg, sigDgtsMetrics)} %</code>
-                    <br />
-                    <code>y2: {toSigDgts(data.y_2_res_avg, sigDgtsMetrics)} %</code>
-                    <br />
-                    <br />
-                    <code>criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
+                    {/* prettier-ignore */}
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="30"><i>p</i></td>
+                                <td>{toSigDgts(data.p_res_avg, sigDgtsMetrics)} %</td>
+                            </tr>
+                            <tr>
+                                <td><i>y<sub>1</sub></i></td>
+                                <td>{toSigDgts(data.y_1_res_avg, sigDgtsMetrics)} %</td>
+                            </tr>
+                            <tr>
+                                <td><i>y<sub>2</sub></i></td>
+                                <td>{toSigDgts(data.y_2_res_avg, sigDgtsMetrics)} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Criterion for average residuals is {toSigDgts(data.criterion, sigDgtsCrit)}%</p>
                 </Box>
-                <Box mt={3}>
-                    <PlotWithDownload svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />
-                </Box>
-                <Box mt={3}>
-                    <PlotWithDownload svgContent={data.plot_p_res} fileName={`Fredenslund p res chart ${label}`} />
-                </Box>
-                <Box mt={3}>
-                    <PlotWithDownload svgContent={data.plot_y_1_res} fileName={`Fredenslund y1 res chart ${label}`} />
-                </Box>
+
+                <h4 className="h-margin">Legendre fitting plot</h4>
+                <PlotWithDownload svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />
+
+                <h4 className="h-margin">Pressure residuals plot</h4>
+                <PlotWithDownload svgContent={data.plot_p_res} fileName={`Fredenslund p res chart ${label}`} />
+
+                <h4 className="h-margin">Vapor molar frac. residuals plot</h4>
+                <PlotWithDownload svgContent={data.plot_y_1_res} fileName={`Fredenslund y1 res chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>
     );

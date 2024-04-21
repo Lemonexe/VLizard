@@ -19,17 +19,27 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
             <DialogTitleWithX handleClose={handleClose}>Redlich-Kister test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
-                <Box m={2}>
-                    <code>D = {toSigDgts(data.D, sigDgtsDefault)}</code>
-                    <br />
-                    <br />
-                    <code>|a-b| = {toSigDgts(data.curve_dif, sigDgtsDefault)}</code>
-                    <br />
-                    <code> a+b = {toSigDgts(data.curve_sum, sigDgtsDefault)}</code>
-                    <br />
-                    <br />
-                    <code>D criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
+                <h4 className="h-margin">Results</h4>
+                <Box ml={3} mb={4}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="70">D</td>
+                                <td>{toSigDgts(data.D, sigDgtsDefault)}</td>
+                            </tr>
+                            <tr>
+                                <td>|a–b|</td>
+                                <td>{toSigDgts(data.curve_dif, sigDgtsDefault)}</td>
+                            </tr>
+                            <tr>
+                                <td>a+b</td>
+                                <td>{toSigDgts(data.curve_sum, sigDgtsDefault)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>D criterion is {toSigDgts(data.criterion, sigDgtsCrit)}</p>
                 </Box>
+                <h4>Area integration plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`RK test chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>

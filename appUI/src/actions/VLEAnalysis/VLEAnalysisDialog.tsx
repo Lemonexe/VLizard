@@ -29,8 +29,11 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
                 <Stack gap={3}>
                     <AnalysisWarnings warnings={data.warnings} />
                     <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
+                    <h4 className="h-margin">xy plot</h4>
                     <PlotWithDownload svgContent={data.plot_xy} fileName={`xy chart ${label}`} />
+                    <h4 className="h-margin">Txy plot</h4>
                     <PlotWithDownload svgContent={data.plot_Txy} fileName={`Txy chart ${label}`} />
+                    <h4 className="h-margin">Activity coefficients plot</h4>
                     <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma chart ${label}`} />
                 </Stack>
             </DialogContent>

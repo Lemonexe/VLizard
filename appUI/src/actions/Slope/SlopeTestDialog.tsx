@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { Box, DialogContent } from '@mui/material';
+import { DialogContent } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
@@ -27,10 +27,9 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
             <DialogTitleWithX handleClose={handleClose}>Slope test for {label}</DialogTitleWithX>
             <DialogContent>
                 <AnalysisWarnings warnings={data.warnings} />
-                <Box m={2} mb={3}>
-                    <code>avg residual = {toSigDgts(data.P2P_res_avg, sigDgtsDefault)}</code>
-                </Box>
+                <p>Average residual = {toSigDgts(data.P2P_res_avg, sigDgtsDefault)}</p>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
+                <h4 className="h-margin">Derivations & residuals plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`slope test chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>

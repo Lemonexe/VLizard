@@ -18,15 +18,24 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
             <DialogTitleWithX handleClose={handleClose}>Herington test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
-                <Box m={2}>
-                    <code>D = {toSigDgts(data.D, sigDgtsDefault)}</code>
-                    <br />
-                    <code>J = {toSigDgts(data.J, sigDgtsDefault)}</code>
-                    <br />
-                    <code>|D–J| = {toSigDgts(data.DJ, sigDgtsDefault)}</code>
-                    <br />
-                    <br />
-                    <code>|D–J| criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
+                <Box m={2} pb={2}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="70">D</td>
+                                <td>{toSigDgts(data.D, sigDgtsDefault)}</td>
+                            </tr>
+                            <tr>
+                                <td>J</td>
+                                <td>{toSigDgts(data.J, sigDgtsDefault)}</td>
+                            </tr>
+                            <tr>
+                                <td>|D–J|</td>
+                                <td>{toSigDgts(data.DJ, sigDgtsDefault)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>|D–J| criterion is {toSigDgts(data.criterion, sigDgtsCrit)}</p>
                 </Box>
             </DialogContent>
         </ResponsiveDialog>

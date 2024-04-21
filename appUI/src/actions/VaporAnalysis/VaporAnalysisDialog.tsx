@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, DialogContent, Tooltip } from '@mui/material';
+import { DialogContent, Tooltip } from '@mui/material';
 import { useUoM_T } from '../../adapters/logic/UoM.ts';
 import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
@@ -17,24 +17,33 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
             <DialogTitleWithX handleClose={handleClose}>Vapor pressure analysis for {data.compound}</DialogTitleWithX>
             <DialogContent>
                 <AnalysisWarnings warnings={data.warnings} />
-                <Box pb={3}>
-                    <p>Model: {data.model_name}</p>
-                    <p>
+
+                <p>Model: {data.model_name}</p>
+
+                {/* prettier-ignore */}
+                <table>
+                    <tbody>
                         <Tooltip title="Temperature range covered by data">
-                            <span>
-                                T<sub>min</sub> = {convert_T(data.T_min).toFixed(1)} {UoM_T}
-                                <br />T<sub>max</sub> = {convert_T(data.T_max).toFixed(1)} {UoM_T}
-                            </span>
+                            <tr>
+                                <td width="70"><i>T</i><sub>min</sub></td>
+                                <td>{convert_T(data.T_min).toFixed(1)} {UoM_T}</td>
+                            </tr>
                         </Tooltip>
-                    </p>
-                    <p>
+                        <Tooltip title="Temperature range covered by data">
+                            <tr>
+                                <td><i>T</i><sub>max</sub></td>
+                                <td>{convert_T(data.T_max).toFixed(1)} {UoM_T}</td>
+                            </tr>
+                        </Tooltip>
                         <Tooltip title="Calculated normal boiling point">
-                            <span>
-                                T<sub>boil</sub> = {convert_T(data.T_boil).toFixed(1)} {UoM_T}
-                            </span>
+                            <tr>
+                                <td><i>T</i><sub>boil</sub></td>
+                                <td>{convert_T(data.T_boil).toFixed(1)} {UoM_T}</td>
+                            </tr>
                         </Tooltip>
-                    </p>
-                </Box>
+                    </tbody>
+                </table>
+
                 <PlotWithDownload svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
             </DialogContent>
         </ResponsiveDialog>
