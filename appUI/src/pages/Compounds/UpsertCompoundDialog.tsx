@@ -16,7 +16,7 @@ import { TableView } from '@mui/icons-material';
 import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
-    checkIsSpreadsheetDataWhole,
+    isSpreadsheetDataWhole,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -66,7 +66,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     };
     const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
     const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);
     const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
 

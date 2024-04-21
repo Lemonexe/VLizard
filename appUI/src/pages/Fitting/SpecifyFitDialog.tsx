@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useData } from '../../contexts/DataContext.tsx';
 import {
-    checkIsSpreadsheetDataWhole,
+    isSpreadsheetDataWhole,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -64,7 +64,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
             : fromNamedParams(findModelDef(newModelName)?.nparams0)[1];
     const getInitialData = (newModelName: string) => matrixToSpreadsheetData([getInitialParams(newModelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
 
     // GET RESULTS DIALOG
     const { perform, result } = useFitVLEResultsDialog();

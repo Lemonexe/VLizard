@@ -18,8 +18,9 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporModelDef } from '../../adapters/api/types/vaporTypes.ts';
 import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
 import {
-    checkIsSpreadsheetDataWhole,
+    filterEmptyRows,
     generateEmptyCells,
+    isSpreadsheetDataWhole,
     SpreadsheetData,
     toNumMatrix,
     transposeMatrix,
@@ -54,13 +55,13 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
     // SPREADSHEET
     const getInitialData = () => generateEmptyCells(1, 2);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(filterEmptyRows(data)), [data]);
 
     // MUTATION
     const { perform, result } = useFitVaporResultsDialog();
     const handleOptimize = useCallback(() => {
         const nparams0 = toNamedParams(paramNames, params0);
-        const [p_data, T_data] = transposeMatrix(toNumMatrix(data));
+        const [p_data, T_data] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
         perform(
             { compound, model_name: modelDef.name, p_data, T_data, nparams0, skip_T_p_optimization: !optimizeTp },
             setFittedParams,

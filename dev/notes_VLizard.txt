@@ -11,5 +11,4 @@ build app
 UI QoL:
     constant sigDigits in results spreadsheets
     use rowLabels in param inputs
-    autotrim rows, data is incomplete only when partial rows
     remove ugly <code> tags from results

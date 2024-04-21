@@ -43,7 +43,7 @@ export const matrixToNumerical = (M: Matrix<CellValueType>): number[][] => M.map
  * @param data matrix of Spreadsheet Cells
  * @returns true if matrix is whole, false if it has holes
  */
-export const checkIsSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
+export const isSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
     const n_R = data.length;
     if (n_R === 0) return false; // matrix empty
     const n_C = data[0].length;
@@ -52,6 +52,12 @@ export const checkIsSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
     // matrix has empty cells
     return data.every((row) => !row.some((cell) => cell?.value === undefined || cell.value === ''));
 };
+
+/**
+ * Filter out rows that have only empty cells
+ */
+export const filterEmptyRows = (data: SpreadsheetData): SpreadsheetData =>
+    data.filter((row) => row.some((cell) => cell?.value !== undefined && cell.value !== ''));
 
 /**
  * Make a matrix read-only
