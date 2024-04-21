@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 export const K2C = (T: number) => T - 273.15; // Kelvin to Celsius
@@ -8,8 +9,6 @@ export const K2C = (T: number) => T - 273.15; // Kelvin to Celsius
  */
 export const useUoM_T = () => {
     const { UoM_T } = useConfig();
-    return {
-        convert_T: (T: number) => (UoM_T === 'K' ? T : K2C(T)),
-        unit_T: UoM_T,
-    };
+    const convert_T = (T: number) => (UoM_T === 'K' ? T : K2C(T));
+    return useMemo(() => ({ convert_T, UoM_T }), [UoM_T]);
 };
