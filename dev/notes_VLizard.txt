@@ -7,6 +7,3 @@ build app
     run python from electron
     make data folder for python
     make default config on install
-
-UI QoL:
-    use UoM for VLE Analysis

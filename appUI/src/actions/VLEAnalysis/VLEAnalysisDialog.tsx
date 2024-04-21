@@ -9,16 +9,31 @@ import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/log
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { sigDgtsDefault } from '../../adapters/logic/numbers.ts';
-
-const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2', 'ps_1', 'ps_2'];
+import { useUoM_p, useUoM_T } from '../../adapters/logic/UoM.ts';
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
 export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
 
+    const { convert_T_vec, UoM_T } = useUoM_T();
+    const { convert_p_vec, UoM_p } = useUoM_p();
+    const columnLabels = useMemo(
+        () => [`p / ${UoM_p}`, `T / ${UoM_T}`, 'x1', 'y1', 'gamma1', 'gamma2', `ps1 / ${UoM_p}`, `ps2 / ${UoM_p}`],
+        [UoM_T, UoM_p],
+    );
+
     const spreadsheetData = useMemo(() => {
-        const dataColumns = [data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2, data.ps_1, data.ps_2];
+        const dataColumns = [
+            convert_p_vec(data.p),
+            convert_T_vec(data.T),
+            data.x_1,
+            data.y_1,
+            data.gamma_1,
+            data.gamma_2,
+            convert_p_vec(data.ps_1),
+            convert_p_vec(data.ps_2),
+        ];
         return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), sigDgtsDefault));
     }, [data]);
 
