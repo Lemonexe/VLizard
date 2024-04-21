@@ -9,6 +9,7 @@ import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarni
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
+import { sigDgtsMetrics, sigDgtsParams } from '../../adapters/logic/numbers.ts';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];
 
@@ -47,14 +48,14 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
         const rows = [[data.RMS_init, data.AAD_init]];
         if (optimizedP) rows.push([data.RMS_inter!, data.AAD_inter!]);
         if (optimizedTP) rows.push([data.RMS_final!, data.AAD_final!]);
-        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 3));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsMetrics));
     }, [data]);
 
     const paramsSpreadsheetData = useMemo(() => {
         const rows = [params0];
         if (optimizedP) rows.push(paramsP);
         if (optimizedTP) rows.push(paramsTP);
-        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 6));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsParams));
     }, [data]);
 
     const acceptP = useCallback(() => {

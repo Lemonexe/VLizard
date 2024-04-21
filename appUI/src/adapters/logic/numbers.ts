@@ -1,3 +1,8 @@
+export const sigDgtsDefault = 4; // sigDgts for normal calculated values (tabular physical quantities)
+export const sigDgtsCrit = 2; // sigDgts for arbitrary criteria
+export const sigDgtsMetrics = 3; // sigDgts for statistical metrics (e.g. residuals)
+export const sigDgtsParams = 6; // sigDgts for model parameters
+
 /**
  * Returns a number rounded to the given number of significant digits
  * @param num float or integer

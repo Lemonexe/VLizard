@@ -6,7 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsCrit, sigDgtsMetrics, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type FredenslundTestDialogProps = DialogProps & { req: FredenslundTestRequest; data: FredenslundTestResponse };
 
@@ -15,7 +15,7 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
     const reasons = [
         `Residuals of p, y_1, y_2
         ${data.is_consistent ? 'are all' : 'must all be'}
-        < ${toSigDgts(data.criterion, 2)} %`,
+        < ${toSigDgts(data.criterion, sigDgtsCrit)} %`,
     ];
 
     return (
@@ -28,14 +28,14 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                         Using Legendre polynomial of order <strong>{data.legendre_order}</strong>
                     </p>
                     <p>Average residuals:</p>
-                    <code>p : {toSigDgts(data.p_res_avg, 3)} %</code>
+                    <code>p : {toSigDgts(data.p_res_avg, sigDgtsMetrics)} %</code>
                     <br />
-                    <code>y1: {toSigDgts(data.y_1_res_avg, 3)} %</code>
+                    <code>y1: {toSigDgts(data.y_1_res_avg, sigDgtsMetrics)} %</code>
                     <br />
-                    <code>y2: {toSigDgts(data.y_2_res_avg, 3)} %</code>
+                    <code>y2: {toSigDgts(data.y_2_res_avg, sigDgtsMetrics)} %</code>
                     <br />
                     <br />
-                    <code>criterion = {toSigDgts(data.criterion, 2)}</code>
+                    <code>criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
                 </Box>
                 <Box mt={3}>
                     <PlotWithDownload svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />

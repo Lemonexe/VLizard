@@ -9,7 +9,7 @@ import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarni
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsDefault, sigDgtsMetrics, sigDgtsParams, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 const fitQualityMetrics = ['Root mean square', 'Average absolute deviation'];
 
@@ -24,7 +24,7 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
             Dataset <q>{ds.name}</q>
         </h4>
         <Box mt={1}>
-            <em>mean pressure:</em> {toSigDgts(ds.p_mean, 3)} kPa
+            <em>mean pressure:</em> {toSigDgts(ds.p_mean, sigDgtsDefault)} kPa
         </Box>
         <PlotWithDownload svgContent={ds.xy_plot} fileName={`xy fit chart ${label} ${ds.name}`} />
         <PlotWithDownload svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />
@@ -50,7 +50,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
     const metricsSpreadsheetData = useMemo(() => {
         const rows = [[data.RMS_init, data.AAD_init]];
         if (optimized) rows.push([data.RMS_final!, data.AAD_final!]);
-        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 3));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsMetrics));
     }, [data]);
 
     const paramsSpreadsheetData = useMemo(() => {
@@ -58,7 +58,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
         const params = fromNamedParams(data.nparams)[1];
         const rows = [params0];
         if (optimized) rows.push(params);
-        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 6));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsParams));
     }, [data]);
 
     return (

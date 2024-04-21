@@ -8,6 +8,7 @@ import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/type
 import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { sigDgtsDefault } from '../../adapters/logic/numbers.ts';
 
 const columnLabels = ['p', 'T', 'x1', 'y1', 'gamma1', 'gamma2', 'ps_1', 'ps_2'];
 
@@ -18,7 +19,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
 
     const spreadsheetData = useMemo(() => {
         const dataColumns = [data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2, data.ps_1, data.ps_2];
-        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), 4));
+        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), sigDgtsDefault));
     }, [data]);
 
     return (

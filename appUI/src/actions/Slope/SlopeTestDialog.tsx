@@ -8,7 +8,7 @@ import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestT
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsDefault, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 const columnLabels = ['x1', 'd ln gamma1', 'd ln gamma2', 'residual'];
 
@@ -19,7 +19,7 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
 
     const spreadsheetData = useMemo(() => {
         const dataColumns = [data.x_1, data.d_ln_gamma_1, data.d_ln_gamma_2, data.P2P_res];
-        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), 4));
+        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), sigDgtsDefault));
     }, [data]);
 
     return (
@@ -28,7 +28,7 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
             <DialogContent>
                 <AnalysisWarnings warnings={data.warnings} />
                 <Box m={2} mb={3}>
-                    <code>avg residual = {toSigDgts(data.P2P_res_avg, 3)}</code>
+                    <code>avg residual = {toSigDgts(data.P2P_res_avg, sigDgtsDefault)}</code>
                 </Box>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
                 <PlotWithDownload svgContent={data.plot} fileName={`slope test chart ${label}`} />

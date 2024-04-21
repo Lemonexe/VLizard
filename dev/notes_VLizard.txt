@@ -11,3 +11,5 @@ build app
 UI QoL:
     remove ugly <code> tags from results
     add UoMs to ParamsSpreadsheet headers
+    use UoM for VLE Analysis
+    fredenslund chart titles

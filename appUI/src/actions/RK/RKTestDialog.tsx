@@ -6,13 +6,13 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsCrit, sigDgtsDefault, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse };
 
 export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, 3)}`];
+    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, sigDgtsDefault)}`];
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -20,15 +20,15 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <Box m={2}>
-                    <code>D = {toSigDgts(data.D, 3)}</code>
+                    <code>D = {toSigDgts(data.D, sigDgtsDefault)}</code>
                     <br />
                     <br />
-                    <code>|a-b| = {toSigDgts(data.curve_dif, 3)}</code>
+                    <code>|a-b| = {toSigDgts(data.curve_dif, sigDgtsDefault)}</code>
                     <br />
-                    <code> a+b = {toSigDgts(data.curve_sum, 3)}</code>
+                    <code> a+b = {toSigDgts(data.curve_sum, sigDgtsDefault)}</code>
                     <br />
                     <br />
-                    <code>D criterion = {toSigDgts(data.criterion, 3)}</code>
+                    <code>D criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
                 </Box>
                 <PlotWithDownload svgContent={data.plot} fileName={`RK test chart ${label}`} />
             </DialogContent>

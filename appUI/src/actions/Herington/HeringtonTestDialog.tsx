@@ -5,13 +5,13 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsCrit, sigDgtsDefault, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type HeringtonTestDialogProps = DialogProps & { req: TestRequest; data: HeringtonTestResponse };
 
 export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, 3)}`];
+    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, sigDgtsDefault)}`];
 
     return (
         <ResponsiveDialog maxWidth="md" fullWidth open={open} onClose={handleClose}>
@@ -19,14 +19,14 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <Box m={2}>
-                    <code>D = {toSigDgts(data.D, 3)}</code>
+                    <code>D = {toSigDgts(data.D, sigDgtsDefault)}</code>
                     <br />
-                    <code>J = {toSigDgts(data.J, 3)}</code>
+                    <code>J = {toSigDgts(data.J, sigDgtsDefault)}</code>
                     <br />
-                    <code>|D–J| = {toSigDgts(data.DJ, 3)}</code>
+                    <code>|D–J| = {toSigDgts(data.DJ, sigDgtsDefault)}</code>
                     <br />
                     <br />
-                    <code>|D–J| criterion = {toSigDgts(data.criterion, 3)}</code>
+                    <code>|D–J| criterion = {toSigDgts(data.criterion, sigDgtsCrit)}</code>
                 </Box>
             </DialogContent>
         </ResponsiveDialog>
