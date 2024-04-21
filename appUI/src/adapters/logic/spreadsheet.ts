@@ -1,9 +1,10 @@
 import { CellBase, Matrix } from 'react-spreadsheet';
 import { Dispatch, SetStateAction } from 'react';
+import { toSigDgts } from './numbers.ts';
 
 // number is desired data type, but react-spreadsheet also has to represent empty cells
 // unfortunately it's not consistent, so `value` can be '' | undefined
-export type CellValueType = number | '' | undefined;
+export type CellValueType = number | string | undefined;
 export type SpreadsheetCell = CellBase<CellValueType>; // { value: CellValueType }
 export type SpreadsheetData = Matrix<SpreadsheetCell>; // SpreadsheetCell[][]
 export type SetSpreadsheetData = Dispatch<SetStateAction<SpreadsheetData>>;
@@ -75,3 +76,13 @@ export const fromRows = (rows: Matrix<CellValueType>): SpreadsheetData =>
  * Shorthand for parsing SpreadsheetData to numerical matrix
  */
 export const toNumMatrix = (data: SpreadsheetData): number[][] => matrixToNumerical(spreadsheetDataToMatrix(data));
+
+const cellToSigDgts = (value: CellValueType, sigDgts: number): string =>
+    toSigDgts(isNaN(Number(value)) ? 0 : Number(value), sigDgts);
+/**
+ * Convert all numerical values in a spreadsheet to strings with a given number of significant digits
+ * @param data matrix of Spreadsheet Cells
+ * @param sigDgts number of significant digits
+ */
+export const spreadsheetToSigDgts = (data: SpreadsheetData, sigDgts: number): SpreadsheetData =>
+    data.map((row) => row.map((cell) => ({ value: cellToSigDgts(cell?.value, sigDgts) })));

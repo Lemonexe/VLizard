@@ -9,6 +9,5 @@ build app
     make default config on install
 
 UI QoL:
-    constant sigDigits in results spreadsheets
     remove ugly <code> tags from results
     add UoMs to ParamsSpreadsheet headers

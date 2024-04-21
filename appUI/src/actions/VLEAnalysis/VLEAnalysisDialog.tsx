@@ -5,7 +5,7 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
-import { fromRows, makeReadOnly } from '../../adapters/logic/spreadsheet.ts';
+import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 
@@ -16,13 +16,10 @@ type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLE
 export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
 
-    const spreadsheetData = useMemo(
-        () =>
-            makeReadOnly(
-                fromRows([data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2, data.ps_1, data.ps_2]),
-            ),
-        [data],
-    );
+    const spreadsheetData = useMemo(() => {
+        const dataColumns = [data.p, data.T, data.x_1, data.y_1, data.gamma_1, data.gamma_2, data.ps_1, data.ps_2];
+        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), 4));
+    }, [data]);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>

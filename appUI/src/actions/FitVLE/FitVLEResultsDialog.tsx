@@ -7,7 +7,7 @@ import { FitAnalysisRequest, FitAnalysisResponse, TabulatedDataset } from '../..
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
 
@@ -50,7 +50,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
     const metricsSpreadsheetData = useMemo(() => {
         const rows = [[data.RMS_init, data.AAD_init]];
         if (optimized) rows.push([data.RMS_final!, data.AAD_final!]);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 3));
     }, [data]);
 
     const paramsSpreadsheetData = useMemo(() => {
@@ -58,7 +58,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
         const params = fromNamedParams(data.nparams)[1];
         const rows = [params0];
         if (optimized) rows.push(params);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 6));
     }, [data]);
 
     return (

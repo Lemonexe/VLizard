@@ -1,13 +1,15 @@
 import { expect, test } from 'vitest';
 import {
-    isSpreadsheetDataWhole,
     filterEmptyRows,
     generateEmptyCells,
+    isSpreadsheetDataWhole,
     matrixToNumerical,
     matrixToSpreadsheetData,
     spreadsheetDataToMatrix,
+    spreadsheetToSigDgts,
     transposeMatrix,
 } from './spreadsheet.ts';
+import { toSigDgts } from './numbers.ts';
 
 test('generateEmptyCells', () => {
     expect(generateEmptyCells(0, 0)).toEqual([]);
@@ -81,4 +83,12 @@ test('filterEmptyRows', () => {
         [{ value: 1 }, { value: '' }],
         [{ value: 3 }, { value: 4 }],
     ]);
+});
+
+test('spreadsheetToSigDgts', () => {
+    expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]], 2)).toEqual([[{ value: toSigDgts(1 / 3, 2) }]]);
+    expect(spreadsheetToSigDgts([[{ value: '' }, { value: undefined }, { value: 'asdf' }]], 2)).toEqual([
+        Array(3).fill({ value: toSigDgts(0, 2) }),
+    ]);
+    expect(spreadsheetToSigDgts([[]], 2)).toEqual([[]]);
 });

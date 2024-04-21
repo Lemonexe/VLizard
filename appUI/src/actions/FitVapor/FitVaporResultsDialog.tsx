@@ -7,7 +7,7 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];
@@ -47,14 +47,14 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
         const rows = [[data.RMS_init, data.AAD_init]];
         if (optimizedP) rows.push([data.RMS_inter!, data.AAD_inter!]);
         if (optimizedTP) rows.push([data.RMS_final!, data.AAD_final!]);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 3));
     }, [data]);
 
     const paramsSpreadsheetData = useMemo(() => {
         const rows = [params0];
         if (optimizedP) rows.push(paramsP);
         if (optimizedTP) rows.push(paramsTP);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), 6));
     }, [data]);
 
     const acceptP = useCallback(() => {
