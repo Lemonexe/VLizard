@@ -32,7 +32,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
 }) => {
     const optimizedP = data.is_optimized;
     const optimizedTP = data.is_T_p_optimized;
-    const param_names = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
+    const paramNames = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
     const params0 = fromNamedParams(data.nparams0)[1];
     const paramsP = fromNamedParams(data.nparams_inter)[1];
     const paramsTP = fromNamedParams(data.nparams)[1];
@@ -78,7 +78,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                 <h4 className="h-margin">Regression quality metrics</h4>
                 <Spreadsheet data={metricsSpreadsheetData} columnLabels={fitQualityMetrics} rowLabels={rowLabels} />
                 <h4 className="h-margin">Fitted model parameters</h4>
-                <Spreadsheet data={paramsSpreadsheetData} columnLabels={param_names} rowLabels={rowLabels} />
+                <Spreadsheet data={paramsSpreadsheetData} columnLabels={paramNames} rowLabels={rowLabels} />
                 <h4 className="h-margin">What to do with the results?</h4>
                 <Stack direction="row" gap={2} mb={4}>
                     <NormalCaseButton variant="contained" color="error" onClick={handleClose}>

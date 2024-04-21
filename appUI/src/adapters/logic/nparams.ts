@@ -17,5 +17,5 @@ export const toNamedParams = (keys: string[], values: number[]) => {
  * Create two arrays from an object
  * @param nparams
  */
-export const fromNamedParams = (nparams?: NamedParams): [string[], number[]] =>
+export const fromNamedParams = <T extends string | number>(nparams?: Record<string, T>): [string[], T[]] =>
     nparams ? [Object.keys(nparams), Object.values(nparams)] : [[], []];

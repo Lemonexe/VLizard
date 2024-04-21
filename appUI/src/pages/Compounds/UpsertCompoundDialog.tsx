@@ -44,7 +44,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
     // currently selected model definition
     const modelDef = useMemo(() => findModelDef(model), [model]);
-    const [paramNames] = useMemo(() => fromNamedParams(modelDef?.nparams0), [modelDef]);
+    const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
+    const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
 
     // CHECKS
     const isEdit = Boolean(origCompound);
@@ -182,7 +183,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     data={data}
                                     setData={setData}
                                     rowLabels={['values']}
-                                    columnLabels={paramNames}
+                                    columnLabels={columnLabels}
                                     forceUpdateVersion={forceUpdateVersion}
                                 />
                                 <Box mt={1}>

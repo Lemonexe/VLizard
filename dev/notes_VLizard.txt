@@ -9,5 +9,4 @@ build app
     make default config on install
 
 UI QoL:
-    add UoMs to ParamsSpreadsheet headers
     use UoM for VLE Analysis
