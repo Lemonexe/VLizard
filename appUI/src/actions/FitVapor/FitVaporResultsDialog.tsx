@@ -7,8 +7,9 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { makeReadOnly, matrixToSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
+import { sigDgtsMetrics, sigDgtsParams } from '../../adapters/logic/numbers.ts';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];
 
@@ -31,7 +32,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
 }) => {
     const optimizedP = data.is_optimized;
     const optimizedTP = data.is_T_p_optimized;
-    const param_names = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
+    const paramNames = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
     const params0 = fromNamedParams(data.nparams0)[1];
     const paramsP = fromNamedParams(data.nparams_inter)[1];
     const paramsTP = fromNamedParams(data.nparams)[1];
@@ -47,14 +48,14 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
         const rows = [[data.RMS_init, data.AAD_init]];
         if (optimizedP) rows.push([data.RMS_inter!, data.AAD_inter!]);
         if (optimizedTP) rows.push([data.RMS_final!, data.AAD_final!]);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsMetrics));
     }, [data]);
 
     const paramsSpreadsheetData = useMemo(() => {
         const rows = [params0];
         if (optimizedP) rows.push(paramsP);
         if (optimizedTP) rows.push(paramsTP);
-        return makeReadOnly(matrixToSpreadsheetData(rows));
+        return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsParams));
     }, [data]);
 
     const acceptP = useCallback(() => {
@@ -77,7 +78,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                 <h4 className="h-margin">Regression quality metrics</h4>
                 <Spreadsheet data={metricsSpreadsheetData} columnLabels={fitQualityMetrics} rowLabels={rowLabels} />
                 <h4 className="h-margin">Fitted model parameters</h4>
-                <Spreadsheet data={paramsSpreadsheetData} columnLabels={param_names} rowLabels={rowLabels} />
+                <Spreadsheet data={paramsSpreadsheetData} columnLabels={paramNames} rowLabels={rowLabels} />
                 <h4 className="h-margin">What to do with the results?</h4>
                 <Stack direction="row" gap={2} mb={4}>
                     <NormalCaseButton variant="contained" color="error" onClick={handleClose}>
@@ -92,11 +93,11 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                         </NormalCaseButton>
                     )}
                 </Stack>
-                <h4 className="h-margin">Plot p-optimized model</h4>
+                <h4 className="h-margin">p-optimized model plot</h4>
                 <PlotWithDownload svgContent={data.plot_p} fileName={`fit chart ${req.compound} ${req.model_name}`} />
                 {data.plot_T_p && (
                     <>
-                        <h4 className="h-margin">Plot T,p-optimized model</h4>
+                        <h4 className="h-margin">T,p-optimized model plot</h4>
                         <PlotWithDownload
                             svgContent={data.plot_T_p}
                             fileName={`fit chart ${req.compound} ${req.model_name}`}

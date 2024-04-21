@@ -32,6 +32,7 @@ export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 export type VLEModelDef = {
     name: string;
     nparams0: NamedParams;
+    param_labels: Record<string, string>;
     is_gamma_T_fun: boolean;
 };
 

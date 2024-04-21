@@ -32,6 +32,7 @@ def get_vapor_model_definitions_api():
     model2dict = lambda model: {
         'name': model.name,
         'nparams0': dict(zip(model.param_names, model.params0)),
+        'param_labels': dict(zip(model.param_names, model.param_labels or model.param_names)),
     }
     payload = [model2dict(model) for model in supported_models]
     return payload

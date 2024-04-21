@@ -6,9 +6,10 @@ import { SpreadsheetControls } from '../../components/SpreadsheetControls/Spread
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 import {
-    checkIsSpreadsheetDataWhole,
+    filterEmptyRows,
     fromRows,
     generateEmptyCells,
+    isSpreadsheetDataWhole,
     SpreadsheetData,
     toNumMatrix,
     transposeMatrix,
@@ -96,7 +97,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         setForceUpdateVersion((prev) => prev + 1);
     }, [initialData]);
 
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(filterEmptyRows(data)), [data]);
     const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
     // OVERALL ERROR CHECK
@@ -106,7 +107,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const pushNotification = useNotifications();
     const { mutate } = useUpsertVLEDataset();
     const handleSave = useCallback(() => {
-        const [p, T, x_1, y_1] = transposeMatrix(toNumMatrix(data));
+        const [p, T, x_1, y_1] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
         const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
         mutate(ds, {
             onSuccess: () => {

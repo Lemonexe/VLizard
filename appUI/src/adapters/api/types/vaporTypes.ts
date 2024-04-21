@@ -13,6 +13,7 @@ export type GetVaporModelsResponse = VaporModel[];
 export type VaporModelDef = {
     name: string;
     nparams0: NamedParams;
+    param_labels: Record<string, string>;
 };
 
 export type GetVaporModelDefsResponse = VaporModelDef[];

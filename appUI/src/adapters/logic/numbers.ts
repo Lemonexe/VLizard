@@ -1,3 +1,8 @@
+export const sigDgtsDefault = 4; // sigDgts for normal calculated values (tabular physical quantities)
+export const sigDgtsCrit = 2; // sigDgts for arbitrary criteria
+export const sigDgtsMetrics = 3; // sigDgts for statistical metrics (e.g. residuals)
+export const sigDgtsParams = 6; // sigDgts for model parameters
+
 /**
  * Returns a number rounded to the given number of significant digits
  * @param num float or integer
@@ -17,3 +22,4 @@ export const toSigDgts = (num: number, sigDgts: number): string => {
  * @param precision integer number of decimal places
  */
 export const toPercent = (num: number, precision = 0): string => (num * 100).toFixed(precision) + ' %';
+export const toPercentSigned = (num: number, precision = 0): string => (num > 0 ? '+' : '') + toPercent(num, precision);

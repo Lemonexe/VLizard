@@ -18,4 +18,5 @@ antoine_model = Vapor_Model(
     n_params=3,
     params0=np.array([14.5, -3500, -100]),
     param_names=['A', 'B', 'C'],
+    param_labels=['A / ln kPa', 'B / ln kPa·K', 'C / K'],
 )

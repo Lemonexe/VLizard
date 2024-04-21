@@ -1,12 +1,15 @@
 import { expect, test } from 'vitest';
 import {
-    checkIsSpreadsheetDataWhole,
+    filterEmptyRows,
     generateEmptyCells,
+    isSpreadsheetDataWhole,
     matrixToNumerical,
     matrixToSpreadsheetData,
     spreadsheetDataToMatrix,
+    spreadsheetToSigDgts,
     transposeMatrix,
 } from './spreadsheet.ts';
+import { toSigDgts } from './numbers.ts';
 
 test('generateEmptyCells', () => {
     expect(generateEmptyCells(0, 0)).toEqual([]);
@@ -52,15 +55,40 @@ test('matrixToNumerical', () => {
 });
 
 test('checkIsSpreadsheetDataWhole', () => {
-    expect(checkIsSpreadsheetDataWhole([[{ value: 1 }]])).toBe(true);
-    expect(checkIsSpreadsheetDataWhole([[{ value: '' }]])).toBe(false);
-    expect(checkIsSpreadsheetDataWhole([[{ value: undefined }]])).toBe(false);
-    expect(checkIsSpreadsheetDataWhole([[{ value: 1 }, { value: '' }]])).toBe(false);
-    expect(checkIsSpreadsheetDataWhole([[{ value: 1 }, { value: undefined }]])).toBe(false);
+    expect(isSpreadsheetDataWhole([[{ value: 1 }]])).toBe(true);
+    expect(isSpreadsheetDataWhole([[{ value: '' }]])).toBe(false);
+    expect(isSpreadsheetDataWhole([[{ value: undefined }]])).toBe(false);
+    expect(isSpreadsheetDataWhole([[{ value: 1 }, { value: '' }]])).toBe(false);
+    expect(isSpreadsheetDataWhole([[{ value: 1 }, { value: undefined }]])).toBe(false);
     expect(
-        checkIsSpreadsheetDataWhole([
+        isSpreadsheetDataWhole([
             [{ value: 1 }, { value: 2 }],
             [{ value: 3 }, { value: 4 }],
         ]),
     ).toBe(true);
+});
+
+test('filterEmptyRows', () => {
+    expect(filterEmptyRows([])).toEqual([]);
+    expect(filterEmptyRows([[{ value: 3 }, { value: 4 }]])).toEqual([[{ value: 3 }, { value: 4 }]]);
+    expect(filterEmptyRows([[{ value: '' }, { value: undefined }]])).toEqual([]);
+    expect(filterEmptyRows([[{ value: 1 }, { value: undefined }]])).toEqual([[{ value: 1 }, { value: undefined }]]);
+    expect(
+        filterEmptyRows([
+            [{ value: 1 }, { value: '' }],
+            [{ value: '' }, { value: '' }],
+            [{ value: 3 }, { value: 4 }],
+        ]),
+    ).toEqual([
+        [{ value: 1 }, { value: '' }],
+        [{ value: 3 }, { value: 4 }],
+    ]);
+});
+
+test('spreadsheetToSigDgts', () => {
+    expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]], 2)).toEqual([[{ value: toSigDgts(1 / 3, 2) }]]);
+    expect(spreadsheetToSigDgts([[{ value: '' }, { value: undefined }, { value: 'asdf' }]], 2)).toEqual([
+        Array(3).fill({ value: toSigDgts(0, 2) }),
+    ]);
+    expect(spreadsheetToSigDgts([[]], 2)).toEqual([[]]);
 });

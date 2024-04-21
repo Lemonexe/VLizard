@@ -16,7 +16,7 @@ import { TableView } from '@mui/icons-material';
 import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
-    checkIsSpreadsheetDataWhole,
+    isSpreadsheetDataWhole,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -44,7 +44,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
     // currently selected model definition
     const modelDef = useMemo(() => findModelDef(model), [model]);
-    const [paramNames] = useMemo(() => fromNamedParams(modelDef?.nparams0), [modelDef]);
+    const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
+    const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
 
     // CHECKS
     const isEdit = Boolean(origCompound);
@@ -66,7 +67,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     };
     const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
     const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);
     const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
 
@@ -181,7 +182,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 <ParamsSpreadsheet
                                     data={data}
                                     setData={setData}
-                                    columnLabels={paramNames}
+                                    rowLabels={['values']}
+                                    columnLabels={columnLabels}
                                     forceUpdateVersion={forceUpdateVersion}
                                 />
                                 <Box mt={1}>

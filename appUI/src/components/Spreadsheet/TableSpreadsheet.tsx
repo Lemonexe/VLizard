@@ -6,9 +6,10 @@ import { SpreadsheetWrapperProps } from './types.ts';
 type TableSpreadsheetProps = SpreadsheetWrapperProps & { setTouched?: Dispatch<boolean> };
 
 export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({
-    columnLabels,
     data,
     setData,
+    columnLabels,
+    rowLabels,
     setTouched,
     forceUpdateVersion,
 }) => {
@@ -28,7 +29,9 @@ export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({
 
     // see ParamsSpreadsheet.tsx for explanation of this weirdness
     return useMemo(
-        () => <Spreadsheet data={[...data]} onChange={handleChange} columnLabels={columnLabels} />,
+        () => (
+            <Spreadsheet data={[...data]} onChange={handleChange} rowLabels={rowLabels} columnLabels={columnLabels} />
+        ),
         [n_R, n_C, forceUpdateVersion],
     );
 };

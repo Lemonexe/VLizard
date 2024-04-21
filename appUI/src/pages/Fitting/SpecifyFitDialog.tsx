@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useData } from '../../contexts/DataContext.tsx';
 import {
-    checkIsSpreadsheetDataWhole,
+    isSpreadsheetDataWhole,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -54,7 +54,8 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
 
-    const paramNames = fromNamedParams(modelDef?.nparams0)[0];
+    const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
+    const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
     const isFreedom = modelDef && paramNames.length - const_param_names.length > 0;
 
     // SPREADSHEET
@@ -64,7 +65,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
             : fromNamedParams(findModelDef(newModelName)?.nparams0)[1];
     const getInitialData = (newModelName: string) => matrixToSpreadsheetData([getInitialParams(newModelName)]);
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
-    const isDataWhole = useMemo(() => checkIsSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
 
     // GET RESULTS DIALOG
     const { perform, result } = useFitVLEResultsDialog();
@@ -146,7 +147,12 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                             <p>
                                 <strong>Model parameters</strong>
                             </p>
-                            <ParamsSpreadsheet data={data} setData={setData} columnLabels={paramNames} />
+                            <ParamsSpreadsheet
+                                data={data}
+                                setData={setData}
+                                rowLabels={['initial']}
+                                columnLabels={columnLabels}
+                            />
                         </Box>
                     )}
                     {modelDef && !isDataWhole && (

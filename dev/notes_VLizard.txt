@@ -7,9 +7,3 @@ build app
     run python from electron
     make data folder for python
     make default config on install
-
-UI QoL:
-    constant sigDigits in results spreadsheets
-    use rowLabels in param inputs
-    autotrim rows, data is incomplete only when partial rows
-    remove ugly <code> tags from results
