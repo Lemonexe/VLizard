@@ -3,6 +3,8 @@
 
 A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibrium) data, which comprises tests of thermodynamic consistency & model fitting using non-linear regression.
 
+App is currently WIP 🚧, but if you'd like to see what it looks like, [see a 3 minute](https://drive.google.com/file/d/1BY5ER9d8al4iYIa0OSvPQxuiorSwq9Jj/view?usp=sharing) demo showcasing it from tech perspective 👀
+
 The project is a monorepo consisting of:
 - [Python Core+Backend+CLI](docs/appPy.md)
 - [Typescript Frontend](docs/appUI.md)
