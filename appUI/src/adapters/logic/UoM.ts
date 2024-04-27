@@ -14,7 +14,7 @@ export const useUoM_T = () => {
     return useMemo(() => ({ convert_T, convert_T_vec, UoM_T }), [UoM_T]);
 };
 
-export const pUnits = { Pa: 1000, kPa: 1, bar: 0.01, MPa: 0.001 };
+export const pUnits = { Pa: 1000, mbar: 10, kPa: 1, bar: 0.01, MPa: 0.001 };
 
 /**
  * Returns a function that converts pressure from kPa to a unit of user's choice (from settings).
