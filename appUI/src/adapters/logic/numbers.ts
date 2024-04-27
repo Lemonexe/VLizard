@@ -4,7 +4,7 @@ export const sigDgtsMetrics = 3; // sigDgts for statistical metrics (e.g. residu
 export const sigDgtsParams = 6; // sigDgts for model parameters
 
 /**
- * Returns a number rounded to the given number of significant digits
+ * Returns string from number rounded to the given number of significant digits
  * @param num float or integer
  * @param sigDgts integer number of significant digits
  */
@@ -15,6 +15,13 @@ export const toSigDgts = (num: number, sigDgts: number): string => {
         ? (Math.round(num / 10 ** (naturalDgts - sigDgts)) * 10 ** (naturalDgts - sigDgts)).toFixed(0)
         : num.toPrecision(sigDgts);
 };
+
+/**
+ * Returns number rounded to the given number of significant digits
+ * @param num float or integer
+ * @param sigDgts integer number of significant digits
+ */
+export const truncateSigDgts = (num: number, sigDgts: number): number => parseFloat(toSigDgts(num, sigDgts));
 
 /**
  * Returns a number rounded to the given number of decimal places (fixed point)

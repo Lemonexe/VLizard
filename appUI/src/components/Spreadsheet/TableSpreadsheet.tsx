@@ -32,6 +32,6 @@ export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({
         () => (
             <Spreadsheet data={[...data]} onChange={handleChange} rowLabels={rowLabels} columnLabels={columnLabels} />
         ),
-        [n_R, n_C, forceUpdateVersion],
+        [n_R, n_C, rowLabels, columnLabels, forceUpdateVersion],
     );
 };
