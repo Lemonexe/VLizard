@@ -102,16 +102,19 @@ def upsert_dataset(compound1, compound2, dataset, p, T, x_1, y_1):
     """
     Create or overwrite a dataset of a binary VLE system, create the system if not exists.
     Assumes system will not be duplicated in given order.
+    Data will be sorted by x_1 ascending.
 
     compound1, compound2 (str): names of compounds in the system
     dataset (str): name of the dataset
-    p, T, x_1, y_1 (np.array or list): data vectors
+    p, T, x_1, y_1 (np.array or list): data vectors (unsorted)
     """
     system_path = get_system_path(compound1, compound2)
     if not os.path.exists(system_path):
         os.makedirs(system_path)
     table_path = os.path.join(system_path, dataset + '.tsv')
     table = serialize_cols(p, T, x_1, y_1)
+    idxs_sorted_by_x_1 = np.argsort(table[:, 2])
+    table = table[idxs_sorted_by_x_1]
     save_matrix2tsv(table, table_path, expected_headers)
 
 
