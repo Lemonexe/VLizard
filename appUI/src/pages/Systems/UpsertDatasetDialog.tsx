@@ -107,14 +107,18 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const pushNotification = useNotifications();
     const { mutate } = useUpsertVLEDataset();
     const handleSave = useCallback(() => {
-        const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
-        const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
-        mutate(ds, {
-            onSuccess: () => {
-                pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
-                handleClose();
-            },
-        });
+        try {
+            const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
+            const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
+            mutate(ds, {
+                onSuccess: () => {
+                    pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
+                    handleClose();
+                },
+            });
+        } catch (err) {
+            pushNotification({ message: String(err), severity: 'error' });
+        }
     }, [compound1, compound2, datasetName, data, convertTableUoMs]);
 
     return (
@@ -179,26 +183,32 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         )}
                     </Stack>
                 </Stack>
-                <Stack direction="row" gap={1}>
+                {/* prettier-ignore */}
+                <p>
+                    Enter your measured VLE data points.
+                    <br />
+                    Table shall be automatically sorted by <i>x<sub>1</sub></i>.
+                    <br />
+                    You may reorganize order of columns or units of measurement, so that the headers match your data
+                    source:
+                </p>
+                <Stack direction="row" gap={1} pb={2}>
                     {headerComponents}
                 </Stack>
-                <Box pt={2}>
-                    <p>Enter your measured VLE data points:</p>
-                    <Stack direction="row" gap={2}>
-                        <TableSpreadsheet
-                            columnLabels={columnLabels}
-                            data={data}
-                            setData={setData}
-                            setTouched={setTouched}
-                            forceUpdateVersion={forceUpdateVersion}
-                        />
-                        <SpreadsheetControls
-                            setData={setData}
-                            showRestoreData={modifyingDataset && touched}
-                            handleRestoreData={handleRestoreData}
-                        />
-                    </Stack>
-                </Box>
+                <Stack direction="row" gap={2}>
+                    <TableSpreadsheet
+                        columnLabels={columnLabels}
+                        data={data}
+                        setData={setData}
+                        setTouched={setTouched}
+                        forceUpdateVersion={forceUpdateVersion}
+                    />
+                    <SpreadsheetControls
+                        setData={setData}
+                        showRestoreData={modifyingDataset && touched}
+                        handleRestoreData={handleRestoreData}
+                    />
+                </Stack>
                 {!isDataWhole && data.length > 1 && (
                     <Box pt={2}>
                         <ErrorLabel title="Data is incomplete!" />

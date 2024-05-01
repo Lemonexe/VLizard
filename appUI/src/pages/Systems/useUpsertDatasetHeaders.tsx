@@ -18,6 +18,16 @@ const MAX_SIG_DGTS = 10; // enough for any practical purpose, enough to mitigate
 // Truncate all numbers to a maximal number of sig digits
 const truncate = (vec: number[]) => vec.map((x) => truncateSigDgts(x, MAX_SIG_DGTS));
 
+// Throw if some values are negative
+const validatePositive = (label: string, vec: number[]) => {
+    if (vec.some((x) => x <= 0)) throw new Error(`All ${label} values must > 0`);
+};
+
+// Throw if some values aren't within [0,1]
+const validate_xy = (label: string, vec: number[]) => {
+    if (vec.some((x) => x < 0 || x > 1)) throw new Error(`All ${label} values must be between 0 and 1`);
+};
+
 // Move an array element left or right in the group
 const move = (arr: number[], i: number, dir: 1 | -1) => {
     arr = [...arr];
@@ -49,9 +59,13 @@ export const useUpsertDatasetHeaders = () => {
         const dataNew = Array(4).fill(null);
         for (let i = 0; i < columnsOrder.length; i++) dataNew[columnsOrder[i]] = data[i];
         dataNew[0] = truncate(convert_p_vec(UoM_p, dataNew[0]));
+        validatePositive('p', dataNew[0]);
         dataNew[1] = truncate(convert_T_vec(UoM_T, dataNew[1]));
+        validatePositive('T', dataNew[1]);
         dataNew[2] = truncate(convert_xy_vec(UoM_x1, dataNew[2]));
+        validate_xy('x1', dataNew[2]);
         dataNew[3] = truncate(convert_xy_vec(UoM_y1, dataNew[3]));
+        validate_xy('y1', dataNew[3]);
         return dataNew;
     }, renderDeps);
 

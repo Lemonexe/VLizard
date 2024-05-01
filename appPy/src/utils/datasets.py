@@ -113,7 +113,7 @@ def upsert_dataset(compound1, compound2, dataset, p, T, x_1, y_1):
         os.makedirs(system_path)
     table_path = os.path.join(system_path, dataset + '.tsv')
     table = serialize_cols(p, T, x_1, y_1)
-    idxs_sorted_by_x_1 = np.argsort(table[:, 2])
+    idxs_sorted_by_x_1 = np.argsort(x_1)
     table = table[idxs_sorted_by_x_1]
     save_matrix2tsv(table, table_path, expected_headers)
 

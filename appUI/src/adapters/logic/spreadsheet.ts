@@ -37,7 +37,13 @@ export const matrixToSpreadsheetData = (M: Matrix<CellValueType>): SpreadsheetDa
 export const spreadsheetDataToMatrix = (data: SpreadsheetData): Matrix<CellValueType> =>
     data.map((row) => row.map((cell) => cell?.value));
 
-export const matrixToNumerical = (M: Matrix<CellValueType>): number[][] => M.map((row) => row.map(Number));
+export const matrixToNumerical = (M: Matrix<CellValueType>): number[][] =>
+    M.map((row) =>
+        row.map((val) => {
+            if (typeof val === 'string') return Number(val.replace(/%$/, ''));
+            return Number(val);
+        }),
+    );
 
 /**
  * Check if a matrix is whole, i.e. it is non-empty and all cells have a value
