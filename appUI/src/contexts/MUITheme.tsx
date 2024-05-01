@@ -8,6 +8,7 @@ export const MUITheme = createTheme({
     palette: {
         primary: {
             main: '#1690AE',
+            light: '#E4F9FC',
         },
     },
     typography: {
@@ -32,6 +33,9 @@ export const MUITheme = createTheme({
                     gap: spacingN(1),
                 },
             },
+        },
+        MuiSelect: {
+            variants: [{ props: { variant: 'standard' }, style: { marginLeft: spacingN(0.5) } }],
         },
         MuiTableHead: {
             styleOverrides: { root: { fontWeight: 700 } },

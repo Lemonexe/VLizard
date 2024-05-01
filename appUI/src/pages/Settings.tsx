@@ -20,6 +20,7 @@ import { Config } from '../adapters/api/types/configTypes.tsx';
 import { DefaultLayout } from '../components/DefaultLayout.tsx';
 import { HeaderStack } from '../components/Mui/HeaderStack.tsx';
 import { spacingN } from '../contexts/MUITheme.tsx';
+import { pUnits } from '../adapters/logic/UoM.ts';
 
 type PatchConfigFn = (key: keyof Config, value: string | number | boolean) => void;
 type ChE = ChangeEvent<HTMLInputElement>;
@@ -135,10 +136,9 @@ const UISettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
             <div>
                 Pressure units
                 <Select {...createSlProps('UoM_p')}>
-                    <MenuItem value="Pa" children="Pa" />
-                    <MenuItem value="kPa" children="kPa" />
-                    <MenuItem value="bar" children="bar" />
-                    <MenuItem value="MPa" children="MPa" />
+                    {Object.keys(pUnits).map((unit) => (
+                        <MenuItem key={unit} value={unit} children={unit} />
+                    ))}
                 </Select>
                 <br />
                 Temperature units

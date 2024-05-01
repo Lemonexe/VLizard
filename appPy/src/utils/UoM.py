@@ -1,7 +1,7 @@
 from src.config import cst
 from src.config import cfg
 
-p_units = {'Pa': 1000, 'kPa': 1, 'bar': 0.01, 'MPa': 0.001}
+p_units = {'Pa': 1000, 'mbar': 10, 'kPa': 1, 'bar': 0.01, 'MPa': 0.001}
 
 
 def convert_T(T):

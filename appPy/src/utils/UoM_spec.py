@@ -35,6 +35,9 @@ def test_convert_p():
     cfg.UoM_p = 'pa'
     assert convert_p(123) == 123000
 
+    cfg.UoM_p = 'mbar'
+    assert convert_p(123) == 1230
+
     cfg.UoM_p = 'MPA'
     assert convert_p(600) == 0.6
 

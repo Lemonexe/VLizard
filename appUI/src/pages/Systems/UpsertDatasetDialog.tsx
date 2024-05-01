@@ -18,8 +18,7 @@ import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
-
-const tableSpreadsheetHeaders = ['p/kPa', 'T/K', 'x1', 'y1'];
+import { useUpsertDatasetHeaders } from './useUpsertDatasetHeaders.tsx';
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;
 
@@ -80,6 +79,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     }, [compound1, compound2]);
 
     // SPREADSHEET
+    const { convertTableUoMs, headerComponents, columnLabels } = useUpsertDatasetHeaders();
     const getInitialData = (): SpreadsheetData => {
         if (!modifyingDataset) return generateEmptyCells(1, 4);
         const ds = findDataset(compound1, compound2, datasetName);
@@ -107,7 +107,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const pushNotification = useNotifications();
     const { mutate } = useUpsertVLEDataset();
     const handleSave = useCallback(() => {
-        const [p, T, x_1, y_1] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
+        const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
         const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
         mutate(ds, {
             onSuccess: () => {
@@ -115,7 +115,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                 handleClose();
             },
         });
-    }, [compound1, compound2, datasetName, data]);
+    }, [compound1, compound2, datasetName, data, convertTableUoMs]);
 
     return (
         <Dialog fullScreen open={open}>
@@ -179,11 +179,14 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         )}
                     </Stack>
                 </Stack>
+                <Stack direction="row" gap={1}>
+                    {headerComponents}
+                </Stack>
                 <Box pt={2}>
                     <p>Enter your measured VLE data points:</p>
                     <Stack direction="row" gap={2}>
                         <TableSpreadsheet
-                            columnLabels={tableSpreadsheetHeaders}
+                            columnLabels={columnLabels}
                             data={data}
                             setData={setData}
                             setTouched={setTouched}
