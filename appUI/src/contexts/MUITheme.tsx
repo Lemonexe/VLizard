@@ -3,13 +3,17 @@ import { createTheme } from '@mui/material';
 const spacing: number = 8;
 export const spacingN = (n: number) => spacing * n;
 
+const color1 = '#1690AE';
+const color2 = `#${color1.slice(5)}${color1.slice(1, 5)}`;
+
 export const MUITheme = createTheme({
     spacing,
     palette: {
         primary: {
-            main: '#1690AE',
+            main: color1,
             light: '#E4F9FC',
         },
+        secondary: { main: color2 },
     },
     typography: {
         fontFamily: ['Open Sans', 'sans-serif'].join(','),
@@ -45,6 +49,13 @@ export const MUITheme = createTheme({
                 root: {
                     padding: spacingN(1.5),
                     fontWeight: 'inherit',
+                },
+            },
+        },
+        MuiBackdrop: {
+            styleOverrides: {
+                root: {
+                    backgroundImage: `linear-gradient(to right, ${color1}20, ${color2}20)`,
                 },
             },
         },
