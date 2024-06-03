@@ -2,6 +2,7 @@ import os
 import shutil
 from .errors import AppException
 from .io.echo import warn_echo
+from .io.local_files import join_data_path
 
 
 def get_all_system_dir_names():
@@ -10,7 +11,7 @@ def get_all_system_dir_names():
 
     return (list(str)): names of all VLE systems
     """
-    return [f.name for f in os.scandir(os.path.join('data', 'VLE')) if f.is_dir()]
+    return [f.name for f in os.scandir(join_data_path('VLE')) if f.is_dir()]
 
 
 def validate_system_or_swap(compound1, compound2):
@@ -44,7 +45,7 @@ def get_system_path(compound1, compound2):
     return str: path to the binary system directory
     """
     system_name = f'{compound1}-{compound2}'
-    system_dir_path = os.path.join('data', 'VLE', system_name)
+    system_dir_path = join_data_path('VLE', system_name)
     return system_dir_path
 
 
