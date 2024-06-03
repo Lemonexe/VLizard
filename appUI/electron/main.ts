@@ -63,21 +63,14 @@ function createWindow() {
 
 // Start python backend server
 function startServer() {
+    // only for the installed app, not for development
+    if (!app.isPackaged) return;
+
     const appPyPath = path.join(__dirname, '..', '..', 'appPy');
+    // child = spawn('pipenv', ['run', 'start'], { cwd: appPyPath, shell: true });
+
     const exePath = path.join(appPyPath, 'dist', 'serve.exe');
     child = spawn(exePath, [], { cwd: appPyPath });
-
-    child.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-    });
-
-    child.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-    });
-
-    child.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-    });
 }
 
 app.on('quit', () => child?.kill());
