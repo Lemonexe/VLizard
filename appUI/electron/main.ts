@@ -66,11 +66,11 @@ function startServer() {
     // only for the installed app, not for development
     if (!app.isPackaged) return;
 
-    const appPyPath = path.join(__dirname, '..', '..', 'appPy');
+    // const appPyPath = path.join(__dirname, '..', '..', 'appPy');
     // child = spawn('pipenv', ['run', 'start'], { cwd: appPyPath, shell: true });
 
-    const exePath = path.join(appPyPath, 'dist', 'serve.exe');
-    child = spawn(exePath, [], { cwd: appPyPath });
+    const exePath = path.join(process.resourcesPath, 'serve.exe');
+    child = spawn(exePath, [], { cwd: process.resourcesPath });
 }
 
 app.on('quit', () => child?.kill());

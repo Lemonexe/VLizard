@@ -1,5 +1,7 @@
 {
   "name": "vlizard",
+  "author": "Jiri Zbytovsky",
+  "description": "VLizard, a VLE wizard.",
   "private": true,
   "version": "0.0.0",
   "engines": {
@@ -48,5 +50,14 @@
     "vite-plugin-electron-renderer": "^0.14.5",
     "vitest": "^1.2.1"
   },
-  "main": "dist-electron/main.js"
+  "main": "dist-electron/main.js",
+  "build": {
+    "extraResources": [
+      {
+        "from": "../appPy/dist",
+        "to": "./",
+        "filter": ["serve.exe"]
+      }
+    ]
+  }
 }
