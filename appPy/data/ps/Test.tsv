@@ -1,3 +1,5 @@
 compound	T_min/K	T_max/K	A/ln(kPa)	B	C/K
-test	100	200	1	2	3
-error	100	200		1	2
+good	100	200	1	2	3
+invalid	100	200		6	7
+duplicate	100	200	1	2	3
+duplicate	100	200	1	2	3

@@ -17,6 +17,7 @@ yapf = "*"
 pylint = "*"
 pytest = "*"
 pyinstaller = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.12"
