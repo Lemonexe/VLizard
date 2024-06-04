@@ -16,7 +16,7 @@ consts_dict = {
     'x_points_smooth_plot': 101  # how many x points shall be tabulated when function is plotted
 }
 
-# also referenced in package.json (the file is copied to the Electron bundle)
+# also referenced in appUI/electron-builder.json5 (the file is copied to the Electron bundle)
 # it is therefore necessary that the file is available in CWD of python process
 default_config_path = 'default_config.yaml'
 

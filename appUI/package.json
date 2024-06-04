@@ -51,19 +51,5 @@
     "vite-plugin-electron-renderer": "^0.14.5",
     "vitest": "^1.2.1"
   },
-  "main": "dist-electron/main.js",
-  "build": {
-    "extraResources": [
-      {
-        "from": "../appPy/dist",
-        "to": "./",
-        "filter": ["serve.exe"]
-      },
-      {
-        "from": "../appPy",
-        "to": "./",
-        "filter": ["default_config.yaml"]
-      }
-    ]
-  }
+  "main": "dist-electron/main.js"
 }

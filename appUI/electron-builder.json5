@@ -1,17 +1,29 @@
 /**
  * @see https://www.electron.build/configuration/configuration
- * IS THIS FILE NECESSARY AT ALL..?
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "VLizard",
   "asar": true,
+  // "icon": "public/icon.png",
   "directories": {
     "output": "release/${version}"
   },
   "files": [
     "dist-electron",
     "dist"
+  ],
+   "extraResources": [
+      {
+        "from": "../appPy/dist",
+        "to": "./",
+        "filter": ["serve.exe"]
+      },
+      {
+        "from": "../appPy",
+        "to": "./",
+        "filter": ["default_config.yaml"]
+      }
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
