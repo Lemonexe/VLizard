@@ -9,7 +9,6 @@ import path from 'node:path';
 // │ │
 // │ ├─┬ dist-electron
 // │ │ ├── main.js
-// │ │ └── preload.js
 // │
 
 process.env.DIST = path.join(__dirname, '../dist');
@@ -33,15 +32,9 @@ function createWindow() {
         height: 1024,
         icon: path.join(process.env.PUBLIC, 'icon.png'),
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
             // Enable all CORS. Better here than BE, which has to be secure against outside calls, but for FE it doesn't matter.
             webSecurity: false,
         },
-    });
-
-    // Test active push message to Renderer-process.
-    win.webContents.on('did-finish-load', () => {
-        win?.webContents.send('main-process-message', new Date().toLocaleString());
     });
 
     // Open external link using the default browser instead of the Electron browser.
