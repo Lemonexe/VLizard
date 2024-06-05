@@ -47,18 +47,16 @@ function createWindow() {
         }
     });
 
-    if (VITE_DEV_SERVER_URL) {
-        win.loadURL(VITE_DEV_SERVER_URL);
-    } else {
-        win.loadFile(path.join(process.env.DIST, 'index.html'));
-    }
+    if (VITE_DEV_SERVER_URL) win.loadURL(VITE_DEV_SERVER_URL);
+    else win.loadFile(path.join(process.env.DIST, 'index.html'));
 }
 
 // Start python backend server
 function startServer() {
-    // only for the installed app, not for development
+    // only for the installed app, not for dev mode
     if (!app.isPackaged) return;
 
+    // for testing the functionality in dev mode
     // const appPyPath = path.join(__dirname, '..', '..', 'appPy');
     // child = spawn('pipenv', ['run', 'start'], { cwd: appPyPath, shell: true });
 
