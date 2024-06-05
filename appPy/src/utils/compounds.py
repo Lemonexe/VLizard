@@ -1,11 +1,34 @@
 import os
 from .errors import AppException
 from .io.tsv import open_tsv, save_matrix2tsv
+from .io.local_files import join_data_path
 from src.TD.vapor_models.wagner import wagner_model
 from src.TD.vapor_models.antoine import antoine_model
 
 # supported models in order of preference, descending
 supported_models = [wagner_model, antoine_model]
+
+get_table_path = lambda model_name: join_data_path('ps', model_name + '.tsv')
+
+
+def get_model_or_throw(model_name):
+    """Return model instance for given name, or raise exception if not found."""
+    try:
+        model = next(model for model in supported_models if model.name == model_name)
+    except StopIteration as exc:
+        raise AppException(f'Unknown model {model_name}!') from exc
+    return model
+
+
+def get_or_create_model_table(model_name):
+    """Open a model table from tsv and return it, or create new one for that model."""
+    table_path = get_table_path(model_name)
+    if not os.path.exists(table_path):
+        model = get_model_or_throw(model_name)
+        header_row = ['compound', 'T_min/K', 'T_max/K'] + model.param_labels
+        save_matrix2tsv([header_row], table_path)
+        return []
+    return open_tsv(table_path)
 
 
 def get_preferred_vapor_model(compound):
@@ -29,8 +52,7 @@ def get_vapor_model_params(compound, model):
     model (Vapor_Model): vapor pressure model instance
     return (tuple): T_min [K], T_max [K], *params
     """
-    table_path = os.path.join('data', 'ps', model.name + '.tsv')
-    table = open_tsv(table_path)
+    table = get_or_create_model_table(model.name)
 
     # find all rows for given compound case-insensitive
     matched_rows = [row for row in table if row[0].lower() == compound.lower()]
@@ -54,20 +76,9 @@ def get_compound_names():
     """Return list of all compound names for which vapor pressure parameters are available."""
     compound_names = set()
     for model in supported_models:
-        table_path = os.path.join('data', 'ps', model.name + '.tsv')
-        table = open_tsv(table_path)
+        table = get_or_create_model_table(model.name)
         compound_names.update([row[0] for row in table[1:]])  # skip header row
     return list(compound_names)
-
-
-def get_model_and_table(model_name):
-    try:
-        model = next(model for model in supported_models if model.name == model_name)
-    except StopIteration as exc:
-        raise AppException(f'Unknown model {model_name}!') from exc
-    table_path = os.path.join('data', 'ps', model_name + '.tsv')
-    table = open_tsv(table_path)
-    return model, table_path, table
 
 
 def amend_model_table(model_name, compound, T_min, T_max, nparams):
@@ -81,7 +92,8 @@ def amend_model_table(model_name, compound, T_min, T_max, nparams):
     T_max (float): upper temperature bound [K]
     params (list of float): model parameters
     """
-    model, table_path, table = get_model_and_table(model_name)
+    model = get_model_or_throw(model_name)
+    table = get_or_create_model_table(model_name)
 
     # validate params
     params = list(nparams.values())
@@ -108,6 +120,7 @@ def amend_model_table(model_name, compound, T_min, T_max, nparams):
         pass  # not found in any other table
 
     # and finally, save the table
+    table_path = get_table_path(model_name)
     save_matrix2tsv(table, table_path)
 
 
@@ -118,6 +131,7 @@ def delete_compound(model_name, compound):
     model_name (str): name of model
     compound (str): compound name
     """
-    _model, table_path, table = get_model_and_table(model_name)
+    table = get_or_create_model_table(model_name)
     table = [row for row in table if row[0].lower() != compound.lower()]
+    table_path = get_table_path(model_name)
     save_matrix2tsv(table, table_path)

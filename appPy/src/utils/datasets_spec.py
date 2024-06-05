@@ -2,17 +2,21 @@ import pytest
 from .datasets import get_all_dataset_names, parse_datasets, do_datasets, validate_dataset, get_dataset_VLE_data
 from .errors import AppException
 
-# NOTE: this test relies on the existence of the test system in data/VLE
+# NOTE: these tests rely on the files in appPy\data\VLE\test1-test2
+# so we mock to use testing data instead of real userdata files
 compound1 = 'test1'
 compound2 = 'test2'
 all_datasets = ['atm', 'pres', 'vac']
 
 
-def test_get_all_dataset_names():
+def test_get_all_dataset_names(mocker):
+    mocker.patch('src.utils.io.local_files.data_folder_path', 'data')
     assert get_all_dataset_names(compound1, compound2) == all_datasets
 
 
-def test_parse_datasets():
+def test_parse_datasets(mocker):
+    mocker.patch('src.utils.io.local_files.data_folder_path', 'data')
+
     dataset_names = parse_datasets(compound1, compound2, None)
     assert dataset_names == all_datasets
 
@@ -33,7 +37,9 @@ def test_parse_datasets():
         parse_datasets(compound1, compound2, 'atm,nonsense')
 
 
-def test_do_datasets():
+def test_do_datasets(mocker):
+    mocker.patch('src.utils.io.local_files.data_folder_path', 'data')
+
     recorded_datasets = []
 
     def do_for_datasets(_c1, _c2, _d):
@@ -47,7 +53,7 @@ def test_do_datasets():
         do_datasets(compound1, 'nonsense', None, do_for_datasets)
 
 
-# this fn does not actually rely on filesystem, only on supplied array of datasets
+# pure function using supplied array of datasets, no file system side effects
 def test_validate_dataset():
     # returns void, just test that it does not raise
     validate_dataset(compound1, compound2, 'atm', all_datasets)
@@ -56,7 +62,9 @@ def test_validate_dataset():
         validate_dataset(compound1, compound2, 'nonsense', all_datasets)
 
 
-def test_get_dataset_VLE_table():
+def test_get_dataset_VLE_table(mocker):
+    mocker.patch('src.utils.io.local_files.data_folder_path', 'data')
+
     (p, T, x_1, y_1) = get_dataset_VLE_data(compound1, compound2, 'atm')
     assert (p == 101.325).all()
     assert x_1[0] == 0.1
