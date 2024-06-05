@@ -12,6 +12,7 @@
     "dev": "vite",
     "tsc": "tsc",
     "build": "tsc && vite build && electron-builder",
+    "build:electron": "electron-builder",
     "prettier": "prettier --write \"src/**/*.{js,ts,jsx,tsx}\"",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -57,6 +58,11 @@
         "from": "../appPy/dist",
         "to": "./",
         "filter": ["serve.exe"]
+      },
+      {
+        "from": "../appPy",
+        "to": "./",
+        "filter": ["default_config.yaml"]
       }
     ]
   }
