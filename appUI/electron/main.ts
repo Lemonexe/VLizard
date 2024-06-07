@@ -52,9 +52,9 @@ function createWindow() {
 function startPyServer() {
     // in order to test the functionality in dev mode:
     // child = spawn('pipenv', ['run', 'start'], { cwd: path.join(__dirname, '..', '..', 'appPy'), shell: true }); return;
-    // child = spawn(path.join(__dirname, '..', '..', 'appPy', 'dist', 'serve.exe'), []); return;
+    // child = spawn(path.join(__dirname, '..', '..', 'appPy', 'dist', 'VLizard_server.exe'), []); return;
     if (!app.isPackaged || child) return;
-    const exePath = path.join(process.resourcesPath, 'serve.exe');
+    const exePath = path.join(process.resourcesPath, 'VLizard_server.exe');
     child = spawn(exePath, [], { cwd: process.resourcesPath });
 }
 function killPyServer() {
@@ -66,7 +66,7 @@ function killPyServer() {
 }
 function killAll() {
     child = win = undefined;
-    exec('taskkill /F /IM serve.exe /T'); // terminate with extreme prejudice!
+    exec('taskkill /F /IM VLizard_server.exe /T'); // terminate with extreme prejudice!
     process.exit(0);
 }
 

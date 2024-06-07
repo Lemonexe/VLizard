@@ -3,7 +3,7 @@ import sys
 from waitress import serve
 from src.api.app import app
 
-# handle exit to prevent serve.exe hanging when Electron is closed
+# handle exit to prevent VLizard_server.exe hanging when Electron is closed
 def signal_handler(_signal_number, _stack_frame):
     print('Exiting server...')
     sys.exit(0)

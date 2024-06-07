@@ -11,7 +11,7 @@
   },
   "files": ["dist-electron", "dist"],
    "extraResources": [
-      {"from": "../appPy/dist", "to": "./", "filter": ["serve.exe"]}
+      {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server.exe"]}
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",

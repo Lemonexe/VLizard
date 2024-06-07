@@ -22,14 +22,14 @@ pipenv install --dev
 ### Build
 ```
 pipenv shell
-pyinstaller --onefile serve.py
+pyinstaller --onefile --name VLizard_server serve.py
 exit
 ```
 
 ### Local run
 
 #### Flask server
-Run built production server: `dist\serve.exe`  
+Run built production server: `dist\VLizard_server.exe`  
 Run production server: `pipenv run start`  
 Run development server: `pipenv run dev`  
 Uses port 37137 by default _(an arbitrary number)_.    
