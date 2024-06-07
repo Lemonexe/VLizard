@@ -2,6 +2,8 @@ BUGFIX: update Fitting page after systems change
 
 BUGFIX: color backdrop only for Dialog, not for Select menu
 
+nit: <Loader subject="user data" />
+
 ps fitting autofill temperature bounds
 
 react-spreadsheet BUG report with minimal example

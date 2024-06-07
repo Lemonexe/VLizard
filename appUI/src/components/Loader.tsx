@@ -23,10 +23,11 @@ export const Spinner = styled(Loop)({
     },
 });
 
-export const Loader: FC = () => (
+type LoaderProps = { subject?: string };
+export const Loader: FC<LoaderProps> = ({ subject }) => (
     <span style={{ color: '#777' }}>
         <Spinner style={{ verticalAlign: 'middle' }} />
-        &nbsp;Loading
+        &nbsp;Loading{subject ? ` ${subject}` : ''}
         <JumperDot delay={0} />
         <JumperDot delay={100} />
         <JumperDot delay={200} />
