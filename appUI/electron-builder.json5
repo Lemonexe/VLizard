@@ -7,37 +7,22 @@
   "asar": true,
   // "icon": "public/icon.png",
   "directories": {
-    "output": "release/${version}"
+    "output": "release"
   },
-  "files": [
-    "dist-electron",
-    "dist"
-  ],
+  "files": ["dist-electron", "dist"],
    "extraResources": [
-      {
-        "from": "../appPy/dist",
-        "to": "./",
-        "filter": ["serve.exe"]
-      },
-      {
-        "from": "../appPy",
-        "to": "./",
-        "filter": ["default_config.yaml"]
-      }
+      {"from": "../appPy/dist", "to": "./", "filter": ["serve.exe"]},
+      {"from": "../appPy", "to": "./", "filter": ["default_config.yaml"]}
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
-    "target": [
-      "dmg"
-    ]
+    "target": ["dmg"]
   },
   "win": {
     "target": [
       {
         "target": "nsis",
-        "arch": [
-          "x64"
-        ]
+        "arch": ["x64"]
       }
     ],
     "artifactName": "${productName}_${version}.${ext}"
