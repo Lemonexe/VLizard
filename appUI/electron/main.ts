@@ -1,5 +1,5 @@
 import { app, BrowserWindow, shell } from 'electron';
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { ChildProcessWithoutNullStreams, exec, spawn } from 'child_process';
 import path from 'node:path';
 
 // The built directory structure
@@ -14,10 +14,10 @@ import path from 'node:path';
 process.env.DIST = path.join(__dirname, '../dist');
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public');
 
-let win: BrowserWindow | null;
+let win: BrowserWindow | undefined;
 let child: ChildProcessWithoutNullStreams | undefined;
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
+const BUILD_INDEX_URL = path.join(process.env.DIST, 'index.html');
 
 // Parse the URL to extract the protocol and hostname
 function getRootUrl(fullUrl: string) {
@@ -25,7 +25,6 @@ function getRootUrl(fullUrl: string) {
     return `${protocol}//${hostname}`;
 }
 
-// Create main BrowserWindow
 function createWindow() {
     win = new BrowserWindow({
         width: 1280,
@@ -43,34 +42,44 @@ function createWindow() {
         const rootUrl = getRootUrl(win.webContents.getURL());
         if (!url.includes(rootUrl)) {
             event.preventDefault();
-            shell.openExternal(url);
+            shell.openExternal(url).then();
         }
     });
 
-    if (VITE_DEV_SERVER_URL) win.loadURL(VITE_DEV_SERVER_URL);
-    else win.loadFile(path.join(process.env.DIST, 'index.html'));
+    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL) : win.loadFile(BUILD_INDEX_URL);
 }
 
-// Start python backend server
-function startServer() {
-    // only for the installed app, not for dev mode
-    if (!app.isPackaged) return;
-
-    // for testing the functionality in dev mode
-    // const appPyPath = path.join(__dirname, '..', '..', 'appPy');
-    // child = spawn('pipenv', ['run', 'start'], { cwd: appPyPath, shell: true });
-
+function startPyServer() {
+    // in order to test the functionality in dev mode:
+    // child = spawn('pipenv', ['run', 'start'], { cwd: path.join(__dirname, '..', '..', 'appPy'), shell: true }); return;
+    // child = spawn(path.join(__dirname, '..', '..', 'appPy', 'dist', 'serve.exe'), []); return;
+    if (!app.isPackaged || child) return;
     const exePath = path.join(process.resourcesPath, 'serve.exe');
     child = spawn(exePath, [], { cwd: process.resourcesPath });
 }
+function killPyServer() {
+    if (!child) return;
+    child.kill('SIGTERM');
+    child.on('exit', () => {
+        child = win = undefined;
+    });
+}
+function killAll() {
+    child = win = undefined;
+    exec('taskkill /F /IM serve.exe /T'); // terminate with extreme prejudice!
+    process.exit(0);
+}
 
-app.on('quit', () => child?.kill());
-
-app.on('window-all-closed', () => {
-    win = null;
-});
-
+// START UP
 app.whenReady().then(() => {
-    startServer();
+    startPyServer();
     createWindow();
 });
+
+// SHUTDOWN
+app.on('before-quit', killPyServer);
+app.on('will-quit', killPyServer);
+app.on('window-all-closed', killAll);
+app.on('quit', () => killAll);
+process.on('SIGINT', killAll);
+process.on('SIGTERM', killAll);

@@ -6,6 +6,8 @@ nit: <Loader subject="user data" />
 
 ps fitting autofill temperature bounds
 
+simplify getRootURL now that I don't have BrowserRouter anymore
+
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 

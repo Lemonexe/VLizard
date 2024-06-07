@@ -10,8 +10,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "tsc": "tsc",
     "build": "tsc && vite build && electron-builder",
+    "tsc": "tsc",
+    "build:vite": "vite build",
     "build:electron": "electron-builder",
     "prettier": "prettier --write \"src/**/*.{js,ts,jsx,tsx}\"",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
