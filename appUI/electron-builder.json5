@@ -11,8 +11,7 @@
   },
   "files": ["dist-electron", "dist"],
    "extraResources": [
-      {"from": "../appPy/dist", "to": "./", "filter": ["serve.exe"]},
-      {"from": "../appPy", "to": "./", "filter": ["default_config.yaml"]}
+      {"from": "../appPy/dist", "to": "./", "filter": ["serve.exe"]}
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",

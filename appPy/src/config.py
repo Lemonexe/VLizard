@@ -1,24 +1,7 @@
 import os
 from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.io.local_files import config_path
-
-consts_dict = {
-    ## CALCULATIONS
-    'T_boil_tol': 1e-3,  # [K] tolerance for optimization of boiling point
-    ## CONSTANTS
-    'C2K': 273.15,  # [K]
-    'R': 8.31446,  # [J/K/mol]
-    'atm': 101.325,  # [kPa]
-    ## APP BEHAVIOR
-    'cli_fg_ok': 'green',
-    'cli_fg_err': 'bright_red',
-    'cli_fg_warn': 'yellow',
-    'x_points_smooth_plot': 101  # how many x points shall be tabulated when function is plotted
-}
-
-# also referenced in appUI/electron-builder.json5 (the file is copied to the Electron bundle)
-# it is therefore necessary that the file is available in CWD of python process
-default_config_path = 'default_config.yaml'
+from .default_config import consts_dict, default_config_dict
 
 # expected keys of user config
 config_keys = [
@@ -48,8 +31,9 @@ def optional_string_to_num(value):
 def load_config_file(yaml_path):
     """Read a config file and parse it."""
     content = open_yaml(yaml_path)
-    content = {key: optional_string_to_num(value) for key, value in content.items()}
-    return DictToClass(**content)
+    if content is None: return None
+    sanitized_content = {key: optional_string_to_num(value) for key, value in content.items()}
+    return DictToClass(**sanitized_content)
 
 
 def save_config(cfg2save):
@@ -84,6 +68,6 @@ def update_config_with_default(curr_cfg):
 
 
 # exported merged config
-default_cfg = load_config_file(default_config_path)
+default_cfg = DictToClass(**default_config_dict)
 cfg = load_config_or_default()
 cst = DictToClass(**consts_dict)
