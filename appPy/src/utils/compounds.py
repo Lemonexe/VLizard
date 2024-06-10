@@ -96,7 +96,7 @@ def amend_model_table(model_name, compound, T_min, T_max, nparams):
     table = get_or_create_model_table(model_name)
 
     # validate params
-    params = list(nparams.values())
+    params = [nparams[key] for key in model.param_names]
     if len(params) != model.n_params:
         raise AppException(f'Expected {model.n_params} parameters for {model_name}, got {len(params)}!')
 

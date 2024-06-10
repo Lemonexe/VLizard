@@ -21,7 +21,7 @@ wagner_model = Vapor_Model(
     name='Wagner',
     fun=wagner_fun,
     n_params=6,
-    params0=np.array([-7, 1.8, -2.5, -3, 3000, 400]),
+    params0=np.array([-8, 1, -1, -1, 5e3, 600]),
     param_names=['A', 'B', 'C', 'D', 'p_c', 'T_c'],
     param_labels=['A', 'B', 'C', 'D', 'p_c / kPa', 'T_c / K'],
 )

@@ -57,7 +57,7 @@ class Fit(Result):
         if not params0: return model.params0, dict(zip(model.param_names, model.params0))
         if isinstance(params0, dict):
             nparams0 = params0
-            params0 = list(params0.values())
+            params0 = [params0[key] for key in model.param_names]
         else:
             nparams0 = dict(zip(model.param_names, params0))
         if len(params0) != model.n_params:

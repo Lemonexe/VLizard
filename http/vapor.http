@@ -18,13 +18,12 @@ Content-Type: application/json
 PUT http://localhost:37137/vapor
 Content-Type: application/json
 
-{"model_name": "Antoine", "compound": "WHAT", "T_min": 262, "T_max": 363, "params": [7714, 0.2, 1.234e-7]}
-
+{"model_name": "Wagner", "compound": "WHAT", "T_min": 262, "T_max": 363, "nparams": {"A": -7.898313, "B": 1.997515, "C": -2.448405, "D": -1.880206, "T_c": 647.1081, "p_c": 22071.54985}}
 ###
 # @no-log
 DELETE http://localhost:37137/vapor
 Content-Type: application/json
 
-{"model_name": "Antoine", "compound": "WHAT"}
+{"model_name": "Wagner", "compound": "WHAT"}
 
 ###
