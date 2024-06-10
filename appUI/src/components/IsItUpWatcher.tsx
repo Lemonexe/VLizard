@@ -17,6 +17,7 @@ export const IsItUpWatcher: FC<PropsWithChildren> = ({ children }) => {
             if (!ok) setFailuresInRow((prev) => prev + 1);
             if (ok) setFailuresInRow(0);
         };
+        pingAndCount().then();
 
         const pingInterval = wasEverUp ? PING_INTERVAL : PING_INIT_INTERVAL;
         const pingIntervalHandle = setInterval(pingAndCount, pingInterval);
