@@ -91,7 +91,10 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const [fittingOpen, setFittingOpen] = useState(false);
     const handleOpenFitting = useCallback(() => setFittingOpen(true), []);
     const handleCloseFitting = useCallback(() => setFittingOpen(false), []);
-    const setFittedParams = useCallback((newParams: number[]) => {
+    const setFitResults = useCallback((newResults: number[]) => {
+        const [new_T_min, new_T_max, ...newParams] = newResults;
+        setT_min(new_T_min);
+        setT_max(new_T_max);
         setData(matrixToSpreadsheetData([newParams]));
         // forcefully rerender memoized Spreadsheet, see ParamsSpreadsheet.ts
         setForceUpdateVersion((prev) => prev + 1);
@@ -218,7 +221,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     compound={compound}
                     modelDef={modelDef}
                     params0={numData}
-                    setFittedParams={setFittedParams}
+                    setFitResults={setFitResults}
                 />
             )}
         </>

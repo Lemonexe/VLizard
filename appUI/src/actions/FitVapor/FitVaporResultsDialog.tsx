@@ -20,7 +20,7 @@ const NormalCaseButton = styled(Button)({
 type FitVaporResultsDialogProps = DialogProps & {
     req: VaporFitRequest;
     data: VaporFitResponse;
-    setFittedParams: Dispatch<number[]>;
+    setFitResults: Dispatch<number[]>;
 };
 
 export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
@@ -28,7 +28,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
     handleClose,
     req,
     data,
-    setFittedParams,
+    setFitResults,
 }) => {
     const optimizedP = data.is_optimized;
     const optimizedTP = data.is_T_p_optimized;
@@ -59,14 +59,14 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
     }, [data]);
 
     const acceptP = useCallback(() => {
-        setFittedParams(paramsP);
+        setFitResults([data.T_min, data.T_max, ...paramsP]);
         handleClose();
-    }, [handleClose, setFittedParams, data]);
+    }, [handleClose, setFitResults, data]);
 
     const acceptTP = useCallback(() => {
-        setFittedParams(paramsTP);
+        setFitResults([data.T_min, data.T_max, ...paramsTP]);
         handleClose();
-    }, [handleClose, setFittedParams, data]);
+    }, [handleClose, setFitResults, data]);
 
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open}>
