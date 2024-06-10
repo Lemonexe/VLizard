@@ -1,6 +1,10 @@
+update dependencies
+
 BUGFIX: update Fitting page after systems change
 
 BUGFIX: color backdrop only for Dialog, not for Select menu
+
+BUGFIX: replace commas with dots in numeric inputs
 
 nit: <Loader subject="user data" />
 
@@ -14,5 +18,6 @@ react-spreadsheet BUG report with minimal example
 build app
     icon
     export icon for runtime
+    help as link to gh
     make default data for EtOH-H2O on install
     cleanup old /data folder, it shall be used only for tests or seeding
