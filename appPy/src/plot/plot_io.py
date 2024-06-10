@@ -34,6 +34,7 @@ def finish_plot(mode):
         final_styles()
         svg_buffer = io.BytesIO()
         plt.savefig(svg_buffer, format='svg')
+        plt.close()
         svg_content = svg_buffer.getvalue().decode('utf-8')
         svg_buffer.close()
         # Remove <?xml> and <!DOCTYPE> headers
