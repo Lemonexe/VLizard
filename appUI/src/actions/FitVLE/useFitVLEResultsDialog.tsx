@@ -1,7 +1,7 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { LoadingDialog } from '../../components/Loader.tsx';
 import { useVLEFit } from '../../adapters/api/useFit.ts';
-import { FitAnalysisRequest } from '../../adapters/api/types/fitTypes.ts';
+import { FitAnalysisRequest, FitAnalysisResponse } from '../../adapters/api/types/fitTypes.ts';
 import { FitVLEResultsDialog } from './FitVLEResultsDialog.tsx';
 
 export const useFitVLEResultsDialog = () => {
@@ -16,7 +16,8 @@ export const useFitVLEResultsDialog = () => {
             setOpen(true);
             setElem(<LoadingDialog />);
             mutate(props, {
-                onSuccess: (res) => {
+                onError: () => setElem(null),
+                onSuccess: (res: FitAnalysisResponse) => {
                     setElem(<FitVLEResultsDialog open={true} handleClose={handleClose} req={props} data={res} />);
                 },
             });
