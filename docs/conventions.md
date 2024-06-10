@@ -30,6 +30,7 @@ If those two correspond to more volatile and less volatile (as in case of VLE), 
 
 ### Files
 
+- User files are stored in directory `User\Documents\VLizard`.
 - Tabular input data is in `.tsv` _(human or Excel readable)_.    
 - Config is in `.yaml` _(human readable)_.
 - Output or intermediate data is in `.json` _(meant as machine-only)_.
