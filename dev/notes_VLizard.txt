@@ -1,9 +1,23 @@
-how to use python + electron https://github.com/fyears/electron-python-example
+update dependencies
+
+BUGFIX: update Fitting page after systems change
+
+BUGFIX: color backdrop only for Dialog, not for Select menu
+
+BUGFIX: replace commas with dots in numeric inputs
+
+nit: <Loader subject="user data" />
+
+ps fitting autofill temperature bounds
+
+simplify getRootURL now that I don't have BrowserRouter anymore
 
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
 build app
-    run python from electron
-    make data folder for python
-    make default config on install
+    icon
+    export icon for runtime
+    help as link to gh
+    make default data for EtOH-H2O on install
+    cleanup old /data folder, it shall be used only for tests or seeding

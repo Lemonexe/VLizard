@@ -3,17 +3,7 @@
 declare namespace NodeJS {
     interface ProcessEnv {
         /**
-         * The built directory structure
-         *
-         * ```tree
-         * ├─┬─┬ dist
-         * │ │ └── index.html
-         * │ │
-         * │ ├─┬ dist-electron
-         * │ │ ├── main.js
-         * │ │ └── preload.js
-         * │
-         * ```
+         * See electron/main.ts for build structure
          */
         DIST: string;
         /** /dist/ or /public/ */

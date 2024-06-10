@@ -1,15 +1,20 @@
 {
   "name": "vlizard",
+  "author": "Jiri Zbytovsky",
+  "description": "VLizard, a VLE wizard.",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "engines": {
     "npm": ">=10.0.0",
     "node": ">=20.0.0"
   },
   "scripts": {
+    "start": "vite",
     "dev": "vite",
-    "tsc": "tsc",
     "build": "tsc && vite build && electron-builder",
+    "tsc": "tsc",
+    "build:vite": "vite build",
+    "build:electron": "electron-builder",
     "prettier": "prettier --write \"src/**/*.{js,ts,jsx,tsx}\"",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
