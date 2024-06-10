@@ -8,8 +8,6 @@ BUGFIX: color backdrop only for Dialog, not for Select menu
 
 BUGFIX: replace commas with dots in numeric inputs
 
-nit: <Loader subject="user data" />
-
 ps fitting autofill temperature bounds
 
 react-spreadsheet BUG report with minimal example

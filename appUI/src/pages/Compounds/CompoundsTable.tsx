@@ -8,7 +8,7 @@ import { CompoundRow } from './CompoundRow.tsx';
 export const CompoundsTable: FC = () => {
     const { vaporData, vaporDefs } = useData();
 
-    if (!vaporData || !vaporDefs) return <Loader />;
+    if (!vaporData || !vaporDefs) return <Loader subject="compounds" />;
     if (vaporData.length === 0) return <EmptyData children="Click Add New to get started." />;
 
     return (

@@ -10,7 +10,7 @@ type SystemsTableProps = { expandAll: boolean };
 export const SystemsTable: FC<SystemsTableProps> = ({ expandAll }) => {
     const { VLEData } = useData();
 
-    if (!VLEData) return <Loader />;
+    if (!VLEData) return <Loader subject="binary systems" />;
     if (VLEData.length === 0) return <EmptyData children="Click Add New to get started." />;
 
     return (
