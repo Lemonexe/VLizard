@@ -182,6 +182,11 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     <br />
                                     Either way, don't forget to SAVE afterwards.
                                 </p>
+                                {model === 'Wagner' && (
+                                    <Box mb={2}>
+                                        <InfoLabel title="Wagner model requires real values of critical pressure & temperature, those won't be optimized." />
+                                    </Box>
+                                )}
                                 <ParamsSpreadsheet
                                     data={data}
                                     setData={setData}
