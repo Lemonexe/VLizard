@@ -10,14 +10,9 @@ nit: <Loader subject="user data" />
 
 ps fitting autofill temperature bounds
 
-simplify getRootURL now that I don't have BrowserRouter anymore
-
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
 build app
-    icon
-    export icon for runtime
-    help as link to gh
     make default data for EtOH-H2O on install
     cleanup old /data folder, it shall be used only for tests or seeding

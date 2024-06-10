@@ -5,7 +5,7 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "VLizard",
   "asar": true,
-  // "icon": "public/icon.png",
+  "icon": "public/icon.png",
   "directories": {
     "output": "release"
   },
