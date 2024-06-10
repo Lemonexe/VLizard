@@ -3,7 +3,15 @@ from src.utils.errors import AppException
 
 class Model:
 
-    def __init__(self, name, fun, n_params, params0, param_names, param_labels=None, display_name=None):
+    def __init__(self,
+                 name,
+                 fun,
+                 n_params,
+                 params0,
+                 param_names,
+                 param_labels=None,
+                 display_name=None,
+                 always_const_param_names=None):
         """
         Generic class for a mathematical Model, consists of the model function itself + important metadata.
 
@@ -14,6 +22,7 @@ class Model:
         params0 (list of float): a generic initial estimate of params for regression
         param_names (list of str): list of param identifiers
         param_labels (list of str): list of param descriptions
+        always_const_param_names (list of str): list of param names that will always be kept constant during optimization
         """
         if n_params != len(params0) or n_params != len(param_names):
             raise AppException(f'n_params must match with params0 & param_names for model {name}!')
@@ -25,3 +34,4 @@ class Model:
         self.params0 = params0
         self.param_names = param_names
         self.param_labels = param_labels
+        self.always_const_param_names = always_const_param_names

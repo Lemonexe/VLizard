@@ -7,7 +7,6 @@ class Fit(Result):
     def __init__(self, supported_models, model_name, params0, const_param_names=None):
         """
         Create an abstract template for non-linear regression problem with a selected model and initial params.
-        WIP, currently just setup of the problem, but may be extended to include the optimization and serialization itself.
 
         supported_models (list of Vapor_Model or VLE_Model): list of supported models.
         model_name (str): name of the model to be fitted.
@@ -67,8 +66,9 @@ class Fit(Result):
     def __parse_const_param_names(self, const_param_names):
         """Parse & validate const_param_names."""
         model = self.model
-        if not const_param_names: return []
+        default = model.always_const_param_names or []
+        if not const_param_names: return default
         for name in const_param_names:
             if name not in model.param_names:
                 raise AppException(f'{model.display_name} has parameters {", ".join(model.param_names)}, got {name}!')
-        return const_param_names
+        return default + const_param_names

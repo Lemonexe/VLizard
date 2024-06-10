@@ -6,7 +6,7 @@ from src.TD.vapor_models.antoine import antoine_model
 from src.utils.errors import AppException
 from src.utils.io.echo import echo, underline_echo
 from .Fit import Fit
-from .utils import RMS, AAD
+from .utils import RMS, AAD, const_param_wrappers
 
 default_model = antoine_model.name
 supported_models = [antoine_model, wagner_model]
@@ -73,10 +73,12 @@ class Fit_Vapor(Fit):
 
     def optimize_p(self):
         """Optimize the model params, considering only error of dependent variable (p). When T,p-optimization is skipped, we are done, and the inter results stay as final."""
-        result = least_squares(self.get_p_residuals, self.params0, method='lm')
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.get_T_residuals, self.params0,
+                                                                      self.const_param_names, self.model.param_names)
+        result = least_squares(wrapped_fun, var_params0, method='lm')
         if result.status <= 0: raise AppException(f'p-optimization failed! Status {result.status}: {result.message}')
         self.is_optimized = True
-        self.params_inter = self.params = result.x
+        self.params_inter = self.params = merge_params(result.x)
         self.nparams_inter = self.nparams = self.set_named_params(self.params_inter)
         self.RMS_inter = self.RMS_final = RMS(self.resid_fun(self.params))
         self.AAD_inter = self.AAD_final = AAD(self.resid_fun(self.params))
@@ -84,15 +86,18 @@ class Fit_Vapor(Fit):
     def optimize_T_p(self):
         """Optimize the model params, considering errors of both dependent (p) & independent (T) variables. Overwrite the final results."""
         if not self.is_optimized: raise AppException('Optimization of p residuals must be performed first')
+        var_params_inter, wrapped_fun, merge_params = const_param_wrappers(self.get_T_p_residuals, self.params_inter,
+                                                                           self.const_param_names,
+                                                                           self.model.param_names)
         try:
-            result = least_squares(self.get_T_p_residuals, self.params_inter, method='lm')
+            result = least_squares(wrapped_fun, var_params_inter, method='lm')
             if result.status <= 0:
                 raise AppException(f'T,p-optimization failed! Status {result.status}: {result.message}')
         except AppException as e:
             self.warn(f'T,p-optimization failed with error: {e}')
             return
         self.is_T_p_optimized = True
-        self.params = result.x
+        self.params = merge_params(result.x)
         self.nparams = self.set_named_params(self.params)
         self.RMS_final = RMS(self.resid_fun(self.params))
         self.AAD_final = AAD(self.resid_fun(self.params))

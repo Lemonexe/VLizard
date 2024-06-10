@@ -6,11 +6,10 @@ from src.TD.VLE_models.margules import margules_model
 from src.TD.VLE import VLE
 from src.utils.io.echo import echo, underline_echo
 from src.utils.errors import AppException
-from src.utils.vector import pick_vector, overlay_vectors
 from src.utils.datasets import parse_datasets
 from .Fit import Fit
 from .VLE_Tabulation import VLE_Tabulation
-from .utils import RMS, AAD
+from .utils import RMS, AAD, const_param_wrappers
 
 default_model = NRTL_model.name
 supported_models = [NRTL_model, NRTL10_model, van_Laar_model, margules_model]
@@ -65,18 +64,11 @@ class Fit_VLE(Fit):
 
     def optimize(self):
         """Perform optimization of model parameters to fit the VLE data."""
-        # sort model parameters per indices: those that are to be kept constant, those that will be optimized
-        const_param_idxs = [self.model.param_names.index(name) for name in self.const_param_names]
-        const_params, picked_params0 = pick_vector(self.params0, const_param_idxs)
-
-        # wrapped residual as function of picked model parameters, which are merged with the const model parameters
-        callback = lambda picked_params: self.get_residual(
-            overlay_vectors(const_params, const_param_idxs, picked_params))
-
-        # optimization itself, using built-in Levenberg-Marquardt algorithm
-        result = least_squares(callback, picked_params0, method='lm')
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.get_residual, self.params0,
+                                                                      self.const_param_names, self.model.param_names)
+        result = least_squares(wrapped_fun, var_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        self.params = overlay_vectors(const_params, const_param_idxs, result.x)
+        self.params = merge_params(result.x)
         self.nparams = self.set_named_params(self.params)
 
         # final objective function value, log optimization as complete
