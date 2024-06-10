@@ -1,5 +1,3 @@
-BUGFIX: color backdrop only for Dialog, not for Select menu
-
 BUGFIX: replace commas with dots in numeric inputs
 
 react-spreadsheet BUG report with minimal example

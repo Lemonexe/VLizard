@@ -52,10 +52,11 @@ export const MUITheme = createTheme({
                 },
             },
         },
-        MuiBackdrop: {
+        MuiDialog: {
             styleOverrides: {
-                root: {
-                    backgroundImage: `linear-gradient(to right, ${color1}20, ${color2}20)`,
+                // @ts-expect-error backdrop is a child component of Dialog, but is missing in the MUI types
+                backdrop: {
+                    backgroundImage: `linear-gradient(to right, ${color1}28, ${color2}28)`,
                 },
             },
         },
