@@ -36,7 +36,7 @@ type InputVaporFitProps = DialogProps & {
     compound: string;
     modelDef: VaporModelDef;
     params0: number[];
-    setFittedParams: Dispatch<number[]>;
+    setFitResults: Dispatch<number[]>;
 };
 
 export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
@@ -45,7 +45,7 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
     compound,
     modelDef,
     params0,
-    setFittedParams,
+    setFitResults,
 }) => {
     const [infoOpen, setInfoOpen] = useState(false);
     const [optimizeTp, setOptimizeTp] = useState(false);
@@ -64,7 +64,7 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
         const [p_data, T_data] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
         perform(
             { compound, model_name: modelDef.name, p_data, T_data, nparams0, skip_T_p_optimization: !optimizeTp },
-            setFittedParams,
+            setFitResults,
             handleClose,
         );
     }, [perform, compound, modelDef, params0, data, optimizeTp]);

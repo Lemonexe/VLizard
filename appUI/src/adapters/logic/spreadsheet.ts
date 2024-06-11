@@ -1,6 +1,6 @@
 import { CellBase, Matrix } from 'react-spreadsheet';
 import { Dispatch, SetStateAction } from 'react';
-import { toSigDgts } from './numbers.ts';
+import { sanitizeNumStr, toSigDgts } from './numbers.ts';
 
 // number is desired data type, but react-spreadsheet also has to represent empty cells
 // unfortunately it's not consistent, so `value` can be '' | undefined
@@ -40,7 +40,7 @@ export const spreadsheetDataToMatrix = (data: SpreadsheetData): Matrix<CellValue
 export const matrixToNumerical = (M: Matrix<CellValueType>): number[][] =>
     M.map((row) =>
         row.map((val) => {
-            if (typeof val === 'string') return Number(val.replace(/%$/, ''));
+            if (typeof val === 'string') return Number(sanitizeNumStr(val));
             return Number(val);
         }),
     );

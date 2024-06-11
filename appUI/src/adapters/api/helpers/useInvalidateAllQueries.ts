@@ -3,8 +3,9 @@ import { useNotifications } from '../../../contexts/NotificationContext.tsx';
 import { getVaporModelsKey } from '../useVapor.ts';
 import { getPersistedFitsKey } from '../useFit.ts';
 import { getVLESystemsKey } from '../useVLE.ts';
+import { getConfigKey } from '../useConfigApi.ts';
 
-const queryKeys: QueryKey[] = [getVaporModelsKey, getVLESystemsKey, getPersistedFitsKey];
+const queryKeys: QueryKey[] = [getVaporModelsKey, getVLESystemsKey, getPersistedFitsKey, getConfigKey];
 
 export const useInvalidateAllQueries = () => {
     const queryClient = useQueryClient();

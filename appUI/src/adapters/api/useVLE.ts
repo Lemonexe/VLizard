@@ -11,6 +11,7 @@ import {
 } from './types/VLETypes.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { hostName } from './helpers/hostName.ts';
+import { getPersistedFitsKey } from './useFit.ts';
 
 export const getVLESystemsKey = ['Binary systems data']; // also a description
 
@@ -41,7 +42,10 @@ export const useUpsertVLEDataset = () => {
         mutationFn: async (payload: UpsertVLEDatasetRequest) => {
             await axios.post(hostName + '/vle', payload);
         },
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: getVLESystemsKey }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: getVLESystemsKey }).then();
+            queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }).then();
+        },
         onError,
     });
 };
@@ -54,7 +58,10 @@ export const useDeleteVLE = () => {
         mutationFn: async (payload: DeleteVLERequest) => {
             await axios.delete(hostName + '/vle', { data: payload });
         },
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: getVLESystemsKey }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: getVLESystemsKey }).then();
+            queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }).then();
+        },
         onError,
     });
 };

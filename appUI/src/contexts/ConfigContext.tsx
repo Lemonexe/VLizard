@@ -13,6 +13,6 @@ export const useConfig = (): Config => {
 
 export const ConfigContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const { data } = useGetConfig();
-    if (!data) return <Loader />;
+    if (!data) return <Loader subject="user data" />;
     return <ConfigContext.Provider value={data}>{children}</ConfigContext.Provider>;
 };

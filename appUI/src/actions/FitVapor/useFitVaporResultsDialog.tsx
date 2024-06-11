@@ -1,7 +1,7 @@
 import { Dispatch, ReactElement, useCallback, useMemo, useState } from 'react';
 import { LoadingDialog } from '../../components/Loader.tsx';
 import { useVaporFit } from '../../adapters/api/useFit.ts';
-import { VaporFitRequest } from '../../adapters/api/types/fitTypes.ts';
+import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { FitVaporResultsDialog } from './FitVaporResultsDialog.tsx';
 
 export const useFitVaporResultsDialog = () => {
@@ -12,19 +12,20 @@ export const useFitVaporResultsDialog = () => {
     const { mutate } = useVaporFit();
 
     const perform = useCallback(
-        (props: VaporFitRequest, setFittedParams: Dispatch<number[]>, onSettled: () => void) => {
+        (reqProps: VaporFitRequest, setFitResults: Dispatch<number[]>, onSettled: () => void) => {
             setOpen(true);
             setElem(<LoadingDialog />);
-            mutate(props, {
+            mutate(reqProps, {
                 onSettled,
-                onSuccess: (res) => {
+                onError: () => setElem(null),
+                onSuccess: (res: VaporFitResponse) => {
                     setElem(
                         <FitVaporResultsDialog
                             open={true}
                             handleClose={handleClose}
-                            req={props}
+                            req={reqProps}
                             data={res}
-                            setFittedParams={setFittedParams}
+                            setFitResults={setFitResults}
                         />,
                     );
                 },
