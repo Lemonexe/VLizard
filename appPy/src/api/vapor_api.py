@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from src.plot.Vapor_plot import Vapor_plot
-from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound, supported_models
+from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound
+from src.TD.vapor_models.supported_models import supported_models
 from .helpers.schema_validation import unpack_request_schema
 
 vapor_blueprint = Blueprint('Vapor', __name__, url_prefix='/vapor')

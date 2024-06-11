@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from src.fit.Fit_VLE import supported_models
+from src.TD.VLE_models.supported_models import supported_models
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.plot.Fit_Vapor_plot import Fit_Vapor_plot
 from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit

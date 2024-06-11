@@ -1,8 +1,6 @@
 import numpy as np
 from scipy.optimize import least_squares
-from src.TD.VLE_models.NRTL import NRTL_model, NRTL10_model
-from src.TD.VLE_models.van_Laar import van_Laar_model
-from src.TD.VLE_models.margules import margules_model
+from src.TD.VLE_models.supported_models import supported_models
 from src.TD.VLE import VLE
 from src.utils.io.echo import echo, underline_echo
 from src.utils.errors import AppException
@@ -10,10 +8,6 @@ from src.utils.datasets import parse_datasets
 from .Fit import Fit
 from .VLE_Tabulation import VLE_Tabulation
 from .utils import RMS, AAD, const_param_wrappers
-
-default_model = NRTL_model.name
-supported_models = [NRTL_model, NRTL10_model, van_Laar_model, margules_model]
-supported_model_names = [model.name for model in supported_models]
 
 # squash a selected VLE property from list of VLEs into a single array
 squash = lambda vle_list, prop: np.concatenate([getattr(vle, prop) for vle in vle_list])

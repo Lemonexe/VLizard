@@ -7,15 +7,16 @@ from src.utils.systems import validate_system_or_swap
 from src.utils.errors import CLI_error_boundary, AppException
 from src.utils.io.plot import pause_to_keep_charts
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
-from src.fit.Fit_VLE import default_model, supported_model_names
+from src.TD.VLE_models.supported_models import supported_models
 
+supported_model_names = [model.name for model in supported_models]
 model_list = ", ".join(supported_model_names)
 
 
 @click.command()
 @click.argument('compound1')
 @click.argument('compound2')
-@click.option('-m', '--model', default=default_model, help=f'Which model to fit, enter one of: {model_list}')
+@click.option('-m', '--model', help=f'Which model to fit, enter one of: {model_list}')
 @click.option('-d', '--datasets', help='Comma-separated exact dataset names, otherwise do all datasets of the system')
 @click.option('-p', '--params', help='Comma-separated initial parameters, will ignore params saved in file')
 @click.option('-c', '--consts', help='Comma-separated names of parameters to be kept constant')

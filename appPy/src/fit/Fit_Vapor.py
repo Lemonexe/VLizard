@@ -1,16 +1,11 @@
 import numpy as np
 from scipy.optimize import least_squares, root
 from src.config import cst
-from src.TD.vapor_models.wagner import wagner_model
-from src.TD.vapor_models.antoine import antoine_model
+from src.TD.vapor_models.supported_models import supported_models
 from src.utils.errors import AppException
 from src.utils.io.echo import echo, underline_echo
 from .Fit import Fit
 from .utils import RMS, AAD, const_param_wrappers
-
-default_model = antoine_model.name
-supported_models = [antoine_model, wagner_model]
-supported_model_names = [model.name for model in supported_models]
 
 
 class Fit_Vapor(Fit):
@@ -73,7 +68,7 @@ class Fit_Vapor(Fit):
 
     def optimize_p(self):
         """Optimize the model params, considering only error of dependent variable (p). When T,p-optimization is skipped, we are done, and the inter results stay as final."""
-        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.get_T_residuals, self.params0,
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.get_p_residuals, self.params0,
                                                                       self.const_param_names, self.model.param_names)
         result = least_squares(wrapped_fun, var_params0, method='lm')
         if result.status <= 0: raise AppException(f'p-optimization failed! Status {result.status}: {result.message}')

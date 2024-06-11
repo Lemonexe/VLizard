@@ -2,11 +2,7 @@ import os
 from .errors import AppException
 from .io.tsv import open_tsv, save_matrix2tsv
 from .io.local_files import join_data_path
-from src.TD.vapor_models.wagner import wagner_model
-from src.TD.vapor_models.antoine import antoine_model
-
-# supported models in order of preference, descending
-supported_models = [wagner_model, antoine_model]
+from src.TD.vapor_models.supported_models import supported_models
 
 get_table_path = lambda model_name: join_data_path('ps', model_name + '.tsv')
 

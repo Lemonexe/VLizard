@@ -2,7 +2,7 @@ import os
 from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.Result import cast_to_jsonable_recursive
 from src.utils.systems import get_all_system_dir_names, get_system_path, parse_system_dir_name
-from .Fit_VLE import supported_model_names
+from src.TD.VLE_models.supported_models import supported_models
 
 # generate json analysis directory path & file name for given system
 get_analysis_dir_path = lambda compound1, compound2: os.path.join(get_system_path(compound1, compound2), 'analysis')
@@ -11,6 +11,7 @@ get_yaml_filename = lambda name: f'{name}.yaml'
 
 def get_all_persisted_fits():
     """Return all persisted fits of thermodynamic VLE models."""
+    supported_model_names = [model.name for model in supported_models]
     system_dir_names = get_all_system_dir_names()
     payload = []
     for system_dir_name in system_dir_names:
