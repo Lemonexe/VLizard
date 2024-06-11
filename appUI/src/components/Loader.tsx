@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Dialog, DialogContent, styled } from '@mui/material';
+import { Dialog, DialogContent, Stack, styled } from '@mui/material';
 import { Loop } from '@mui/icons-material';
 
 const Jumper = styled('span')({
@@ -32,6 +32,12 @@ export const Loader: FC<LoaderProps> = ({ subject }) => (
         <JumperDot delay={100} />
         <JumperDot delay={200} />
     </span>
+);
+
+export const CenteredLoader: FC<LoaderProps> = ({ subject }) => (
+    <Stack justifyContent="center" alignItems="center" height="100vh">
+        <Loader subject={subject} />
+    </Stack>
 );
 
 export const LoadingDialog: FC = () => (

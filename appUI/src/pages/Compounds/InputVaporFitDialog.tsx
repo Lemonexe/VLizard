@@ -104,8 +104,7 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
                                     that they can be summed.
                                     <br />
                                     When enabled, it's done as second step, starting from the p-optimized parameters.
-                                    <br />
-                                    Keep in mind it can be unstable.
+                                    <br />⚠ Keep in mind it can be unstable!
                                 </li>
                             </ul>
                         </Box>
