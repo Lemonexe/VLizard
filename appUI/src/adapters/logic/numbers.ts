@@ -30,3 +30,8 @@ export const truncateSigDgts = (num: number, sigDgts: number): number => parseFl
  */
 export const toPercent = (num: number, precision = 0): string => (num * 100).toFixed(precision) + ' %';
 export const toPercentSigned = (num: number, precision = 0): string => (num > 0 ? '+' : '') + toPercent(num, precision);
+
+/**
+ * Prepare a string to be cast as Number by sanitizing it.
+ */
+export const sanitizeNumStr = (str: string): string => str.trim().replace(',', '.').replace(/%$/, '');

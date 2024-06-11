@@ -21,6 +21,7 @@ import { DefaultLayout } from '../components/DefaultLayout.tsx';
 import { HeaderStack } from '../components/Mui/HeaderStack.tsx';
 import { spacingN } from '../contexts/MUITheme.tsx';
 import { pUnits } from '../adapters/logic/UoM.ts';
+import { sanitizeNumStr } from '../adapters/logic/numbers.ts';
 
 type PatchConfigFn = (key: keyof Config, value: string | number | boolean) => void;
 type ChE = ChangeEvent<HTMLInputElement>;
@@ -178,7 +179,7 @@ export const Settings: FC = () => {
             const initVal = initConfig[key];
             const currVal = formConfig[key];
             const wasItNumber = typeof initVal === 'number'; // if initVal was a number, a number is expected, so try to cast
-            const castVal = wasItNumber ? Number(currVal) : currVal;
+            const castVal = wasItNumber && typeof currVal === 'string' ? Number(sanitizeNumStr(currVal)) : currVal;
             if (wasItNumber && isNaN(Number(castVal))) {
                 patchConfig(key, initVal);
                 const message = `Ignored ${key} – must be number, got ${currVal}`;

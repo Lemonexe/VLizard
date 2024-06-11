@@ -1,5 +1,3 @@
-BUGFIX: replace commas with dots in numeric inputs
-
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
 
