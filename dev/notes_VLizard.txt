@@ -1,3 +1,7 @@
+Settings: add button to open data folder
+
+Use display name at frontend
+
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
