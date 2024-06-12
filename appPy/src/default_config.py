@@ -36,7 +36,7 @@ default_config_dict = {
 
     ## UI
     # whether to render chart title, legend
-    'chart_title': False,
+    'chart_title': True,
     'chart_legend': True,
     # chart default aspect ratio
     'chart_aspect_ratio': 1.0,

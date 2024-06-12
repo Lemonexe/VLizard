@@ -3,6 +3,7 @@ from werkzeug.exceptions import NotFound
 from src.plot.VLE_plot import VLE_plot
 from src.utils.systems import get_all_system_dir_names, parse_system_dir_name, delete_system
 from src.utils.datasets import get_all_dataset_names, get_dataset_VLE_data, upsert_dataset, delete_dataset
+from src.TD.VLE_models.supported_models import supported_models
 from src.utils.Result import cast_to_jsonable_recursive
 from .helpers.schema_validation import unpack_request_schema
 
@@ -27,6 +28,19 @@ def get_vle_api():
         return {'system_name': dir_name, 'datasets': datasets}
 
     return [load_all_tables(dir_name) for dir_name in system_dir_names]
+
+
+@vle_blueprint.get('/definitions')
+def get_VLE_model_definitions_api():
+    """Return all supported VLE_Model definitions."""
+    model2dict = lambda model: {
+        'name': model.name,
+        'nparams0': dict(zip(model.param_names, model.params0)),
+        'param_labels': dict(zip(model.param_names, model.param_labels or model.param_names)),
+        'is_gamma_T_fun': model.is_gamma_T_fun,
+    }
+    payload = [model2dict(model) for model in supported_models]
+    return payload
 
 
 @vle_blueprint.post('/analysis')

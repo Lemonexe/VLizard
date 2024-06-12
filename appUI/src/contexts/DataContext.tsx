@@ -1,10 +1,15 @@
 import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
 import { useGetVaporModelDefs, useGetVaporModels } from '../adapters/api/useVapor.ts';
-import { useGetPersistedFits, useGetVLEModelDefs } from '../adapters/api/useFit.ts';
-import { useGetVLESystems } from '../adapters/api/useVLE.ts';
-import { DatasetTable, GetVLESystemsResponse, VLESystem } from '../adapters/api/types/VLETypes.ts';
+import { useGetPersistedFits } from '../adapters/api/useFit.ts';
+import { useGetVLEModelDefs, useGetVLESystems } from '../adapters/api/useVLE.ts';
+import {
+    DatasetTable,
+    GetVLEModelDefsResponse,
+    GetVLESystemsResponse,
+    VLESystem,
+} from '../adapters/api/types/VLETypes.ts';
 import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vaporTypes.ts';
-import { GetPersistedFitsResponse, GetVLEModelDefsResponse } from '../adapters/api/types/fitTypes.ts';
+import { GetPersistedFitsResponse } from '../adapters/api/types/fitTypes.ts';
 import { findCompound, findDataset, findSystem, listCompounds, listSystems } from '../adapters/logic/dataQueries.ts';
 
 export type DataContextType = {

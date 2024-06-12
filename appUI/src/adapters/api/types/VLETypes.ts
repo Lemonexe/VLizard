@@ -1,4 +1,4 @@
-import { AnalysisResult, DatasetIdentifier, SystemIdentifier } from './common.ts';
+import { AnalysisResult, DatasetIdentifier, NamedParams, SystemIdentifier } from './common.ts';
 
 /* GET */
 export type DatasetTable = {
@@ -12,6 +12,16 @@ export type DatasetTable = {
 export type VLESystem = { system_name: string; datasets: DatasetTable[] };
 
 export type GetVLESystemsResponse = VLESystem[];
+
+/* GET general definitions of model types */
+export type VLEModelDef = {
+    name: string;
+    nparams0: NamedParams;
+    param_labels: Record<string, string>;
+    is_gamma_T_fun: boolean;
+};
+
+export type GetVLEModelDefsResponse = VLEModelDef[];
 
 /* POST ANALYSIS */
 export type VLEAnalysisRequest = DatasetIdentifier;

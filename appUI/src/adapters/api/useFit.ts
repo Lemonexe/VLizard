@@ -7,7 +7,6 @@ import {
     FitAnalysisRequest,
     FitAnalysisResponse,
     GetPersistedFitsResponse,
-    GetVLEModelDefsResponse,
     VaporFitRequest,
     VaporFitResponse,
 } from './types/fitTypes.ts';
@@ -22,15 +21,6 @@ export const useGetPersistedFits = () => {
     return useQuery({
         queryKey: getPersistedFitsKey,
         queryFn: () => axiosGetWithHandling<GetPersistedFitsResponse>(hostName + '/fit/vle', pushNotification, label),
-    });
-};
-
-export const useGetVLEModelDefs = () => {
-    const pushNotification = useNotifications();
-    return useQuery({
-        queryKey: ['VLE model definitions'],
-        queryFn: () =>
-            axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/fit/vle/definitions', pushNotification),
     });
 };
 

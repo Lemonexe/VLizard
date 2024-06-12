@@ -28,16 +28,6 @@ export type PersistedFitsForSystem = {
 
 export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 
-/* GET general definitions of model types */
-export type VLEModelDef = {
-    name: string;
-    nparams0: NamedParams;
-    param_labels: Record<string, string>;
-    is_gamma_T_fun: boolean;
-};
-
-export type GetVLEModelDefsResponse = VLEModelDef[];
-
 /* POST VLE FIT */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;

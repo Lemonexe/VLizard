@@ -4,6 +4,7 @@ import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
 import {
     DeleteVLERequest,
+    GetVLEModelDefsResponse,
     GetVLESystemsResponse,
     UpsertVLEDatasetRequest,
     VLEAnalysisRequest,
@@ -21,6 +22,14 @@ export const useGetVLESystems = () => {
         queryKey: getVLESystemsKey,
         queryFn: () =>
             axiosGetWithHandling<GetVLESystemsResponse>(hostName + '/vle', pushNotification, getVLESystemsKey[0]),
+    });
+};
+
+export const useGetVLEModelDefs = () => {
+    const pushNotification = useNotifications();
+    return useQuery({
+        queryKey: ['VLE model definitions'],
+        queryFn: () => axiosGetWithHandling<GetVLEModelDefsResponse>(hostName + '/vle/definitions', pushNotification),
     });
 };
 

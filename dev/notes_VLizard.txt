@@ -1,7 +1,6 @@
-move fit VLE definitions from /fit to /VLE
-
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
+    see https://github.com/iddan/react-spreadsheet/pull/387
 
 build app
     make default data for EtOH-H2O on install

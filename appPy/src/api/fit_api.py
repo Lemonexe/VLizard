@@ -1,5 +1,4 @@
 from flask import Blueprint, request
-from src.TD.VLE_models.supported_models import supported_models
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.plot.Fit_Vapor_plot import Fit_Vapor_plot
 from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit
@@ -12,19 +11,6 @@ fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
 def get_VLE_fits_api():
     """Get all persisted fits of thermodynamic VLE models."""
     return get_all_persisted_fits()
-
-
-@fit_blueprint.get('/vle/definitions')
-def get_VLE_model_definitions_api():
-    """Return all supported VLE_Model definitions."""
-    model2dict = lambda model: {
-        'name': model.name,
-        'nparams0': dict(zip(model.param_names, model.params0)),
-        'param_labels': dict(zip(model.param_names, model.param_labels or model.param_names)),
-        'is_gamma_T_fun': model.is_gamma_T_fun,
-    }
-    payload = [model2dict(model) for model in supported_models]
-    return payload
 
 
 @fit_blueprint.post('/vle')
