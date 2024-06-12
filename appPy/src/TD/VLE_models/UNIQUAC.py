@@ -21,11 +21,16 @@ def UNIQUAC13(x_1, T, q_1, q_2, r_1, r_2, a_12, a_21, b_12, b_21, c_12, c_21, d_
     # some kind of coordination numbers?
     l_1 = 5 * (r_1-q_1) + 1 - r_1
     l_2 = 5 * (r_2-q_2) + 1 - r_2
+    print(f'l_1 = {l_1:.4g}')
+    print(f'l_2 = {l_2:.4g}')
 
     # mean values
     avg_l = x_1*l_1 + x_2*l_2
+    print(f'avg_l = {avg_l:.4g}')
     avg_r = x_1*r_1 + x_2*r_2
+    print(f'avg_r = {avg_r:.4g}')
     avg_q = x_1*q_1 + x_2*q_2
+    print(f'avg_q = {avg_q:.4g}')
 
     # segment volume fractions, and their terms divided by x_i to avoid division by zero when x_i=0
     # ph_1 = r_1 * x_1 / avg_r
@@ -41,24 +46,30 @@ def UNIQUAC13(x_1, T, q_1, q_2, r_1, r_2, a_12, a_21, b_12, b_21, c_12, c_21, d_
 
     # binary interaction terms
     tau_12 = np.exp(a_12 + b_12/T + c_12 * np.log(T) + d_12*T + e*T*T)
+    print(f'tau_12 = {tau_12:.4g}')
     tau_21 = np.exp(a_21 + b_21/T + c_21 * np.log(T) + d_21*T + e*T*T)
+    print(f'tau_21 = {tau_21:.4g}')
+
     s_1 = th_1 + th_2*tau_21
+    print(f's_1 = {s_1:.4g}')
     s_2 = th_1*tau_12 + th_2
+    print(f's_2 = {s_2:.4g}')
 
     # combinatorial part
     ln_gamma_1_C = l_1 + np.log(PH_1) + 5 * q_1 * np.log(TH_1 / PH_1) - PH_1*avg_l
+    print(f'ln_gamma_1_C = {ln_gamma_1_C:.4g}')
     ln_gamma_2_C = l_2 + np.log(PH_2) + 5 * q_2 * np.log(TH_2 / PH_2) - PH_2*avg_l
+    print(f'ln_gamma_2_C = {ln_gamma_2_C:.4g}')
 
     # alternative calculation for debug, you can see they are equal
-    ln_gamma_1_C_a = 1 - PH_1 + np.log(PH_1) - 5 * q_1 * (1 - PH_1/TH_1 + np.log(PH_1 / TH_1))
-    ln_gamma_2_C_a = 1 - PH_2 + np.log(PH_2) - 5 * q_2 * (1 - PH_2/TH_2 + np.log(PH_2 / TH_2))
-
-    print(np.mean(ln_gamma_1_C - ln_gamma_1_C_a))
-    print(np.mean(ln_gamma_2_C - ln_gamma_2_C_a))
+    # ln_gamma_1_C_a = 1 - PH_1 + np.log(PH_1) - 5 * q_1 * (1 - PH_1/TH_1 + np.log(PH_1 / TH_1))
+    # ln_gamma_2_C_a = 1 - PH_2 + np.log(PH_2) - 5 * q_2 * (1 - PH_2/TH_2 + np.log(PH_2 / TH_2))
 
     # residual part
     ln_gamma_1_R = q_1 * (1 - np.log(s_1) - th_1/s_1 - th_2*tau_12/s_2)
+    print(f'ln_gamma_1_R = {ln_gamma_1_R:.4g}')
     ln_gamma_2_R = q_2 * (1 - np.log(s_2) - th_1*tau_21/s_1 - th_2/s_2)
+    print(f'ln_gamma_2_R = {ln_gamma_2_R:.4g}')
 
     ln_gamma_1 = ln_gamma_1_C + ln_gamma_1_R
     ln_gamma_2 = ln_gamma_2_C + ln_gamma_2_R
