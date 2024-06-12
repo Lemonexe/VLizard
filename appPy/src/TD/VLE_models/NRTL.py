@@ -38,7 +38,8 @@ def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
 NRTL = lambda *params: NRTL10(*params, 0, 0, 0, 0, 0)
 """Simplified NRTL activity coefficient model with only first 5 parameters."""
 
-NRTL10_params0 = np.concatenate((np.array([0, 0, 100, 100, 0.3]), np.zeros(5)))
+NRTL_params0 = np.array([1, 1, 100, 100, 0.3], dtype='float64')
+NRTL10_params0 = np.concatenate((NRTL_params0, np.zeros(5)))
 NRTL10_params_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'd_12', 'e_12', 'e_21', 'f_12', 'f_21']
 NRTL10_params_labels = [
     'a_12', 'a_21', 'b_12 / K', 'b_21 / K', 'c_12', 'd_12 / °C^-1', 'e_12', 'e_21', 'f_12 / K^-1', 'f_21 / K^-1'
@@ -56,6 +57,7 @@ NRTL_model = VLE_Model(
 
 NRTL10_model = VLE_Model(
     name='NRTL10',
+    display_name='NRTL extended',
     fun=NRTL10,
     n_params=10,
     params0=NRTL10_params0,
