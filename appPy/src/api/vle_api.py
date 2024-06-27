@@ -33,13 +33,7 @@ def get_vle_api():
 @vle_blueprint.get('/definitions')
 def get_VLE_model_definitions_api():
     """Return all supported VLE_Model definitions."""
-    model2dict = lambda model: {
-        'name': model.name,
-        'nparams0': dict(zip(model.param_names, model.params0)),
-        'param_labels': dict(zip(model.param_names, model.param_labels or model.param_names)),
-        'is_gamma_T_fun': model.is_gamma_T_fun,
-    }
-    payload = [model2dict(model) for model in supported_models]
+    payload = [model.serialize() for model in supported_models]
     return payload
 
 

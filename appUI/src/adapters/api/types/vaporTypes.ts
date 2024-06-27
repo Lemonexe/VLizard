@@ -14,6 +14,7 @@ export type VaporModelDef = {
     name: string;
     nparams0: NamedParams;
     param_labels: Record<string, string>;
+    always_const_param_names?: string[];
 };
 
 export type GetVaporModelDefsResponse = VaporModelDef[];

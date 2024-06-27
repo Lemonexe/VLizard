@@ -2,13 +2,12 @@ Settings: add button to open data folder
 
 Upsert Dataset: add button Save & Visualize
 
-Use display name at frontend
-
-Display always_const params at frontend (UNIQUAC)
-
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
+
+Vapor Analysis: add get pS, get T
+Fit Analysis: tabulate at specific p
 
 build app
     make default data for EtOH-H2O on install

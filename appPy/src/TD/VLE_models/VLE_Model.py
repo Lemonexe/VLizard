@@ -22,3 +22,8 @@ class VLE_Model(Model):
         super().__init__(name, fun, n_params, params0, param_names, param_labels, display_name,
                          always_const_param_names)
         self.is_gamma_T_fun = is_gamma_T_fun
+
+    def serialize(self):
+        payload = super().serialize()
+        payload['is_gamma_T_fun'] = self.is_gamma_T_fun
+        return payload

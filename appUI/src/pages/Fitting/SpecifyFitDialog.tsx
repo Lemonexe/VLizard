@@ -45,15 +45,21 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     // systemNames & VLEModelDefs are guaranteed, see FittedModelsTable.tsx
     const { VLEModelDefs, VLEData } = useData();
     const system_name = `${compound1}-${compound2}`;
-    const systemDatasets = VLEData!.filter((system) => system.system_name === system_name)[0].datasets;
 
+    // model choice
     const [model_name, setModel_name] = useState(() => currentFit?.model_name ?? '');
-    const [datasets, setDatasets] = useState(currentFit?.input.datasets ?? []);
-    const [const_param_names, setConst_param_names] = useState(currentFit?.input.const_param_names ?? []);
-
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
 
+    // datasets choice
+    const systemDatasets = VLEData!.filter((system) => system.system_name === system_name)[0].datasets;
+    const [datasets, setDatasets] = useState(currentFit?.input.datasets ?? []);
+
+    // const param choice
+    const getDefaultConsts = (newModelName: string) => findModelDef(newModelName)?.always_const_param_names ?? [];
+    const [const_param_names, setConst_param_names] = useState(
+        () => currentFit?.input.const_param_names ?? getDefaultConsts(model_name),
+    );
     const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
     const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
     const isFreedom = modelDef && paramNames.length - const_param_names.length > 0;
@@ -114,7 +120,7 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                 onChange={(e) => {
                                     setModel_name(e.target.value);
                                     setData(getInitialData(e.target.value));
-                                    setConst_param_names([]);
+                                    setConst_param_names(getDefaultConsts(e.target.value));
                                 }}
                             >
                                 {VLEModelDefs!.map((v) => (
@@ -134,7 +140,12 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                         onChange={(e) => setConst_param_names(e.target.value as string[])}
                                     >
                                         {paramNames.map((name) => (
-                                            <MenuItem key={name} value={name} children={name} />
+                                            <MenuItem
+                                                key={name}
+                                                value={name}
+                                                children={name}
+                                                disabled={(modelDef?.always_const_param_names ?? []).includes(name)}
+                                            />
                                         ))}
                                     </Select>
                                 </FormControl>

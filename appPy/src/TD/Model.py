@@ -35,3 +35,12 @@ class Model:
         self.param_names = param_names
         self.param_labels = param_labels
         self.always_const_param_names = always_const_param_names
+
+    def serialize(self):
+        """Serialize itself to a dict that can be converted to json."""
+        return {
+            'name': self.display_name,
+            'nparams0': dict(zip(self.param_names, self.params0)),
+            'param_labels': dict(zip(self.param_names, self.param_labels or self.param_names)),
+            'always_const_param_names': self.always_const_param_names,
+        }

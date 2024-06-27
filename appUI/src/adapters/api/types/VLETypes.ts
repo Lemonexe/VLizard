@@ -19,6 +19,7 @@ export type VLEModelDef = {
     nparams0: NamedParams;
     param_labels: Record<string, string>;
     is_gamma_T_fun: boolean;
+    always_const_param_names?: string[];
 };
 
 export type GetVLEModelDefsResponse = VLEModelDef[];
