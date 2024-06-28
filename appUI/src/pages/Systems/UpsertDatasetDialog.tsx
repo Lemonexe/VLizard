@@ -15,6 +15,7 @@ import {
     transposeMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
+import { useVLEAnalysisDialog } from '../../actions/VLEAnalysis/useVLEAnalysisDialog.tsx';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
@@ -106,20 +107,29 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     // MUTATION
     const pushNotification = useNotifications();
     const { mutate } = useUpsertVLEDataset();
-    const handleSave = useCallback(() => {
-        try {
-            const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
-            const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
-            mutate(ds, {
-                onSuccess: () => {
-                    pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
-                    handleClose();
-                },
-            });
-        } catch (err) {
-            pushNotification({ message: String(err), severity: 'error' });
-        }
-    }, [compound1, compound2, datasetName, data, convertTableUoMs]);
+    const VLEAnalysis = useVLEAnalysisDialog({ compound1, compound2, dataset: datasetName });
+
+    const handleSave = useCallback(
+        (onSuccess?: () => void) => {
+            try {
+                const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
+                const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
+                mutate(ds, { onSuccess });
+            } catch (err) {
+                pushNotification({ message: String(err), severity: 'error' });
+            }
+        },
+        [compound1, compound2, datasetName, data, convertTableUoMs],
+    );
+
+    const handleSaveClose = useCallback(() => {
+        handleSave(() => {
+            pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
+            handleClose();
+        });
+    }, [handleSave, datasetName, handleClose]);
+
+    const handleSaveVisualize = useCallback(() => handleSave(VLEAnalysis.perform), [handleSave, VLEAnalysis.perform]);
 
     return (
         <Dialog fullScreen open={open}>
@@ -219,9 +229,13 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                 <Button onClick={handleClose} variant="outlined">
                     Cancel
                 </Button>
-                <Button onClick={handleSave} variant="contained" disabled={isError()}>
+                <Button onClick={handleSaveClose} variant="contained" disabled={isError()}>
                     Save
                 </Button>
+                <Button onClick={handleSaveVisualize} variant="contained" disabled={isError()}>
+                    Save & visualize
+                </Button>
+                {VLEAnalysis.result}
             </DialogActions>
         </Dialog>
     );

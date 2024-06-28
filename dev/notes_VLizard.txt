@@ -1,5 +1,3 @@
-Upsert Dataset: add button Save & Visualize
-
 react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
