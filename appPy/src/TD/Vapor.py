@@ -29,9 +29,9 @@ class Vapor(Result):
         self.T_tab = np.linspace(self.T_min, self.T_max, cst.x_points_smooth_plot)
         self.p_tab = self.ps_fun(self.T_tab)
 
-    def get_T_boil(self):
+    def get_T_boil(self, p=cst.atm):
         """Numerically calculate normal boiling point from vapor pressure function. """
-        resid = lambda T: self.ps_fun(T) - cst.atm
+        resid = lambda T: self.ps_fun(T) - p
         T_boil_init = self.est_T_boil()
         sol = root(fun=resid, x0=T_boil_init, tol=cst.T_boil_tol)
         return sol.x[0] if sol.success else None

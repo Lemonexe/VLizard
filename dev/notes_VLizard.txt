@@ -2,7 +2,8 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
 
-Vapor Analysis: add get pS, get T
+refactor UoM, finish Vapor queries
+
 Fit Analysis: tabulate at specific p
 
 build app

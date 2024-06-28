@@ -9,6 +9,8 @@ import {
     UpdateVaporModelRequest,
     VaporAnalysisRequest,
     VaporAnalysisResponse,
+    VaporQueryRequest,
+    VaporQueryResponse,
 } from './types/vaporTypes.ts';
 import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { hostName } from './helpers/hostName.ts';
@@ -38,6 +40,17 @@ export const useVaporAnalysis = () => {
     return useMutation({
         mutationFn: async (payload: VaporAnalysisRequest) => {
             const { data } = await axios.post<VaporAnalysisResponse>(hostName + '/vapor/analysis', payload);
+            return data;
+        },
+        onError,
+    });
+};
+
+export const useVaporQuery = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
+        mutationFn: async (payload: VaporQueryRequest) => {
+            const { data } = await axios.post<VaporQueryResponse>(hostName + '/vapor/query', payload);
             return data;
         },
         onError,

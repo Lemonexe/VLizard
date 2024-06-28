@@ -1,4 +1,6 @@
 from flask import Blueprint, request
+from werkzeug.exceptions import BadRequest
+from src.TD.Vapor import Vapor
 from src.plot.Vapor_plot import Vapor_plot
 from src.utils.compounds import get_compound_names, get_preferred_vapor_model, amend_model_table, delete_compound
 from src.TD.vapor_models.supported_models import supported_models
@@ -44,6 +46,18 @@ def vapor_analysis_api():
     payload = vapor.serialize()
     payload['plot'] = vapor.plot(mode='svg')
     return payload
+
+
+@vapor_blueprint.post('/query')
+def vapor_query_api():
+    """Return result of quick query for a vapor pressure point for given compound."""
+    schema = {'compound': True, 'T': False, 'p': False}
+    params = unpack_request_schema(request, schema)
+    compound, T, p = params['compound'], params.get('T'), params.get('p')
+    vapor = Vapor(compound)
+    if T: return {'T': T, 'p': vapor.ps_fun(T)}
+    if p: return {'T': vapor.get_T_boil(p), 'p': p}
+    raise BadRequest('Either T or p must be provided.')
 
 
 @vapor_blueprint.put('')

@@ -26,4 +26,19 @@ Content-Type: application/json
 
 {"model_name": "Wagner", "compound": "WHAT"}
 
+
+###
+# @no-log
+POST http://localhost:37137/vapor/query
+Content-Type: application/json
+
+{"compound": "CHOL", "p": 98}
+
+###
+# @no-log
+POST http://localhost:37137/vapor/query
+Content-Type: application/json
+
+{"compound": "CHOL", "T": 433}
+
 ###

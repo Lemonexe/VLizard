@@ -30,6 +30,10 @@ export type VaporAnalysisResponse = AnalysisResult &
         plot: string;
     };
 
+/* POST QUERY */
+export type VaporQueryRequest = CompoundIdentifier & { p?: number; T?: number };
+export type VaporQueryResponse = { p: number; T: number };
+
 /* PUT */
 export type UpdateVaporModelRequest = VaporModelIdentifier & {
     T_min: number;
