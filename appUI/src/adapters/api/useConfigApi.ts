@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
@@ -27,3 +28,5 @@ export const useUpdateConfig = () => {
         onError,
     });
 };
+
+export const useOpenDataDirectory = () => useCallback(() => axios.get(hostName + '/config/open_data_dir'), []);

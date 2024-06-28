@@ -1,7 +1,8 @@
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Toolbar, Tooltip } from '@mui/material';
-import { HelpOutline, Home, Settings } from '@mui/icons-material';
+import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
+import { useOpenDataDirectory } from '../adapters/api/useConfigApi.ts';
 import { spacingN } from '../contexts/MUITheme.tsx';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
@@ -9,6 +10,7 @@ import { QueryRefreshButton } from './QueryRefreshButton.tsx';
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
+    const handleOpenDataFolderClick = useOpenDataDirectory();
 
     return (
         <>
@@ -30,6 +32,11 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                     </Button>
                     <Box flexGrow={1} />
                     <QueryRefreshButton />
+                    <Tooltip title="OPEN DATA FOLDER">
+                        <DenseIconButton onClick={handleOpenDataFolderClick} color="inherit">
+                            <FolderOpen />
+                        </DenseIconButton>
+                    </Tooltip>
                     <Tooltip title="SETTINGS">
                         <DenseIconButton onClick={() => navigate('/settings')} color="inherit">
                             <Settings />

@@ -16,7 +16,7 @@ export const QueryRefreshButton: FC = () => {
 
     return (
         <Tooltip title="RELOAD PAGE, REFRESH DATA">
-            <DenseIconButton onClick={handleClick} edge="start" color="inherit">
+            <DenseIconButton onClick={handleClick} color="inherit">
                 <Refresh
                     style={{
                         transform: `rotate(${rotation}deg)`,
