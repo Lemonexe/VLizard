@@ -8,7 +8,6 @@ import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/type
 import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { sigDgtsDefault } from '../../adapters/logic/numbers.ts';
 import { useUoM_p, useUoM_T } from '../../adapters/logic/UoM.ts';
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
@@ -34,7 +33,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
             convert_p_vec(data.ps_1),
             convert_p_vec(data.ps_2),
         ];
-        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns), sigDgtsDefault));
+        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns)));
     }, [data]);
 
     return (

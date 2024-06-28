@@ -83,12 +83,12 @@ export const fromRows = (rows: Matrix<CellValueType>): SpreadsheetData =>
  */
 export const toNumMatrix = (data: SpreadsheetData): number[][] => matrixToNumerical(spreadsheetDataToMatrix(data));
 
-const cellToSigDgts = (value: CellValueType, sigDgts: number): string =>
+const cellToSigDgts = (value: CellValueType, sigDgts?: number): string =>
     toSigDgts(isNaN(Number(value)) ? 0 : Number(value), sigDgts);
 /**
  * Convert all numerical values in a spreadsheet to strings with a given number of significant digits
  * @param data matrix of Spreadsheet Cells
  * @param sigDgts number of significant digits
  */
-export const spreadsheetToSigDgts = (data: SpreadsheetData, sigDgts: number): SpreadsheetData =>
+export const spreadsheetToSigDgts = (data: SpreadsheetData, sigDgts?: number): SpreadsheetData =>
     data.map((row) => row.map((cell) => ({ value: cellToSigDgts(cell?.value, sigDgts) })));

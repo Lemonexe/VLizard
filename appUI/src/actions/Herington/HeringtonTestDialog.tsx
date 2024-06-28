@@ -5,13 +5,13 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { sigDgtsCrit, sigDgtsDefault, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsCrit, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type HeringtonTestDialogProps = DialogProps & { req: TestRequest; data: HeringtonTestResponse };
 
 export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, sigDgtsDefault)}`];
+    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion)}`];
 
     return (
         <ResponsiveDialog maxWidth="md" fullWidth open={open} onClose={handleClose}>
@@ -23,15 +23,15 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
                         <tbody>
                             <tr>
                                 <td width="70">D</td>
-                                <td>{toSigDgts(data.D, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.D)}</td>
                             </tr>
                             <tr>
                                 <td>J</td>
-                                <td>{toSigDgts(data.J, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.J)}</td>
                             </tr>
                             <tr>
                                 <td>|D–J|</td>
-                                <td>{toSigDgts(data.DJ, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.DJ)}</td>
                             </tr>
                         </tbody>
                     </table>

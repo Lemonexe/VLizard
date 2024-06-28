@@ -6,13 +6,13 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { sigDgtsCrit, sigDgtsDefault, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sigDgtsCrit, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse };
 
 export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion, sigDgtsDefault)}`];
+    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion)}`];
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -25,15 +25,15 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
                         <tbody>
                             <tr>
                                 <td width="70">D</td>
-                                <td>{toSigDgts(data.D, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.D)}</td>
                             </tr>
                             <tr>
                                 <td>|a–b|</td>
-                                <td>{toSigDgts(data.curve_dif, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.curve_dif)}</td>
                             </tr>
                             <tr>
                                 <td>a+b</td>
-                                <td>{toSigDgts(data.curve_sum, sigDgtsDefault)}</td>
+                                <td>{toSigDgts(data.curve_sum)}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -6,9 +6,9 @@ export const sigDgtsParams = 6; // sigDgts for model parameters
 /**
  * Returns string from number rounded to the given number of significant digits
  * @param num float or integer
- * @param sigDgts integer number of significant digits
+ * @param sigDgts integer number of significant digits, defaults to 4
  */
-export const toSigDgts = (num: number, sigDgts: number): string => {
+export const toSigDgts = (num: number, sigDgts = sigDgtsDefault): string => {
     // if number has more digits greater than sigDigits, don't use toPrecision, but round up manually to avoid exponential form
     const naturalDgts = Math.floor(Math.log10(num)) + 1;
     return naturalDgts > sigDgts
@@ -19,9 +19,9 @@ export const toSigDgts = (num: number, sigDgts: number): string => {
 /**
  * Returns number rounded to the given number of significant digits
  * @param num float or integer
- * @param sigDgts integer number of significant digits
+ * @param sigDgts integer number of significant digits, defaults to 4
  */
-export const truncateSigDgts = (num: number, sigDgts: number): number => parseFloat(toSigDgts(num, sigDgts));
+export const truncateSigDgts = (num: number, sigDgts?: number): number => parseFloat(toSigDgts(num, sigDgts));
 
 /**
  * Returns a number rounded to the given number of decimal places (fixed point)

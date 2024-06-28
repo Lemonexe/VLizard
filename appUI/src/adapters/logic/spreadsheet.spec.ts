@@ -86,6 +86,7 @@ test('filterEmptyRows', () => {
 });
 
 test('spreadsheetToSigDgts', () => {
+    expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]])).toEqual([[{ value: toSigDgts(1 / 3) }]]);
     expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]], 2)).toEqual([[{ value: toSigDgts(1 / 3, 2) }]]);
     expect(spreadsheetToSigDgts([[{ value: '' }, { value: undefined }, { value: 'asdf' }]], 2)).toEqual([
         Array(3).fill({ value: toSigDgts(0, 2) }),
