@@ -1,18 +1,12 @@
 import { FC, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Box, IconButton, MenuItem, Select, styled } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { PUnit, pUnits } from '../../adapters/logic/UoM.ts';
+import { input_p_vec, input_T_vec, input_x_vec, p_units } from '../../adapters/logic/UoM.ts';
 import { truncateSigDgts } from '../../adapters/logic/numbers.ts';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
 // Display UoM label for dimensionless quantities x,y
-const disp_xy = (label: string, UoM: string) => label + (UoM === '1' ? '' : `/${UoM}`);
-
-// BTW the unit conversion from UoM.ts are not usable, because it's the other way around – here we need FROM chosen TO base
-type ConvFun = (UoM: string, vec: number[]) => number[];
-const convert_xy_vec: ConvFun = (UoM, x_vec) => x_vec.map((x) => (UoM === '1' ? x : x / 100));
-const convert_p_vec: ConvFun = (UoM, p_vec) => p_vec.map((p) => p / pUnits[UoM as PUnit]);
-const convert_T_vec: ConvFun = (UoM, T_vec) => T_vec.map((T) => (UoM === 'K' ? T : T + 273.15));
+const get_xy_label = (label: string, UoM: string) => label + (UoM === '1' ? '' : `/${UoM}`);
 
 const MAX_SIG_DGTS = 10; // enough for any practical purpose, enough to mitigate unsightly floating point errors
 // Truncate all numbers to a maximal number of sig digits
@@ -58,13 +52,13 @@ export const useUpsertDatasetHeaders = () => {
     const convertTableUoMs = useCallback((data: number[][]): number[][] => {
         const dataNew = Array(4).fill(null);
         for (let i = 0; i < columnsOrder.length; i++) dataNew[columnsOrder[i]] = data[i];
-        dataNew[0] = truncate(convert_p_vec(UoM_p, dataNew[0]));
+        dataNew[0] = truncate(input_p_vec(dataNew[0], UoM_p));
         validatePositive('p', dataNew[0]);
-        dataNew[1] = truncate(convert_T_vec(UoM_T, dataNew[1]));
+        dataNew[1] = truncate(input_T_vec(dataNew[1], UoM_T));
         validatePositive('T', dataNew[1]);
-        dataNew[2] = truncate(convert_xy_vec(UoM_x1, dataNew[2]));
+        dataNew[2] = truncate(input_x_vec(dataNew[2], UoM_x1));
         validate_xy('x1', dataNew[2]);
-        dataNew[3] = truncate(convert_xy_vec(UoM_y1, dataNew[3]));
+        dataNew[3] = truncate(input_x_vec(dataNew[3], UoM_y1));
         validate_xy('y1', dataNew[3]);
         return dataNew;
     }, renderDeps);
@@ -88,7 +82,7 @@ export const useUpsertDatasetHeaders = () => {
             <MovableBox key="p" which={0}>
                 <i>p</i> /
                 <Select variant="standard" value={UoM_p} onChange={(e) => setUoM_p(e.target.value)}>
-                    {Object.keys(pUnits).map((unit) => (
+                    {Object.keys(p_units).map((unit) => (
                         <MenuItem key={unit} value={unit} children={unit} />
                     ))}
                 </Select>
@@ -127,7 +121,12 @@ export const useUpsertDatasetHeaders = () => {
     }, renderDeps);
 
     const columnLabels: string[] = useMemo(() => {
-        const originalSpreadsheetHeaders = [`p/${UoM_p}`, `T/${UoM_T}`, disp_xy('x1', UoM_x1), disp_xy('y1', UoM_y1)];
+        const originalSpreadsheetHeaders = [
+            `p/${UoM_p}`,
+            `T/${UoM_T}`,
+            get_xy_label('x1', UoM_x1),
+            get_xy_label('y1', UoM_y1),
+        ];
         return columnsOrder.map((i) => originalSpreadsheetHeaders[i]);
     }, renderDeps);
 

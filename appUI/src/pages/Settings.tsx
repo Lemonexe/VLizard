@@ -20,7 +20,7 @@ import { Config } from '../adapters/api/types/configTypes.tsx';
 import { DefaultLayout } from '../components/DefaultLayout.tsx';
 import { HeaderStack } from '../components/Mui/HeaderStack.tsx';
 import { spacingN } from '../contexts/MUITheme.tsx';
-import { pUnits } from '../adapters/logic/UoM.ts';
+import { p_units } from '../adapters/logic/UoM.ts';
 import { sanitizeNumStr } from '../adapters/logic/numbers.ts';
 
 type PatchConfigFn = (key: keyof Config, value: string | number | boolean) => void;
@@ -137,7 +137,7 @@ const UISettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
             <div>
                 Pressure units
                 <Select {...createSlProps('UoM_p')}>
-                    {Object.keys(pUnits).map((unit) => (
+                    {Object.keys(p_units).map((unit) => (
                         <MenuItem key={unit} value={unit} children={unit} />
                     ))}
                 </Select>

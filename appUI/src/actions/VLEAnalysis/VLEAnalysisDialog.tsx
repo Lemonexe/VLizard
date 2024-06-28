@@ -1,6 +1,8 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { DialogContent, Stack } from '@mui/material';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
+import { display_p_vec, display_T_vec } from '../../adapters/logic/UoM.ts';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
@@ -8,15 +10,14 @@ import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/type
 import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { useUoM_p, useUoM_T } from '../../adapters/logic/UoM.ts';
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
 export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
 
-    const { convert_T_vec, UoM_T } = useUoM_T();
-    const { convert_p_vec, UoM_p } = useUoM_p();
+    const { UoM_T, UoM_p } = useConfig();
+
     const columnLabels = useMemo(
         () => [`p / ${UoM_p}`, `T / ${UoM_T}`, 'x1', 'y1', 'gamma1', 'gamma2', `ps1 / ${UoM_p}`, `ps2 / ${UoM_p}`],
         [UoM_T, UoM_p],
@@ -24,14 +25,14 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
 
     const spreadsheetData = useMemo(() => {
         const dataColumns = [
-            convert_p_vec(data.p),
-            convert_T_vec(data.T),
+            display_p_vec(data.p, UoM_p),
+            display_T_vec(data.T, UoM_T),
             data.x_1,
             data.y_1,
             data.gamma_1,
             data.gamma_2,
-            convert_p_vec(data.ps_1),
-            convert_p_vec(data.ps_2),
+            display_p_vec(data.ps_1, UoM_p),
+            display_p_vec(data.ps_2, UoM_p),
         ];
         return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns)));
     }, [data]);

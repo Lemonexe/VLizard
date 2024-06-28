@@ -32,17 +32,17 @@ class Vapor(Result):
     def get_T_boil(self, p=cst.atm):
         """Numerically calculate normal boiling point from vapor pressure function. """
         resid = lambda T: self.ps_fun(T) - p
-        T_boil_init = self.est_T_boil()
+        T_boil_init = self.est_T_boil(p)
         sol = root(fun=resid, x0=T_boil_init, tol=cst.T_boil_tol)
         return sol.x[0] if sol.success else None
 
-    def est_T_boil(self):
+    def est_T_boil(self, p=cst.atm):
         """Estimate normal boiling point from vapor pressure function using T = a * p**n. """
         T1, T2 = self.T_min, self.T_max
         p1, p2 = self.ps_fun(T1), self.ps_fun(T2)
         n = np.log(T1 / T2) / np.log(p1 / p2)
         a = np.exp(np.log(T1) - n * np.log(p1))
-        return a * cst.atm**n
+        return a * p**n
 
     def check_T_bounds(self, T_min_query, T_max_query=None):
         """
