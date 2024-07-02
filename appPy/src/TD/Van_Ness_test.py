@@ -9,7 +9,7 @@ from src.TD.VLE_models.supported_models import supported_models
 from .VLE import VLE
 
 
-class VN_test(VLE):
+class Van_Ness_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name, model_name):
         """

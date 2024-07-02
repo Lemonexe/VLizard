@@ -1,9 +1,9 @@
 from matplotlib import pyplot as plt
-from src.TD.VN_test import VN_test
+from src.TD.Van_Ness_test import Van_Ness_test
 from src.plot.plot_io import init_plot, finish_plot
 
 
-class VN_plot(VN_test):
+class Van_Ness_plot(Van_Ness_test):
 
     def plot(self, mode):
         init_plot(mode)
