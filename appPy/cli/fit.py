@@ -6,6 +6,7 @@ import click
 from src.utils.systems import validate_system_or_swap
 from src.utils.errors import CLI_error_boundary, AppException
 from src.utils.io.plot import pause_to_keep_charts
+from src.fit.persist_fit import persist_fit
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.TD.VLE_models.supported_models import supported_models
 
@@ -24,13 +25,16 @@ model_list = ", ".join(supported_model_names)
 @click.option('--txy', is_flag=True, help='Plot T,x,y diagram + regression')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff + regression')
 @click.option('--skip', is_flag=True, help='Skip optimization (use initial params for tabulation)')
-def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamma, skip):
+@click.option('--persist', is_flag=True, help='Persist result in yaml file')
+def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamma, skip, persist):
     """Fit binary VLE data with a given model, datasets, and optionally with specified initial parameters."""
 
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
     fit = Fit_VLE_plot(compound1, compound2, model, datasets, parse_params(params), parse_consts(consts))
     if not skip: fit.optimize()
     fit.report()
+
+    if persist: persist_fit(fit)
 
     if not (xy or txy or gamma): return
     fit.tabulate()

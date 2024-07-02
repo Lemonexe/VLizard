@@ -44,7 +44,7 @@ class VN_test(VLE):
         underline_echo(self.get_title())
         self.report_warnings()
 
-        msg = f'Consistency index = {self.consistency_index}'
+        msg = f'Consistency index = {self.consistency_index:.0f}'
         if self.consistency_index < cfg.van_Ness_max_mark / 2: ok_echo(msg)
         elif self.consistency_index < cfg.van_Ness_max_mark: warn_echo(msg)
         else: err_echo(msg)
