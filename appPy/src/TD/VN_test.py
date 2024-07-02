@@ -34,7 +34,8 @@ class VN_test(VLE):
         # calculate residuals of van Ness test
         self.res = np.log(self.gamma_1 / self.gamma_2) - np.log(gamma_1_calc / gamma_2_calc)
         self.RMS = RMS(self.res)
-        self.consistency_index = np.min((np.ceil(self.RMS / cfg.van_Ness_marking_interval), cfg.van_Ness_max_mark))
+        self.consistency_index = np.ceil(self.RMS / cfg.van_Ness_marking_interval)
+        self.consistency_index = np.min((self.consistency_index, cfg.van_Ness_max_mark)).astype(np.int32)
         self.is_consistent = self.consistency_index < cfg.van_Ness_max_mark
 
     def get_title(self):

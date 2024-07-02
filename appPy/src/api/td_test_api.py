@@ -4,6 +4,7 @@ from src.plot.Slope_plot import Slope_plot
 from src.plot.Redlich_Kister_plot import Redlich_Kister_plot
 from src.TD.Herington_test import Herington_test
 from src.plot.Fredenslund_plot import Fredenslund_plot
+from src.plot.VN_plot import VN_plot
 from .helpers.schema_validation import unpack_request_schema
 
 td_test_blueprint = Blueprint('TD', __name__, url_prefix='/td_test')
@@ -59,4 +60,15 @@ def fredenslund_test_api():
     payload['plot_g_E'] = fredenslund.plot_g_E(mode='svg')
     payload['plot_p_res'] = fredenslund.plot_p_res(mode='svg')
     payload['plot_y_1_res'] = fredenslund.plot_y_1_res(mode='svg')
+    return payload
+
+
+@td_test_blueprint.post('/van_ness')
+def van_ness_test_api():
+    """Perform van Ness test & return analysis result for given system and a single dataset."""
+    schema = dict(common_schema, model_name=True)
+    params = unpack_request_schema(request, schema)
+    vn = VN_plot(*params.values())
+    payload = vn.serialize()
+    payload['plot'] = vn.plot(mode='svg')
     return payload
