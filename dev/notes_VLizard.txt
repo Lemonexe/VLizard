@@ -2,6 +2,14 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
 
+Gamma test weighted
+
+Tabular results – refactor & apply
+    create ViewOnlyTable that does the memo array to spreadsheet values...
+    the tables will fold & expand
+    Apply:
+        - Fredenslund
+
 Fit Analysis: tabulate at specific p
 
 build app

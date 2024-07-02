@@ -26,6 +26,13 @@ def get_all_persisted_fits():
     return payload
 
 
+def get_persisted_fit(compound1, compound2, model_name):
+    """Return a specific persisted fit of thermodynamic VLE model."""
+    file_path = os.path.join(get_analysis_dir_path(compound1, compound2), get_yaml_filename(model_name))
+    if not os.path.exists(file_path): return None
+    return open_yaml(file_path)
+
+
 def persist_fit(fit):
     payload = {
         'model_name': fit.model.name,

@@ -47,6 +47,7 @@ class Fit_VLE(Fit):
         self.AAD_init = AAD(self.get_residual(self.params0))
 
     def __check_model_suitability(self):
+        """Check if the model is appropriate for given datasets."""
         if not self.model.is_gamma_T_fun and len(self.dataset_names) > 1:
             msg = f'{self.model.display_name} model is T independent, fitting of multiple datasets of different pressure is not recommended'
             self.warn(msg)
