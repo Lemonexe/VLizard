@@ -1,5 +1,6 @@
 from src.utils.Result import Result
 from src.utils.errors import AppException
+from src.utils.models import get_model_by_name
 
 
 class Fit(Result):
@@ -18,10 +19,9 @@ class Fit(Result):
             'is_optimized', 'nparams', 'nparams0', 'RMS_init', 'RMS_final', 'AAD_init', 'AAD_final'
         ]
         self.supported_models = supported_models
-        self.supported_model_names = [model.name for model in supported_models]
         self.is_optimized = False  # whether optimization has been performed
 
-        self.model = self.__parse_model(model_name)
+        self.model = get_model_by_name(supported_models, model_name)
         self.params0, self.nparams0 = self.__parse_params0(params0)  # initial params as np.array, and as dict
         self.params = self.params0  # optimization result params as np.array
         self.nparams = self.nparams0
@@ -37,15 +37,6 @@ class Fit(Result):
     def set_named_params(self, params):
         """Compose vector of ordered params into an ordered dict of named params."""
         return dict(zip(self.model.param_names, params))
-
-    def __parse_model(self, model_name):
-        """Parse model_name and check if it is appropriate for given datasets."""
-        supported_model_names_lcase = [name.lower() for name in self.supported_model_names]
-        if not model_name.lower() in supported_model_names_lcase:
-            csv = ', '.join(self.supported_model_names)
-            raise AppException(f'Unknown model {model_name}.\nAvailable models: {csv}')
-
-        return self.supported_models[supported_model_names_lcase.index(model_name.lower())]
 
     def __parse_params0(self, params0):
         """
