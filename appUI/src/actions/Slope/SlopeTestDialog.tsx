@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { DialogContent } from '@mui/material';
+import { Alert, DialogContent } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
@@ -26,6 +26,9 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Slope test for {label}</DialogTitleWithX>
             <DialogContent>
+                <Alert severity="info" sx={{ mb: 1 }}>
+                    No conventional criteria, the test is only advisory.
+                </Alert>
                 <AnalysisWarnings warnings={data.warnings} />
                 <p>Average residual = {toSigDgts(data.P2P_res_avg)}</p>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
