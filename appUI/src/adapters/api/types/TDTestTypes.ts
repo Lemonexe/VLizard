@@ -49,3 +49,14 @@ export type FredenslundTestResponse = ConclusiveTestResult & {
     plot_p_res: string;
     plot_y_1_res: string;
 };
+
+export type VanNessTestRequest = DatasetIdentifier & { model_name: string };
+
+export type VanNessTestResponse = ConclusiveTestResult & {
+    model_display_name: string;
+    consistency_index: number;
+    RMS: number;
+    x_1: number[];
+    residuals: number[];
+    plot: string;
+};

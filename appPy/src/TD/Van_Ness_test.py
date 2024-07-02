@@ -20,7 +20,7 @@ class Van_Ness_test(VLE):
         model_name (str): existing persisted fit, identified by name of the VLE model
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'model_display_name', 'res']
+        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'model_display_name', 'x_1', 'residuals']
 
         self.persisted_fit = pfit = get_persisted_fit(compound1, compound2, model_name)
         if pfit is None: raise AppException(f'Persisted {model_name} fit for {compound1}-{compound2} not found')
@@ -32,14 +32,14 @@ class Van_Ness_test(VLE):
         gamma_1_calc, gamma_2_calc = model.fun(self.x_1, self.T, *params)
 
         # calculate residuals of van Ness test
-        self.res = np.log(self.gamma_1 / self.gamma_2) - np.log(gamma_1_calc / gamma_2_calc)
-        self.RMS = RMS(self.res)
+        self.residuals = np.log(self.gamma_1 / self.gamma_2) - np.log(gamma_1_calc / gamma_2_calc)
+        self.RMS = RMS(self.residuals)
         self.consistency_index = np.ceil(self.RMS / cfg.van_Ness_marking_interval)
         self.consistency_index = np.min((self.consistency_index, cfg.van_Ness_max_mark)).astype(np.int32)
         self.is_consistent = self.consistency_index < cfg.van_Ness_max_mark
 
     def get_title(self):
-        return f'van Ness test for {super().get_title()}'
+        return f'van Ness test for {super().get_title()} & {self.model_display_name}'
 
     def report(self):
         underline_echo(self.get_title())

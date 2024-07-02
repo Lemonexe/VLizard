@@ -36,6 +36,7 @@ def get_persisted_fit(compound1, compound2, model_name):
 def persist_fit(fit):
     payload = {
         'model_name': fit.model.name,
+        'model_display_name': fit.model.display_name,
         'input': {
             'datasets': fit.dataset_names,
             'nparams0': fit.nparams0,

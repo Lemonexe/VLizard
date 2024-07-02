@@ -1,12 +1,14 @@
 export type Config = {
     // Calculation settings
-    T_bounds_rel_tol: number;
-    default_legendre_order: number;
-    fredenslund_criterion: number;
     gamma_abs_tol: number;
-    herington_DJ_criterion: number;
+    T_bounds_rel_tol: number;
     rk_D_criterion: number;
+    herington_DJ_criterion: number;
     rk_quad_rel_tol: number;
+    fredenslund_criterion: number;
+    default_legendre_order: number;
+    van_Ness_marking_interval: number;
+    van_Ness_max_mark: number;
 
     // UI settings
     chart_title: boolean;

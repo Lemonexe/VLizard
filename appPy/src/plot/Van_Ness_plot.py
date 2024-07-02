@@ -8,7 +8,7 @@ class Van_Ness_plot(Van_Ness_test):
     def plot(self, mode):
         init_plot(mode)
 
-        plt.plot(self.x_1, self.res, 'Dk')
+        plt.plot(self.x_1, self.residuals, 'Dk')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())
         plt.xlim(0, 1)

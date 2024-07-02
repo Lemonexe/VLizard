@@ -9,6 +9,8 @@ import {
     RKTestResponse,
     SlopeTestResponse,
     TestRequest,
+    VanNessTestRequest,
+    VanNessTestResponse,
 } from './types/TDTestTypes.ts';
 import { hostName } from './helpers/hostName.ts';
 
@@ -61,6 +63,17 @@ export const useFredenslundTest = () => {
     return useMutation({
         mutationFn: async (payload: FredenslundTestRequest) => {
             const { data } = await axios.post<FredenslundTestResponse>(hostName + '/td_test/fredenslund', payload);
+            return data;
+        },
+        onError,
+    });
+};
+
+export const useVanNessTest = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
+        mutationFn: async (payload: VanNessTestRequest) => {
+            const { data } = await axios.post<VanNessTestResponse>(hostName + '/td_test/van_ness', payload);
             return data;
         },
         onError,
