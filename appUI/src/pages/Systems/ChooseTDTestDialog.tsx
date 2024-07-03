@@ -18,22 +18,22 @@ export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, 
             Analysis for {props.compound1}-{props.compound2} {props.dataset}
         </DialogTitleWithX>
         <DialogContent>
-            <Stack direction="column" gap={3} px={5} py={1}>
+            <Stack direction="column" gap={1} px={5} py={1}>
+                <VLEAnalysisButton {...props} />
                 <Button
                     startIcon={<QuestionMark />}
                     href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/VLE_analyses.md"
                     variant="outlined"
+                    sx={{ my: 2 }}
                 >
                     Which test to choose
                 </Button>
-
-                <VLEAnalysisButton {...props} />
-                <SlopeTestButton {...props} />
+                <FredenslundTestButton {...props} />
+                <VanNessTestButton {...props} />
                 <GammaTestButton {...props} />
                 <RKTestButton {...props} />
                 <HeringtonTestButton {...props} />
-                <FredenslundTestButton {...props} />
-                <VanNessTestButton {...props} />
+                <SlopeTestButton {...props} />
             </Stack>
         </DialogContent>
         <DialogActions>

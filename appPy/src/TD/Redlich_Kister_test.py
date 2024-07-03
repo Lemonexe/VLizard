@@ -14,12 +14,11 @@ class Redlich_Kister_test(Area):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['D', 'is_consistent', 'criterion', 'curve_dif', 'curve_sum']
+        self.keys_to_serialize = ['D', 'is_consistent', 'curve_dif', 'curve_sum']
 
         # the test criterion D [%]
         self.D = self.curve_dif / self.curve_sum * 100
         self.is_consistent = self.D <= cfg.rk_D_criterion
-        self.criterion = cfg.rk_D_criterion
 
         self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
         self.curve_tab = self.curve_spline(self.x_tab)
@@ -32,10 +31,10 @@ class Redlich_Kister_test(Area):
         self.report_warnings()
         echo(f'D = {self.D:.1f}')
         if self.is_consistent:
-            ok_echo(f'D < {self.criterion:.0f}')
+            ok_echo(f'D < {cfg.rk_D_criterion:.0f}')
             ok_echo('OK, data consistency is proven')
         else:
-            err_echo(f'D > {self.criterion:.0f}')
+            err_echo(f'D > {cfg.rk_D_criterion:.0f}')
             err_echo('NOT OK, data consistency is disproven')
         echo(f'\ta-b = {self.curve_dif:.4f}')
         echo(f'\ta+b = {self.curve_sum:.4f}')

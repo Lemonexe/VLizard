@@ -19,8 +19,7 @@ class Gamma_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'gamma_abs_tol', 'err_1', 'err_2']
-        self.gamma_abs_tol = cfg.gamma_abs_tol
+        self.keys_to_serialize = ['is_consistent', 'err_1', 'err_2']
 
         params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables

@@ -7,12 +7,14 @@ import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestType
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { sigDgtsCrit, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse };
 
 export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion)}`];
+    const { rk_D_criterion } = useConfig();
+    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(rk_D_criterion)}`];
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -37,7 +39,7 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
                             </tr>
                         </tbody>
                     </table>
-                    <p>D criterion is {toSigDgts(data.criterion, sigDgtsCrit)}</p>
+                    <p>D criterion is {toSigDgts(rk_D_criterion, sigDgtsCrit)}</p>
                 </Box>
                 <h4>Area integration plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`RK test chart ${label}`} />

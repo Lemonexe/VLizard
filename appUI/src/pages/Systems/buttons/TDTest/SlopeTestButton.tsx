@@ -7,7 +7,7 @@ export const SlopeTestButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useSlopeTestDialog(props);
     return (
         <>
-            <Button variant="contained" onClick={perform}>
+            <Button variant="outlined" onClick={perform}>
                 Slope test
             </Button>
             {result}

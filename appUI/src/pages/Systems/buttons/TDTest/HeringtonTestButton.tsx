@@ -7,7 +7,7 @@ export const HeringtonTestButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useHeringtonTestDialog(props);
     return (
         <>
-            <Button variant="contained" onClick={perform}>
+            <Button variant="outlined" onClick={perform}>
                 Herington test
             </Button>
             {result}

@@ -7,15 +7,17 @@ import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { sigDgtsCrit, sigDgtsMetrics, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type FredenslundTestDialogProps = DialogProps & { req: FredenslundTestRequest; data: FredenslundTestResponse };
 
 export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
+    const { fredenslund_criterion } = useConfig();
     const reasons = [
         `Residuals of p, y_1, y_2
         ${data.is_consistent ? 'are all' : 'must all be'}
-        < ${toSigDgts(data.criterion, sigDgtsCrit)} %`,
+        < ${toSigDgts(fredenslund_criterion, sigDgtsCrit)} %`,
     ];
 
     return (
@@ -46,7 +48,7 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                             </tr>
                         </tbody>
                     </table>
-                    <p>Criterion for average residuals is {toSigDgts(data.criterion, sigDgtsCrit)}%</p>
+                    <p>Criterion for average residuals is {toSigDgts(fredenslund_criterion, sigDgtsCrit)}%</p>
                 </Box>
 
                 <h4 className="h-margin">Legendre fitting plot</h4>

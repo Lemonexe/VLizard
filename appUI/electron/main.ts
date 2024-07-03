@@ -19,6 +19,12 @@ let child: ChildProcessWithoutNullStreams | undefined;
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 const BUILD_INDEX_URL = path.join(process.env.DIST, 'index.html');
 
+// Parse the URL to extract the protocol and hostname
+function getRootUrl(fullUrl: string) {
+    const { protocol, hostname } = new URL(fullUrl);
+    return `${protocol}//${hostname}`;
+}
+
 function createWindow() {
     win = new BrowserWindow({
         width: 1280,
@@ -30,10 +36,14 @@ function createWindow() {
         },
     });
 
-    // Open external link using the default browser instead of the Electron browser.
+    // Open external links (such as GitHub) using the default browser via shell; internal links (such as reload page) are opened in the Electron browser.
     win.webContents.on('will-navigate', (event, url) => {
-        event.preventDefault();
-        shell.openExternal(url).then();
+        if (!win) return;
+        const rootUrl = getRootUrl(win.webContents.getURL());
+        if (!url.includes(rootUrl)) {
+            event.preventDefault();
+            shell.openExternal(url).then();
+        }
     });
 
     VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL) : win.loadFile(BUILD_INDEX_URL);

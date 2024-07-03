@@ -16,7 +16,7 @@
     "build:vite": "vite build",
     "build:electron": "electron-builder",
     "prettier": "prettier --write \"src/**/*.{js,ts,jsx,tsx}\"",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "tsc && eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
     "preview": "vite preview"

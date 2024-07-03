@@ -28,7 +28,8 @@ def slope_test_api():
     params = unpack_request_schema(request, common_schema)
     slope = Slope_plot(*params.values())
     payload = slope.serialize()
-    payload['plot'] = slope.plot(mode='svg')
+    payload['plot_residuals'] = slope.plot_residuals(mode='svg')
+    payload['plot_derivations'] = slope.plot_derivations(mode='svg')
     return payload
 
 

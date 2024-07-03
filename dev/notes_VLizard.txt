@@ -2,10 +2,6 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
 
-revert simplify external links (error page needs it!)
-
-params from useConfig, not from api, that's lame...
-
 Use display name consistently
 
 Gamma test weighted

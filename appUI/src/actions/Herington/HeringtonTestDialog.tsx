@@ -6,12 +6,14 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { sigDgtsCrit, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type HeringtonTestDialogProps = DialogProps & { req: TestRequest; data: HeringtonTestResponse };
 
 export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.criterion)}`];
+    const { herington_DJ_criterion } = useConfig();
+    const reasons = [`|D–J| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(herington_DJ_criterion)}`];
 
     return (
         <ResponsiveDialog maxWidth="md" fullWidth open={open} onClose={handleClose}>
@@ -35,7 +37,7 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
                             </tr>
                         </tbody>
                     </table>
-                    <p>|D–J| criterion is {toSigDgts(data.criterion, sigDgtsCrit)}</p>
+                    <p>|D–J| criterion is {toSigDgts(herington_DJ_criterion, sigDgtsCrit)}</p>
                 </Box>
             </DialogContent>
         </ResponsiveDialog>

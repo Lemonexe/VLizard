@@ -21,7 +21,9 @@ def cli_slope(compound1, compound2, dataset, plot):
         slope_test = Slope_plot(comp1, comp2, ds)
         slope_test.report()
 
-        if plot: slope_test.plot(mode='ion')
+        if plot:
+            slope_test.plot_residuals(mode='ion')
+            slope_test.plot_derivations(mode='ion')
 
     do_datasets(compound1, compound2, dataset, do_for_dataset)
     if plot: pause_to_keep_charts()

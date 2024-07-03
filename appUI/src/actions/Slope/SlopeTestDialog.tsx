@@ -32,8 +32,9 @@ export const SlopeTestDialog: FC<SlopeTestDialogProps> = ({ open, handleClose, r
                 <AnalysisWarnings warnings={data.warnings} />
                 <p>Average residual = {toSigDgts(data.P2P_res_avg)}</p>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
-                <h4 className="h-margin">Derivations & residuals plot</h4>
-                <PlotWithDownload svgContent={data.plot} fileName={`slope test chart ${label}`} />
+                <h4 className="h-margin">Residuals & derivations plots</h4>
+                <PlotWithDownload svgContent={data.plot_residuals} fileName={`slope test chart ${label}`} />
+                <PlotWithDownload svgContent={data.plot_derivations} fileName={`slope test diff chart ${label}`} />
             </DialogContent>
         </ResponsiveDialog>
     );

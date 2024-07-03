@@ -18,9 +18,7 @@ class Fredenslund_test(VLE):
         legendre_order (int): order of Legendre polynomial to use, must be 3, 4 or 5, default 4
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = [
-            'is_consistent', 'criterion', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'legendre_order'
-        ]
+        self.keys_to_serialize = ['is_consistent', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'legendre_order']
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 
@@ -79,7 +77,6 @@ class Fredenslund_test(VLE):
 
         conditions = np.array([self.p_res_avg, self.y_1_res_avg, self.y_2_res_avg]) <= cfg.fredenslund_criterion
         self.is_consistent = conditions.all()
-        self.criterion = cfg.fredenslund_criterion
 
         # tabulate
         self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
@@ -98,9 +95,10 @@ class Fredenslund_test(VLE):
         echo('')
         if self.is_consistent:
             ok_echo(
-                f'OK, residuals of p, y_1, y_2 are all less than {self.criterion:.1f} %, data consistency is proven')
+                f'OK, residuals of p, y_1, y_2 are all less than {cfg.fredenslund_criterion:.1f} %, data consistency is proven'
+            )
         else:
             err_echo(
-                f'NOT OK, residuals of p, y_1, y_2 must all be less than {self.criterion:.1f} %, data consistency is disproven'
+                f'NOT OK, residuals of p, y_1, y_2 must all be less than {cfg.fredenslund_criterion:.1f} %, data consistency is disproven'
             )
         echo('')

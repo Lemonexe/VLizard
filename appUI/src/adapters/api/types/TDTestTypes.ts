@@ -7,7 +7,6 @@ export type TestRequest = DatasetIdentifier;
 export type GammaTestResponse = ConclusiveTestResult & {
     err_1: number;
     err_2: number;
-    gamma_abs_tol: number;
     plot: string;
 };
 
@@ -17,12 +16,12 @@ export type SlopeTestResponse = AnalysisResult & {
     d_ln_gamma_2: number[];
     P2P_res: number[];
     P2P_res_avg: number;
-    plot: string;
+    plot_residuals: string;
+    plot_derivations: string;
 };
 
 export type RKTestResponse = ConclusiveTestResult & {
     D: number;
-    criterion: number;
     curve_dif: number;
     curve_sum: number;
     plot: string;
@@ -32,7 +31,6 @@ export type HeringtonTestResponse = ConclusiveTestResult & {
     D: number;
     DJ: number;
     J: number;
-    criterion: number;
 };
 
 export type FredenslundTestRequest = DatasetIdentifier & {
@@ -40,7 +38,6 @@ export type FredenslundTestRequest = DatasetIdentifier & {
 };
 
 export type FredenslundTestResponse = ConclusiveTestResult & {
-    criterion: number;
     legendre_order: number;
     p_res_avg: number;
     y_1_res_avg: number;
