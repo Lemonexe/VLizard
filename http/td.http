@@ -33,3 +33,10 @@ Content-Type: application/json
 {"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa", "legendre_order": 4}
 
 ###
+
+POST http://localhost:37137/td_test/van_ness
+Content-Type: application/json
+
+{"compound1": "CHOL", "compound2": "CHF", "dataset": "10kPa", "model_name": "NRTL"}
+
+###

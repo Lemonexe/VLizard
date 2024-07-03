@@ -33,6 +33,10 @@ default_config_dict = {
     'fredenslund_criterion': 1,
     # default maximum order of Legendre polynomials in Fredenslund test
     'default_legendre_order': 4,
+    # van Ness marking interval, where consistency index = floor(RMS/interval)
+    'van_Ness_marking_interval': 0.025,
+    # van Ness maximum mark, which means test failure
+    'van_Ness_max_mark': 10,
 
     ## UI
     # whether to render chart title, legend
