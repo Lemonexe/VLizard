@@ -47,11 +47,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
                         onChange={(e) => setModel_name(e.target.value)}
                     >
                         {fitDataForSystem.map((model) => (
-                            <MenuItem
-                                key={model.model_name}
-                                value={model.model_name}
-                                children={model.model_display_name}
-                            />
+                            <MenuItem key={model.model_name} value={model.model_name} children={model.model_name} />
                         ))}
                     </Select>
                 </FormControl>

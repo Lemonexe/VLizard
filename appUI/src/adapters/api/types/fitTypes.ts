@@ -9,7 +9,6 @@ import {
 /* GET saved optimized models for systems */
 export type PersistedFit = {
     model_name: string;
-    model_display_name: string;
     input: {
         datasets: string[];
         nparams0: NamedParams;

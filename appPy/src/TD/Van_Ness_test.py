@@ -20,12 +20,11 @@ class Van_Ness_test(VLE):
         model_name (str): existing persisted fit, identified by name of the VLE model
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'model_display_name', 'x_1', 'residuals']
+        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'x_1', 'residuals']
 
         self.persisted_fit = pfit = get_persisted_fit(compound1, compound2, model_name)
         if pfit is None: raise AppException(f'Persisted {model_name} fit for {compound1}-{compound2} not found')
         self.model = model = get_model_by_name(supported_models, model_name)
-        self.model_display_name = model.display_name
 
         nparams = pfit['results']['nparams']
         params = [nparams[key] for key in model.param_names]
@@ -39,7 +38,7 @@ class Van_Ness_test(VLE):
         self.is_consistent = self.consistency_index < cfg.van_Ness_max_mark
 
     def get_title(self):
-        return f'van Ness test for {super().get_title()} & {self.model_display_name}'
+        return f'van Ness test for {super().get_title()} & {self.model.display_name}'
 
     def report(self):
         underline_echo(self.get_title())

@@ -53,7 +53,6 @@ export type FredenslundTestResponse = ConclusiveTestResult & {
 export type VanNessTestRequest = DatasetIdentifier & { model_name: string };
 
 export type VanNessTestResponse = ConclusiveTestResult & {
-    model_display_name: string;
     consistency_index: number;
     RMS: number;
     x_1: number[];

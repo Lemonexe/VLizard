@@ -16,7 +16,7 @@ const columnLabels = ['x1', 'residual'];
 type VanNessTestDialogProps = DialogProps & { req: VanNessTestRequest; data: VanNessTestResponse };
 
 export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClose, req, data }) => {
-    const label = `${req.compound1}-${req.compound2} ${req.dataset} & ${data.model_display_name}`;
+    const label = `${req.compound1}-${req.compound2} ${req.dataset} & ${req.model_name}`;
 
     const { van_Ness_marking_interval, van_Ness_max_mark } = useConfig();
 
