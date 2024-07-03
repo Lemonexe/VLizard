@@ -4,9 +4,13 @@ react-spreadsheet BUG report with minimal example
 
 revert simplify external links (error page needs it!)
 
+params from useConfig, not from api, that's lame...
+
+Use display name consistently
+
 Gamma test weighted
 
-Tabular results – refactor & apply
+Tabular results – refactor & apply.
     create ViewOnlyTable that does the memo array to spreadsheet values...
     the tables will fold & expand
     Apply:

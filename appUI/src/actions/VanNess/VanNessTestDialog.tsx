@@ -39,11 +39,13 @@ export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClos
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <p>Consistency index = {data.consistency_index} </p>
                 <p>Root mean square = {toPercent(data.RMS, 2)}</p>
-                <p style={{ fontStyle: 'italic' }}>
-                    Consistency index is ranked from 1 (perfect) to {van_Ness_max_mark} (unacceptable).
-                    <br />
-                    The interval for {data.consistency_index} is {toPercent(currentMarkLowerBound, 1)} &lt; RMS &le;{' '}
-                    {toPercent(currentMarkUpperBound, 1)}
+                <p>
+                    <em>
+                        Consistency index is ranked from 1 (perfect) to {van_Ness_max_mark} (unacceptable).
+                        <br />
+                        The interval for {data.consistency_index} is {toPercent(currentMarkLowerBound, 1)} &lt; RMS &le;{' '}
+                        {toPercent(currentMarkUpperBound, 1)}
+                    </em>
                 </p>
                 <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
                 <h4 className="h-margin">Residuals plot</h4>

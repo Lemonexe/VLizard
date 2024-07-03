@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Tooltip } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useData } from '../../../../contexts/DataContext.tsx';
@@ -12,10 +12,10 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
     const [model_name, setModel_name] = useState<string>(fitDataForSystem[0]?.model_name ?? '');
     const { perform, result } = useVanNessTestDialog({ ...props, model_name });
     const [nextStep, setNextStep] = useState(false);
-    const sendAndReset = () => {
+    const sendAndReset = useCallback(() => {
         setNextStep(false);
         perform();
-    };
+    }, [perform]);
 
     if (fitDataForSystem.length === 0)
         return (

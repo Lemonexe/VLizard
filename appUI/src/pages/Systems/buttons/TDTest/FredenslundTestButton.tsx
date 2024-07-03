@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Button, Stack, TextField } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useConfig } from '../../../../contexts/ConfigContext.tsx';
@@ -9,10 +9,10 @@ export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
     const [legendre_order, setLegendre_order] = useState(default_legendre_order);
     const { perform, result } = useFredenslundTestDialog({ ...props, legendre_order });
     const [nextStep, setNextStep] = useState(false);
-    const sendAndReset = () => {
+    const sendAndReset = useCallback(() => {
         setNextStep(false);
         perform();
-    };
+    }, [perform]);
 
     const form = !nextStep ? (
         <Button variant="contained" onClick={() => setNextStep(true)}>
