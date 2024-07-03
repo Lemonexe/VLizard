@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import Spreadsheet from 'react-spreadsheet';
 import { DialogContent } from '@mui/material';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
@@ -8,7 +7,7 @@ import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { VanNessTestRequest, VanNessTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { toPercent } from '../../adapters/logic/numbers.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 
@@ -31,10 +30,7 @@ export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClos
     const currentMarkLowerBound = van_Ness_marking_interval * (data.consistency_index - 1);
     const currentMarkUpperBound = van_Ness_marking_interval * data.consistency_index;
 
-    const spreadsheetData = useMemo(() => {
-        const dataColumns = [data.x_1, data.residuals];
-        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns)));
-    }, [data]);
+    const dataColumns = useMemo(() => [data.x_1, data.residuals], [data]);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -51,7 +47,7 @@ export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClos
                         {toPercent(currentMarkUpperBound, 1)}
                     </em>
                 </p>
-                <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
+                <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
                 <h4 className="h-margin">Residuals plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`van Ness test chart ${label}`} />
             </DialogContent>

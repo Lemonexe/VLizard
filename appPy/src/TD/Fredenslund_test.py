@@ -18,7 +18,10 @@ class Fredenslund_test(VLE):
         legendre_order (int): order of Legendre polynomial to use, must be 3, 4 or 5, default 4
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'legendre_order']
+        self.keys_to_serialize = [
+            'is_consistent', 'legendre_order', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'p_res', 'y_1_res',
+            'y_2_res'
+        ]
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
 

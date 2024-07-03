@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import Spreadsheet from 'react-spreadsheet';
 import { DialogContent, Stack } from '@mui/material';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { display_p_vec, display_T_vec } from '../../adapters/logic/UoM.ts';
@@ -7,9 +6,9 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
-import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
@@ -23,8 +22,8 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
         [UoM_T, UoM_p],
     );
 
-    const spreadsheetData = useMemo(() => {
-        const dataColumns = [
+    const dataColumns = useMemo(
+        () => [
             display_p_vec(data.p, UoM_p),
             display_T_vec(data.T, UoM_T),
             data.x_1,
@@ -33,9 +32,9 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
             data.gamma_2,
             display_p_vec(data.ps_1, UoM_p),
             display_p_vec(data.ps_2, UoM_p),
-        ];
-        return makeReadOnly(spreadsheetToSigDgts(fromRows(dataColumns)));
-    }, [data]);
+        ],
+        [data],
+    );
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -43,7 +42,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
             <DialogContent>
                 <Stack gap={3}>
                     <AnalysisWarnings warnings={data.warnings} />
-                    <Spreadsheet data={spreadsheetData} columnLabels={columnLabels} />
+                    <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
                     <h4 className="h-margin">xy plot</h4>
                     <PlotWithDownload svgContent={data.plot_xy} fileName={`xy chart ${label}`} />
                     <h4 className="h-margin">Txy plot</h4>

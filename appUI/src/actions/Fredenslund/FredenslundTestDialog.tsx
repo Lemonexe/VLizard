@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { Box, DialogContent } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
@@ -6,8 +6,11 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { sigDgtsCrit, sigDgtsMetrics, toSigDgts } from '../../adapters/logic/numbers.ts';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
+
+const columnLabels = ['x1', 'δp', 'Δy1', 'Δy2'];
 
 type FredenslundTestDialogProps = DialogProps & { req: FredenslundTestRequest; data: FredenslundTestResponse };
 
@@ -19,6 +22,8 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
         ${data.is_consistent ? 'are all' : 'must all be'}
         < ${toSigDgts(fredenslund_criterion, sigDgtsCrit)} %`,
     ];
+
+    const dataColumns = useMemo(() => [data.x_1, data.p_res, data.y_1_res, data.y_2_res], [data]);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -50,6 +55,8 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                     </table>
                     <p>Criterion for average residuals is {toSigDgts(fredenslund_criterion, sigDgtsCrit)}%</p>
                 </Box>
+
+                <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
 
                 <h4 className="h-margin">Legendre fitting plot</h4>
                 <PlotWithDownload svgContent={data.plot_g_E} fileName={`Fredenslund gE chart ${label}`} />

@@ -42,6 +42,10 @@ export type FredenslundTestResponse = ConclusiveTestResult & {
     p_res_avg: number;
     y_1_res_avg: number;
     y_2_res_avg: number;
+    x_1: number[];
+    p_res: number[];
+    y_1_res: number[];
+    y_2_res: number[];
     plot_g_E: string;
     plot_p_res: string;
     plot_y_1_res: string;

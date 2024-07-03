@@ -4,12 +4,6 @@ react-spreadsheet BUG report with minimal example
 
 Gamma test weighted
 
-Tabular results – refactor & apply.
-    create ViewOnlyTable that does the memo array to spreadsheet values...
-    the tables will fold & expand
-    Apply:
-        - Fredenslund
-
 Fit Analysis: tabulate at specific p
 
 build app
