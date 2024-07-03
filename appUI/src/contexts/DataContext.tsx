@@ -6,11 +6,20 @@ import {
     DatasetTable,
     GetVLEModelDefsResponse,
     GetVLESystemsResponse,
+    VLEModelDef,
     VLESystem,
 } from '../adapters/api/types/VLETypes.ts';
 import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vaporTypes.ts';
-import { GetPersistedFitsResponse } from '../adapters/api/types/fitTypes.ts';
-import { findCompound, findDataset, findSystem, listCompounds, listSystems } from '../adapters/logic/dataQueries.ts';
+import { GetPersistedFitsResponse, PersistedFit } from '../adapters/api/types/fitTypes.ts';
+import {
+    findCompound,
+    findDataset,
+    findSystem,
+    findVLEModelByName,
+    listCompounds,
+    listFitsForSystem,
+    listSystems,
+} from '../adapters/logic/dataQueries.ts';
 
 export type DataContextType = {
     compoundNames: string[];
@@ -24,6 +33,8 @@ export type DataContextType = {
     findCompound: (comp: string) => VaporModel | null;
     findSystem: (comp1: string, comp2: string) => VLESystem | null;
     findDataset: (comp1: string, comp2: string, dataset: string) => DatasetTable | null;
+    listFitsForSystem: (comp1: string, comp2: string) => PersistedFit[];
+    findVLEModelByName: (model_name: string) => VLEModelDef | null;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);
@@ -41,7 +52,7 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const { data: vaporDefs } = useGetVaporModelDefs();
     const { data: VLEModelDefs } = useGetVLEModelDefs();
 
-    const providerValue = useMemo(() => {
+    const providerValue = useMemo<DataContextType>(() => {
         return {
             compoundNames: listCompounds(vaporData),
             vaporData,
@@ -50,9 +61,11 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
             fitData,
             vaporDefs,
             VLEModelDefs,
-            findCompound: (comp: string) => findCompound(comp, vaporData),
-            findSystem: (comp1: string, comp2: string) => findSystem(comp1, comp2, VLEData),
-            findDataset: (comp1: string, comp2: string, dataset: string) => findDataset(comp1, comp2, dataset, VLEData),
+            findCompound: (comp) => findCompound(comp, vaporData),
+            findSystem: (comp1, comp2) => findSystem(comp1, comp2, VLEData),
+            findDataset: (comp1, comp2, dataset) => findDataset(comp1, comp2, dataset, VLEData),
+            listFitsForSystem: (comp1, comp2) => listFitsForSystem(comp1, comp2, fitData),
+            findVLEModelByName: (model_name) => findVLEModelByName(model_name, VLEModelDefs),
         };
     }, [vaporData, VLEData, fitData, vaporDefs]);
 

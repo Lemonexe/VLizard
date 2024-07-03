@@ -1,13 +1,12 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Tooltip } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useData } from '../../../../contexts/DataContext.tsx';
 import { useVanNessTestDialog } from '../../../../actions/VanNess/useVanNessTestDialog.tsx';
 
 export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
-    const { fitData } = useData();
-    const systemName = `${props.compound1}-${props.compound2}`;
-    const fitDataForSystem = fitData?.find((fit) => fit.system_name === systemName)?.fits ?? [];
+    const { listFitsForSystem, findVLEModelByName } = useData();
+    const fitDataForSystem = useMemo(() => listFitsForSystem(props.compound1, props.compound2), [props]);
 
     const [model_name, setModel_name] = useState<string>(fitDataForSystem[0]?.model_name ?? '');
     const { perform, result } = useVanNessTestDialog({ ...props, model_name });
@@ -16,6 +15,15 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
         setNextStep(false);
         perform();
     }, [perform]);
+
+    const menuItems = useMemo(
+        () =>
+            fitDataForSystem.map(({ model_name: name }) => {
+                const displayName = findVLEModelByName(name)?.display_name ?? name;
+                return <MenuItem key={name} value={name} children={displayName} />;
+            }),
+        [fitDataForSystem],
+    );
 
     if (fitDataForSystem.length === 0)
         return (
@@ -28,7 +36,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
             </Tooltip>
         );
 
-    const inputLabelId = `models-${systemName}`;
+    const inputLabelId = `models-${props.compound1}-${props.compound2}`;
 
     const form = !nextStep ? (
         <Button variant="contained" onClick={() => setNextStep(true)}>
@@ -45,11 +53,8 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
                         label="Datasets"
                         value={model_name}
                         onChange={(e) => setModel_name(e.target.value)}
-                    >
-                        {fitDataForSystem.map((model) => (
-                            <MenuItem key={model.model_name} value={model.model_name} children={model.model_name} />
-                        ))}
-                    </Select>
+                        children={menuItems}
+                    />
                 </FormControl>
                 <Button variant="contained" onClick={sendAndReset}>
                     Run

@@ -1,5 +1,6 @@
-import { DatasetTable, GetVLESystemsResponse, VLESystem } from '../api/types/VLETypes.ts';
+import { DatasetTable, GetVLEModelDefsResponse, GetVLESystemsResponse, VLESystem } from '../api/types/VLETypes.ts';
 import { GetVaporModelsResponse, VaporModel } from '../api/types/vaporTypes.ts';
+import { GetPersistedFitsResponse, PersistedFit } from '../api/types/fitTypes.ts';
 
 export const listCompounds = (vaporData?: GetVaporModelsResponse): string[] =>
     vaporData?.map(({ compound }) => compound) ?? [];
@@ -22,3 +23,11 @@ export const findDataset = (
     const system = findSystem(comp1, comp2, VLEData);
     return system?.datasets.find(({ name }) => name === dataset) ?? null;
 };
+
+export const listFitsForSystem = (comp1: string, comp2: string, fitData?: GetPersistedFitsResponse): PersistedFit[] => {
+    const systemName = `${comp1}-${comp2}`;
+    return fitData?.find((fit) => fit.system_name === systemName)?.fits ?? [];
+};
+
+export const findVLEModelByName = (model_name: string, VLEModelDefs?: GetVLEModelDefsResponse) =>
+    VLEModelDefs?.find(({ name }) => name === model_name) ?? null;

@@ -16,6 +16,7 @@ export type GetVLESystemsResponse = VLESystem[];
 /* GET general definitions of model types */
 export type VLEModelDef = {
     name: string;
+    display_name: string;
     nparams0: NamedParams;
     param_labels: Record<string, string>;
     is_gamma_T_fun: boolean;

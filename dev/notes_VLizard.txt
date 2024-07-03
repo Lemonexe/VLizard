@@ -2,8 +2,6 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
 
-Use display name consistently
-
 Gamma test weighted
 
 Tabular results – refactor & apply.

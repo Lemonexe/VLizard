@@ -10,6 +10,7 @@ import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { sigDgtsMetrics, sigDgtsParams, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { useData } from '../../contexts/DataContext.tsx';
 
 const fitQualityMetrics = ['Root mean square', 'Average absolute deviation'];
 
@@ -33,9 +34,12 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
 type FitResultsDialogProps = DialogProps & { req: FitAnalysisRequest; data: FitAnalysisResponse };
 
 export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose, req, data }) => {
+    const { findVLEModelByName } = useData();
+    // findVLEModel is guaranteed; the procedure has just been successfully invoked
+    const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
     const optimized = data.is_optimized;
     const system = `${req.compound1}-${req.compound2}`;
-    const label = `${system} ${req.model_name}`;
+    const label = `${system} ${modelDisplayName}`;
 
     const param_names = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
 
@@ -62,7 +66,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open}>
             <DialogTitleWithX handleClose={handleClose}>
-                Non-linear regression of {req.model_name} on {system}, {req.datasets.join(', ')}
+                Non-linear regression of {modelDisplayName} on {system}, {req.datasets.join(', ')}
             </DialogTitleWithX>
             <DialogContent>
                 {!optimized && <Alert severity="info" children="Optimization not performed this time" />}

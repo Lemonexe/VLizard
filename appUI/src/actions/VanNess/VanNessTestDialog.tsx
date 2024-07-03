@@ -10,13 +10,17 @@ import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyR
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { toPercent } from '../../adapters/logic/numbers.ts';
+import { useData } from '../../contexts/DataContext.tsx';
 
 const columnLabels = ['x1', 'residual'];
 
 type VanNessTestDialogProps = DialogProps & { req: VanNessTestRequest; data: VanNessTestResponse };
 
 export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClose, req, data }) => {
-    const label = `${req.compound1}-${req.compound2} ${req.dataset} & ${req.model_name}`;
+    const { findVLEModelByName } = useData();
+    // findVLEModel is guaranteed; the procedure has just been successfully invoked
+    const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
+    const label = `${req.compound1}-${req.compound2} ${req.dataset} & ${modelDisplayName}`;
 
     const { van_Ness_marking_interval, van_Ness_max_mark } = useConfig();
 

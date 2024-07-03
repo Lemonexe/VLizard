@@ -43,13 +43,21 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const isEdit = Boolean(currentFit);
 
     // systemNames & VLEModelDefs are guaranteed, see FittedModelsTable.tsx
-    const { VLEModelDefs, VLEData } = useData();
+    const { VLEModelDefs, VLEData, findVLEModelByName } = useData();
     const system_name = `${compound1}-${compound2}`;
 
     // model choice
     const [model_name, setModel_name] = useState(() => currentFit?.model_name ?? '');
     const findModelDef = (modelName: string) => VLEModelDefs!.find((vd) => vd.name === modelName);
     const modelDef = useMemo(() => findModelDef(model_name), [model_name]);
+    const modelMenuItems = useMemo(
+        () =>
+            VLEModelDefs!.map((v) => {
+                const displayName = findVLEModelByName(v.name)!.display_name;
+                return <MenuItem key={v.name} value={v.name} children={displayName} />;
+            }),
+        [],
+    );
 
     // datasets choice
     const systemDatasets = VLEData!.filter((system) => system.system_name === system_name)[0].datasets;
@@ -122,11 +130,8 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
                                     setData(getInitialData(e.target.value));
                                     setConst_param_names(getDefaultConsts(e.target.value));
                                 }}
-                            >
-                                {VLEModelDefs!.map((v) => (
-                                    <MenuItem key={v.name} value={v.name} children={v.name} />
-                                ))}
-                            </Select>
+                                children={modelMenuItems}
+                            />
                         </FormControl>
                         {modelDef && (
                             <Stack direction="row" gap={1} alignItems="center">
