@@ -4,8 +4,6 @@ react-spreadsheet BUG report with minimal example
 
 Gamma test weighted
 
-Fit Analysis: tabulate at specific p
-
 build app
     make default data for EtOH-H2O on install
     cleanup old /data folder, it shall be used only for tests or seeding

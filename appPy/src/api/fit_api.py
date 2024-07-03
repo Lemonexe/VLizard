@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from src.plot.Fit_VLE_plot import Fit_VLE_plot
 from src.plot.Fit_Vapor_plot import Fit_Vapor_plot
-from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit
+from src.plot.VLE_Tabulation_plot import VLE_Tabulation_plot
+from src.fit.persist_fit import get_all_persisted_fits, persist_fit, delete_persisted_fit, get_persisted_fit_with_model
 from .helpers.schema_validation import unpack_request_schema
 
 fit_blueprint = Blueprint('Fit', __name__, url_prefix='/fit')
@@ -78,3 +79,22 @@ def delete_VLE_fit_api():
     params = unpack_request_schema(request, schema)
     delete_persisted_fit(*params.values())
     return "OK"
+
+
+@fit_blueprint.post('/vle/tabulate')
+def fit_VLE_tabulate_api():
+    """Tabulate existing VLE fitting at given pressure."""
+    param_schema = {'compound1': True, 'compound2': True, 'model_name': True, 'p': True}
+    params = unpack_request_schema(request, param_schema)
+
+    pfit, model = get_persisted_fit_with_model(params['compound1'], params['compound2'], params['model_name'])
+    nparams = pfit['results']['nparams']
+    model_params = [nparams[key] for key in model.param_names]
+
+    label = f'{params["p"]} kPa'
+    tab = VLE_Tabulation_plot(model, model_params, params['compound1'], params['compound2'], label, params['p'])
+    payload = tab.serialize()
+    payload['xy_plot'] = tab.plot_xy(mode='svg'),
+    payload['Txy_plot'] = tab.plot_Txy(mode='svg'),
+    payload['gamma_plot'] = tab.plot_gamma(mode='svg')
+    return payload

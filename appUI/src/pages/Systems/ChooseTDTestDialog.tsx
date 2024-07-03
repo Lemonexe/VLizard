@@ -13,7 +13,7 @@ import { FredenslundTestButton } from './buttons/TDTest/FredenslundTestButton.ts
 import { VanNessTestButton } from './buttons/TDTest/VanNessTestButton.tsx';
 
 export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, handleClose, ...props }) => (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'xs'}>
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
         <DialogTitleWithX handleClose={handleClose}>
             Analysis for {props.compound1}-{props.compound2} {props.dataset}
         </DialogTitleWithX>

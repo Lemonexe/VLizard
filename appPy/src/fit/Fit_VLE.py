@@ -73,7 +73,10 @@ class Fit_VLE(Fit):
 
     def tabulate(self):
         """Tabulate model using final params for each dataset."""
-        self.tabulated_datasets = [VLE_Tabulation(self.model, self.params, vle) for vle in self.dataset_VLEs]
+        self.tabulated_datasets = [
+            VLE_Tabulation(self.model, self.params, self.compound1, self.compound2, vle.dataset_name, np.mean(vle.p))
+            for vle in self.dataset_VLEs
+        ]
 
     def report(self):
         underline_echo(self.get_title())

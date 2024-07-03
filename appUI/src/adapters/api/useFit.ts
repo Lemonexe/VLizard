@@ -6,7 +6,9 @@ import {
     DeleteFitRequest,
     FitAnalysisRequest,
     FitAnalysisResponse,
+    FitTabulateRequest,
     GetPersistedFitsResponse,
+    TabulatedDataset,
     VaporFitRequest,
     VaporFitResponse,
 } from './types/fitTypes.ts';
@@ -57,6 +59,17 @@ export const useDeleteFit = () => {
             await axios.delete(hostName + '/fit/vle', { data: payload });
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: getPersistedFitsKey }),
+        onError,
+    });
+};
+
+export const useTabulateVLEFit = () => {
+    const onError = useNotifyErrorMessage();
+    return useMutation({
+        mutationFn: async (payload: FitTabulateRequest) => {
+            const { data } = await axios.post<TabulatedDataset>(hostName + '/fit/vle/tabulate', payload);
+            return data;
+        },
         onError,
     });
 };

@@ -1,26 +1,31 @@
 import numpy as np
 from scipy.optimize import root
-from scipy.interpolate import UnivariateSpline
 from src.config import cst
 from src.utils.Result import Result
 from src.utils.errors import AppException
+from src.TD.Vapor import Vapor
 
 
 class VLE_Tabulation(Result):
 
-    def __init__(self, model, params, vle):
+    def __init__(self, model, params, compound1, compound2, name, p):
         """
         Create isobaric tabulation of a VLE dataset using a thermodynamic model and its params
 
         model (VLE_Model): instance of selected thermodynamic VLE model
         params (list of floats or np.array(n)): model parameters
-        vle (VLE): instance of VLE analysis for one dataset of binary system
+        compound1, compound2 (str): names of compounds
+        name (str): name of the tabulation
+        p (float): constant pressure for tabulation [kPa]
         """
         super().__init__()
-        self.keys_to_serialize = ['p_mean', 'name']
-        self.name = vle.dataset_name
-        n = cst.x_points_smooth_plot
+        self.keys_to_serialize = ['p', 'name']  # numerical vectors are not serialized, because they are plotted
+        self.name = name
+        self.title = f'{compound1}-{compound2} with {model.display_name} for {name}'
+        self.model_name = model.display_name
+        self.p = p
 
+        n = cst.x_points_smooth_plot
         x_1 = self.x_1 = np.linspace(0, 1, n)
         T = self.T = np.zeros(n)
         y_1 = self.y_1 = np.zeros(n)
@@ -28,14 +33,18 @@ class VLE_Tabulation(Result):
         gamma_1 = self.gamma_1 = np.zeros(n)
         gamma_2 = self.gamma_2 = np.zeros(n)
 
-        p_mean = self.p_mean = np.mean(vle.p)
-        T_spline = UnivariateSpline(vle.x_1, vle.T)  # use measured data as initial estimate for boiling temperature
+        vapor_1 = Vapor(compound1)
+        vapor_2 = Vapor(compound2)
+        ps_fun_1 = vapor_1.ps_fun
+        ps_fun_2 = vapor_2.ps_fun
+        T_boil_1 = vapor_1.get_T_boil(p)
+        T_boil_2 = vapor_2.get_T_boil(p)
 
         # tabulate for each point in VLE dataset
         for i, x_1i in enumerate(x_1):
-            T_boil_est = T_spline(x_1i)
-            T[i], y_1[i], y_2[i], gamma_1[i], gamma_2[i] = tabulate_VLE_point(model, params, vle.ps_fun_1, vle.ps_fun_2,
-                                                                              p_mean, x_1i, T_boil_est)
+            T_boil_est = T_boil_2 + (T_boil_1-T_boil_2) * x_1i  # linear interpolation of pures as initial estimate
+            result = tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1i, T_boil_est)
+            T[i], y_1[i], y_2[i], gamma_1[i], gamma_2[i] = result
 
 
 def tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1, T_boil_est=400):

@@ -28,7 +28,7 @@ export type PersistedFitsForSystem = {
 
 export type GetPersistedFitsResponse = PersistedFitsForSystem[];
 
-/* POST VLE FIT */
+/* POST VLE FIT & TABULATE */
 export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     model_name: string;
     nparams0?: NamedParams;
@@ -38,7 +38,7 @@ export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
 
 export type TabulatedDataset = AnalysisResult & {
     name: string;
-    p_mean: number;
+    p: number;
     xy_plot: string;
     Txy_plot: string;
     gamma_plot: string;
@@ -57,6 +57,8 @@ export type FitAnalysisResponse = FitMetrics & {
     nparams: NamedParams;
     tabulated_datasets: TabulatedDataset[];
 };
+
+export type FitTabulateRequest = SystemIdentifier & { model_name: string; p: number };
 
 /* DELETE VLE FIT */
 export type DeleteFitRequest = SystemIdentifier & {

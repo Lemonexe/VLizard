@@ -24,7 +24,7 @@ const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
         <h4 className="h-margin">
             Dataset <q>{ds.name}</q>
         </h4>
-        (mean pressure is {toSigDgts(ds.p_mean)} kPa)
+        (mean pressure is {toSigDgts(ds.p)} kPa)
         <PlotWithDownload svgContent={ds.xy_plot} fileName={`xy fit chart ${label} ${ds.name}`} />
         <PlotWithDownload svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />
         <PlotWithDownload svgContent={ds.gamma_plot} fileName={`gamma fit chart ${label} ${ds.name}`} />

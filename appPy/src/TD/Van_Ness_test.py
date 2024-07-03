@@ -1,11 +1,8 @@
 import numpy as np
 from src.config import cfg
-from src.utils.errors import AppException
 from src.utils.io.echo import echo, ok_echo, warn_echo, err_echo, underline_echo
-from src.utils.models import get_model_by_name
-from src.fit.persist_fit import get_persisted_fit
+from src.fit.persist_fit import get_persisted_fit_with_model
 from src.fit.utils import RMS
-from src.TD.VLE_models.supported_models import supported_models
 from .VLE import VLE
 
 
@@ -22,13 +19,11 @@ class Van_Ness_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'x_1', 'residuals']
 
-        self.persisted_fit = pfit = get_persisted_fit(compound1, compound2, model_name)
-        if pfit is None: raise AppException(f'Persisted {model_name} fit for {compound1}-{compound2} not found')
-        self.model = model = get_model_by_name(supported_models, model_name)
+        self.persisted_fit, self.model = get_persisted_fit_with_model(compound1, compound2, model_name)
 
-        nparams = pfit['results']['nparams']
-        params = [nparams[key] for key in model.param_names]
-        gamma_1_calc, gamma_2_calc = model.fun(self.x_1, self.T, *params)
+        nparams = self.persisted_fit['results']['nparams']
+        params = [nparams[key] for key in self.model.param_names]
+        gamma_1_calc, gamma_2_calc = self.model.fun(self.x_1, self.T, *params)
 
         # calculate residuals of van Ness test
         self.residuals = np.log(self.gamma_1 / self.gamma_2) - np.log(gamma_1_calc / gamma_2_calc)
