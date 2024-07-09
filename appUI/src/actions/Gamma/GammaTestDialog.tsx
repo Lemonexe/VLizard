@@ -22,7 +22,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
-            <DialogTitleWithX handleClose={handleClose}>Gamma test for {label}</DialogTitleWithX>
+            <DialogTitleWithX handleClose={handleClose}>Gamma offset test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <h4 className="h-margin">Results</h4>

@@ -6,6 +6,13 @@ from .VLE_models.van_Laar import van_Laar_with_error
 from .VLE import VLE
 
 
+def weigh_by_x(x_1, resids):
+    """Weigh gammas residuals by mole fractions to accent data points in pure region."""
+    x_2 = 1 - x_1
+    res1, res2 = resids
+    return np.vstack([x_1 * res1, x_2 * res2])
+
+
 # perform simple test if γ1, γ2 extrapolates to 1 for pure compounds, as it must
 class Gamma_test(VLE):
 
@@ -25,7 +32,7 @@ class Gamma_test(VLE):
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
 
         # vector of residuals for least_squares
-        residual = lambda params: (van_Laar_with_error(self.x_1, 0, *params) - gamma_M).flatten()
+        residual = lambda params: weigh_by_x(self.x_1, van_Laar_with_error(self.x_1, 0, *params) - gamma_M).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
@@ -44,8 +51,8 @@ class Gamma_test(VLE):
         self.report_warnings()
 
         err_1, err_2 = self.err_1, self.err_2
-        echo(f'γ1(x1=1) = {(1 + err_1):.3f}')
-        echo(f'γ2(x2=1) = {(1 + err_2):.3f}')
+        echo(f'γ1(x1=1) = {(1 + err_1):.3f}      |Δ| = {abs(err_1*100):.1f} %')
+        echo(f'γ2(x2=1) = {(1 + err_2):.3f}      |Δ| = {abs(err_2*100):.1f} %')
 
         template = lambda i, err: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(err*100):4.1f} % error was extrapolated (tolerance = {(cfg.gamma_abs_tol * 100)} %)'
         if abs(err_2) > cfg.gamma_abs_tol:

@@ -8,7 +8,7 @@ export const GammaTestButton: FC<DatasetIdentifier> = (props) => {
     return (
         <>
             <Button variant="contained" onClick={perform}>
-                Gamma test
+                Gamma offset test
             </Button>
             {result}
         </>
