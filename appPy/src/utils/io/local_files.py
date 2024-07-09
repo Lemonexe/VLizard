@@ -1,4 +1,5 @@
 import os
+import shutil
 
 # all file operations in whole project should use these paths as the source of truth
 documents_folder = os.path.join(os.environ['USERPROFILE'], 'Documents')
@@ -17,10 +18,17 @@ def touch_dir(path):
 
 def create_user_folders():
     """Create the necessary folders in user's Documents for the app."""
+    should_seed = not os.path.exists(app_folder_path)
     touch_dir(app_folder_path)
     touch_dir(data_folder_path)
+
     touch_dir(join_data_path('VLE'))
     touch_dir(join_data_path('ps'))
+
+    if should_seed:
+        shutil.copy('seed_data/Wagner.tsv', join_data_path('ps'))
+        touch_dir(join_data_path('VLE', 'EtOH-H2O'))
+        shutil.copy('seed_data/33kPa.tsv', join_data_path('VLE', 'EtOH-H2O'))
 
 
 create_user_folders()

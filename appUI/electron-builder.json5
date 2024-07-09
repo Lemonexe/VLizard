@@ -4,6 +4,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "VLizard",
+  "productName": "VLizard",
   "asar": true,
   "icon": "public/icon.png",
   "directories": {
@@ -11,7 +12,8 @@
   },
   "files": ["dist-electron", "dist"],
   "extraResources": [
-    {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server.exe"]}
+    {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server.exe"]},
+    {"from": "../appPy/seed_data", "to": "./seed_data/"}
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
