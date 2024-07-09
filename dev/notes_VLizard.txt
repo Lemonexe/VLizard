@@ -2,8 +2,11 @@ react-spreadsheet BUG report with minimal example
     https://github.com/iddan/react-spreadsheet/issues/279
     see https://github.com/iddan/react-spreadsheet/pull/387
 
+settings option for chart grids
+
 Gamma test weighted
 
 build app
     make default data for EtOH-H2O on install
     cleanup old /data folder, it shall be used only for tests or seeding
+

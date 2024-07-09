@@ -4,6 +4,8 @@ import { useVLEFit } from '../../adapters/api/useFit.ts';
 import { FitAnalysisRequest, FitAnalysisResponse } from '../../adapters/api/types/fitTypes.ts';
 import { FitVLEResultsDialog } from './FitVLEResultsDialog.tsx';
 
+export type PerformFitVLE = (props: FitAnalysisRequest) => void;
+
 export const useFitVLEResultsDialog = () => {
     const [open, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), []);
@@ -11,8 +13,8 @@ export const useFitVLEResultsDialog = () => {
 
     const { mutate } = useVLEFit();
 
-    const perform = useCallback(
-        (props: FitAnalysisRequest) => {
+    const perform = useCallback<PerformFitVLE>(
+        (props) => {
             setOpen(true);
             setElem(<LoadingDialog />);
             mutate(props, {

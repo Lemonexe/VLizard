@@ -19,7 +19,7 @@ class VLE_Tabulation(Result):
         p (float): constant pressure for tabulation [kPa]
         """
         super().__init__()
-        self.keys_to_serialize = ['p', 'name']  # numerical vectors are not serialized, because they are plotted
+        self.keys_to_serialize = ['p', 'name']
         self.name = name
         self.title = f'{compound1}-{compound2} with {model.display_name} for {name}'
         self.model_name = model.display_name
@@ -45,6 +45,11 @@ class VLE_Tabulation(Result):
             T_boil_est = T_boil_2 + (T_boil_1-T_boil_2) * x_1i  # linear interpolation of pures as initial estimate
             result = tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1i, T_boil_est)
             T[i], y_1[i], y_2[i], gamma_1[i], gamma_2[i] = result
+
+        T_data_bounds = (np.min(self.T), np.max(self.T))
+        vapor_1.check_T_bounds(*T_data_bounds)
+        vapor_2.check_T_bounds(*T_data_bounds)
+        self.merge_warnings(vapor_1, vapor_2)
 
 
 def tabulate_VLE_point(model, params, ps_fun_1, ps_fun_2, p, x_1, T_boil_est=400):

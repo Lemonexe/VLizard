@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, FormEvent, useCallback, useMemo, useState } from 'react';
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Tooltip } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useData } from '../../../../contexts/DataContext.tsx';
@@ -11,10 +11,15 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
     const [model_name, setModel_name] = useState<string>(fitDataForSystem[0]?.model_name ?? '');
     const { perform, result } = useVanNessTestDialog({ ...props, model_name });
     const [nextStep, setNextStep] = useState(false);
-    const sendAndReset = useCallback(() => {
-        setNextStep(false);
-        perform();
-    }, [perform]);
+
+    const handleSubmit = useCallback(
+        (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            setNextStep(false);
+            perform();
+        },
+        [perform],
+    );
 
     const menuItems = useMemo(
         () =>
@@ -43,7 +48,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
             Van Ness test
         </Button>
     ) : (
-        <form onSubmit={sendAndReset}>
+        <form onSubmit={handleSubmit}>
             <Stack direction="row" gap={1}>
                 <FormControl fullWidth className="medium-input">
                     <InputLabel id={inputLabelId}>Model</InputLabel>
@@ -56,7 +61,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
                         children={menuItems}
                     />
                 </FormControl>
-                <Button variant="contained" onClick={sendAndReset}>
+                <Button type="submit" variant="contained">
                     Run
                 </Button>
             </Stack>

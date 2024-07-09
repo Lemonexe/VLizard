@@ -11,12 +11,14 @@ export const AddDatasetButton: FC<SystemIdentifier> = ({ compound1, compound2 })
             <Tooltip title="Add a new dataset">
                 <IconButton children={<PostAdd />} onClick={() => setOpen(true)} />
             </Tooltip>
-            <UpsertDatasetDialog
-                open={open}
-                handleClose={() => setOpen(false)}
-                origCompound1={compound1}
-                origCompound2={compound2}
-            />
+            {open && (
+                <UpsertDatasetDialog
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                    origCompound1={compound1}
+                    origCompound2={compound2}
+                />
+            )}
         </>
     );
 };

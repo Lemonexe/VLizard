@@ -10,7 +10,7 @@ export const AddSystemButton: FC = () => {
             <Button variant="contained" startIcon={<PostAdd />} onClick={() => setOpen(true)}>
                 Add new
             </Button>
-            <UpsertDatasetDialog open={open} handleClose={() => setOpen(false)} />
+            {open && <UpsertDatasetDialog open={open} handleClose={() => setOpen(false)} />}
         </>
     );
 };

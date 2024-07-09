@@ -36,7 +36,7 @@ export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
     skip_optimization?: boolean;
 };
 
-export type TabulatedDataset = AnalysisResult & {
+export type PlottedDataset = AnalysisResult & {
     name: string;
     p: number;
     xy_plot: string;
@@ -55,10 +55,13 @@ type FitMetrics = AnalysisResult & {
 export type FitAnalysisResponse = FitMetrics & {
     nparams0: NamedParams;
     nparams: NamedParams;
-    tabulated_datasets: TabulatedDataset[];
+    tabulated_datasets: PlottedDataset[];
 };
 
 export type FitTabulateRequest = SystemIdentifier & { model_name: string; p: number };
+
+type DatasetTabulation = { T: number[]; x_1: number[]; y_1: number[]; gamma_1: number[]; gamma_2: number[] };
+export type TabulatedDataset = PlottedDataset & DatasetTabulation;
 
 /* DELETE VLE FIT */
 export type DeleteFitRequest = SystemIdentifier & {

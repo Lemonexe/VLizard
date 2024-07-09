@@ -2,6 +2,7 @@ import { FC, useMemo } from 'react';
 import { Table, TableBody, TableRow } from '@mui/material';
 import { DenseTableCell } from '../../components/Mui/TableComponents.tsx';
 import { PlotFittedModelButton } from './buttons/PlotFittedModelButton.tsx';
+import { TabulateModelButton } from './buttons/TabulateModelButton.tsx';
 import { AlterFittedModelButton } from './buttons/AlterFittedModelButton.tsx';
 import { DeleteFittedModelButton } from './buttons/DeleteFittedModelButton.tsx';
 import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
@@ -22,6 +23,7 @@ export const FitsSubTable: FC<FitsSubTableProps> = ({ fitsForSystem: { system_na
                         <DenseTableCell>{modelDisplayName} model</DenseTableCell>
                         <DenseTableCell>
                             <PlotFittedModelButton compound1={comp1} compound2={comp2} fit={fit} />
+                            <TabulateModelButton compound1={comp1} compound2={comp2} fit={fit} />
                             <AlterFittedModelButton compound1={comp1} compound2={comp2} fit={fit} />
                             <DeleteFittedModelButton compound1={comp1} compound2={comp2} model_name={fit.model_name} />
                         </DenseTableCell>

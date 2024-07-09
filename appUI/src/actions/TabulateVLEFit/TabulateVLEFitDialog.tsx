@@ -2,10 +2,14 @@ import { FC, useMemo } from 'react';
 import { DialogContent } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { FitTabulateRequest, TabulatedDataset } from '../../adapters/api/types/fitTypes.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
+import { display_T_vec } from '../../adapters/logic/UoM.ts';
 
 type TabulateVLEFitDialogProps = DialogProps & { req: FitTabulateRequest; data: TabulatedDataset };
 
@@ -15,10 +19,19 @@ export const TabulateVLEFitDialog: FC<TabulateVLEFitDialogProps> = ({ open, hand
     const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
     const label = `${req.compound1}-${req.compound2} with ${modelDisplayName} for ${data.name}`;
 
+    const { UoM_T } = useConfig();
+    const columnLabels = useMemo(() => ['x1', 'y1', `T / ${UoM_T}`, 'gamma1', 'gamma2'], [UoM_T]);
+    const dataColumns = useMemo(
+        () => [data.x_1, data.y_1, display_T_vec(data.T, UoM_T), data.gamma_1, data.gamma_2],
+        [data],
+    );
+
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Tabulation of {label}</DialogTitleWithX>
             <DialogContent>
+                <AnalysisWarnings warnings={data.warnings} />
+                <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
                 <PlotWithDownload svgContent={data.xy_plot} fileName={`xy fit chart ${label}`} />
                 <PlotWithDownload svgContent={data.Txy_plot} fileName={`Txy fit chart ${label}`} />
                 <PlotWithDownload svgContent={data.gamma_plot} fileName={`gamma fit chart ${label}`} />

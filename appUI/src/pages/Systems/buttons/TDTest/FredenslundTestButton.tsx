@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, FormEvent, useCallback, useState } from 'react';
 import { Button, Stack, TextField } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useConfig } from '../../../../contexts/ConfigContext.tsx';
@@ -9,17 +9,22 @@ export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
     const [legendre_order, setLegendre_order] = useState(default_legendre_order);
     const { perform, result } = useFredenslundTestDialog({ ...props, legendre_order });
     const [nextStep, setNextStep] = useState(false);
-    const sendAndReset = useCallback(() => {
-        setNextStep(false);
-        perform();
-    }, [perform]);
+
+    const handleSubmit = useCallback(
+        (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            setNextStep(false);
+            perform();
+        },
+        [perform],
+    );
 
     const form = !nextStep ? (
         <Button variant="contained" onClick={() => setNextStep(true)}>
             Fredenslund test
         </Button>
     ) : (
-        <form onSubmit={sendAndReset}>
+        <form onSubmit={handleSubmit}>
             <Stack direction="row" gap={1}>
                 <TextField
                     type="number"
@@ -31,7 +36,7 @@ export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
                     autoFocus
                     fullWidth
                 />
-                <Button variant="contained" onClick={sendAndReset}>
+                <Button type="submit" variant="contained">
                     Run
                 </Button>
             </Stack>

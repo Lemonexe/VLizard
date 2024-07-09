@@ -25,20 +25,23 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
-import { useFitVLEResultsDialog } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
+import { PerformFitVLE } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
 
-type UpsertDatasetDialogProps = DialogProps &
+type SpecifyFitDialogProps = DialogProps &
     SystemIdentifier & {
+        // useFitVLEResultsDialog must be passed from above, so that the Dialog can be removed when closed (and result opened)
+        performFitVLE: PerformFitVLE;
         // defined for Alter fit, undefined for Perform fit
         currentFit?: PersistedFit;
     };
 
-export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
+export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
     compound1,
     compound2,
     currentFit,
     open,
     handleClose,
+    performFitVLE,
 }) => {
     const isEdit = Boolean(currentFit);
 
@@ -82,111 +85,107 @@ export const SpecifyFitDialog: FC<UpsertDatasetDialogProps> = ({
     const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
 
     // GET RESULTS DIALOG
-    const { perform, result } = useFitVLEResultsDialog();
     const handleSave = useCallback(() => {
         const params0 = toNumMatrix(data)[0];
         const nparams0 = toNamedParams(paramNames, params0);
         const skip_optimization = !isFreedom;
-        perform({ compound1, compound2, datasets, model_name, nparams0, const_param_names, skip_optimization });
+        performFitVLE({ compound1, compound2, datasets, model_name, nparams0, const_param_names, skip_optimization });
         handleClose();
-    }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, perform]);
+    }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, performFitVLE]);
 
     // OVERALL ERROR CHECK
     const isError = !isDataWhole || !datasets.length;
 
     return (
-        <>
-            <Dialog fullScreen open={open}>
-                <DialogTitleWithX handleClose={handleClose}>
-                    {isEdit ? 'Alter the' : 'Perform new'} model fitting for {compound1}-{compound2}
-                </DialogTitleWithX>
-                <DialogContent>
-                    <Stack direction="column" gap={2} pt={1}>
+        <Dialog fullScreen open={open}>
+            <DialogTitleWithX handleClose={handleClose}>
+                {isEdit ? 'Alter the' : 'Perform new'} model fitting for {compound1}-{compound2}
+            </DialogTitleWithX>
+            <DialogContent>
+                <Stack direction="column" gap={2} pt={1}>
+                    <Stack direction="row" gap={1} alignItems="center">
+                        <FormControl fullWidth className="medium-input">
+                            <InputLabel id="datasets">Datasets</InputLabel>
+                            <Select
+                                multiple
+                                labelId="datasets"
+                                label="Datasets"
+                                value={datasets}
+                                onChange={(e) => setDatasets(e.target.value as string[])}
+                            >
+                                {systemDatasets.map(({ name }) => (
+                                    <MenuItem key={name} value={name} children={name} />
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {datasets.length === 0 && <ErrorLabel title="No datasets selected!" />}
+                    </Stack>
+                    <FormControl fullWidth className="medium-input">
+                        <InputLabel id="model">Model type</InputLabel>
+                        <Select
+                            labelId="model"
+                            label="Model type"
+                            value={model_name}
+                            onChange={(e) => {
+                                setModel_name(e.target.value);
+                                setData(getInitialData(e.target.value));
+                                setConst_param_names(getDefaultConsts(e.target.value));
+                            }}
+                            children={modelMenuItems}
+                        />
+                    </FormControl>
+                    {modelDef && (
                         <Stack direction="row" gap={1} alignItems="center">
                             <FormControl fullWidth className="medium-input">
-                                <InputLabel id="datasets">Datasets</InputLabel>
+                                <InputLabel id="keepConstant">Params to keep constant</InputLabel>
                                 <Select
                                     multiple
-                                    labelId="datasets"
-                                    label="Datasets"
-                                    value={datasets}
-                                    onChange={(e) => setDatasets(e.target.value as string[])}
+                                    labelId="keepConstant"
+                                    label="Params to keep constant"
+                                    value={const_param_names}
+                                    onChange={(e) => setConst_param_names(e.target.value as string[])}
                                 >
-                                    {systemDatasets.map(({ name }) => (
-                                        <MenuItem key={name} value={name} children={name} />
+                                    {paramNames.map((name) => (
+                                        <MenuItem
+                                            key={name}
+                                            value={name}
+                                            children={name}
+                                            disabled={(modelDef?.always_const_param_names ?? []).includes(name)}
+                                        />
                                     ))}
                                 </Select>
                             </FormControl>
-                            {datasets.length === 0 && <ErrorLabel title="No datasets selected!" />}
+                            {!isFreedom && <InfoLabel title="No params left to optimize." />}
                         </Stack>
-                        <FormControl fullWidth className="medium-input">
-                            <InputLabel id="model">Model type</InputLabel>
-                            <Select
-                                labelId="model"
-                                label="Model type"
-                                value={model_name}
-                                onChange={(e) => {
-                                    setModel_name(e.target.value);
-                                    setData(getInitialData(e.target.value));
-                                    setConst_param_names(getDefaultConsts(e.target.value));
-                                }}
-                                children={modelMenuItems}
-                            />
-                        </FormControl>
-                        {modelDef && (
-                            <Stack direction="row" gap={1} alignItems="center">
-                                <FormControl fullWidth className="medium-input">
-                                    <InputLabel id="keepConstant">Params to keep constant</InputLabel>
-                                    <Select
-                                        multiple
-                                        labelId="keepConstant"
-                                        label="Params to keep constant"
-                                        value={const_param_names}
-                                        onChange={(e) => setConst_param_names(e.target.value as string[])}
-                                    >
-                                        {paramNames.map((name) => (
-                                            <MenuItem
-                                                key={name}
-                                                value={name}
-                                                children={name}
-                                                disabled={(modelDef?.always_const_param_names ?? []).includes(name)}
-                                            />
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                {!isFreedom && <InfoLabel title="No params left to optimize." />}
-                            </Stack>
-                        )}
-                    </Stack>
-                    {modelDef && (
-                        <Box pt={3}>
-                            <p>
-                                <strong>Model parameters</strong>
-                            </p>
-                            <ParamsSpreadsheet
-                                data={data}
-                                setData={setData}
-                                rowLabels={['initial']}
-                                columnLabels={columnLabels}
-                            />
-                        </Box>
                     )}
-                    {modelDef && !isDataWhole && (
-                        <Box pt={2}>
-                            <ErrorLabel title="Data is incomplete!" />
-                        </Box>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} variant="outlined">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSave} variant="contained" disabled={isError}>
-                        Optimize & Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            {result}
-        </>
+                </Stack>
+                {modelDef && (
+                    <Box pt={3}>
+                        <p>
+                            <strong>Model parameters</strong>
+                        </p>
+                        <ParamsSpreadsheet
+                            data={data}
+                            setData={setData}
+                            rowLabels={['initial']}
+                            columnLabels={columnLabels}
+                        />
+                    </Box>
+                )}
+                {modelDef && !isDataWhole && (
+                    <Box pt={2}>
+                        <ErrorLabel title="Data is incomplete!" />
+                    </Box>
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} variant="outlined">
+                    Cancel
+                </Button>
+                <Button onClick={handleSave} variant="contained" disabled={isError}>
+                    {isFreedom ? 'Optimize' : 'Tabulate'} & Save
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };

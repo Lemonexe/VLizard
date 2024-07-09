@@ -32,9 +32,8 @@ def fit_VLE_api():
 
     # perform fit, persist, enumerate
     fit = Fit_VLE_plot(*params.values())
-    if not skip_optimization:
-        fit.optimize()
-        persist_fit(fit)
+    if not skip_optimization: fit.optimize()
+    persist_fit(fit)
     fit.tabulate()
     payload = fit.serialize()
 
@@ -93,8 +92,9 @@ def fit_VLE_tabulate_api():
 
     label = f'{params["p"]} kPa'
     tab = VLE_Tabulation_plot(model, model_params, params['compound1'], params['compound2'], label, params['p'])
+    tab.keys_to_serialize.extend(['T', 'x_1', 'y_1', 'gamma_1', 'gamma_2'])
     payload = tab.serialize()
-    payload['xy_plot'] = tab.plot_xy(mode='svg'),
-    payload['Txy_plot'] = tab.plot_Txy(mode='svg'),
+    payload['xy_plot'] = tab.plot_xy(mode='svg')
+    payload['Txy_plot'] = tab.plot_Txy(mode='svg')
     payload['gamma_plot'] = tab.plot_gamma(mode='svg')
     return payload

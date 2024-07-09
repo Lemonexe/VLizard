@@ -129,6 +129,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         });
     }, [handleSave, datasetName, handleClose]);
 
+    // if I wanted to close UpsertDatasetDialog onSave, then it must be rendered even when closed
     const handleSaveVisualize = useCallback(() => handleSave(VLEAnalysis.perform), [handleSave, VLEAnalysis.perform]);
 
     return (
