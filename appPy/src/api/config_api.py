@@ -1,6 +1,7 @@
 import os
 from flask import Blueprint, request
-from src.config import cfg, config_keys, amend_config
+from src.config import cfg, amend_config
+from src.default_config import default_config_dict
 from src.utils.io.local_files import data_folder_path
 from .helpers.schema_validation import unpack_request_schema
 
@@ -16,6 +17,7 @@ def get_config_api():
 @config_blueprint.put('')
 def amend_config_api():
     """Amend user config."""
+    config_keys = default_config_dict.keys()
     schema = {key: False for key in config_keys}
     params = unpack_request_schema(request, schema)
     amend_config(params)

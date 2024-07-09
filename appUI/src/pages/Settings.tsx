@@ -132,6 +132,8 @@ const UISettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
                 <FormControlLabel control={<Checkbox {...createCBProps('chart_title')} />} label="Show chart title" />
                 <br />
                 <FormControlLabel control={<Checkbox {...createCBProps('chart_legend')} />} label="Show chart legend" />
+                <br />
+                <FormControlLabel control={<Checkbox {...createCBProps('chart_grid')} />} label="Show chart grids" />
             </div>
 
             <div>

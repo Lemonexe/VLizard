@@ -3,13 +3,6 @@ from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.io.local_files import config_path
 from .default_config import consts_dict, default_config_dict
 
-# expected keys of user config
-config_keys = [
-    'gamma_abs_tol', 'T_bounds_rel_tol', 'rk_D_criterion', 'herington_DJ_criterion', 'rk_quad_rel_tol',
-    'fredenslund_criterion', 'default_legendre_order', 'chart_title', 'chart_legend', 'chart_aspect_ratio',
-    'UI_expandAll', 'UoM_p', 'UoM_T'
-]
-
 
 class DictToClass:
     """Convert dict to class with attributes."""

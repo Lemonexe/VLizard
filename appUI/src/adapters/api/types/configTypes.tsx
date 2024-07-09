@@ -13,6 +13,7 @@ export type Config = {
     // UI settings
     chart_title: boolean;
     chart_legend: boolean;
+    chart_grid: boolean;
     chart_aspect_ratio: boolean;
     UI_expandAll: boolean;
     UoM_p: string;

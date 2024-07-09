@@ -17,6 +17,7 @@ consts_dict = {
 
 # MUTABLE CONFIG
 # these are the default values, which are initialized in user data folder at first run
+# don't forget to update configTypes.tsx
 default_config_dict = {
     ## CALCULATIONS – arbitrary tolerances & criteria
     # gamma tolerance for simple gamma test
@@ -39,9 +40,10 @@ default_config_dict = {
     'van_Ness_max_mark': 10,
 
     ## UI
-    # whether to render chart title, legend
+    # whether to render chart elements
     'chart_title': True,
     'chart_legend': True,
+    'chart_grid': False,
     # chart default aspect ratio
     'chart_aspect_ratio': 1.0,
     # whether to expand all nodes in tree view
