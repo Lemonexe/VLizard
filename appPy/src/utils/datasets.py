@@ -112,6 +112,7 @@ def upsert_dataset(compound1, compound2, dataset, p, T, x_1, y_1):
     if not os.path.exists(system_path):
         os.makedirs(system_path)
     table_path = os.path.join(system_path, dataset + '.tsv')
+    if np.min(x_1) <= 0 or np.max(x_1) >= 1: raise AppException('All x_1 values must be between 0 and 1, exclusive!')
     table = serialize_cols(p, T, x_1, y_1)
     idxs_sorted_by_x_1 = np.argsort(x_1)
     table = table[idxs_sorted_by_x_1]

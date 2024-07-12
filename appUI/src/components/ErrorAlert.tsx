@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Alert, Box, Button } from '@mui/material';
-import { Home, Loop } from '@mui/icons-material';
+import { Loop } from '@mui/icons-material';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 
 interface ErrorAlertProps {
@@ -23,10 +23,6 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ message }) => (
                 <Button endIcon={<Loop />} onClick={pageReload} variant="text">
                     Reload the page
                 </Button>{' '}
-                or
-                <Button endIcon={<Home />} href="/" variant="text">
-                    Go to homepage
-                </Button>
             </p>
             <p>
                 In case the error persists, please report it to the{' '}

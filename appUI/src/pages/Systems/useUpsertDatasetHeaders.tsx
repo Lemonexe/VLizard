@@ -19,7 +19,7 @@ const validatePositive = (label: string, vec: number[]) => {
 
 // Throw if some values aren't within [0,1]
 const validate_xy = (label: string, vec: number[]) => {
-    if (vec.some((x) => x < 0 || x > 1)) throw new Error(`All ${label} values must be between 0 and 1`);
+    if (vec.some((x) => x <= 0 || x >= 1)) throw new Error(`All ${label} values must be between 0 and 1, exclusive!`);
 };
 
 // Move an array element left or right in the group
