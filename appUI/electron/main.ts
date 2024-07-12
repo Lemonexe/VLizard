@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell } from 'electron';
-import { ChildProcessWithoutNullStreams, exec, spawn } from 'child_process';
 import path from 'node:path';
+import { killAll, killPyServer, startPyServer } from './child.ts';
 
 // The built directory structure
 //
@@ -14,18 +14,18 @@ import path from 'node:path';
 process.env.DIST = path.join(__dirname, '../dist');
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public');
 
+const isInstanceLocked = app.requestSingleInstanceLock();
 let win: BrowserWindow | undefined;
-let child: ChildProcessWithoutNullStreams | undefined;
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 const BUILD_INDEX_URL = path.join(process.env.DIST, 'index.html');
 
 // Parse the URL to extract the protocol and hostname
-function getRootUrl(fullUrl: string) {
+const getRootUrl = (fullUrl: string) => {
     const { protocol, hostname } = new URL(fullUrl);
     return `${protocol}//${hostname}`;
-}
+};
 
-function createWindow() {
+const createWindow = () => {
     win = new BrowserWindow({
         width: 1280,
         height: 1024,
@@ -46,40 +46,19 @@ function createWindow() {
         }
     });
 
-    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL) : win.loadFile(BUILD_INDEX_URL);
-}
-
-function startPyServer() {
-    // in order to test the functionality in dev mode:
-    // child = spawn('pipenv', ['run', 'start'], { cwd: path.join(__dirname, '..', '..', 'appPy'), shell: true }); return;
-    // child = spawn(path.join(__dirname, '..', '..', 'appPy', 'dist', 'VLizard_server.exe'), []); return;
-    if (!app.isPackaged || child) return;
-    const exePath = path.join(process.resourcesPath, 'VLizard_server.exe');
-    child = spawn(exePath, [], { cwd: process.resourcesPath });
-}
-function killPyServer() {
-    if (!child) return;
-    child.kill('SIGTERM');
-    child.on('exit', () => {
-        child = win = undefined;
-    });
-}
-function killAll() {
-    child = win = undefined;
-    exec('taskkill /F /IM VLizard_server.exe /T'); // terminate with extreme prejudice!
-    process.exit(0);
-}
+    const hash = isInstanceLocked ? '' : '#/no-lock';
+    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL + hash) : win.loadFile(BUILD_INDEX_URL + hash);
+};
 
 // START UP
 app.whenReady().then(() => {
-    startPyServer();
+    startPyServer(isInstanceLocked);
     createWindow();
 });
 
 // SHUTDOWN
-app.on('before-quit', killPyServer);
 app.on('will-quit', killPyServer);
-app.on('window-all-closed', killAll);
-app.on('quit', () => killAll);
-process.on('SIGINT', killAll);
-process.on('SIGTERM', killAll);
+app.on('window-all-closed', () => killAll(isInstanceLocked));
+app.on('quit', () => killAll(isInstanceLocked));
+process.on('SIGINT', () => killAll(isInstanceLocked));
+process.on('SIGTERM', () => killAll(isInstanceLocked));

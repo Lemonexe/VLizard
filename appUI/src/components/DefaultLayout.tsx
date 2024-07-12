@@ -1,16 +1,27 @@
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Button, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
 import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
 import { useOpenDataDirectory } from '../adapters/api/useConfigApi.ts';
+import { determine2ndInstance } from '../adapters/electron.ts';
 import { spacingN } from '../contexts/MUITheme.tsx';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
 import { QueryRefreshButton } from './QueryRefreshButton.tsx';
+import { InfoLabel } from './dataViews/TooltipIcons.tsx';
+
+const SecondaryInstanceWarning: FC = () => (
+    <Tooltip title="Multiple app windows are open. That's totally fine ✅ Though if you close the main one, this one will break.">
+        <span>
+            <InfoLabel title="Secondary window" color="inherit" />
+        </span>
+    </Tooltip>
+);
 
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
     const handleOpenDataFolderClick = useOpenDataDirectory();
+    const is2ndInstance = determine2ndInstance();
 
     return (
         <>
@@ -30,7 +41,9 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                     <Button color="inherit" onClick={() => navigate('/fitting')}>
                         Fitting
                     </Button>
-                    <Box flexGrow={1} />
+                    <Stack flexGrow={1} alignItems="center">
+                        {is2ndInstance && <SecondaryInstanceWarning />}
+                    </Stack>
                     <QueryRefreshButton />
                     <Tooltip title="OPEN DATA FOLDER">
                         <DenseIconButton onClick={handleOpenDataFolderClick} color="inherit">
