@@ -20,8 +20,8 @@ consts_dict = {
 # don't forget to update configTypes.tsx
 default_config_dict = {
     ## CALCULATIONS – arbitrary tolerances & criteria
-    # gamma tolerance for simple gamma test
-    'gamma_abs_tol': 3e-2,
+    # [%] gamma tolerance for simple gamma test
+    'gamma_abs_tol': 1.5,
     # [%] when extrapolating vapor pressure, allow temp to be out bounds by = this * (vapor pressure fun temp interval)
     'T_bounds_rel_tol': 10,
     # [%] in Redlich-Kister test, data is inconsistent if D > this

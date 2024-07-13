@@ -14,11 +14,12 @@ type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestRes
 export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
     const { gamma_abs_tol } = useConfig();
+    const abs_tol_1 = gamma_abs_tol / 100;
     const reasons = [];
-    const commonMessage = ` ± ${toPercent(gamma_abs_tol, 1)}`;
+    const commonMessage = ` ± ${toPercent(abs_tol_1, 1)}`;
     if (data.is_consistent) reasons.push('Both γi(xi=1) are close to 1');
-    if (Math.abs(data.err_1) > gamma_abs_tol) reasons.push('γ1(x1=1) must be 1' + commonMessage);
-    if (Math.abs(data.err_2) > gamma_abs_tol) reasons.push('γ2(x2=1) must be 1' + commonMessage);
+    if (Math.abs(data.err_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
+    if (Math.abs(data.err_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -41,7 +42,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                         </tbody>
                     </table>
                     <p>
-                        Criterion for <code>&Delta;</code> deviation is {toPercent(gamma_abs_tol, 1)}
+                        Criterion for <code>&Delta;</code> deviation is {toPercent(abs_tol_1, 1)}
                     </p>
                 </Box>
                 <h4>Extrapolated activity coefficients plot</h4>

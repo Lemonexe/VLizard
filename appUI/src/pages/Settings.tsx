@@ -106,7 +106,7 @@ const CalcSettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
             <div>
                 <strong>Gamma test</strong>: Absolute tolerance of activity coefficient deviation from 1
                 <br />
-                <TextField {...createTFProps('gamma_abs_tol')} />
+                <TextField {...createTFProps('gamma_abs_tol', true)} />
             </div>
             <div>
                 <strong>Area tests</strong> (RK, Herington): relative tolerance for curve integration error
