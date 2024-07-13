@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
 import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
 import { useOpenDataDirectory } from '../adapters/api/useConfigApi.ts';
-import { determine2ndInstance } from '../adapters/electron.ts';
+import { useIsInstanceLocked } from '../adapters/useIsInstanceLocked.ts';
 import { spacingN } from '../contexts/MUITheme.tsx';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
@@ -21,7 +21,7 @@ const SecondaryInstanceWarning: FC = () => (
 export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
     const navigate = useNavigate();
     const handleOpenDataFolderClick = useOpenDataDirectory();
-    const is2ndInstance = determine2ndInstance();
+    const isInstLocked = useIsInstanceLocked();
 
     return (
         <>
@@ -42,7 +42,7 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                         Fitting
                     </Button>
                     <Stack flexGrow={1} alignItems="center">
-                        {is2ndInstance && <SecondaryInstanceWarning />}
+                        {isInstLocked ? null : <SecondaryInstanceWarning />}
                     </Stack>
                     <QueryRefreshButton />
                     <Tooltip title="OPEN DATA FOLDER">

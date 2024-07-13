@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { ping, PING_INIT_INTERVAL, PING_INTERVAL } from '../adapters/api/ping.ts';
-import { determine2ndInstance } from '../adapters/electron.ts';
+import { useIsInstanceLocked } from '../adapters/useIsInstanceLocked.ts';
 import { ErrorAlert } from './ErrorAlert.tsx';
 import { CenteredLoader } from './Loader.tsx';
 
@@ -21,6 +21,7 @@ const SecondaryInstanceError: FC = () => (
 export const IsItUpWatcher: FC<PropsWithChildren> = ({ children }) => {
     const [wasEverUp, setWasEverUp] = useState(false);
     const [failuresInRow, setFailuresInRow] = useState(0);
+    const isInstLocked = useIsInstanceLocked();
 
     useEffect(() => {
         const pingAndCount = async () => {
@@ -38,7 +39,6 @@ export const IsItUpWatcher: FC<PropsWithChildren> = ({ children }) => {
 
     if (!wasEverUp) return <CenteredLoader subject="Core server" />;
 
-    const is2ndInstance = determine2ndInstance();
-    if (failuresInRow >= FAILURES_THRESHOLD) return is2ndInstance ? <SecondaryInstanceError /> : <MainInstanceError />;
+    if (failuresInRow >= FAILURES_THRESHOLD) return isInstLocked ? <MainInstanceError /> : <SecondaryInstanceError />;
     return children;
 };

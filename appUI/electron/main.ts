@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'node:path';
 import { killAll, killPyServer, startPyServer } from './child.ts';
 
@@ -9,6 +9,7 @@ import { killAll, killPyServer, startPyServer } from './child.ts';
 // │ │
 // │ ├─┬ dist-electron
 // │ │ ├── main.js
+// │ │ └── preload.js
 // │
 
 process.env.DIST = path.join(__dirname, '../dist');
@@ -31,6 +32,7 @@ const createWindow = () => {
         height: 1024,
         icon: path.join(process.env.PUBLIC, 'icon.png'),
         webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
             // Enable all CORS. Better here than BE, which has to be secure against outside calls, but for FE it doesn't matter.
             webSecurity: false,
         },
@@ -46,8 +48,9 @@ const createWindow = () => {
         }
     });
 
-    const hash = isInstanceLocked ? '' : '#/no-lock';
-    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL + hash) : win.loadFile(BUILD_INDEX_URL + hash);
+    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL) : win.loadFile(BUILD_INDEX_URL);
+
+    ipcMain.handle('request-instance-lock', () => isInstanceLocked);
 };
 
 // START UP
