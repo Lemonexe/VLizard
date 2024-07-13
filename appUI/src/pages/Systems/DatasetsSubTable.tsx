@@ -4,6 +4,7 @@ import { DenseTableCell, DenseTableHeadCell } from '../../components/Mui/TableCo
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { DatasetTable } from '../../adapters/api/types/VLETypes.ts';
 import { PerformTDTestButton } from './buttons/PerformAnalysisButton.tsx';
+import { VLEAnalysisIconButton } from './buttons/TDTest/VLEAnalysisButton.tsx';
 import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
 import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
 
@@ -25,6 +26,7 @@ export const DatasetsSubTable: FC<DatasetsSubTableProps> = ({ compound1, compoun
                     <DenseTableCell>{dataset.x_1.length}</DenseTableCell>
                     <DenseTableCell>
                         <PerformTDTestButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
+                        <VLEAnalysisIconButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                         <EditDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                         <DeleteDatasetButton compound1={compound1} compound2={compound2} dataset={dataset.name} />
                     </DenseTableCell>

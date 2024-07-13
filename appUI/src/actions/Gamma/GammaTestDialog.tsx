@@ -32,18 +32,20 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     <table>
                         <tbody>
                             <tr>
-                                <td width="200"><code>&gamma;1(x1=1) = {(1 + data.err_1).toFixed(2)}</code></td>
-                                <td><code>&Delta; {toPercentSigned(data.err_1, 1)}</code></td>
+                                <td width="75"><code>&gamma;</code><sub>1</sub>(x<sub>1</sub>=1)</td>
+                                <td width="100">{(1 + data.err_1).toFixed(2)}</td>
+                                <td width="25">&Delta;</td>
+                                <td>{toPercentSigned(data.err_1, 1)}</td>
                             </tr>
                             <tr>
-                                <td><code>&gamma;2(x2=1) = {(1 + data.err_2).toFixed(2)}</code></td>
-                                <td><code>&Delta; {toPercentSigned(data.err_2, 1)}</code></td>
+                                <td><code>&gamma;</code><sub>2</sub>(x<sub>2</sub>=1)</td>
+                                <td>{(1 + data.err_2).toFixed(2)}</td>
+                                <td>&Delta;</td>
+                                <td>{toPercentSigned(data.err_2, 1)}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>
-                        Criterion for <code>&Delta;</code> deviation is {toPercent(abs_tol_1, 1)}
-                    </p>
+                    <p>Criterion for &Delta; deviation is {toPercent(abs_tol_1, 1)}</p>
                 </Box>
                 <h4>Extrapolated activity coefficients plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`gamma test chart ${label}`} />

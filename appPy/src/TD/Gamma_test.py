@@ -52,10 +52,10 @@ class Gamma_test(VLE):
         self.report_warnings()
 
         err_1, err_2 = self.err_1, self.err_2
-        echo(f'γ1(x1=1) = {(1 + err_1):.3f}      |Δ| = {abs(err_1*100):.1f} %')
-        echo(f'γ2(x2=1) = {(1 + err_2):.3f}      |Δ| = {abs(err_2*100):.1f} %')
+        echo(f'γ1(x1=1) = {(1 + err_1):.3f}      |Δ| = {abs(err_1*100):.1f}%')
+        echo(f'γ2(x2=1) = {(1 + err_2):.3f}      |Δ| = {abs(err_2*100):.1f}%')
 
-        template = lambda i, err: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(err*100):4.1f} % error was extrapolated (tolerance = {cfg.gamma_abs_tol} %)'
+        template = lambda i, err: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(err*100):4.1f}% error was extrapolated (tolerance = {cfg.gamma_abs_tol}%)'
         abs_tol_1 = cfg.gamma_abs_tol / 100
         if abs(err_2) > abs_tol_1:
             err_echo(template(i=2, err=err_2))
@@ -63,5 +63,5 @@ class Gamma_test(VLE):
             err_echo(template(i=1, err=err_1))
 
         if self.is_consistent:
-            ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {cfg.gamma_abs_tol} %)')
+            ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {cfg.gamma_abs_tol}%)')
         echo('')

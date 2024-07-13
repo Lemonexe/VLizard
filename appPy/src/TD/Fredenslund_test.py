@@ -92,16 +92,16 @@ class Fredenslund_test(VLE):
         underline_echo(self.get_title())
         self.report_warnings()
 
-        echo(f'p residual   = {self.p_res_avg:.2f} %')
-        echo(f'y_1 residual = {self.y_1_res_avg:.2f} %')
-        echo(f'y_2 residual = {self.y_2_res_avg:.2f} %')
+        echo(f'p residual   = {self.p_res_avg:.2f}%')
+        echo(f'y_1 residual = {self.y_1_res_avg:.2f}%')
+        echo(f'y_2 residual = {self.y_2_res_avg:.2f}%')
         echo('')
         if self.is_consistent:
             ok_echo(
-                f'OK, residuals of p, y_1, y_2 are all less than {cfg.fredenslund_criterion:.1f} %, data consistency is proven'
+                f'OK, residuals of p, y_1, y_2 are all less than {cfg.fredenslund_criterion:.1f}%, data consistency is proven'
             )
         else:
             err_echo(
-                f'NOT OK, residuals of p, y_1, y_2 must all be less than {cfg.fredenslund_criterion:.1f} %, data consistency is disproven'
+                f'NOT OK, residuals of p, y_1, y_2 must all be less than {cfg.fredenslund_criterion:.1f}%, data consistency is disproven'
             )
         echo('')

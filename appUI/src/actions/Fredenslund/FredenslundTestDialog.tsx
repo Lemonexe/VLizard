@@ -20,7 +20,7 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
     const reasons = [
         `Residuals of p, y_1, y_2
         ${data.is_consistent ? 'are all' : 'must all be'}
-        < ${toSigDgts(fredenslund_criterion, sigDgtsCrit)} %`,
+        < ${toSigDgts(fredenslund_criterion, sigDgtsCrit)}%`,
     ];
 
     const dataColumns = useMemo(() => [data.x_1, data.p_res, data.y_1_res, data.y_2_res], [data]);
@@ -41,15 +41,15 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
                         <tbody>
                             <tr>
                                 <td width="30"><i>p</i></td>
-                                <td>{toSigDgts(data.p_res_avg, sigDgtsMetrics)} %</td>
+                                <td>{toSigDgts(data.p_res_avg, sigDgtsMetrics)}%</td>
                             </tr>
                             <tr>
                                 <td><i>y<sub>1</sub></i></td>
-                                <td>{toSigDgts(data.y_1_res_avg, sigDgtsMetrics)} %</td>
+                                <td>{toSigDgts(data.y_1_res_avg, sigDgtsMetrics)}%</td>
                             </tr>
                             <tr>
                                 <td><i>y<sub>2</sub></i></td>
-                                <td>{toSigDgts(data.y_2_res_avg, sigDgtsMetrics)} %</td>
+                                <td>{toSigDgts(data.y_2_res_avg, sigDgtsMetrics)}%</td>
                             </tr>
                         </tbody>
                     </table>

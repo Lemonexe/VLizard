@@ -44,5 +44,5 @@ class Van_Ness_test(VLE):
         elif self.consistency_index < cfg.van_Ness_max_mark: warn_echo(msg)
         else: err_echo(msg)
         echo('')
-        echo(f'RMS = {(self.RMS*100):.1f} %')
+        echo(f'RMS = {(self.RMS*100):.1f}%')
         echo('')

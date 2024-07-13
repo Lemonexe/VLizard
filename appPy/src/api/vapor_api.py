@@ -26,7 +26,8 @@ def get_vapor_models_api():
 
     compound_names = get_compound_names()
     payload = [process_preferred_model(compound_name) for compound_name in compound_names]
-    return payload
+    sorted_payload = sorted(payload, key=lambda x: x['compound'])
+    return sorted_payload
 
 
 @vapor_blueprint.get('/definitions')
