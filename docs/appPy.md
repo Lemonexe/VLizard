@@ -59,7 +59,7 @@ pipenv run cli\fit CPF CPOL -m vanLaar -d 25kPa --txy --persist
 pipenv run cli\tabulate CPOL CPF vanLaar 33 --txy
 pipenv run cli\vn CPOL CPF vanLaar -d 25kPa --plot
 pipenv run cli\fit CHOL CHF -d 10kPa,25kPa,40kPa --xy --txy --gamma -c c_12
-pipenv run cli\fit EtOH H2O -m UNIQUAC --skip -d 1939atm,1939vac,2011vac --xy --gamma -p 1.972,1.4,2.10547,0.92,2.0046,-2.4936,-728.9705,756.9477
+pipenv run cli\fit EtOH H2O -m UNIQUAC --skip -d Kamihama2012,Voutsas2011 --xy --gamma -p 1.972,1.4,2.10547,0.92,2.0046,-2.4936,-728.9705,756.9477
 ```
 See [appPy/cli](../appPy/cli), where filenames correspond to commands;
 calling with `--help` will instruct you further.

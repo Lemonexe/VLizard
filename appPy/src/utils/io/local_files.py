@@ -26,9 +26,11 @@ def create_user_folders():
     touch_dir(join_data_path('ps'))
 
     if should_seed:
-        shutil.copy('seed_data/Wagner.tsv', join_data_path('ps'))
+        # this must match the git-tracked appPy/seed_data folder
         touch_dir(join_data_path('VLE', 'EtOH-H2O'))
-        shutil.copy('seed_data/33kPa.tsv', join_data_path('VLE', 'EtOH-H2O'))
+        shutil.copy('seed_data/AntoineExt.tsv', join_data_path('ps'))
+        shutil.copy('seed_data/Kamihama2012.tsv', join_data_path('VLE', 'EtOH-H2O'))
+        shutil.copy('seed_data/Voutsas2011.tsv', join_data_path('VLE', 'EtOH-H2O'))
 
 
 create_user_folders()
