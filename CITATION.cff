@@ -1,0 +1,13 @@
+# TODO add DOI
+cff-version: 1.2.0
+title: VLizard
+message: a VLE wizard
+type: software
+authors:
+  - given-names: Jiří
+    family-names: Zbytovský
+    email: zbytovsi@vscht.cz
+    orcid: 'https://orcid.org/0009-0008-3348-786X'
+    affiliation: Department of Organic Technology
+repository-code: 'https://github.com/Lemonexe/VLizard'
+license: MIT
