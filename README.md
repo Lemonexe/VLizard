@@ -1,6 +1,8 @@
 # <img align="left" src="appUI/public/icon.png" width="48" height="48">VLizard
 **a VLE wizard** 🧙‍♂️⚗🦎
 
+[![DOI](https://zenodo.org/badge/9999/todo/todo.svg)](https://zenodo.org/badge/latestdoi/9999/todo/todo)
+
 A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibrium) data, which comprises tests of thermodynamic consistency & model fitting using non-linear regression.
 
 App is currently WIP 🚧, buildable but not released yet,  

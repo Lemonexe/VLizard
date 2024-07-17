@@ -9,5 +9,8 @@ authors:
     email: zbytovsi@vscht.cz
     orcid: 'https://orcid.org/0009-0008-3348-786X'
     affiliation: Department of Organic Technology
+identifiers:
+  - type: doi
+    value: 10.12345/Zenodo.TODO.12345
 repository-code: 'https://github.com/Lemonexe/VLizard'
 license: MIT
