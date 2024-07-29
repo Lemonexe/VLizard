@@ -9,7 +9,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { sanitizeNumStr, toSigDgts } from '../../adapters/logic/numbers.ts';
 
 type SubmitHandler = (e: FormEvent<HTMLFormElement>) => void;
 
@@ -25,7 +25,7 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
     const handleQuery_T = useCallback<SubmitHandler>(
         async (e) => {
             e.preventDefault();
-            const T = input_T(parseFloat(query_T), UoM_T);
+            const T = input_T(parseFloat(sanitizeNumStr(query_T)), UoM_T);
             if (isNaN(T)) return;
             const { p } = await mutateAsync({ compound: data.compound, T });
             setQuery_p(toSigDgts(display_p(p, UoM_p), 4));
@@ -35,7 +35,7 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
     const handleQuery_p = useCallback<SubmitHandler>(
         async (e) => {
             e.preventDefault();
-            const p = input_p(parseFloat(query_p), UoM_p);
+            const p = input_p(parseFloat(sanitizeNumStr(query_p)), UoM_p);
             if (isNaN(p)) return;
             const { T } = await mutateAsync({ compound: data.compound, p });
             setQuery_T(toSigDgts(display_T(T, UoM_T)));

@@ -26,6 +26,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.title(f'{self.get_title()}\n$p$ residuals')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
+        plt.ylabel('$\\delta p$')
 
         return finish_plot(mode)
 
@@ -38,6 +39,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.title(f'{self.get_title()}\n$y$ residuals')
         plt.xlim(0, 1)
         plt.xlabel('$x_1$')
+        plt.ylabel('$\\Delta y$')
         plt.legend()
 
         return finish_plot(mode)
