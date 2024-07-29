@@ -212,12 +212,12 @@ export const Settings: FC = () => {
                 <h2>Settings</h2>
             </HeaderStack>
             <Tabs value={tab} onChange={(_e, newValue) => setTab(newValue)}>
-                <Tab label="Calculations" />
                 <Tab label="UI & Charts" />
+                <Tab label="Calculations" />
             </Tabs>
             <form onSubmit={handleSubmit}>
-                {tab === 0 && <CalcSettings formConfig={formConfig} patchConfig={patchConfig} send={send} />}
-                {tab === 1 && <UISettings formConfig={formConfig} patchConfig={patchConfig} send={send} />}
+                {tab === 0 && <UISettings formConfig={formConfig} patchConfig={patchConfig} send={send} />}
+                {tab === 1 && <CalcSettings formConfig={formConfig} patchConfig={patchConfig} send={send} />}
                 <Button type="submit" variant="contained" style={{ width: 'fit-content' }} sx={{ mt: 6 }}>
                     Save settings
                 </Button>
