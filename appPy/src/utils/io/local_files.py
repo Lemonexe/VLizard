@@ -1,8 +1,18 @@
 import os
 import shutil
+import platform
+
+
+def get_documents_folder():
+    if platform.system() == 'Windows':
+        return os.path.join(os.environ['USERPROFILE'], 'Documents')
+    if platform.system() == 'Linux':
+        return os.path.join(os.path.expanduser('~'), 'Documents')
+    raise NotImplementedError(f"Platform {platform.system()} not supported.")
+
 
 # all file operations in whole project should use these paths as the source of truth
-documents_folder = os.path.join(os.environ['USERPROFILE'], 'Documents')
+documents_folder = get_documents_folder()
 app_folder_path = os.path.join(documents_folder, 'VLizard')
 data_folder_path = os.path.join(app_folder_path, 'data')
 config_path = os.path.join(app_folder_path, 'config.yaml')
