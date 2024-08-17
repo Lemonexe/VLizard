@@ -9,8 +9,8 @@ import { SystemsTable } from './SystemsTable.tsx';
 import { AddSystemButton } from './buttons/AddSystemButton.tsx';
 
 export const Systems: FC = () => {
-    const cfg = useConfig();
-    const [expandAll, setExpandAll] = useState(cfg.UI_expandAll);
+    const { UI_expandAll } = useConfig();
+    const [expandAll, setExpandAll] = useState(UI_expandAll);
 
     const { VLEData } = useData();
     const showCollapseButton = VLEData && VLEData.length > 0;

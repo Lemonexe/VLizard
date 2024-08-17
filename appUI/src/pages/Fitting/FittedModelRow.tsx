@@ -14,7 +14,7 @@ export const FittedModelRow: FC<FittedModelRowProps> = ({ fitsForSystem, expandA
     const { system_name, fits } = fitsForSystem;
     const [comp1, comp2] = system_name.split('-');
 
-    const [expandRow, setExpandRow] = useState(false);
+    const [expandRow, setExpandRow] = useState(expandAll);
     const { compoundNames } = useData();
     const isMissingCompound = !compoundNames.includes(comp1) || !compoundNames.includes(comp2);
 
@@ -22,11 +22,13 @@ export const FittedModelRow: FC<FittedModelRowProps> = ({ fitsForSystem, expandA
         if (fits.length === 0) setExpandRow(false);
     }, [fits.length]);
 
+    useEffect(() => setExpandRow(expandAll), [expandAll]);
+
     return (
         <>
             <TableRow>
                 <NoBorderCell sx={{ width: 40, px: 0 }}>
-                    {!expandAll && fits.length > 0 && (
+                    {fits.length > 0 && (
                         <IconButton onClick={() => setExpandRow((prevOpen) => !prevOpen)}>
                             {expandRow ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </IconButton>
@@ -47,7 +49,7 @@ export const FittedModelRow: FC<FittedModelRowProps> = ({ fitsForSystem, expandA
             <TableRow sx={{ '&:last-child td': { border: 0 } }}>
                 <NoBorderCell style={{ padding: 0 }} />
                 <CollapsibleTableCell colSpan={4}>
-                    <Collapse in={expandRow || expandAll} timeout="auto" unmountOnExit>
+                    <Collapse in={expandRow && fits.length > 0} timeout="auto" unmountOnExit>
                         <FitsSubTable fitsForSystem={fitsForSystem} />
                     </Collapse>
                 </CollapsibleTableCell>

@@ -8,8 +8,8 @@ import { HeaderStack } from '../../components/Mui/HeaderStack.tsx';
 import { FittedModelsTable } from './FittedModelsTable.tsx';
 
 export const Fitting: FC = () => {
-    const cfg = useConfig();
-    const [expandAll, setExpandAll] = useState(cfg.UI_expandAll);
+    const { UI_expandAll } = useConfig();
+    const [expandAll, setExpandAll] = useState(UI_expandAll);
 
     const { VLEData } = useData();
     const showCollapseButton = VLEData && VLEData.length > 0;

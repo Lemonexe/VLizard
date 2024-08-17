@@ -11,18 +11,20 @@ import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
 type SystemRowProps = { model: VLESystem; expandAll: boolean };
 
 export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }, expandAll }) => {
-    const [expandRow, setExpandRow] = useState(false);
+    const [expandRow, setExpandRow] = useState(expandAll);
     const [compound1, compound2] = system_name.split('-');
 
     useEffect(() => {
         if (datasets.length === 0) setExpandRow(false);
     }, [datasets.length]);
 
+    useEffect(() => setExpandRow(expandAll), [expandAll]);
+
     return (
         <>
             <TableRow>
                 <NoBorderCell sx={{ width: 40, px: 0 }}>
-                    {!expandAll && datasets.length > 0 && (
+                    {datasets.length > 0 && (
                         <IconButton onClick={() => setExpandRow((prevOpen) => !prevOpen)}>
                             {expandRow ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </IconButton>
@@ -44,7 +46,7 @@ export const SystemRow: FC<SystemRowProps> = ({ model: { system_name, datasets }
             <TableRow sx={{ '&:last-child td': { border: 0 } }}>
                 <NoBorderCell style={{ padding: 0 }} />
                 <CollapsibleTableCell colSpan={4}>
-                    <Collapse in={expandRow || expandAll} timeout="auto" unmountOnExit>
+                    <Collapse in={expandRow && datasets.length > 0} timeout="auto" unmountOnExit>
                         <DatasetsSubTable compound1={compound1} compound2={compound2} datasets={datasets} />
                     </Collapse>
                 </CollapsibleTableCell>
