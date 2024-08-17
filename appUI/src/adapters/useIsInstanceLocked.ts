@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 export const useIsInstanceLocked = () => {
-    const [isInstanceLocked, setIsInstanceLocked] = useState(false);
+    const [isInstanceLocked, setIsInstanceLocked] = useState(true);
 
     useEffect(() => {
         window.electron.getInstanceLock().then(setIsInstanceLocked);

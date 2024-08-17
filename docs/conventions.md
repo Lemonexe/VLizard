@@ -20,7 +20,8 @@ Following units of measurement are used in calculations, unless explicitly state
 - pressure: `kPa` _(in logarithmic form as well)_
 - temperature: `K`
 
-In UI, units are converted to user's preference as per config, but only the final values for display, not inputs. 
+In UI, units are converted to user's preference as per config for: 1) result values to be displayed, 2) from user inputs fields.  
+Notably, raw tabular data and model parameters are **not** converted (using standard units). 
 
 ### Styles
 Visual language of charts is following: **black** is main data series, **green** is calculated model.  

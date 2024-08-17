@@ -22,6 +22,7 @@ import {
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
+import { fileNameMaxLength, fileNameRegex } from '../../adapters/io/filenames.ts';
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
@@ -37,8 +38,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const { compoundNames, vaporDefs, findCompound } = useData();
     const [compound, setCompound] = useState(origCompound ?? '');
     const getOrigModel = () => findCompound(origCompound ?? '');
-    const [T_min, setT_min] = useState(() => getOrigModel()?.T_min ?? 0);
-    const [T_max, setT_max] = useState(() => getOrigModel()?.T_max ?? 1000);
+    const [T_min, setT_min] = useState(() => getOrigModel()?.T_min ?? 199);
+    const [T_max, setT_max] = useState(() => getOrigModel()?.T_max ?? 999);
     const [model, setModel] = useState(() => getOrigModel()?.model_name ?? '');
 
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
@@ -46,12 +47,6 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const modelDef = useMemo(() => findModelDef(model), [model]);
     const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
     const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
-
-    // CHECKS
-    const isEdit = Boolean(origCompound);
-    const isCompoundChanged = isEdit && origCompound !== compound;
-    const willReplace = origCompound !== compound && compoundNames.includes(compound);
-    const tempError = T_min >= T_max || isNaN(T_min) || isNaN(T_max);
 
     // ACTIONS
     const restoreOrig = () => origCompound && setCompound(origCompound);
@@ -100,8 +95,16 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
         setForceUpdateVersion((prev) => prev + 1);
     }, []);
 
+    // CHECKS
+    const isEdit = Boolean(origCompound);
+    const isCompoundChanged = isEdit && origCompound !== compound;
+    const willReplace = origCompound !== compound && compoundNames.includes(compound);
+    const tempError = T_min >= T_max || isNaN(T_min) || isNaN(T_max);
+    const antoineCError = model.includes('Antoine') && T_min + numData[2] <= 0;
+    const isNameValid = fileNameRegex.test(compound) && compound.length <= fileNameMaxLength;
+
     // OVERALL ERROR CHECK
-    const isError = !compound || tempError || !isDataWhole;
+    const isError = !compound || !model || tempError || !isDataWhole || !isNameValid || antoineCError;
 
     return (
         <>
@@ -127,6 +130,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 </div>
                             )}
                             {willReplace && <WarningLabel title="This will overwrite existing compound." />}
+                            {compound && !isNameValid && <ErrorLabel title="Name invalid or too long." />}
                         </Stack>
                         <FormControl fullWidth>
                             <InputLabel id="model">Model type</InputLabel>
@@ -173,6 +177,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 </Stack>
                             </Box>
                         )}
+                        {antoineCError && <ErrorLabel title="For Antoine, min temp must be greater than -C" />}
                         {modelDef && (
                             <Box mt={3}>
                                 <h4>Model parameters</h4>
