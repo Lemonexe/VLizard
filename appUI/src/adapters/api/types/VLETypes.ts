@@ -37,6 +37,8 @@ export type VLEAnalysisResponse = AnalysisResult &
         plot_xy: string;
         plot_Txy: string;
         plot_gamma: string;
+        p_avg: number;
+        T_avg: number;
     };
 
 /* POST UPSERT */

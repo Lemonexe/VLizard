@@ -17,12 +17,15 @@ class VLE(Result):
         dataset_name (str): name of dataset
         """
         super().__init__()
-        self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2', 'ps_1', 'ps_2']
+        self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2', 'ps_1', 'ps_2', 'p_avg', 'T_avg']
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_name = dataset_name
 
         (self.p, self.T, self.x_1, self.y_1) = get_dataset_VLE_data(compound1, compound2, dataset_name)
+
+        self.p_avg = np.mean(self.p)
+        self.T_avg = np.mean(self.T)
 
         self.x_2 = 1 - self.x_1
         self.y_2 = 1 - self.y_1
