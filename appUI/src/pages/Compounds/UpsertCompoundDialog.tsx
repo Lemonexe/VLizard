@@ -17,6 +17,7 @@ import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
     isSpreadsheetDataWhole,
+    localizeSpreadsheet,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -60,7 +61,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
         if (!origModel || origModel.model_name !== modelName) return modelParams0;
         return fromNamedParams(origModel.nparams)[1];
     };
-    const getInitialData = (modelName: string) => matrixToSpreadsheetData([getInitialParams(modelName)]);
+    const getInitialData = (modelName: string) =>
+        localizeSpreadsheet(matrixToSpreadsheetData([getInitialParams(modelName)]));
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
     const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
     const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);

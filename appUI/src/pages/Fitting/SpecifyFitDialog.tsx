@@ -14,6 +14,7 @@ import {
 import { useData } from '../../contexts/DataContext.tsx';
 import {
     isSpreadsheetDataWhole,
+    localizeSpreadsheet,
     matrixToSpreadsheetData,
     SpreadsheetData,
     toNumMatrix,
@@ -80,7 +81,8 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
         isEdit && newModelName === currentFit?.model_name
             ? fromNamedParams(currentFit.results.nparams)[1]
             : fromNamedParams(findModelDef(newModelName)?.nparams0)[1];
-    const getInitialData = (newModelName: string) => matrixToSpreadsheetData([getInitialParams(newModelName)]);
+    const getInitialData = (newModelName: string) =>
+        localizeSpreadsheet(matrixToSpreadsheetData([getInitialParams(newModelName)]));
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
     const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
 

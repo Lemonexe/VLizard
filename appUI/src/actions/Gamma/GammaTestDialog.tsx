@@ -6,7 +6,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
+import { toFixed, toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestResponse };
@@ -33,13 +33,13 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                         <tbody>
                             <tr>
                                 <td width="75"><code>&gamma;</code><sub>1</sub>(x<sub>1</sub>=1)</td>
-                                <td width="100">{(1 + data.err_1).toFixed(2)}</td>
+                                <td width="100">{toFixed(1 + data.err_1)}</td>
                                 <td width="25">&Delta;</td>
                                 <td>{toPercentSigned(data.err_1, 1)}</td>
                             </tr>
                             <tr>
                                 <td><code>&gamma;</code><sub>2</sub>(x<sub>2</sub>=1)</td>
-                                <td>{(1 + data.err_2).toFixed(2)}</td>
+                                <td>{toFixed(1 + data.err_2)}</td>
                                 <td>&Delta;</td>
                                 <td>{toPercentSigned(data.err_2, 1)}</td>
                             </tr>

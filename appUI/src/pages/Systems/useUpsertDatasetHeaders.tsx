@@ -51,7 +51,7 @@ export const useUpsertDatasetHeaders = () => {
 
     const convertTableUoMs = useCallback((data: number[][]): number[][] => {
         const dataNew = Array(4).fill(null);
-        for (let i = 0; i < columnsOrder.length; i++) dataNew[columnsOrder[i]] = data[i];
+        for (let i = 0; i < columnsOrder.length; i++) dataNew[columnsOrder[i]] = [...data[i]];
         dataNew[0] = truncate(input_p_vec(dataNew[0], UoM_p));
         validatePositive('p', dataNew[0]);
         dataNew[1] = truncate(input_T_vec(dataNew[1], UoM_T));

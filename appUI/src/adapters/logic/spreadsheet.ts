@@ -1,6 +1,7 @@
 import { CellBase, Matrix } from 'react-spreadsheet';
 import { Dispatch, SetStateAction } from 'react';
 import { sanitizeNumStr, toSigDgts } from './numbers.ts';
+import { localizeNumStr } from '../locale.ts';
 
 // number is desired data type, but react-spreadsheet also has to represent empty cells
 // unfortunately it's not consistent, so `value` can be '' | undefined
@@ -66,11 +67,20 @@ export const isSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
 export const filterEmptyRows = (data: SpreadsheetData): SpreadsheetData =>
     data.filter((row) => row.some((cell) => cell?.value !== undefined && cell.value !== ''));
 
+const localizeCellValue = (val: CellValueType) => localizeNumStr(String(val) ?? '');
+
 /**
  * Make a matrix read-only
  */
 export const makeReadOnly = (data: SpreadsheetData): SpreadsheetData =>
-    data.map((row) => row.map((cell) => ({ value: cell?.value, readOnly: true })));
+    data.map((row) => row.map((cell) => ({ value: localizeCellValue(cell?.value), readOnly: true })));
+
+/**
+ * Format all numerical values in a spreadsheet as per locale
+ * @param data matrix of Spreadsheet Cells
+ */
+export const localizeSpreadsheet = (data: SpreadsheetData): SpreadsheetData =>
+    data.map((row) => row.map((cell) => ({ ...cell, value: localizeCellValue(cell?.value) })));
 
 /**
  * Shorthand for creating a column SpreadsheetData from array of arrays (which means array of rows)

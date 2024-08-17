@@ -10,6 +10,7 @@ import {
     fromRows,
     generateEmptyCells,
     isSpreadsheetDataWhole,
+    localizeSpreadsheet,
     SpreadsheetData,
     toNumMatrix,
     transposeMatrix,
@@ -85,7 +86,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         if (!modifyingDataset) return generateEmptyCells(1, 4);
         const ds = findDataset(compound1, compound2, datasetName);
         if (!ds) return generateEmptyCells(1, 4);
-        return fromRows([ds.p, ds.T, ds.x_1, ds.y_1]);
+        return localizeSpreadsheet(fromRows([ds.p, ds.T, ds.x_1, ds.y_1]));
     };
     const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
