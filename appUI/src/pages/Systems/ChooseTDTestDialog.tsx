@@ -22,7 +22,7 @@ export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, 
                 <VLEAnalysisButton {...props} />
                 <Button
                     startIcon={<QuestionMark />}
-                    href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/VLE_analyses.md"
+                    href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/tests.md"
                     variant="outlined"
                     sx={{ my: 2 }}
                 >
