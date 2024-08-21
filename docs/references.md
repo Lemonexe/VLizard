@@ -5,6 +5,7 @@
 - [Open Sans font](https://fonts.google.com/specimen/Open+Sans)
 - Cool [custom icon](../appUI/public/icon.png) generated using [Stable Diffusion](https://stablediffusionweb.com/) and [Pixel It](https://giventofly.github.io/pixelit/)
 - template [electron-vite-react](https://github.com/electron-vite/electron-vite-react)
+- using [Citation File Format](https://citation-file-format.github.io)
 
 ## Literary references
 
