@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest
 def unpack_request_schema(request, schema):
     """
     Unpacks params from Flask request using simple validation schema.
-    
+
     request (Flask request): expected to bear json payload with paramKeys
     schema (dict of {str: bool}): for each paramKey bears if True param is mandatory, if False it's optional
     return (dict of {str: unknown}): for each paramKey bears extracted param value, or None if optional param not in payload

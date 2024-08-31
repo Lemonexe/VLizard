@@ -71,9 +71,9 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
 
     // ACTIONS
     const restoreOrig = useCallback(() => {
-        origCompound1 && setCompound1(origCompound1);
-        origCompound2 && setCompound2(origCompound2);
-        origDataset && setDatasetName(origDataset);
+        if (origCompound1) setCompound1(origCompound1);
+        if (origCompound2) setCompound2(origCompound2);
+        if (origDataset) setDatasetName(origDataset);
     }, [origCompound1, origCompound2, origDataset]);
     const swapSystem = useCallback(() => {
         setCompound2(compound1);
