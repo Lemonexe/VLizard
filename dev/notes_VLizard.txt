@@ -1,3 +1,7 @@
-react-spreadsheet BUG report with minimal example
-    https://github.com/iddan/react-spreadsheet/issues/279
-    see https://github.com/iddan/react-spreadsheet/pull/387
+SciPy orthogonal distant regression
+
+Manuál: Antoine ln vs log, kPa vs bar etc.
+
+correct gamma test to actually calculate Delta gamma
+
+Van Ness > 5 data consistency dubious

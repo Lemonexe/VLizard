@@ -3,7 +3,7 @@
   "author": "Jiri Zbytovsky",
   "description": "VLizard, a VLE wizard.",
   "private": true,
-  "version": "1.0.0",
+  "version": "2024.1.0",
   "engines": {
     "npm": ">=10.0.0",
     "node": ">=20.0.0"
