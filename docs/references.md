@@ -16,9 +16,13 @@ Following literature sources were used for creation of this software:
   - Fredenslund: [Fredenslund 1977](https://doi.org/10.1016/B978-0-444-41621-6.X5001-7)
   - van Ness: [van Ness 1995](https://doi.org/10.1351/pac199567060859)
 - Thermodynamic models
-  - NRTL: [Renon 1968](https://doi.org/10.1002/aic.690140124)
-  - UNIQUAC: [Abrams 1975](https://dx.doi.org/10.1002/aic.690210115)
+  - Wagner: [Wagner 1973](https://doi.org/10.1016/0011-2275(73)90003-9) † 
+  - Antoine: C. Antoine 1888 †
+  - NRTL: [Renon 1968](https://doi.org/10.1002/aic.690140124) †
+  - UNIQUAC: [Abrams 1975](https://dx.doi.org/10.1002/aic.690210115) †
   - van Laar, Margules: Perry's Chemical Engineers' Handbook 8th edition, 4th book
 - Dev data
-  - VLE for EtOH–H2O: [Voutsas 2011](https://doi.org/10.1016/j.fluid.2011.06.009), [Kamihama 2012](https://dx.doi.org/10.1021/je2008704)
-  - Wagner for EtOH, H2O: from [Aspen Plus v11](https://www.aspentech.com/products/engineering/aspen-plus)
+  - VLE data for EtOH–H2O: [Voutsas 2011](https://doi.org/10.1016/j.fluid.2011.06.009), [Kamihama 2012](https://dx.doi.org/10.1021/je2008704)
+  - Antoine params for EtOH, H2O: [Aspen Plus v11](https://www.aspentech.com/products/engineering/aspen-plus)
+
+† _means exact equation convention taken from [Aspen Plus](https://www.aspentech.com/products/engineering/aspen-plus)_

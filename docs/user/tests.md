@@ -1,5 +1,7 @@
 ## Overview of thermodynamic consistency tests
 
+[Back to User manual](manual.md)
+
 VLizard offers a wide range of tests for checking the thermodynamic consistency of your experimental VLE data.
 This is not to be confused with generic _statistical analysis_, which is provided by many other software tools.
 On the other hand, thermodynamic _(TD)_ consistency examines compliance of experimental data with fundamental laws of thermodynamics.

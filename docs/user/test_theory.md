@@ -1,5 +1,7 @@
 ## Theoretical background for thermodynamic consistency tests
 
+[Back to User manual](manual.md)
+
 This is just quick reference for the theoretical background of testing procedures.
 See [Overview](tests.md) document for practical aspects of the tests.
 For more detailed theoretical explanation, please refer to literature, such as a comprehensive
@@ -125,7 +127,8 @@ This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_
     \int_{x_1=0}^{x_1=1} \ln \frac{\gamma_1}{\gamma_2} \mathrm{d} x_1 = 0
 ```
 
-The curve forms two areas $A$ and $B$, one above and one below the x-axis.
+The curve $\ln \gamma_1 / \gamma_2$ forms two areas $A$ and $B$, one above and one below the x-axis.  
+This is why Redlich-Kister & Herington tests are also generally called _"area tests"_.
 
 Conventional criterion is used to formally accept or reject the data: $D < 10$.
 

@@ -4,8 +4,15 @@ Welcome to the user manual for VLizard, a VLE wizard. 🧙‍♂️⚗🦎
 
 This document will quickly guide you through the process of using VLizard app for processing VLE data.  
 It does not cover all advanced features, but should be enough to get you started.  
+Please refer to other pages for advice on tests of thermodynamic consistency.
 
-🎓 Tests of thermodynamic consistency are covered in separate documents: [Overview of tests](tests.md), [Theoretical background](test_theory.md).
+#### Other documentation pages
+- [Quick overview of tests](tests.md)
+- [Theoretical background on tests](test_theory.md)
+- [Vapor pressure models](ps_models.md)
+- [VLE models](VLE_models.md)
+- [Literary references](../references.md)
+- [Bug tracking](bug_tracking.md)
 
 #### Content
 1. [First navigation](#first-navigation)
@@ -72,43 +79,46 @@ It's also needed for the van Ness test.
 Last but not least, VLizard can fit your VLE data with a thermodynamic model.  
 Here you can see your systems, but with no fitted models, so add one via ![new table icon](images/new_table_icon.png)
 
-Select the datasets to be fitted and your model.  
+Select the datasets to be fitted and your model (see [models overview](VLE_models.md)).  
 Initial parameters are provided, which you can tweak.  
 You may specify which parameters should not be optimized = left as initial estimate.  
-The "Optimize & Save" button will proceed with fitting, and results will be displayed and persisted.   
+The "Optimize & Save" button will proceed with fitting, the model will be tabulated, and results displayed & persisted.   
 💡 Mark all parameters as constant if you'd like to just input fitted parameters from elsewhere.
+
+After a successful fitting, you shall see the model persisted in the list.  
+Icon ![visualize icon](images/visualize_icon.png) to display fitting again (tabulates model through original data).  
+Icon ![analysis icon](images/analysis_icon.png) to tabulate the model at arbitrary pressure.
 
 ### Other features
 
 There are some icons in the top bar we have not talked about yet:
 
-- Home icon will get you to the welcome page. Not particularly useful.
-- Refresh will refresh all vapor pressure models, VLE data and fitted models
+- **Home** will get you to the welcome page. Not particularly useful...
+- **Refresh** will refresh all vapor pressure models, VLE data and fitted models
   - Use if you have manipulated the data manually _outside_ VLizard. 
-- Open data folder – opens the VLizard data, located in your Documents directory.
+- **Open data folder** opens the VLizard data, located in your Documents directory.
   - Data is stored in `.tsv` files, which may be edited manually with Excel, but:
-    - ⚠ Do only at your own risk, the app expects a very specific format, and may crash otherwise. Doing a backup is advised.
-    - Though moving or deleting files is safe.
-- Settings – so you can tweak VLizard to your liking!
+    - ⚠ Do only at your own risk, the app expects a very specific format, and may crash otherwise! Make a backup before editing them.
+    - Though moving, renaming or deleting files manually is generally safe.
+- **Settings** lets you tweak VLizard to your liking 🔧⚙️
 
 ### Troubleshooting
 
 Oops, sometimes trouble happens!
-Here are some general steps you can try.
-
+Here are some general steps you can try.  
 If nothing helps, please report the bug 🐛 [using this contact](bug_tracking.md).
 
 - Sometimes you may get an error notification at left bottom.
-  - This means that a specific action failed, but you can still do other things. 
+  - This means that a specific procedure failed, but you can still do other things. 
   - Please check if the error appears only for particular data.
     - If so, check the data for mistakes.
     - If there is no visible mistake, send the data along with bug report.
   - Please note that for fitting, some crashes are normal! Optimization simply does not always converge.
-    - Try different initial params, or select different portion of data.
+    - Try different initial params, or select different portion of your data.
 - If you encounter an error screen, the app is unusable 😱
   - `ctrl+R` refreshes the UI without having to restart whole app. 
   - But restart will be necessary for this error screen: `Lost connection to the Core server!`
-- `ctrl+shift+I` will display the UI console. Please copy any error you see there, and send it along with a bug report. 
+- `F12` or `ctrl+shift+I` will display the UI console. Please copy any error you see there, and send it along with a bug report. 
 
 In any case, keep in mind this a free open-source project.
-I am doing my best to make it functional and user-friendly, but do not expect miracles 🙂
+I am doing my best to make it functional and user-friendly, but things may not always be perfect 🙂

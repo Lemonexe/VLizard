@@ -5,11 +5,9 @@
 
 A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibrium) data, which comprises tests of thermodynamic consistency & model fitting using non-linear regression.
 
-➡ App is currently WIP 🚧, buildable but not released yet,  
-though if you'd like to see what it looks like, [here's a 3 minute](https://drive.google.com/file/d/1BY5ER9d8al4iYIa0OSvPQxuiorSwq9Jj/view?usp=sharing) demo showcasing it from tech perspective 👀
-
-🎓 **User manual** can be found [here](docs/user/manual.md).
-
+👉 See **[latest release for download](https://github.com/Lemonexe/VLizard/releases)** to get started.  
+👀 If you don't feel like installing, [here's a 3 minute demo](https://drive.google.com/file/d/1BY5ER9d8al4iYIa0OSvPQxuiorSwq9Jj/view?usp=sharing) from tech perspective.  
+🎓 **User manual** can be found [here](docs/user/manual.md).  
 🐛 **Encountered a bug?** Please, do report it [here](docs/user/bug_tracking.md).
 
 ## Development

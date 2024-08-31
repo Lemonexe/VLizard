@@ -1,7 +1,9 @@
 SciPy orthogonal distant regression
 
-Manuál: Antoine ln vs log, kPa vs bar etc.
-
 correct gamma test to actually calculate Delta gamma
+    + .MD
 
 Van Ness > 5 data consistency dubious
+    + .MD
+
+Open fitting that refers to non-existent dataset
