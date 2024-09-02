@@ -2,9 +2,8 @@
 
 [Back to User manual](manual.md)
 
-Functions of $(\gamma_1, \gamma_2) = \mathrm{f}(x_1, T)$, where $\gamma_i$ is activity coefficient  
-$x_1$ is mole fraction of component 1,
-$T$ is temperature [K] and $t$ is temperature [°C].
+Functions of $(\gamma_1, \gamma_2) = \mathrm{f}(x_1, T)$, where $\gamma_i$ is activity coefficient,  
+$x_1$ is mole fraction, $T$ is temperature [K] and $t$ is temperature [°C].
 
 #### Content
 1. [Margules](#margules)

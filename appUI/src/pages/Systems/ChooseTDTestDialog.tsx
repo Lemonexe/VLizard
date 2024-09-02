@@ -1,9 +1,10 @@
 import { FC } from 'react';
-import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
 import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
+import { QuestionMark } from '@mui/icons-material';
+import { TEST_OVERVIEW_URL } from '../../adapters/io/URL.ts';
+import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { QuestionMark } from '@mui/icons-material';
 import { VLEAnalysisButton } from './buttons/TDTest/VLEAnalysisButton.tsx';
 import { SlopeTestButton } from './buttons/TDTest/SlopeTestButton.tsx';
 import { GammaTestButton } from './buttons/TDTest/GammaTestButton.tsx';
@@ -20,12 +21,7 @@ export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, 
         <DialogContent>
             <Stack direction="column" gap={1} px={5} py={1}>
                 <VLEAnalysisButton {...props} />
-                <Button
-                    startIcon={<QuestionMark />}
-                    href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/tests.md"
-                    variant="outlined"
-                    sx={{ my: 2 }}
-                >
+                <Button startIcon={<QuestionMark />} href={TEST_OVERVIEW_URL} variant="outlined" sx={{ my: 2 }}>
                     Which test to choose
                 </Button>
                 <FredenslundTestButton {...props} />

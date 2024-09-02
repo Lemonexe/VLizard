@@ -2,17 +2,20 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import {
     Box,
     Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
     FormControl,
+    IconButton,
     InputLabel,
     MenuItem,
     Select,
     Stack,
     TextField,
 } from '@mui/material';
-import { TableView } from '@mui/icons-material';
+import { HelpOutline, KeyboardArrowDown, KeyboardArrowUp, QuestionMark, TableView } from '@mui/icons-material';
+import { PS_MODELS_URL } from '../../adapters/io/URL.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import {
@@ -31,10 +34,14 @@ import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { InputVaporFitDialog } from './InputVaporFitDialog.tsx';
+import { UpsertCompoundHelp } from './help/UpsertCompoundHelp.tsx';
+import { WagnerInfo } from './help/WagnerInfo.tsx';
 
 type UpsertCompoundDialogProps = DialogProps & { origCompound?: string };
 
 export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompound, open, handleClose }) => {
+    const [infoOpen, setInfoOpen] = useState(false);
+
     // compoundNames & vaporDefs are guaranteed, see CompoundsTable.tsx
     const { compoundNames, vaporDefs, findCompound } = useData();
     const [compound, setCompound] = useState(origCompound ?? '');
@@ -134,25 +141,29 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                             {willReplace && <WarningLabel title="This will overwrite existing compound." />}
                             {compound && !isNameValid && <ErrorLabel title="Name invalid or too long." />}
                         </Stack>
-                        <FormControl fullWidth>
-                            <InputLabel id="model">Model type</InputLabel>
-                            <Select
-                                labelId="model"
-                                label="Model type"
-                                value={model}
-                                onChange={(e) => {
-                                    setModel(e.target.value);
-                                    setData(getInitialData(e.target.value));
-                                }}
-                                className="medium-input"
-                            >
-                                {vaporDefs!.map((v) => (
-                                    <MenuItem key={v.name} value={v.name}>
-                                        {v.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Stack direction="row" gap={1}>
+                            <FormControl fullWidth className="medium-input">
+                                <InputLabel id="model">Model type</InputLabel>
+                                <Select
+                                    labelId="model"
+                                    label="Model type"
+                                    value={model}
+                                    onChange={(e) => {
+                                        setModel(e.target.value);
+                                        setData(getInitialData(e.target.value));
+                                    }}
+                                >
+                                    {vaporDefs!.map((v) => (
+                                        <MenuItem key={v.name} value={v.name}>
+                                            {v.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <IconButton href={PS_MODELS_URL}>
+                                <QuestionMark />
+                            </IconButton>
+                        </Stack>
                         {modelDef && (
                             <Box>
                                 <span>Temperature bounds of model validity (in Kelvin)</span>
@@ -182,18 +193,17 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         {antoineCError && <ErrorLabel title="For Antoine, min temp must be greater than -C" />}
                         {modelDef && (
                             <Box mt={3}>
-                                <h4>Model parameters</h4>
-                                <p>
-                                    Either fill in known values, <b>or</b> perform fitting using measured data, (then
-                                    these values will be taken as initial estimate).
-                                    <br />
-                                    Either way, don't forget to SAVE afterwards.
-                                </p>
-                                {model === 'Wagner' && (
-                                    <Box mb={2}>
-                                        <InfoLabel title="Wagner model requires real values of critical pressure & temperature, those won't be optimized." />
-                                    </Box>
-                                )}
+                                <h4>
+                                    Model parameters{' '}
+                                    <IconButton onClick={() => setInfoOpen((prev) => !prev)}>
+                                        <HelpOutline />
+                                        {infoOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                                    </IconButton>
+                                </h4>
+                                <Collapse in={infoOpen}>
+                                    <UpsertCompoundHelp />
+                                </Collapse>
+                                {model === 'Wagner' && <WagnerInfo />}
                                 <ParamsSpreadsheet
                                     data={data}
                                     setData={setData}

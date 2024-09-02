@@ -6,11 +6,14 @@ import {
     DialogActions,
     DialogContent,
     FormControl,
+    IconButton,
     InputLabel,
     MenuItem,
     Select,
     Stack,
 } from '@mui/material';
+import { QuestionMark } from '@mui/icons-material';
+import { VLE_MODELS_URL } from '../../adapters/io/URL.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 import {
     isSpreadsheetDataWhole,
@@ -122,20 +125,25 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                         </FormControl>
                         {datasets.length === 0 && <ErrorLabel title="No datasets selected!" />}
                     </Stack>
-                    <FormControl fullWidth className="medium-input">
-                        <InputLabel id="model">Model type</InputLabel>
-                        <Select
-                            labelId="model"
-                            label="Model type"
-                            value={model_name}
-                            onChange={(e) => {
-                                setModel_name(e.target.value);
-                                setData(getInitialData(e.target.value));
-                                setConst_param_names(getDefaultConsts(e.target.value));
-                            }}
-                            children={modelMenuItems}
-                        />
-                    </FormControl>
+                    <Stack direction="row" gap={1}>
+                        <FormControl fullWidth className="medium-input">
+                            <InputLabel id="model">Model type</InputLabel>
+                            <Select
+                                labelId="model"
+                                label="Model type"
+                                value={model_name}
+                                onChange={(e) => {
+                                    setModel_name(e.target.value);
+                                    setData(getInitialData(e.target.value));
+                                    setConst_param_names(getDefaultConsts(e.target.value));
+                                }}
+                                children={modelMenuItems}
+                            />
+                        </FormControl>
+                        <IconButton href={VLE_MODELS_URL}>
+                            <QuestionMark />
+                        </IconButton>
+                    </Stack>
                     {modelDef && (
                         <Stack direction="row" gap={1} alignItems="center">
                             <FormControl fullWidth className="medium-input">

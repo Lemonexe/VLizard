@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Alert, Box, Button } from '@mui/material';
 import { Loop } from '@mui/icons-material';
 import { ContentContainer } from './Mui/ContentContainer.tsx';
+import { BUG_TRACKING_URL } from '../adapters/io/URL.ts';
 
 interface ErrorAlertProps {
     message: string;
@@ -25,8 +26,7 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ message }) => (
                 </Button>{' '}
             </p>
             <p>
-                In case the error persists, please report it to the{' '}
-                <a href="https://github.com/Lemonexe/VLizard/blob/master/docs/user/bug_tracking.md">app maintainer</a>.
+                In case the error persists, please report it to the <a href={BUG_TRACKING_URL}>app maintainer</a>.
             </p>
         </Box>
     </ContentContainer>
