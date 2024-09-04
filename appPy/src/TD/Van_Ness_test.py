@@ -17,7 +17,7 @@ class Van_Ness_test(VLE):
         model_name (str): existing persisted fit, identified by name of the VLE model
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'x_1', 'residuals']
+        self.keys_to_serialize = ['RMS', 'consistency_index', 'is_consistent', 'is_warning', 'x_1', 'residuals']
 
         self.persisted_fit, self.model = get_persisted_fit_with_model(compound1, compound2, model_name)
 
@@ -31,6 +31,7 @@ class Van_Ness_test(VLE):
         self.consistency_index = np.ceil(self.RMS / cfg.van_Ness_marking_interval)
         self.consistency_index = np.min((self.consistency_index, cfg.van_Ness_max_mark)).astype(np.int32)
         self.is_consistent = self.consistency_index < cfg.van_Ness_max_mark
+        self.is_warning = self.is_consistent and self.consistency_index >= cfg.van_Ness_max_mark / 2
 
     def get_title(self):
         return f'van Ness test for {super().get_title()} & {self.model.display_name}'
@@ -40,8 +41,8 @@ class Van_Ness_test(VLE):
         self.report_warnings()
 
         msg = f'Consistency index = {self.consistency_index:.0f}'
-        if self.consistency_index < cfg.van_Ness_max_mark / 2: ok_echo(msg)
-        elif self.consistency_index < cfg.van_Ness_max_mark: warn_echo(msg)
+        if self.is_warning : warn_echo(msg)
+        elif self.is_consistent: ok_echo(msg)
         else: err_echo(msg)
         echo('')
         echo(f'RMS = {(self.RMS*100):.1f}%')

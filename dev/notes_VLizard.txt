@@ -3,7 +3,6 @@ SciPy orthogonal distant regression
 correct gamma test to actually calculate Delta gamma
     + .MD
 
-Van Ness > 5 data consistency dubious
-    + .MD
-
 Open fitting that refers to non-existent dataset
+
+rethink my life choices with useMemo and useCallback, oh no, what have I done...

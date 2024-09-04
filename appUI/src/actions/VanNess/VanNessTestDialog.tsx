@@ -36,7 +36,12 @@ export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClos
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>van Ness test for {label}</DialogTitleWithX>
             <DialogContent>
-                <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
+                <ConsistencyResult
+                    warnings={data.warnings}
+                    is_consistent={data.is_consistent}
+                    is_warning={data.is_warning}
+                    reasons={reasons}
+                />
                 <p>Consistency index = {data.consistency_index} </p>
                 <p>Root mean square = {toPercent(data.RMS, 2)}</p>
                 <p>

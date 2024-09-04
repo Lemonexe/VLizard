@@ -12,7 +12,7 @@ where $p$ is vapor pressure [kPa] and $T$ is temperature [K].
 ### Antoine (extended)
 
 ```math
-    \ln p = A + \frac{B}{T + C} + D T + E * \ln T + F T^G
+    \ln p = A + \frac{B}{T + C} + D T + E \ln T + F T^G
 ```
 
 The basic Antoine is the same, but with only first 3 parameters $A B C$, the rest are zero.

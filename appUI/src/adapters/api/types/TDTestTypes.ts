@@ -54,6 +54,7 @@ export type FredenslundTestResponse = ConclusiveTestResult & {
 export type VanNessTestRequest = DatasetIdentifier & { model_name: string };
 
 export type VanNessTestResponse = ConclusiveTestResult & {
+    is_warning: boolean; // when consistency_index is between <5, 10)
     consistency_index: number;
     RMS: number;
     x_1: number[];

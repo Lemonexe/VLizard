@@ -98,7 +98,7 @@ Finally, the root mean square of the residuals is calculated:
     RMS = \sqrt{ \tfrac{1}{n} \textstyle\sum_j^n \Delta_j^2 }
 ```
 
-Instead of a single threshold to formally accept or reject the data, the van Ness test assigns a conventional index from 1 to 10, where 1 is perfect and 10 is unacceptable, for a more nuanced evaluation.
+Instead of a single threshold to formally accept or reject the data, the van Ness test assigns a conventional index from 1 to 10, where 1 is perfect, 5 is doubtful and 10 is unacceptable, for a more nuanced evaluation.
 
 ### Gamma offset test
 
