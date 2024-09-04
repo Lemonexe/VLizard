@@ -1,5 +1,3 @@
 SciPy orthogonal distant regression
 
-Open fitting that refers to non-existent dataset
-
 rethink my life choices with useMemo and useCallback, oh no, what have I done...

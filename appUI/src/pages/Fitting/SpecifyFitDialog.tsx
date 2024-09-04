@@ -24,12 +24,22 @@ import {
 } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { SystemIdentifier } from '../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
 import { PerformFitVLE } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
+
+type ValidationResults = { initialDs: string[]; invalidDs: string[] };
+const validateInitialDatasets = (initialDs: string[], systemDs: string[]): ValidationResults =>
+    initialDs.reduce<ValidationResults>(
+        (acc, name) => {
+            acc[systemDs.includes(name) ? 'initialDs' : 'invalidDs'].push(name);
+            return acc;
+        },
+        { initialDs: [], invalidDs: [] },
+    );
 
 type SpecifyFitDialogProps = DialogProps &
     SystemIdentifier & {
@@ -68,7 +78,9 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
 
     // datasets choice
     const systemDatasets = VLEData!.filter((system) => system.system_name === system_name)[0].datasets;
-    const [datasets, setDatasets] = useState(currentFit?.input.datasets ?? []);
+    const systemDatasetNames = systemDatasets.map(({ name }) => name);
+    const { initialDs, invalidDs } = validateInitialDatasets(currentFit?.input.datasets ?? [], systemDatasetNames);
+    const [datasets, setDatasets] = useState(initialDs);
 
     // const param choice
     const getDefaultConsts = (newModelName: string) => findModelDef(newModelName)?.always_const_param_names ?? [];
@@ -108,6 +120,9 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
             </DialogTitleWithX>
             <DialogContent>
                 <Stack direction="column" gap={2} pt={1}>
+                    {invalidDs.length > 0 && (
+                        <WarningLabel title={`Missing datasets shall be removed: ${invalidDs.join(', ')}`} />
+                    )}
                     <Stack direction="row" gap={1} alignItems="center">
                         <FormControl fullWidth className="medium-input">
                             <InputLabel id="datasets">Datasets</InputLabel>
@@ -118,7 +133,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                                 value={datasets}
                                 onChange={(e) => setDatasets(e.target.value as string[])}
                             >
-                                {systemDatasets.map(({ name }) => (
+                                {systemDatasetNames.map((name) => (
                                     <MenuItem key={name} value={name} children={name} />
                                 ))}
                             </Select>
