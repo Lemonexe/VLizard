@@ -41,7 +41,7 @@ class Van_Ness_test(VLE):
         self.report_warnings()
 
         msg = f'Consistency index = {self.consistency_index:.0f}'
-        if self.is_warning : warn_echo(msg)
+        if self.is_warning: warn_echo(msg)
         elif self.is_consistent: ok_echo(msg)
         else: err_echo(msg)
         echo('')

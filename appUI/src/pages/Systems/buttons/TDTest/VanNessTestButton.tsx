@@ -32,7 +32,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
 
     if (fitDataForSystem.length === 0)
         return (
-            <Tooltip title="Requires a model Fitting">
+            <Tooltip title="Requires a model Fitting" placement="right">
                 <div>
                     <Button fullWidth variant="contained" disabled>
                         Van Ness test

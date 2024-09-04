@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { Box, DialogContent } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
@@ -9,6 +9,9 @@ import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { toFixed, toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 
+// prettier-ignore
+const gamma_jsx = (i: ReactNode) => <><code>&gamma;</code><sub>{i}</sub></>
+
 type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestResponse };
 
 export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, req, data }) => {
@@ -18,8 +21,8 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
     const reasons = [];
     const commonMessage = ` ± ${toPercent(abs_tol_1, 1)}`;
     if (data.is_consistent) reasons.push('Both γi(xi=1) are close to 1');
-    if (Math.abs(data.err_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
-    if (Math.abs(data.err_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
+    if (Math.abs(data.delta_gamma_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
+    if (Math.abs(data.delta_gamma_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -32,20 +35,22 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     <table>
                         <tbody>
                             <tr>
-                                <td width="75"><code>&gamma;</code><sub>1</sub>(x<sub>1</sub>=1)</td>
-                                <td width="100">{toFixed(1 + data.err_1)}</td>
-                                <td width="25">&Delta;</td>
-                                <td>{toPercentSigned(data.err_1, 1)}</td>
+                                <td width="75">{gamma_jsx(1)}(x<sub>1</sub>=1)</td>
+                                <td width="100">{toFixed(1 + data.delta_gamma_1)}</td>
+                                <td width="50">&Delta; {gamma_jsx(1)}</td>
+                                <td>{toPercentSigned(data.delta_gamma_1, 1)}</td>
                             </tr>
                             <tr>
-                                <td><code>&gamma;</code><sub>2</sub>(x<sub>2</sub>=1)</td>
-                                <td>{toFixed(1 + data.err_2)}</td>
-                                <td>&Delta;</td>
-                                <td>{toPercentSigned(data.err_2, 1)}</td>
+                                <td>{gamma_jsx(2)}(x<sub>2</sub>=1)</td>
+                                <td>{toFixed(1 + data.delta_gamma_2)}</td>
+                                <td>&Delta; {gamma_jsx(2)}</td>
+                                <td>{toPercentSigned(data.delta_gamma_2, 1)}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Criterion for &Delta; deviation is {toPercent(abs_tol_1, 1)}</p>
+                    <p>
+                        Criterion for |&Delta; {gamma_jsx('i')}| is {toPercent(abs_tol_1, 1)}
+                    </p>
                 </Box>
                 <h4>Extrapolated activity coefficients plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`gamma test chart ${label}`} />

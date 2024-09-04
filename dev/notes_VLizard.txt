@@ -1,8 +1,5 @@
 SciPy orthogonal distant regression
 
-correct gamma test to actually calculate Delta gamma
-    + .MD
-
 Open fitting that refers to non-existent dataset
 
 rethink my life choices with useMemo and useCallback, oh no, what have I done...

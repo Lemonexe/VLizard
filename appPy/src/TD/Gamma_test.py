@@ -26,7 +26,7 @@ class Gamma_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'err_1', 'err_2']
+        self.keys_to_serialize = ['is_consistent', 'err_1', 'err_2', 'delta_gamma_1', 'delta_gamma_2']
 
         params0 = np.array([0.5, 0.5, 0, 0])  # initial [A_12, A_21, err_1, err_2]
         gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
@@ -37,6 +37,8 @@ class Gamma_test(VLE):
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
         [_, _, self.err_1, self.err_2] = self.params = result.x
+        self.delta_gamma_1 = np.exp(self.err_1) - 1
+        self.delta_gamma_2 = np.exp(self.err_2) - 1
 
         abs_tol_1 = cfg.gamma_abs_tol / 100
         self.is_consistent = abs(self.err_2) <= abs_tol_1 and abs(self.err_1) <= abs_tol_1
@@ -52,15 +54,18 @@ class Gamma_test(VLE):
         self.report_warnings()
 
         err_1, err_2 = self.err_1, self.err_2
-        echo(f'γ1(x1=1) = {(1 + err_1):.3f}      |Δ| = {abs(err_1*100):.1f}%')
-        echo(f'γ2(x2=1) = {(1 + err_2):.3f}      |Δ| = {abs(err_2*100):.1f}%')
+        dg_1, dg_2 = self.delta_gamma_1, self.delta_gamma_2
+        echo(f'γ1(x1=1) = {(1 + dg_1):.3f}      |Δ| = {abs(dg_1*100):.1f}%')
+        echo(f'γ2(x2=1) = {(1 + dg_2):.3f}      |Δ| = {abs(dg_2*100):.1f}%')
+        echo(f'E_1 = {err_1:.2e}')
+        echo(f'E_2 = {err_2:.2e}')
 
-        template = lambda i, err: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(err*100):4.1f}% error was extrapolated (tolerance = {cfg.gamma_abs_tol}%)'
+        template = lambda i, dg: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(dg * 100):4.1f}% error was extrapolated (tolerance = {cfg.gamma_abs_tol}%)'
         abs_tol_1 = cfg.gamma_abs_tol / 100
-        if abs(err_2) > abs_tol_1:
-            err_echo(template(i=2, err=err_2))
-        if abs(err_1) > abs_tol_1:
-            err_echo(template(i=1, err=err_1))
+        if abs(dg_2) > abs_tol_1:
+            err_echo(template(i=2, dg=dg_2))
+        if abs(dg_1) > abs_tol_1:
+            err_echo(template(i=1, dg=dg_1))
 
         if self.is_consistent:
             ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {cfg.gamma_abs_tol}%)')

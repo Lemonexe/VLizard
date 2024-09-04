@@ -117,7 +117,7 @@ A modified van Laar equation is used, which includes the error, or "offset" para
 
 Both residuals are respectively weighted by $x_1$, $x_2$, so that both $E_1$ and $E_2$ are biased towards the pure regions, and accurately reflect them.
 
-Conventional criterion is then used to formally accept or reject the data: $E_i < 1.5 %$.
+Conventional criterion is then used to formally accept or reject the data: $\Delta \gamma_i < 1.5 %$, where $\Delta \gamma_i = \delta \gamma_i = e^{E_i} - 1$.
 
 ### Redlich-Kister test
 
