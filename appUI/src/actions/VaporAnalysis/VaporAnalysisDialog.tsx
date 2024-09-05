@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { DialogContent, InputAdornment, Stack, TextField, Tooltip } from '@mui/material';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { display_p, display_T, input_p, input_T } from '../../adapters/logic/UoM.ts';
@@ -22,35 +22,29 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
     const [query_T, setQuery_T] = useState('');
     const [query_p, setQuery_p] = useState('');
 
-    const handleQuery_T = useCallback<SubmitHandler>(
-        async (e) => {
-            e.preventDefault();
-            const T = input_T(parseFloat(sanitizeNumStr(query_T)), UoM_T);
-            if (isNaN(T)) return;
-            const { p } = await mutateAsync({ compound: data.compound, T });
-            setQuery_p(toSigDgts(display_p(p, UoM_p), 4));
-        },
-        [mutateAsync, query_T, UoM_T, UoM_p],
-    );
-    const handleQuery_p = useCallback<SubmitHandler>(
-        async (e) => {
-            e.preventDefault();
-            const p = input_p(parseFloat(sanitizeNumStr(query_p)), UoM_p);
-            if (isNaN(p)) return;
-            const { T } = await mutateAsync({ compound: data.compound, p });
-            setQuery_T(toSigDgts(display_T(T, UoM_T)));
-        },
-        [mutateAsync, query_p, UoM_T, UoM_p],
-    );
+    const handleQuery_T: SubmitHandler = async (e) => {
+        e.preventDefault();
+        const T = input_T(parseFloat(sanitizeNumStr(query_T)), UoM_T);
+        if (isNaN(T)) return;
+        const { p } = await mutateAsync({ compound: data.compound, T });
+        setQuery_p(toSigDgts(display_p(p, UoM_p), 4));
+    };
+    const handleQuery_p: SubmitHandler = async (e) => {
+        e.preventDefault();
+        const p = input_p(parseFloat(sanitizeNumStr(query_p)), UoM_p);
+        if (isNaN(p)) return;
+        const { T } = await mutateAsync({ compound: data.compound, p });
+        setQuery_T(toSigDgts(display_T(T, UoM_T)));
+    };
 
-    const handleChange_T = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange_T = (e: ChangeEvent<HTMLInputElement>) => {
         setQuery_T(e.target.value);
         setQuery_p('');
-    }, []);
-    const handleChange_p = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    };
+    const handleChange_p = (e: ChangeEvent<HTMLInputElement>) => {
         setQuery_p(e.target.value);
         setQuery_T('');
-    }, []);
+    };
 
     return (
         <ResponsiveDialog maxWidth="md" open={open} onClose={handleClose}>

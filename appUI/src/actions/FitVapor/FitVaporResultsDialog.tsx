@@ -1,4 +1,4 @@
-import { Dispatch, FC, useCallback, useMemo } from 'react';
+import { Dispatch, FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Button, DialogContent, Stack, styled } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
@@ -58,15 +58,15 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
         return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsParams));
     }, [data]);
 
-    const acceptP = useCallback(() => {
+    const acceptP = () => {
         setFitResults([data.T_min, data.T_max, ...paramsP]);
         handleClose();
-    }, [handleClose, setFitResults, data]);
+    };
 
-    const acceptTP = useCallback(() => {
+    const acceptTP = () => {
         setFitResults([data.T_min, data.T_max, ...paramsTP]);
         handleClose();
-    }, [handleClose, setFitResults, data]);
+    };
 
     return (
         <ResponsiveDialog maxWidth="xl" fullWidth open={open}>

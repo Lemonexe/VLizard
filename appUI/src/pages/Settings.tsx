@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import {
     Button,
     Checkbox,
@@ -168,12 +168,9 @@ export const Settings: FC = () => {
 
     // TS is not accurate for formConfig, numbers will be turned to strings by MUI
     const [formConfig, setFormConfig] = useState<Config>({ ...initConfig });
-    const patchConfig: PatchConfigFn = useCallback(
-        (key, value) => setFormConfig((prev) => ({ ...prev, [key]: value })),
-        [],
-    );
+    const patchConfig: PatchConfigFn = (key, value) => setFormConfig((prev) => ({ ...prev, [key]: value }));
 
-    const send = useCallback(() => {
+    const send = () => {
         const patch: Record<string, number | string | boolean> = {};
         let isEmpty = true;
         for (const k of Object.keys(formConfig)) {
@@ -196,15 +193,12 @@ export const Settings: FC = () => {
 
         if (isEmpty) return;
         mutate(patch);
-    }, [initConfig, formConfig, mutate]);
+    };
 
-    const handleSubmit = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            send();
-        },
-        [send],
-    );
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        send();
+    };
 
     return (
         <DefaultLayout>

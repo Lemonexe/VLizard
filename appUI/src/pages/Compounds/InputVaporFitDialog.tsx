@@ -1,4 +1,4 @@
-import { Dispatch, FC, useCallback, useMemo, useState } from 'react';
+import { Dispatch, FC, useState } from 'react';
 import {
     Box,
     Button,
@@ -55,11 +55,11 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
     // SPREADSHEET
     const getInitialData = () => generateEmptyCells(1, 2);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
-    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(filterEmptyRows(data)), [data]);
+    const isDataWhole = isSpreadsheetDataWhole(filterEmptyRows(data));
 
     // MUTATION
     const { perform, result } = useFitVaporResultsDialog();
-    const handleOptimize = useCallback(() => {
+    const handleOptimize = () => {
         const nparams0 = toNamedParams(paramNames, params0);
         const [p_data, T_data] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
         perform(
@@ -67,7 +67,7 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
             setFitResults,
             handleClose,
         );
-    }, [perform, compound, modelDef, params0, data, optimizeTp]);
+    };
 
     const isError = !isDataWhole;
 

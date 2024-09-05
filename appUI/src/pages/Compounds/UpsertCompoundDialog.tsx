@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import {
     Box,
     Button,
@@ -53,7 +53,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const findModelDef = (modelName: string) => vaporDefs!.find((vd) => vd.name === modelName);
     // currently selected model definition
     const modelDef = useMemo(() => findModelDef(model), [model]);
-    const paramNames = useMemo(() => fromNamedParams(modelDef?.nparams0)[0], [modelDef]);
+    const paramNames = fromNamedParams(modelDef?.nparams0)[0];
     const columnLabels = useMemo(() => fromNamedParams(modelDef?.param_labels)[1], [modelDef]);
 
     // ACTIONS
@@ -71,14 +71,14 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const getInitialData = (modelName: string) =>
         localizeSpreadsheet(matrixToSpreadsheetData([getInitialParams(modelName)]));
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model));
-    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
-    const numData: number[] = useMemo(() => toNumMatrix(data)[0], [data]);
+    const isDataWhole = isSpreadsheetDataWhole(data);
+    const numData: number[] = toNumMatrix(data)[0];
     const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
 
     // MUTATION
     const pushNotification = useNotifications();
     const { mutate } = useUpdateVaporModel();
-    const handleSave = useCallback(() => {
+    const handleSave = () => {
         const nparams = toNamedParams(paramNames, numData);
         mutate(
             { compound, model_name: model, nparams, T_min, T_max },
@@ -89,20 +89,20 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                 },
             },
         );
-    }, [compound, numData, model, T_min, T_max]);
+    };
 
     // FITTING
     const [fittingOpen, setFittingOpen] = useState(false);
-    const handleOpenFitting = useCallback(() => setFittingOpen(true), []);
-    const handleCloseFitting = useCallback(() => setFittingOpen(false), []);
-    const setFitResults = useCallback((newResults: number[]) => {
+    const handleOpenFitting = () => setFittingOpen(true);
+    const handleCloseFitting = () => setFittingOpen(false);
+    const setFitResults = (newResults: number[]) => {
         const [new_T_min, new_T_max, ...newParams] = newResults;
         setT_min(new_T_min);
         setT_max(new_T_max);
         setData(matrixToSpreadsheetData([newParams]));
         // forcefully rerender memoized Spreadsheet, see ParamsSpreadsheet.ts
         setForceUpdateVersion((prev) => prev + 1);
-    }, []);
+    };
 
     // CHECKS
     const isEdit = Boolean(origCompound);

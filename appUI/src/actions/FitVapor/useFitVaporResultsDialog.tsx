@@ -6,7 +6,6 @@ import { FitVaporResultsDialog } from './FitVaporResultsDialog.tsx';
 
 export const useFitVaporResultsDialog = () => {
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useVaporFit();
@@ -22,7 +21,7 @@ export const useFitVaporResultsDialog = () => {
                     setElem(
                         <FitVaporResultsDialog
                             open={true}
-                            handleClose={handleClose}
+                            handleClose={() => setOpen(false)}
                             req={reqProps}
                             data={res}
                             setFitResults={setFitResults}

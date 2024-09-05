@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import {
     Box,
     Button,
@@ -99,16 +99,16 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
     const getInitialData = (newModelName: string) =>
         localizeSpreadsheet(matrixToSpreadsheetData([getInitialParams(newModelName)]));
     const [data, setData] = useState<SpreadsheetData>(() => getInitialData(model_name));
-    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(data), [data]);
+    const isDataWhole = isSpreadsheetDataWhole(data);
 
     // GET RESULTS DIALOG
-    const handleSave = useCallback(() => {
+    const handleSave = () => {
         const params0 = toNumMatrix(data)[0];
         const nparams0 = toNamedParams(paramNames, params0);
         const skip_optimization = !isFreedom;
         performFitVLE({ compound1, compound2, datasets, model_name, nparams0, const_param_names, skip_optimization });
         handleClose();
-    }, [data, compound1, compound2, datasets, model_name, paramNames, const_param_names, performFitVLE]);
+    };
 
     // OVERALL ERROR CHECK
     const isError = !isDataWhole || !datasets.length;

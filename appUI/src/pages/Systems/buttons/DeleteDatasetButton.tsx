@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVLE } from '../../../adapters/api/useVLE.ts';
 import { DatasetIdentifier } from '../../../adapters/api/types/common.ts';
@@ -8,11 +8,8 @@ import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 export const DeleteDatasetButton: FC<DatasetIdentifier> = ({ compound1, compound2, dataset }) => {
     const { mutate } = useDeleteVLE();
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
-    const handleDelete = useCallback(
-        () => mutate({ compound1, compound2, dataset }, { onSettled: handleClose }),
-        [compound1, compound2, dataset, mutate],
-    );
+    const handleClose = () => setOpen(false);
+    const handleDelete = () => mutate({ compound1, compound2, dataset }, { onSettled: handleClose });
     const system = `${compound1}-${compound2}`;
 
     return (

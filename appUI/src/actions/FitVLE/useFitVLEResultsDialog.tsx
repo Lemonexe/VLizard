@@ -8,7 +8,6 @@ export type PerformFitVLE = (props: FitAnalysisRequest) => void;
 
 export const useFitVLEResultsDialog = () => {
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useVLEFit();
@@ -20,7 +19,9 @@ export const useFitVLEResultsDialog = () => {
             mutate(props, {
                 onError: () => setElem(null),
                 onSuccess: (res: FitAnalysisResponse) => {
-                    setElem(<FitVLEResultsDialog open={true} handleClose={handleClose} req={props} data={res} />);
+                    setElem(
+                        <FitVLEResultsDialog open={true} handleClose={() => setOpen(false)} req={props} data={res} />,
+                    );
                 },
             });
         },

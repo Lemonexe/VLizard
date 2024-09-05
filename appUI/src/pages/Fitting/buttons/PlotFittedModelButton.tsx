@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { AutoGraph } from '@mui/icons-material';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
@@ -10,7 +10,7 @@ type PlotFittedModelButtonProps = SystemIdentifier & { fit: PersistedFit };
 export const PlotFittedModelButton: FC<PlotFittedModelButtonProps> = ({ compound1, compound2, fit }) => {
     const { perform, result } = useFitVLEResultsDialog();
 
-    const handleSubmit = useCallback(() => {
+    const handleSubmit = () => {
         perform({
             compound1,
             compound2,
@@ -20,7 +20,7 @@ export const PlotFittedModelButton: FC<PlotFittedModelButtonProps> = ({ compound
             const_param_names: fit.input.const_param_names,
             skip_optimization: true,
         });
-    }, [perform, compound1, compound2, fit]);
+    };
 
     return (
         <>

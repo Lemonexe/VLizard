@@ -36,7 +36,7 @@ type FitResultsDialogProps = DialogProps & { req: FitAnalysisRequest; data: FitA
 export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClose, req, data }) => {
     const { findVLEModelByName } = useData();
     // findVLEModel is guaranteed; the procedure has just been successfully invoked
-    const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
+    const modelDisplayName = findVLEModelByName(req.model_name)!.display_name;
     const optimized = data.is_optimized;
     const system = `${req.compound1}-${req.compound2}`;
     const label = `${system} ${modelDisplayName}`;

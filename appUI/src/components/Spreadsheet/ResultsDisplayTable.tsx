@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { Box, Button, Collapse } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
@@ -21,7 +21,7 @@ export const ResultsDisplayTable: FC<ResultsDisplayTableProps> = ({
     sigDgts,
 }) => {
     const [visible, setVisible] = useState(false);
-    const handleToggle = useCallback(() => setVisible((prevOpen) => !prevOpen), []);
+    const handleToggle = () => setVisible((prevOpen) => !prevOpen);
 
     const spreadsheetData = useMemo(
         () => makeReadOnly(spreadsheetToSigDgts(fromRows(rawDataColumns), sigDgts)),

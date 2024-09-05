@@ -18,7 +18,7 @@ type VanNessTestDialogProps = DialogProps & { req: VanNessTestRequest; data: Van
 export const VanNessTestDialog: FC<VanNessTestDialogProps> = ({ open, handleClose, req, data }) => {
     const { findVLEModelByName } = useData();
     // findVLEModel is guaranteed; the procedure has just been successfully invoked
-    const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
+    const modelDisplayName = findVLEModelByName(req.model_name)!.display_name;
     const label = `${req.compound1}-${req.compound2} ${req.dataset} & ${modelDisplayName}`;
 
     const { van_Ness_marking_interval, van_Ness_max_mark } = useConfig();

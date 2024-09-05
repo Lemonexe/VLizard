@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback, useMemo, useState } from 'react';
+import { FC, FormEvent, useMemo, useState } from 'react';
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Tooltip } from '@mui/material';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useData } from '../../../../contexts/DataContext.tsx';
@@ -12,14 +12,11 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useVanNessTestDialog({ ...props, model_name });
     const [nextStep, setNextStep] = useState(false);
 
-    const handleSubmit = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            setNextStep(false);
-            perform();
-        },
-        [perform],
-    );
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setNextStep(false);
+        perform();
+    };
 
     const menuItems = useMemo(
         () =>

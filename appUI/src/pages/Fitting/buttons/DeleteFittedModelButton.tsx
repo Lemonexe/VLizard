@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteFit } from '../../../adapters/api/useFit.ts';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
@@ -10,11 +10,8 @@ type DeleteFittedModelButtonProps = SystemIdentifier & { model_name: string };
 export const DeleteFittedModelButton: FC<DeleteFittedModelButtonProps> = ({ compound1, compound2, model_name }) => {
     const { mutate } = useDeleteFit();
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
-    const handleDelete = useCallback(
-        () => mutate({ compound1, compound2, model_name }, { onSettled: handleClose }),
-        [compound1, compound2, model_name, mutate],
-    );
+    const handleClose = () => setOpen(false);
+    const handleDelete = () => mutate({ compound1, compound2, model_name }, { onSettled: handleClose });
     const system = `${compound1}-${compound2}`;
     return (
         <>

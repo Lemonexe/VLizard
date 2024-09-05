@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Loader } from '../../components/Loader.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
@@ -10,12 +10,8 @@ type CompoundsTableProps = { filter: string };
 export const CompoundsTable: FC<CompoundsTableProps> = ({ filter }) => {
     const { vaporData, vaporDefs } = useData();
 
-    const finalData = useMemo(
-        () =>
-            vaporData?.filter(
-                ({ compound }) => filter.length === 0 || compound.toLowerCase().includes(filter.toLowerCase()),
-            ),
-        [vaporData, filter],
+    const finalData = vaporData?.filter(
+        ({ compound }) => filter.length === 0 || compound.toLowerCase().includes(filter.toLowerCase()),
     );
 
     if (!vaporData || !finalData || !vaporDefs) return <Loader subject="compounds" />;

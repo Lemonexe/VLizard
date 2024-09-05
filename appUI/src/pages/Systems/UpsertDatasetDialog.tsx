@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
@@ -70,15 +70,15 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const areCompoundsSame = () => compound1.length > 0 && compound1 === compound2;
 
     // ACTIONS
-    const restoreOrig = useCallback(() => {
+    const restoreOrig = () => {
         if (origCompound1) setCompound1(origCompound1);
         if (origCompound2) setCompound2(origCompound2);
         if (origDataset) setDatasetName(origDataset);
-    }, [origCompound1, origCompound2, origDataset]);
-    const swapSystem = useCallback(() => {
+    };
+    const swapSystem = () => {
         setCompound2(compound1);
         setCompound1(compound2);
-    }, [compound1, compound2]);
+    };
 
     // SPREADSHEET
     const { convertTableUoMs, headerComponents, columnLabels } = useUpsertDatasetHeaders();
@@ -88,18 +88,17 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         if (!ds) return generateEmptyCells(1, 4);
         return localizeSpreadsheet(fromRows([ds.p, ds.T, ds.x_1, ds.y_1]));
     };
-    const initialData = useMemo(getInitialData, []);
     const [data, setData] = useState<SpreadsheetData>(getInitialData);
     const [touched, setTouched] = useState(false);
     const [forceUpdateVersion, setForceUpdateVersion] = useState(0);
-    const handleRestoreData = useCallback(() => {
-        setData(initialData);
+    const handleRestoreData = () => {
+        setData(getInitialData());
         setTouched(false);
         // see TableSpreadsheet.ts, it rerenders 1) when table dimensions change, 2) when we force it (otherwise Restore Data would not take effect)
         setForceUpdateVersion((prev) => prev + 1);
-    }, [initialData]);
+    };
 
-    const isDataWhole = useMemo(() => isSpreadsheetDataWhole(filterEmptyRows(data)), [data]);
+    const isDataWhole = isSpreadsheetDataWhole(filterEmptyRows(data));
     const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
     // OVERALL ERROR CHECK
@@ -110,28 +109,24 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const { mutate } = useUpsertVLEDataset();
     const VLEAnalysis = useVLEAnalysisDialog({ compound1, compound2, dataset: datasetName });
 
-    const handleSave = useCallback(
-        (onSuccess?: () => void) => {
-            try {
-                const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
-                const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
-                mutate(ds, { onSuccess });
-            } catch (err) {
-                pushNotification({ message: String(err), severity: 'error' });
-            }
-        },
-        [compound1, compound2, datasetName, data, convertTableUoMs],
-    );
+    const handleSave = (onSuccess?: () => void) => {
+        try {
+            const [p, T, x_1, y_1] = convertTableUoMs(transposeMatrix(toNumMatrix(filterEmptyRows(data))));
+            const ds = { compound1, compound2, dataset: datasetName, p, T, x_1, y_1 };
+            mutate(ds, { onSuccess });
+        } catch (err) {
+            pushNotification({ message: String(err), severity: 'error' });
+        }
+    };
 
-    const handleSaveClose = useCallback(() => {
+    const handleSaveClose = () =>
         handleSave(() => {
             pushNotification({ message: `Dataset ${datasetName} saved.`, severity: 'success' });
             handleClose();
         });
-    }, [handleSave, datasetName, handleClose]);
 
     // if I wanted to close UpsertDatasetDialog onSave, then it must be rendered even when closed
-    const handleSaveVisualize = useCallback(() => handleSave(VLEAnalysis.perform), [handleSave, VLEAnalysis.perform]);
+    const handleSaveVisualize = () => handleSave(VLEAnalysis.perform);
 
     return (
         <Dialog fullScreen open={open}>

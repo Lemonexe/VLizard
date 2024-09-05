@@ -16,7 +16,7 @@ type TabulateVLEFitDialogProps = DialogProps & { req: FitTabulateRequest; data: 
 export const TabulateVLEFitDialog: FC<TabulateVLEFitDialogProps> = ({ open, handleClose, req, data }) => {
     const { findVLEModelByName } = useData();
     // findVLEModel is guaranteed; the procedure has just been successfully invoked
-    const modelDisplayName = useMemo(() => findVLEModelByName(req.model_name)!.display_name, [req.model_name]);
+    const modelDisplayName = findVLEModelByName(req.model_name)!.display_name;
     const label = `${req.compound1}-${req.compound2} with ${modelDisplayName} for ${data.name}`;
 
     const { UoM_T } = useConfig();

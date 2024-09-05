@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVLE } from '../../../adapters/api/useVLE.ts';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
@@ -18,11 +18,8 @@ type DeleteSystemButtonProps = SystemIdentifier & NProps;
 export const DeleteSystemButton: FC<DeleteSystemButtonProps> = ({ compound1, compound2, n_datasets }) => {
     const { mutate } = useDeleteVLE();
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
-    const handleDelete = useCallback(
-        () => mutate({ compound1, compound2, dataset: undefined }, { onSettled: handleClose }),
-        [compound1, compound2, mutate],
-    );
+    const handleClose = () => setOpen(false);
+    const handleDelete = () => mutate({ compound1, compound2, dataset: undefined }, { onSettled: handleClose });
     const system = `${compound1}-${compound2}`;
 
     return (

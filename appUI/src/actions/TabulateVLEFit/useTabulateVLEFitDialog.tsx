@@ -6,7 +6,6 @@ import { TabulateVLEFitDialog } from './TabulateVLEFitDialog.tsx';
 
 export const useTabulateVLEFitDialog = () => {
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
     const [elem, setElem] = useState<ReactElement | null>(null);
 
     const { mutate } = useTabulateVLEFit();
@@ -18,7 +17,9 @@ export const useTabulateVLEFitDialog = () => {
             mutate(props, {
                 onError: () => setElem(null),
                 onSuccess: (res: TabulatedDataset) => {
-                    setElem(<TabulateVLEFitDialog open={true} handleClose={handleClose} req={props} data={res} />);
+                    setElem(
+                        <TabulateVLEFitDialog open={true} handleClose={() => setOpen(false)} req={props} data={res} />,
+                    );
                 },
             });
         },

@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { Button, Dialog, DialogContent, IconButton, InputAdornment, Stack, TextField, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
 import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
@@ -12,8 +12,8 @@ type TabulateModelButtonProps = SystemIdentifier & { fit: PersistedFit };
 
 export const TabulateModelButton: FC<TabulateModelButtonProps> = ({ compound1, compound2, fit }) => {
     const [open, setOpen] = useState(false);
-    const handleOpen = useCallback(() => setOpen(true), []);
-    const handleClose = useCallback(() => setOpen(false), []);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const { UoM_p } = useConfig();
     const [raw_p, setRaw_p] = useState('');
@@ -21,15 +21,12 @@ export const TabulateModelButton: FC<TabulateModelButtonProps> = ({ compound1, c
 
     const { perform, result } = useTabulateVLEFitDialog();
 
-    const handleSubmit = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            const processed_p = input_p(parseFloat(raw_p), UoM_p);
-            perform({ compound1, compound2, model_name: fit.model_name, p: processed_p });
-            handleClose();
-        },
-        [perform, fit.model_name, raw_p, UoM_p],
-    );
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const processed_p = input_p(parseFloat(raw_p), UoM_p);
+        perform({ compound1, compound2, model_name: fit.model_name, p: processed_p });
+        handleClose();
+    };
 
     return (
         <>

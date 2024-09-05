@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { TextField } from '@mui/material';
 import { DefaultLayout } from '../../components/DefaultLayout.tsx';
 import { HeaderStack } from '../../components/Mui/HeaderStack.tsx';
@@ -7,7 +7,7 @@ import { AddCompoundButton } from './buttons/AddCompoundButton.tsx';
 
 export const Compounds: FC = () => {
     const [filter, setFilter] = useState('');
-    const handleChangeFilter = useCallback((e: ChangeEvent<HTMLInputElement>) => setFilter(e.target.value), []);
+    const handleChangeFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.target.value);
 
     return (
         <DefaultLayout>

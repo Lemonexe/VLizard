@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useDeleteVaporModel } from '../../../adapters/api/useVapor.ts';
 import { DeleteVaporModelRequest } from '../../../adapters/api/types/vaporTypes.ts';
@@ -10,11 +10,8 @@ type DeleteCompoundButtonProps = DeleteVaporModelRequest;
 export const DeleteCompoundButton: FC<DeleteCompoundButtonProps> = ({ compound, model_name }) => {
     const { mutate } = useDeleteVaporModel();
     const [open, setOpen] = useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
-    const handleDelete = useCallback(
-        () => mutate({ compound, model_name }, { onSettled: handleClose }),
-        [compound, model_name, mutate],
-    );
+    const handleClose = () => setOpen(false);
+    const handleDelete = () => mutate({ compound, model_name }, { onSettled: handleClose });
 
     return (
         <>

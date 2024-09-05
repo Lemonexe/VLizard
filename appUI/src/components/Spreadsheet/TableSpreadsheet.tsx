@@ -1,4 +1,4 @@
-import { Dispatch, FC, useCallback, useEffect, useMemo } from 'react';
+import { Dispatch, FC, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
 import { SpreadsheetWrapperProps } from './types.ts';
@@ -22,10 +22,10 @@ export const TableSpreadsheet: FC<TableSpreadsheetProps> = ({
         setData((prev) => prev.map((row) => row.slice(0, COLS)));
     }, [n_R, n_C]);
 
-    const handleChange = useCallback((newData: SpreadsheetData) => {
+    const handleChange = (newData: SpreadsheetData) => {
         setData(newData);
         setTouched?.(true);
-    }, []);
+    };
 
     // see ParamsSpreadsheet.tsx for explanation of this weirdness
     return useMemo(
