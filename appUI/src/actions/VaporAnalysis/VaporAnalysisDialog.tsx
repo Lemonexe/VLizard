@@ -88,7 +88,9 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
                             onChange={handleChange_T}
                             size="small"
                             className="num-input"
-                            InputProps={{ endAdornment: <InputAdornment position="end">{UoM_T}</InputAdornment> }}
+                            slotProps={{
+                                input: { endAdornment: <InputAdornment position="end">{UoM_T}</InputAdornment> },
+                            }}
                         />
                     </form>
                     <form onSubmit={handleQuery_p}>
@@ -97,7 +99,9 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
                             onChange={handleChange_p}
                             size="small"
                             className="num-input"
-                            InputProps={{ endAdornment: <InputAdornment position="end">{UoM_p}</InputAdornment> }}
+                            slotProps={{
+                                input: { endAdornment: <InputAdornment position="end">{UoM_p}</InputAdornment> },
+                            }}
                         />
                     </form>
                 </Stack>

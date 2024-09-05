@@ -40,7 +40,7 @@ const getCreateTFProps: GeneratorFn<CreateTFPropsFn> = (formConfig, patchConfig,
         value: formConfig[key],
         onChange: (e: ChE) => patchConfig(key, e.target.value),
         onBlur: send,
-        InputProps: isPercent ? { endAdornment: <span>%</span> } : undefined,
+        slotProps: isPercent ? { input: { endAdornment: <span>%</span> } } : undefined,
     });
 };
 

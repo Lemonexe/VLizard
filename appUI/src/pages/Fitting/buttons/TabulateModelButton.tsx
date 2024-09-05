@@ -44,7 +44,9 @@ export const TabulateModelButton: FC<TabulateModelButtonProps> = ({ compound1, c
                                 onChange={(e) => setRaw_p(e.target.value)}
                                 size="small"
                                 className="num-input"
-                                InputProps={{ endAdornment: <InputAdornment position="end">{UoM_p}</InputAdornment> }}
+                                slotProps={{
+                                    input: { endAdornment: <InputAdornment position="end">{UoM_p}</InputAdornment> },
+                                }}
                             />
                             <Button type="submit" variant="outlined" disabled={isInvalid_p}>
                                 Run

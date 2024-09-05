@@ -175,7 +175,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                         onChange={(e) => setT_min(Number(e.target.value))}
                                         size="small"
                                         className="num-input"
-                                        inputProps={{ min: 0 }}
+                                        slotProps={{ htmlInput: { min: 0 } }}
                                     />
                                     <TextField
                                         type="number"
@@ -184,7 +184,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                         onChange={(e) => setT_max(Number(e.target.value))}
                                         size="small"
                                         className="num-input"
-                                        inputProps={{ min: 0 }}
+                                        slotProps={{ htmlInput: { min: 0 } }}
                                     />
                                     {tempError && <ErrorLabel title="Invalid values." />}
                                 </Stack>

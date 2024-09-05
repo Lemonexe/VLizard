@@ -28,7 +28,7 @@ export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
                     label="Legendre polynomial order"
                     value={legendre_order}
                     onChange={(e) => setLegendre_order(parseInt(e.target.value))}
-                    inputProps={{ min: 3, max: 5 }}
+                    slotProps={{ htmlInput: { min: 3, max: 5 } }}
                     size="small"
                     autoFocus
                     fullWidth

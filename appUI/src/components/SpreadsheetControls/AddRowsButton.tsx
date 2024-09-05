@@ -37,7 +37,7 @@ export const AddRowsButton: FC<AddRowsButtonProps> = ({ setData }) => {
                 autoFocus
                 size="small"
                 style={{ maxWidth: 60, padding: 0 }}
-                inputProps={{ style: { padding: 6.75 }, min: 0 }}
+                slotProps={{ htmlInput: { style: { padding: 6.75 }, min: 0 } }}
             />
             <Button type="submit" variant="text" style={{ paddingLeft: 0, paddingRight: 0 }}>
                 Add
