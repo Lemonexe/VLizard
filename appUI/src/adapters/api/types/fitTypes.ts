@@ -74,18 +74,25 @@ export type VaporFitRequest = CompoundIdentifier & {
     p_data: number[];
     T_data: number[];
     nparams0?: NamedParams;
-    skip_T_p_optimization?: boolean;
 };
 
-export type VaporFitResponse = FitMetrics & {
+export type VaporFitResponse = AnalysisResult & {
+    is_optimized: boolean;
     is_T_p_optimized: boolean;
-    RMS_inter: number | null;
-    AAD_inter: number | null;
-    nparams0: NamedParams;
-    nparams_inter: NamedParams;
-    nparams: NamedParams;
+    odr_messages: string[];
     T_min: number;
     T_max: number;
-    plot_p: string;
+    plot_p?: string;
     plot_T_p?: string;
+
+    nparams0: NamedParams;
+    nparams_inter?: NamedParams;
+    nparams?: NamedParams;
+
+    RMS_init: number;
+    RMS_inter: number | null;
+    RMS_final: number | null;
+    AAD_init: number;
+    AAD_inter: number | null;
+    AAD_final: number | null;
 };

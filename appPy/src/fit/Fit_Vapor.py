@@ -1,8 +1,8 @@
 import numpy as np
-from scipy.optimize import least_squares, root
+from scipy.optimize import least_squares
+from scipy.odr import Model, Data, ODR
 from src.config import cst
 from src.TD.vapor_models.supported_models import supported_models
-from src.utils.errors import AppException
 from src.utils.io.echo import echo, underline_echo
 from .Fit import Fit
 from .utils import RMS, AAD, const_param_wrappers
@@ -10,9 +10,10 @@ from .utils import RMS, AAD, const_param_wrappers
 
 class Fit_Vapor(Fit):
 
-    def __init__(self, compound, model_name, p_data, T_data, params0, skip_T_p_optimization=False):
+    def __init__(self, compound, model_name, p_data, T_data, params0):
         """
         Create non-linear regression problem for given vapor pressure datasets and a selected model.
+        Performs both normal non-linear regression, and orthogonal distance regression (ODR).
 
         compound (str): name of the compound.
         model_name (str): name of the model to be fitted.
@@ -22,84 +23,70 @@ class Fit_Vapor(Fit):
         skip_T_p_optimization (bool): if True, only p residuals will be optimized.
         """
         super().__init__(supported_models, model_name, params0)
-        self.keys_to_serialize.extend(['is_T_p_optimized', 'RMS_inter', 'AAD_inter', 'nparams_inter', 'T_min', 'T_max'])
+        self.keys_to_serialize.extend(
+            ['is_T_p_optimized', 'odr_messages', 'RMS_inter', 'AAD_inter', 'nparams_inter', 'T_min', 'T_max'])
         self.compound = compound
         self.p_data = np.array(p_data)
         self.T_data = np.array(T_data)
+        # will be offered as model T_min & T_max
         self.T_min = np.min(T_data)
         self.T_max = np.max(T_data)
-
-        # calculate weight factor for T residuals
-        p_span = np.max(self.p_data) - np.min(self.p_data)
-        T_span = self.T_max - self.T_min
-        self.T_wt_factor = p_span / T_span
 
         self.T_tab = self.p_tab_inter = self.p_tab_final = None
         self.nparams_inter = self.params_inter = None
         self.RMS_inter = self.AAD_inter = None
         self.is_T_p_optimized = False  # in case of Fit_Vapor, Fit.is_optimized means is_p_optimized
+        self.odr_messages = []  # scipy.ODR has an unusual output format, as array of messages, but no status
 
-        # in order to be consistent: if optimizing T,p, ALWAYS aim for T,p-residual, and if not, then always p-residual
-        self.resid_fun = self.get_p_residuals if skip_T_p_optimization else self.get_T_p_residuals
-        self.RMS_init = RMS(self.resid_fun(self.params0))
-        self.AAD_init = AAD(self.resid_fun(self.params0))
+        # even for ODR, only p residuals are calculated for simplicity, so they may actually increase after ODR
+        self.RMS_init = RMS(self.get_p_residuals(self.params0))
+        self.AAD_init = AAD(self.get_p_residuals(self.params0))
 
     def get_p_residuals(self, params):
-        """Calculate residuals for given params."""
-        # calculating p residuals is easy, as p is dependent variable
+        """With given params, calculate residuals only of the dependent variable (p)."""
         p_calc = self.model.fun(self.T_data, *params)
         return p_calc - self.p_data
 
-    def get_T_residuals(self, params):
-        # model is generally transcendental for T, so we need to solve to get T residuals
-        # as if we were calculating boiling point at a given pressure
-        T_calc = np.zeros(len(self.T_data))
-        for i in range(len(self.T_data)):
-            # pylint: disable=cell-var-from-loop
-            T_boil_resid = lambda T: self.model.fun(T, *params) - self.p_data[i]
-            sol = root(fun=T_boil_resid, x0=self.T_data[i], tol=cst.T_boil_tol)
-            if not sol.success:
-                raise AppException(f'Cannot get T,p residual – failed to find boiling point at {self.p_data[i]} kPa')
-            T_calc[i] = sol.x[0]
-        return T_calc - self.T_data
-
-    def get_T_p_residuals(self, params):
-        return np.concatenate((self.get_T_residuals(params) * self.T_wt_factor, self.get_p_residuals(params)))
-
     def optimize_p(self):
-        """Optimize the model params, considering only error of dependent variable (p). When T,p-optimization is skipped, we are done, and the inter results stay as final."""
+        """Optimize the model params, considering only error of dependent variable (p)."""
         var_params0, wrapped_fun, merge_params = const_param_wrappers(self.get_p_residuals, self.params0,
                                                                       self.const_param_names, self.model.param_names)
         result = least_squares(wrapped_fun, var_params0, method='lm')
-        if result.status <= 0: raise AppException(f'p-optimization failed! Status {result.status}: {result.message}')
+        if result.status <= 0:
+            self.warn(f'p-optimization failed! Status {result.status}: {result.message}')
+            return
         self.is_optimized = True
-        self.params_inter = self.params = merge_params(result.x)
-        self.nparams_inter = self.nparams = self.set_named_params(self.params_inter)
-        self.RMS_inter = self.RMS_final = RMS(self.resid_fun(self.params))
-        self.AAD_inter = self.AAD_final = AAD(self.resid_fun(self.params))
+        self.params_inter = merge_params(result.x)
+        self.nparams_inter = self.set_named_params(self.params_inter)
+        self.RMS_inter = RMS(self.get_p_residuals(self.params_inter))
+        self.AAD_inter = AAD(self.get_p_residuals(self.params_inter))
 
     def optimize_T_p(self):
-        """Optimize the model params, considering errors of both dependent (p) & independent (T) variables. Overwrite the final results."""
-        if not self.is_optimized: raise AppException('Optimization of p residuals must be performed first')
-        var_params_inter, wrapped_fun, merge_params = const_param_wrappers(self.get_T_p_residuals, self.params_inter,
-                                                                           self.const_param_names,
-                                                                           self.model.param_names)
+        """Optimize the model params, considering errors of both dependent (p) & independent (T) variables."""
+        full_params0 = self.params_inter if self.is_optimized else self.params  # use intermediate params if available
+        fun2wrap = lambda params, x: self.model.fun(x, *params)  # swap the order of params and x
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(fun2wrap, full_params0, self.const_param_names,
+                                                                      self.model.param_names)
         try:
-            result = least_squares(wrapped_fun, var_params_inter, method='lm')
-            if result.status <= 0:
-                raise AppException(f'T,p-optimization failed! Status {result.status}: {result.message}')
-        except AppException as e:
+            odr_model = Model(wrapped_fun)
+            odr_data = Data(self.T_data, self.p_data)
+            odr = ODR(odr_data, odr_model, beta0=var_params0)
+            odr_result = odr.run()
+        except Exception as e:  # pylint: disable=broad-exception-caught
             self.warn(f'T,p-optimization failed with error: {e}')
             return
         self.is_T_p_optimized = True
-        self.params = merge_params(result.x)
+        self.params = merge_params(odr_result.beta)
         self.nparams = self.set_named_params(self.params)
-        self.RMS_final = RMS(self.resid_fun(self.params))
-        self.AAD_final = AAD(self.resid_fun(self.params))
+        self.RMS_final = RMS(self.get_p_residuals(self.params))
+        self.AAD_final = AAD(self.get_p_residuals(self.params))
+        self.odr_messages = odr_result.stopreason
+        self.odr_messages = self.odr_messages if isinstance(self.odr_messages, list) else [self.odr_messages]
 
     def tabulate(self):
         self.T_tab = np.linspace(self.T_min, self.T_max, cst.x_points_smooth_plot)
-        self.p_tab_inter = self.model.fun(self.T_tab, *self.params_inter)
+        if self.is_optimized:
+            self.p_tab_inter = self.model.fun(self.T_tab, *self.params_inter)
         if self.is_T_p_optimized:
             self.p_tab_final = self.model.fun(self.T_tab, *self.params)
 
@@ -111,8 +98,8 @@ class Fit_Vapor(Fit):
         echo('')
 
         echo('Optimized parameters as intermediate & final value:')
-        for (name, p_inter, p) in zip(self.model.param_names, self.params_inter, self.params):
-            echo(f'  {name} = {p_inter:7.4g} {p:9.4g}')
+        for (name, p_inter, p_final) in zip(self.model.param_names, self.params_inter, self.params):
+            echo(f'  {name} = {p_inter:7.4g} {p_final:9.4g}')
 
         echo('')
         echo(f'Initial RMS = {self.RMS_init:.3g}')

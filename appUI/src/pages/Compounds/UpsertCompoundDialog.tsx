@@ -14,7 +14,7 @@ import {
     Stack,
     TextField,
 } from '@mui/material';
-import { HelpOutline, KeyboardArrowDown, KeyboardArrowUp, QuestionMark, TableView } from '@mui/icons-material';
+import { QuestionMark, TableView } from '@mui/icons-material';
 import { PS_MODELS_URL } from '../../adapters/io/URL.ts';
 import { useData } from '../../contexts/DataContext.tsx';
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
@@ -32,6 +32,7 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
+import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { InputVaporFitDialog } from './InputVaporFitDialog.tsx';
 import { UpsertCompoundHelp } from './help/UpsertCompoundHelp.tsx';
@@ -194,11 +195,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         {modelDef && (
                             <Box mt={3}>
                                 <h4>
-                                    Model parameters{' '}
-                                    <IconButton onClick={() => setInfoOpen((prev) => !prev)}>
-                                        <HelpOutline />
-                                        {infoOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                                    </IconButton>
+                                    Model parameters <ExpandHelpButton infoOpen={infoOpen} setInfoOpen={setInfoOpen} />
                                 </h4>
                                 <Collapse in={infoOpen}>
                                     <UpsertCompoundHelp />
@@ -215,7 +212,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     <Button
                                         onClick={handleOpenFitting}
                                         variant="outlined"
-                                        disabled={isError}
+                                        disabled={!isDataWhole}
                                         startIcon={<TableView />}
                                     >
                                         Perform fitting
@@ -240,7 +237,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                 <InputVaporFitDialog
                     open={fittingOpen}
                     handleClose={handleCloseFitting}
-                    compound={compound}
+                    compound={compound || 'unnamed'}
                     modelDef={modelDef}
                     params0={numData}
                     setFitResults={setFitResults}

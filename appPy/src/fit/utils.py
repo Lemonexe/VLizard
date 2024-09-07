@@ -41,7 +41,7 @@ def const_param_wrappers(fun, params0, const_param_names, model_param_names):
     merge_params = lambda new_params: overlay_vectors(const_params, const_param_idxs, new_params)
 
     # wrapped residual as function of variable model parameters, which are merged with const parameters
-    wrapped_fun = lambda var_params: fun(overlay_vectors(const_params, const_param_idxs, var_params))
+    wrapped_fun = lambda var_params, *args: fun(overlay_vectors(const_params, const_param_idxs, var_params), *args)
 
     # expose everything required to start and finish the problem
     return var_params0, wrapped_fun, merge_params

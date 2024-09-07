@@ -1,17 +1,6 @@
 import { Dispatch, FC, useState } from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Collapse,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    FormControlLabel,
-    IconButton,
-    Stack,
-} from '@mui/material';
-import { HelpOutline, KeyboardArrowDown, KeyboardArrowUp, TableView } from '@mui/icons-material';
+import { Box, Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
+import { TableView } from '@mui/icons-material';
 import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
@@ -28,7 +17,6 @@ import {
 import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
 import { useFitVaporResultsDialog } from '../../actions/FitVapor/useFitVaporResultsDialog.tsx';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
-import { InputVaporFitHelp } from './help/InputVaporFitHelp.tsx';
 
 const tableSpreadsheetHeaders = ['p/kPa', 'T/K'];
 
@@ -47,9 +35,6 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
     params0,
     setFitResults,
 }) => {
-    const [infoOpen, setInfoOpen] = useState(false);
-    const [optimizeTp, setOptimizeTp] = useState(false);
-
     const paramNames = fromNamedParams(modelDef.nparams0)[0];
 
     // SPREADSHEET
@@ -62,11 +47,7 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
     const handleOptimize = () => {
         const nparams0 = toNamedParams(paramNames, params0);
         const [p_data, T_data] = transposeMatrix(toNumMatrix(filterEmptyRows(data)));
-        perform(
-            { compound, model_name: modelDef.name, p_data, T_data, nparams0, skip_T_p_optimization: !optimizeTp },
-            setFitResults,
-            handleClose,
-        );
+        perform({ compound, model_name: modelDef.name, p_data, T_data, nparams0 }, setFitResults, handleClose);
     };
 
     const isError = !isDataWhole;
@@ -79,19 +60,6 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
                 </DialogTitleWithX>
                 <DialogContent>
                     <p>Enter your measured pressure &amp; temperature data points and optimize the model parameters.</p>
-
-                    <FormControlLabel
-                        control={<Checkbox checked={optimizeTp} onChange={(e) => setOptimizeTp(e.target.checked)} />}
-                        label="Enable T,p-optimization"
-                        style={{ marginRight: 0 }}
-                    />
-                    <IconButton onClick={() => setInfoOpen((prev) => !prev)}>
-                        <HelpOutline />
-                        {infoOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                    </IconButton>
-                    <Collapse in={infoOpen}>
-                        <InputVaporFitHelp />
-                    </Collapse>
 
                     <Stack direction="row" gap={2} mt={4}>
                         <TableSpreadsheet columnLabels={tableSpreadsheetHeaders} data={data} setData={setData} />

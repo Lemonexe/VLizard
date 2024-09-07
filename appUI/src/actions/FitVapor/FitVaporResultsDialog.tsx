@@ -1,15 +1,17 @@
-import { Dispatch, FC, useMemo } from 'react';
+import { Dispatch, FC, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Button, DialogContent, Stack, styled } from '@mui/material';
+import { Box, Button, Collapse, DialogContent, Stack, styled } from '@mui/material';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
 import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
 import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { sigDgtsMetrics, sigDgtsParams } from '../../adapters/logic/numbers.ts';
+import { FitVaporResultsHelp } from './FitVaporResultsHelp.tsx';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];
 
@@ -30,6 +32,8 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
     data,
     setFitResults,
 }) => {
+    const [infoOpen, setInfoOpen] = useState(false);
+
     const optimizedP = data.is_optimized;
     const optimizedTP = data.is_T_p_optimized;
     const paramNames = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
@@ -80,27 +84,42 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                 <h4 className="h-margin">Fitted model parameters</h4>
                 <Spreadsheet data={paramsSpreadsheetData} columnLabels={paramNames} rowLabels={rowLabels} />
                 <h4 className="h-margin">What to do with the results?</h4>
-                <Stack direction="row" gap={2} mb={4}>
+                <Stack direction="row" gap={2} mb={2}>
                     <NormalCaseButton variant="contained" color="error" onClick={handleClose}>
                         Reject
                     </NormalCaseButton>
-                    <NormalCaseButton variant="contained" onClick={acceptP}>
-                        Accept {optimizedTP && 'p-optimized'}
-                    </NormalCaseButton>
+                    {optimizedP && (
+                        <NormalCaseButton variant="contained" onClick={acceptP}>
+                            Accept {optimizedTP && 'p-optimized'}
+                        </NormalCaseButton>
+                    )}
                     {optimizedTP && (
                         <NormalCaseButton variant="contained" onClick={acceptTP}>
                             Accept T,p-optimized
                         </NormalCaseButton>
                     )}
+                    <ExpandHelpButton infoOpen={infoOpen} setInfoOpen={setInfoOpen} />
                 </Stack>
-                <h4 className="h-margin">p-optimized model plot</h4>
-                <PlotWithDownload svgContent={data.plot_p} fileName={`fit chart ${req.compound} ${req.model_name}`} />
+                <Box mb={3}>
+                    <Collapse in={infoOpen}>
+                        <FitVaporResultsHelp />
+                    </Collapse>
+                </Box>
+                {data.plot_p && (
+                    <>
+                        <h4 className="h-margin">p-optimized model plot</h4>
+                        <PlotWithDownload
+                            svgContent={data.plot_p}
+                            fileName={`p-fit chart ${req.compound} ${req.model_name}`}
+                        />
+                    </>
+                )}
                 {data.plot_T_p && (
                     <>
                         <h4 className="h-margin">T,p-optimized model plot</h4>
                         <PlotWithDownload
                             svgContent={data.plot_T_p}
-                            fileName={`fit chart ${req.compound} ${req.model_name}`}
+                            fileName={`T,p-fit chart ${req.compound} ${req.model_name}`}
                         />
                     </>
                 )}
