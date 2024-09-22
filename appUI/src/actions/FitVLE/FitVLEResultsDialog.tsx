@@ -50,7 +50,7 @@ export const FitVLEResultsDialog: FC<FitResultsDialogProps> = ({ open, handleClo
     }, [data]);
 
     const metricsSpreadsheetData = useMemo(() => {
-        const rows = [[data.RMS_init, data.AAD_init]];
+        const rows = [[data.RMS0, data.AAD0]];
         if (optimized) rows.push([data.RMS_final!, data.AAD_final!]);
         return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsMetrics));
     }, [data]);

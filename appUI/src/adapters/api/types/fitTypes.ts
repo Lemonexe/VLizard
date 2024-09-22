@@ -44,18 +44,17 @@ export type PlottedDataset = AnalysisResult & {
     gamma_plot: string;
 };
 
-type FitMetrics = AnalysisResult & {
+export type FitAnalysisResponse = AnalysisResult & {
     is_optimized: boolean;
-    RMS_init: number;
-    RMS_final: number | null;
-    AAD_init: number;
-    AAD_final: number | null;
-};
+    tabulated_datasets: PlottedDataset[];
 
-export type FitAnalysisResponse = FitMetrics & {
     nparams0: NamedParams;
     nparams: NamedParams;
-    tabulated_datasets: PlottedDataset[];
+
+    RMS0: number;
+    RMS_final: number | null;
+    AAD0: number;
+    AAD_final: number | null;
 };
 
 export type FitTabulateRequest = SystemIdentifier & { model_name: string; p: number };
@@ -77,7 +76,7 @@ export type VaporFitRequest = CompoundIdentifier & {
 };
 
 export type VaporFitResponse = AnalysisResult & {
-    is_optimized: boolean;
+    is_p_optimized: boolean;
     is_T_p_optimized: boolean;
     odr_messages: string[];
     T_min: number;
@@ -86,13 +85,13 @@ export type VaporFitResponse = AnalysisResult & {
     plot_T_p?: string;
 
     nparams0: NamedParams;
-    nparams_inter?: NamedParams;
-    nparams?: NamedParams;
+    nparams_p?: NamedParams;
+    nparams_T_p?: NamedParams;
 
-    RMS_init: number;
-    RMS_inter: number | null;
-    RMS_final: number | null;
-    AAD_init: number;
-    AAD_inter: number | null;
-    AAD_final: number | null;
+    RMS0: number;
+    RMS_p: number | null;
+    RMS_T_p: number | null;
+    AAD0: number;
+    AAD_p: number | null;
+    AAD_T_p: number | null;
 };

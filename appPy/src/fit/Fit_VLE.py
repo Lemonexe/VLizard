@@ -27,7 +27,7 @@ class Fit_VLE(Fit):
         const_param_names (list of str): names of parameters to be kept constant during optimization.
         """
         super().__init__(supported_models, model_name, params0, const_param_names)
-        self.keys_to_serialize.extend(['tabulated_datasets'])
+        self.keys_to_serialize.extend(['is_optimized', 'tabulated_datasets', 'nparams', 'RMS_final', 'AAD_final'])
         self.compound1 = compound1
         self.compound2 = compound2
 
@@ -43,8 +43,13 @@ class Fit_VLE(Fit):
         self.gamma_1 = squash(self.dataset_VLEs, 'gamma_1')
         self.gamma_2 = squash(self.dataset_VLEs, 'gamma_2')
 
-        self.RMS_init = RMS(self.get_residual(self.params0))
-        self.AAD_init = AAD(self.get_residual(self.params0))
+        self.params = self.params0  # optimization result params as np.array
+        self.nparams = self.nparams0
+
+        self.is_optimized = False  # whether optimization has been performed
+        self.RMS_final = self.AAD_final = None
+        self.RMS0 = RMS(self.get_residual(self.params0))
+        self.AAD0 = AAD(self.get_residual(self.params0))
 
     def __check_model_suitability(self):
         """Check if the model is appropriate for given datasets."""
@@ -88,8 +93,8 @@ class Fit_VLE(Fit):
             echo(f'  {name} = {value:.4g}')
 
         echo('')
-        echo(f'Initial RMS = {self.RMS_init:.3g}')
-        echo(f'Initial AAD = {self.AAD_init:.3g}')
+        echo(f'Initial RMS = {self.RMS0:.3g}')
+        echo(f'Initial AAD = {self.AAD0:.3g}')
         if self.is_optimized:
             echo(f'Final RMS   = {self.RMS_final:.3g}')
             echo(f'Final AAD   = {self.AAD_final:.3g}')

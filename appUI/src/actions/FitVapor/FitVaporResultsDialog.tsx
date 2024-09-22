@@ -34,12 +34,12 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
 }) => {
     const [infoOpen, setInfoOpen] = useState(false);
 
-    const optimizedP = data.is_optimized;
+    const optimizedP = data.is_p_optimized;
     const optimizedTP = data.is_T_p_optimized;
     const paramNames = useMemo(() => fromNamedParams(data.nparams0)[0], [data]);
     const params0 = fromNamedParams(data.nparams0)[1];
-    const paramsP = fromNamedParams(data.nparams_inter)[1];
-    const paramsTP = fromNamedParams(data.nparams)[1];
+    const paramsP = fromNamedParams(data.nparams_p)[1];
+    const paramsTP = fromNamedParams(data.nparams_T_p)[1];
 
     const rowLabels = useMemo(() => {
         const rows = ['initial'];
@@ -49,9 +49,9 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
     }, [data]);
 
     const metricsSpreadsheetData = useMemo(() => {
-        const rows = [[data.RMS_init, data.AAD_init]];
-        if (optimizedP) rows.push([data.RMS_inter!, data.AAD_inter!]);
-        if (optimizedTP) rows.push([data.RMS_final!, data.AAD_final!]);
+        const rows = [[data.RMS0, data.AAD0]];
+        if (optimizedP) rows.push([data.RMS_p!, data.AAD_p!]);
+        if (optimizedTP) rows.push([data.RMS_T_p!, data.AAD_T_p!]);
         return makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData(rows), sigDgtsMetrics));
     }, [data]);
 

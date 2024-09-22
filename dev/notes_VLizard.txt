@@ -1,1 +1,0 @@
-rename Fit output variables to be more consistent

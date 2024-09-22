@@ -20,13 +20,13 @@ class Fit_Vapor_plot(Fit_Vapor):
 
     def plot_p(self, mode):
         """Overlay p-fitted model over vapor pressure data."""
-        if not self.is_optimized: return None
+        if not self.is_p_optimized: return None
         init_plot(mode)
         self.draw_data()
 
         T_tab_disp = convert_T(self.T_tab)
-        p_tab_inter_disp = convert_p(self.p_tab_inter)
-        plt.plot(T_tab_disp, p_tab_inter_disp, '-k', label='p-fitted model')
+        p_tab_p_disp = convert_p(self.p_tab_p)
+        plt.plot(T_tab_disp, p_tab_p_disp, '-k', label='p-fitted model')
 
         self.decorate()
         return finish_plot(mode)
@@ -38,8 +38,8 @@ class Fit_Vapor_plot(Fit_Vapor):
         self.draw_data()
 
         T_tab_disp = convert_T(self.T_tab)
-        p_tab_final_disp = convert_p(self.p_tab_final)
-        plt.plot(T_tab_disp, p_tab_final_disp, '-k', label='T,p-fitted model')
+        p_tab_T_p_disp = convert_p(self.p_tab_T_p)
+        plt.plot(T_tab_disp, p_tab_T_p_disp, '-k', label='T,p-fitted model')
 
         self.decorate()
         return finish_plot(mode)
