@@ -1,8 +1,7 @@
-import os
 from flask import Blueprint, request
 from src.config import cfg, amend_config
 from src.default_config import default_config_dict
-from src.utils.io.local_files import data_folder_path
+from src.utils.io.local_files import open_user_folder
 from .helpers.schema_validation import unpack_request_schema
 
 config_blueprint = Blueprint('Config', __name__, url_prefix='/config')
@@ -26,6 +25,5 @@ def amend_config_api():
 
 @config_blueprint.get('open_data_dir')
 def get_open_dir_api():
-    """Opens directory with the local userdata."""
-    os.startfile(data_folder_path)
+    open_user_folder()
     return "OK"

@@ -5,6 +5,10 @@ Accept: application/json
 
 ###
 # @no-log
+GET http://127.0.0.1:37137/config/open_data_dir
+
+###
+# @no-log
 GET http://127.0.0.1:37137/config
 Accept: application/json
 

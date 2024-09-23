@@ -1,12 +1,17 @@
 import os
 import shutil
 import platform
+import subprocess
+
+# Beware, this file is procedural! It bootstraps the app by calling create_user_folders()
 
 
 def get_documents_folder():
-    if platform.system() == 'Windows':
+    """Get the path to the user's Documents folder as per operating system."""
+    system = platform.system()
+    if system == 'Windows':
         return os.path.join(os.environ['USERPROFILE'], 'Documents')
-    if platform.system() == 'Linux':
+    if system in ('Linux', 'Darwin'):
         return os.path.join(os.path.expanduser('~'), 'Documents')
     raise NotImplementedError(f"Platform {platform.system()} not supported.")
 
@@ -44,3 +49,17 @@ def create_user_folders():
 
 
 create_user_folders()
+
+
+def open_user_folder():
+    """Opens directory with the local userdata as per operating system."""
+    system = platform.system()
+
+    if system == 'Windows':
+        # pylint: disable=no-member
+        os.startfile(app_folder_path)
+        return
+
+    cmd = 'xdg-open' if system == 'Linux' else 'open'
+    with subprocess.Popen([cmd, app_folder_path]) as proc:
+        proc.communicate()

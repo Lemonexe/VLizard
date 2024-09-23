@@ -3,6 +3,8 @@ from src.utils.io.yaml import open_yaml, save_yaml
 from src.utils.io.local_files import config_path
 from .default_config import consts_dict, default_config_dict
 
+# Beware, this file is procedural! It bootstraps the app by filling in cfg, cst, default_cfg
+
 
 class DictToClass:
     """Convert dict to class with attributes."""

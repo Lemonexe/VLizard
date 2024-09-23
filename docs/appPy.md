@@ -8,11 +8,11 @@ Uses `pipenv` for dependency management, see [Pipfile](../appPy/Pipfile) _(also 
 I/O is provided either mainly via **Flask server** _(for Electron app)_,
 or alternatively **CLI** _(for local development, may be outdated)_.
 
-The server application can be built as a single executable using `pyinstaller`.
-The `.exe` is then packed together with the Electron app, running silently as its child process.
+The server application can be built as a single executable binary using `pyinstaller`.
+The binary is then packed together with the Electron app, running silently as its child process.
 See [Typescript frontend](appUI.md) for build process of the Electron app.
 
-Regardless of how do you run `appPy`, user data is always read from directors `User\Documents\VLizard`. 
+Regardless of how do you run `appPy`, user data is always read from directors `~\Documents\VLizard`, analogically on Windows, Linux, macOS respectively. 
 
 
 ### Setup
@@ -24,6 +24,7 @@ pipenv install --dev
 ```
 
 ### Build
+Build has to be done natively on each respective platform: Windows, Linux, macOS.
 ```
 pipenv shell
 pyinstaller --onefile --name VLizard_server serve.py
@@ -46,6 +47,7 @@ Analyses are run via `POST` endpoints, which return json and also persist it in 
 
 
 #### CLI
+CLI commands are supported only on Windows (untested on other systems).
 Examples for CLI commands:
 ```
 pipenv run cli\slope --help

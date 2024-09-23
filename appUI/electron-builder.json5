@@ -12,6 +12,7 @@
   },
   "files": ["dist-electron", "dist"],
   "extraResources": [
+    {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server"]},
     {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server.exe"]},
     {"from": "../appPy/seed_data", "to": "./seed_data/"}
   ],
@@ -27,6 +28,10 @@
       }
     ],
     "artifactName": "${productName}_${version}.${ext}"
+  },
+  "linux": {
+    "target": ["AppImage"],
+    "category": "Utility",
   },
   "nsis": {
     "oneClick": false,
