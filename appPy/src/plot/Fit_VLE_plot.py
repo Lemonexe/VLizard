@@ -71,6 +71,9 @@ class Fit_VLE_plot(Fit_VLE):
             vle.plot_gamma(mode=None)
             plt.plot(tab.x_1, tab.gamma_1, '-r', label=f'$\\gamma_1$ {self.model.display_name}')
             plt.plot(tab.x_1, tab.gamma_2, '-b', label=f'$\\gamma_2$ {self.model.display_name}')
-            plt.legend()
+
+            plt.subplots_adjust(left=0.1, right=0.7)  # Reduce the right margin and make the plot lean to the left
+            plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # Legend outside center right
+
             plots.append(finish_plot(mode))
         return plots if mode == 'svg' else None
