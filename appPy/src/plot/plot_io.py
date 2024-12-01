@@ -9,7 +9,7 @@ def init_plot(mode):
     """Initialize plot output in given mode."""
     if mode is None: return
     if mode == 'ion':
-        plt.figure()
+        plt.figure(figsize=(8, 6), dpi=200)
         return
     if mode == 'svg':
         plt.switch_backend('Agg')

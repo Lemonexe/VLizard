@@ -16,7 +16,9 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
-        plt.legend()
+
+        plt.subplots_adjust(left=0.1, right=0.7)  # Reduce the right margin and make the plot lean to the left
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # Legend outside center right
         x_dynamic_number_format()
 
         return finish_plot(mode)
@@ -46,7 +48,9 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$\\Delta y$')
-        plt.legend()
+
+        plt.subplots_adjust(left=0.1, right=0.7)  # Reduce the right margin and make the plot lean to the left
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # Legend outside center right
         x_dynamic_number_format()
 
         return finish_plot(mode)
