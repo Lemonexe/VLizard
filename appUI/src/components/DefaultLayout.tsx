@@ -12,7 +12,7 @@ import { InfoLabel } from './dataViews/TooltipIcons.tsx';
 
 const SecondaryInstanceWarning: FC = () => (
     <Tooltip title="Multiple app windows are open. That's totally fine ✅ Though if you close the main one, this one will break.">
-        <span>
+        <span style={{ cursor: 'help' }}>
             <InfoLabel title="Secondary window" color="inherit" />
         </span>
     </Tooltip>
