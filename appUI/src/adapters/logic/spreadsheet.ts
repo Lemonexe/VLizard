@@ -67,7 +67,7 @@ export const isSpreadsheetDataWhole = (data: SpreadsheetData): boolean => {
 export const filterEmptyRows = (data: SpreadsheetData): SpreadsheetData =>
     data.filter((row) => row.some((cell) => cell?.value !== undefined && cell.value !== ''));
 
-const localizeCellValue = (val: CellValueType) => localizeNumStr(String(val) ?? '');
+const localizeCellValue = (val: CellValueType) => localizeNumStr(String(val));
 
 /**
  * Make a matrix read-only

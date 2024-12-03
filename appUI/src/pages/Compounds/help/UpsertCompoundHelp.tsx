@@ -17,6 +17,6 @@ export const UpsertCompoundHelp: FC = () => (
                 <li>If needed, modify the initial estimates below.</li>
             </ul>
         </li>
-        <li>Either way, don't forget to SAVE afterwards.</li>
+        <li>Either way, don&apos;t forget to SAVE afterwards.</li>
     </ul>
 );
