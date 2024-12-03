@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
 import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
 import { useOpenDataDirectory } from '../adapters/api/useConfigApi.ts';

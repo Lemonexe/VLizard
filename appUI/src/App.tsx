@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MemoryRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { MemoryRouter as Router, Navigate, Route, Routes } from 'react-router';
 import { Home } from './pages/Home.tsx';
 import { Settings } from './pages/Settings.tsx';
 import { About } from './pages/About.tsx';
