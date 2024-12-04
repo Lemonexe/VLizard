@@ -4,6 +4,7 @@ ignored-classes=DictToClass
 [MESSAGES CONTROL]
 
 disable=too-many-arguments,
+        too-many-positional-arguments,
         too-few-public-methods,
         too-many-locals,
         too-many-instance-attributes,
