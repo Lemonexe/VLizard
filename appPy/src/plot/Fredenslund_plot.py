@@ -17,8 +17,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
 
-        plt.subplots_adjust(left=0.1, right=0.7)  # Reduce the right margin and make the plot lean to the left
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # Legend outside center right
+        plt.legend(loc='lower center')
         x_dynamic_number_format()
 
         return finish_plot(mode)
@@ -49,8 +48,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xlabel('$x_1$')
         plt.ylabel('$\\Delta y$')
 
-        plt.subplots_adjust(left=0.1, right=0.7)  # Reduce the right margin and make the plot lean to the left
-        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))  # Legend outside center right
+        plt.legend(loc='upper center')
         x_dynamic_number_format()
 
         return finish_plot(mode)
