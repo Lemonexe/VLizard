@@ -56,7 +56,11 @@ def parse_system_dir_name(system_dir_name):
     system_dir_name (str): name of the system directory
     return tuple: compound1, compound2
     """
-    return system_dir_name.split('-')
+    compounds = system_dir_name.split('-')
+    if len(compounds) != 2:
+        raise AppException(f'Invalid system name (must have two compounds delimited by hyphen): {system_dir_name}')
+
+    return compounds
 
 
 def delete_system(compound1, compound2):

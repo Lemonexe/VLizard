@@ -111,7 +111,9 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const willReplace = origCompound !== compound && compoundNames.includes(compound);
     const tempError = T_min >= T_max || isNaN(T_min) || isNaN(T_max);
     const antoineCError = model.includes('Antoine') && T_min + numData[2] <= 0;
-    const isNameValid = fileNameRegex.test(compound) && compound.length <= fileNameMaxLength;
+    const isValidFileName = fileNameRegex.test(compound);
+    const isValidLength = compound.length <= fileNameMaxLength;
+    const isNameValid = isValidFileName && isValidLength;
 
     // OVERALL ERROR CHECK
     const isError = !compound || !model || tempError || !isDataWhole || !isNameValid || antoineCError;
@@ -140,7 +142,10 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 </div>
                             )}
                             {willReplace && <WarningLabel title="This will overwrite existing compound." />}
-                            {compound && !isNameValid && <ErrorLabel title="Name invalid or too long." />}
+                            {compound && !isValidFileName && (
+                                <ErrorLabel title="Name invalid; must contain only letters, numbers and space _ , ." />
+                            )}
+                            {compound && !isValidLength && <ErrorLabel title="Name too long (max 50 characters)." />}
                         </Stack>
                         <Stack direction="row" gap={1}>
                             <FormControl fullWidth className="medium-input">

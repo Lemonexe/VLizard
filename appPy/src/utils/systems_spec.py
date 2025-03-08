@@ -1,6 +1,6 @@
 import pytest
 from .io.local_files import join_data_path
-from .systems import validate_system_or_swap, get_system_path
+from .systems import validate_system_or_swap, get_system_path, parse_system_dir_name
 from .errors import AppException
 
 # NOTE: this test relies on the files in appPy\data\VLE\test1-test2
@@ -26,3 +26,14 @@ def test_validate_system_or_swap(mocker):
 def test_get_system_path():
     file_path = join_data_path('VLE', 'benzene-toluene')
     assert get_system_path('benzene', 'toluene') == file_path
+
+
+def test_parse_system_dir_name():
+    assert parse_system_dir_name('benzene-toluene') == ['benzene', 'toluene']
+    assert parse_system_dir_name('toluene-benzene') == ['toluene', 'benzene']
+
+    with pytest.raises(AppException):
+        parse_system_dir_name('benzene')
+
+    with pytest.raises(AppException):
+        parse_system_dir_name('benzene-toluene-water')
