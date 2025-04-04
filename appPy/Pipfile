@@ -20,7 +20,7 @@ pyinstaller = "*"
 pytest-mock = "*"
 
 [requires]
-python_version = "3.12"
+python_version = "3.11"
 
 [scripts]
 start = "pipenv run python serve.py port=37137"

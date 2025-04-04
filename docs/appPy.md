@@ -22,6 +22,8 @@ cd appPy
 pip install --user pipenv
 pipenv install --dev
 ```
+In case of Linux, you may not be able to install `pipenv` into the global Python pre-installed on your system.
+In order to use the system Python, install pipenv via your package manager, e.g. `sudo apt install pipenv`.
 
 ### Build
 Build has to be done natively on each respective platform: Windows, Linux, macOS.
