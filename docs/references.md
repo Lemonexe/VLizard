@@ -4,7 +4,10 @@
 - npm packages in [package.json](../appUI/package.json)
 - [Open Sans font](https://fonts.google.com/specimen/Open+Sans)
 - Cool [custom icon](../appUI/public/icon.png) generated using [Stable Diffusion](https://stablediffusionweb.com/) and [Pixel It](https://giventofly.github.io/pixelit/)
+- template [vite-electron-builder](https://github.com/cawa-93/vite-electron-builder/)
+(excerpts are used)
 - template [electron-vite-react](https://github.com/electron-vite/electron-vite-react)
+(initially used to scaffold the project, but now only excerpts are used) 
 - using [Citation File Format](https://citation-file-format.github.io)
 
 ## Literary references
@@ -25,4 +28,4 @@ Following literature sources were used for creation of this software:
   - VLE data for EtOH–H2O: [Voutsas 2011](https://doi.org/10.1016/j.fluid.2011.06.009), [Kamihama 2012](https://dx.doi.org/10.1021/je2008704)
   - Antoine params for EtOH, H2O: [Aspen Plus v11](https://www.aspentech.com/products/engineering/aspen-plus)
 
-† _means exact equation convention taken from [Aspen Plus](https://www.aspentech.com/products/engineering/aspen-plus)_
+†: _the exact equation form adheres to [Aspen Plus](https://www.aspentech.com/products/engineering/aspen-plus) documentation_

@@ -1,6 +1,8 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain, shell } from 'electron';
 import path from 'node:path';
+import { URL } from 'node:url';
 import { killAll, killPyServer, startPyServer } from './child.ts';
+import { allowedOrigins } from './config.ts';
 
 // The built directory structure
 //
@@ -38,17 +40,26 @@ const createWindow = () => {
         },
     });
 
+    if (VITE_DEV_SERVER_URL) {
+        win.loadURL(VITE_DEV_SERVER_URL).then();
+    } else {
+        win.loadFile(BUILD_INDEX_URL).then();
+    }
+
     // Open external links (such as GitHub) using the default browser via shell; internal links (such as reload page) are opened in the Electron browser.
     win.webContents.on('will-navigate', (event, url) => {
         if (!win) return;
         const rootUrl = getRootUrl(win.webContents.getURL());
         if (!url.includes(rootUrl)) {
+            const { origin } = new URL(url);
+
             event.preventDefault();
+            if (!allowedOrigins.has(origin)) return console.warn(`Blocked client request to unknown origin: ${origin}`);
             shell.openExternal(url).then();
         }
     });
 
-    VITE_DEV_SERVER_URL ? win.loadURL(VITE_DEV_SERVER_URL) : win.loadFile(BUILD_INDEX_URL);
+    globalShortcut.register('F12', () => win?.webContents.toggleDevTools());
 
     ipcMain.handle('request-instance-lock', () => isInstanceLocked);
 };
@@ -61,7 +72,10 @@ app.whenReady().then(() => {
 
 // SHUTDOWN
 app.on('will-quit', killPyServer);
-app.on('window-all-closed', () => killAll(isInstanceLocked));
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+    killAll(isInstanceLocked);
+});
 app.on('quit', () => killAll(isInstanceLocked));
 process.on('SIGINT', () => killAll(isInstanceLocked));
 process.on('SIGTERM', () => killAll(isInstanceLocked));

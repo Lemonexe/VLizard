@@ -1,3 +1,4 @@
+// note that only origins listed in /appUI/electron/config.ts are allowed
 export const REPO_URL = 'https://github.com/Lemonexe/VLizard';
 export const LICENSE_URL = `${REPO_URL}/blob/master/LICENSE`;
 export const MANUAL_URL = `${REPO_URL}/blob/master/docs/user/manual.md`;
