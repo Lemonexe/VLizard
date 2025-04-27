@@ -10,7 +10,11 @@
   "directories": {
     "output": "release"
   },
-  "files": ["dist-electron", "dist"],
+  "files": [
+    "dist-electron",
+    "dist",
+    "!node_modules",
+  ],
   "extraResources": [
     {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server"]},
     {"from": "../appPy/dist", "to": "./", "filter": ["VLizard_server.exe"]},

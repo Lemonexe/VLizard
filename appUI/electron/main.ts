@@ -1,19 +1,19 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, shell } from 'electron';
 import * as path from 'node:path';
-import { URL } from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 import { killAll, killPyServer, startPyServer } from './backendChildProcess.ts';
 import { allowedOrigins } from './config.ts';
 
-const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
-const DIST_PATH = path.resolve('dist');
-process.env.DIST = DIST_PATH;
-const DIST_INDEX_PATH = path.join(DIST_PATH, 'index.html');
-const PRELOAD_PATH = path.resolve(path.join('dist-electron', 'preload.cjs'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const PUBLIC_PATH = app.isPackaged ? DIST_PATH : path.resolve('public');
-process.env.PUBLIC = PUBLIC_PATH;
+const PRELOAD_PATH = path.join(__dirname, 'preload.cjs');
+const ROOT_PATH = path.join(__dirname, '..');
+const DIST_PATH = path.join(ROOT_PATH, 'dist');
+const DIST_INDEX_PATH = path.join(DIST_PATH, 'index.html');
+const PUBLIC_PATH = app.isPackaged ? DIST_PATH : path.join(ROOT_PATH, 'public');
 
 const isInstanceLocked = app.requestSingleInstanceLock();
+const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
 // Parse the URL to extract the protocol and hostname
 const getRootUrl = (fullUrl: string) => {

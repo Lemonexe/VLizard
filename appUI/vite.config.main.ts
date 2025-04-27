@@ -15,11 +15,8 @@ export default defineConfig({
             formats: ['es'],
         },
         rollupOptions: {
-            // don't parse index.html
-            input: undefined,
-            output: {
-                entryFileNames: '[name].js',
-            },
+            input: undefined, // don't parse index.html
+            external: [],
         },
     },
     publicDir: false,

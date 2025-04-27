@@ -13,8 +13,10 @@ export default defineConfig({
             // ESM not supported for sandboxed & isolated preload https://www.electronjs.org/docs/latest/tutorial/esm#summary-esm-support-matrix
             formats: ['cjs'],
         },
-        // don't parse index.html
-        rollupOptions: { input: undefined },
+        rollupOptions: {
+            input: undefined, // don't parse index.html
+            external: [],
+        },
     },
     publicDir: false,
 });
