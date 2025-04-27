@@ -1,7 +1,7 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, shell } from 'electron';
 import * as path from 'node:path';
 import { URL } from 'node:url';
-import { killAll, killPyServer, startPyServer } from './child.ts';
+import { killAll, killPyServer, startPyServer } from './backendChildProcess.ts';
 import { allowedOrigins } from './config.ts';
 
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;

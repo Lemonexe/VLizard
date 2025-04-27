@@ -13,12 +13,12 @@ const getBinaryFile = () => {
     return '';
 };
 
-// child process is started and PID persisted in child, unless we can't acquire lock, which means VLizard is already running
-export const startPyServer = (isInstanceLocked: boolean) => {
-    if (!isInstanceLocked) return;
+// start backend process & persist its PID in `child`, unless it's a secondary instance of VLizard (backend already running)
+export const startPyServer = (isPrimaryInstance: boolean) => {
+    if (!isPrimaryInstance) return;
 
-    // in order to test the functionality in dev mode:
-    // child = spawn(path.join(__dirname, '..', '..', 'appPy', 'dist', getBinaryFile()), []); return;
+    // in order to test spawning & killing in dev mode:
+    // child = spawn(path.join('..', 'appPy', 'dist', getBinaryFile()), []);
     if (!app.isPackaged || child) return;
 
     const binaryFile = getBinaryFile();
@@ -36,9 +36,9 @@ export const killPyServer = () => {
 };
 
 // terminate with extreme prejudice! It's the only thing that works on Windows. UGH!
-export const killAll = (isInstanceLocked: boolean) => {
+export const killAll = (isPrimaryInstance: boolean) => {
     killPyServer();
-    if (!app.isPackaged || !isInstanceLocked || os.platform() !== 'win32') return;
+    if (!app.isPackaged || !isPrimaryInstance || os.platform() !== 'win32') return;
     const binaryFile = getBinaryFile();
     exec(`taskkill /F /IM ${binaryFile} /T`);
     process.exit(0);
