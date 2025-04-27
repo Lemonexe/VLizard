@@ -14,7 +14,7 @@ export const About: FC = () => (
         <h1>VLizard v{DisplayedAppVersion}</h1>
         <Box my={2}>
             <Button startIcon={<QuestionMark />} href={MANUAL_URL} variant="outlined">
-                User manual
+                Getting started
             </Button>
         </Box>
         <p>Created by Jiří Zbytovský in 2023–{currentYear}.</p>

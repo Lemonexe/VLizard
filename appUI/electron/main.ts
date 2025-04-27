@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { killAll, killPyServer, startPyServer } from './backendChildProcess.ts';
 import { allowedOrigins } from './config.ts';
+import { createAppMenu } from './menu.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -60,6 +61,7 @@ const createWindow = () => {
 // START UP
 app.whenReady().then(() => {
     startPyServer(isInstanceLocked);
+    createAppMenu();
     createWindow();
 });
 
