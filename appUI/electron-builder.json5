@@ -34,7 +34,7 @@
     "artifactName": "${productName}_${version}.${ext}"
   },
   "linux": {
-    "target": ["AppImage"],
+    "target": ["deb"],
     "category": "Utility",
   },
   "nsis": {

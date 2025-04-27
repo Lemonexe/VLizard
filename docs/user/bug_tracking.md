@@ -2,7 +2,7 @@
 
 In case you encounter a bug in VLizard app, please report it to the author:
 
-- write an email to [zbytovsi@vscht.cz](mailto:zbytovsi@vscht.cz)
+- write an email to [Jiri.Zbytovsky@vscht.cz](mailto:Jiri.Zbytovsky@vscht.cz)
 - or create an issue at [github](https://github.com/Lemonexe/VLizard/issues)
 
 Please include following information in you report:

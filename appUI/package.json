@@ -1,6 +1,10 @@
 {
   "name": "vlizard",
-  "author": "Jiri Zbytovsky",
+  "author": {
+    "name": "Jiri Zbytovsky",
+    "email": "Jiri.Zbytovsky@vscht.cz"
+  },
+  "homepage": "https://github.com/Lemonexe/VLizard",
   "description": "VLizard, a VLE wizard.",
   "private": true,
   "version": "2024.1.0",

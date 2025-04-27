@@ -18,11 +18,17 @@ npm i
 ```
 
 ### Build
-1. Build the [python backend](appPy.md#build)
+1. Build the [python backend](appPy.md#build), then go back to `appUI` dir.
 2. Build Electron app: `npm run build`
+3. At Linux, create portable app:
+```
+pushd release
+tar -cJvf vlizard_2025.1.0_amd64.tar.xz --transform='s,^linux-unpacked,vlizard,' linux-unpacked
+popd
+```
 
 ### Local run
-1. Run the [python backend](appPy.md#local-run)
+1. Run the [python backend](appPy.md#local-run) (any method)
 2. Electron dev app + vite dev server: `npm start`
 
 ### Development
