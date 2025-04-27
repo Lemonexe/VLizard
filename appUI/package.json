@@ -4,22 +4,23 @@
   "description": "VLizard, a VLE wizard.",
   "private": true,
   "version": "2024.1.0",
+  "type": "module",
+  "main": "dist-electron/main.js",
   "engines": {
     "npm": ">=10.0.0",
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
-    "tsc": "tsc",
+    "start": "npm run dev",
+    "dev": "node electron/dev.js",
+    "build": "npm run build:vite && npm run build:electron",
     "build:vite": "vite build",
     "build:electron": "electron-builder",
+    "tsc": "tsc",
     "prettier": "prettier --write \"src/**/*.{js,ts,mjs,cjs,jsx,tsx}\" \"electron/**/*.{js,ts,mjs,cjs,jsx,tsx}\"",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest",
-    "preview": "vite preview"
+    "test": "vitest"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -50,9 +51,6 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0",
     "vite": "^6.2.1",
-    "vite-plugin-electron": "^0.29.0",
-    "vite-plugin-electron-renderer": "^0.14.6",
     "vitest": "^3.0.8"
-  },
-  "main": "dist-electron/main.js"
+  }
 }

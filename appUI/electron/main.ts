@@ -1,26 +1,19 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, shell } from 'electron';
-import path from 'node:path';
+import * as path from 'node:path';
 import { URL } from 'node:url';
 import { killAll, killPyServer, startPyServer } from './child.ts';
 import { allowedOrigins } from './config.ts';
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
+const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+const DIST_PATH = path.resolve('dist');
+process.env.DIST = DIST_PATH;
+const DIST_INDEX_PATH = path.join(DIST_PATH, 'index.html');
+const PRELOAD_PATH = path.resolve(path.join('dist-electron', 'preload.cjs'));
 
-process.env.DIST = path.join(__dirname, '../dist');
-process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public');
+const PUBLIC_PATH = app.isPackaged ? DIST_PATH : path.resolve('public');
+process.env.PUBLIC = PUBLIC_PATH;
 
 const isInstanceLocked = app.requestSingleInstanceLock();
-let win: BrowserWindow | undefined;
-const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
-const BUILD_INDEX_URL = path.join(process.env.DIST, 'index.html');
 
 // Parse the URL to extract the protocol and hostname
 const getRootUrl = (fullUrl: string) => {
@@ -29,12 +22,12 @@ const getRootUrl = (fullUrl: string) => {
 };
 
 const createWindow = () => {
-    win = new BrowserWindow({
+    const win = new BrowserWindow({
         width: 1280,
         height: 1024,
-        icon: path.join(process.env.PUBLIC, 'icon.png'),
+        icon: path.join(PUBLIC_PATH, 'icon.png'),
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
+            preload: PRELOAD_PATH,
             // Enable all CORS. Better here than BE, which has to be secure against outside calls, but for FE it doesn't matter.
             webSecurity: false,
         },
@@ -43,7 +36,7 @@ const createWindow = () => {
     if (VITE_DEV_SERVER_URL) {
         win.loadURL(VITE_DEV_SERVER_URL).then();
     } else {
-        win.loadFile(BUILD_INDEX_URL).then();
+        win.loadFile(DIST_INDEX_PATH).then();
     }
 
     // Open external links (such as GitHub) using the default browser via shell; internal links (such as reload page) are opened in the Electron browser.
