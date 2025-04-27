@@ -27,7 +27,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
         [fitDataForSystem],
     );
 
-    if (fitDataForSystem.length === 0)
+    if (fitDataForSystem.length === 0) {
         return (
             <Tooltip title="Requires a model Fitting" placement="right">
                 <div>
@@ -37,6 +37,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
                 </div>
             </Tooltip>
         );
+    }
 
     const inputLabelId = `models-${props.compound1}-${props.compound2}`;
 

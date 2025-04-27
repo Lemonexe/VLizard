@@ -10,7 +10,7 @@ export default [
     ...pluginTS.configs.recommended,
     {
         ignores: ['**/dist/*', '**/dist-electron/*', '**/release/*', '**/node_modules/*'],
-        files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+        files: ['**/*.{ts,tsx}'],
         languageOptions: {
             globals: globals.browser,
         },
@@ -21,7 +21,7 @@ export default [
             '@typescript-eslint/no-use-before-define': 'error',
             '@typescript-eslint/no-shadow': 'error',
             'import/prefer-default-export': 'off',
-            curly: ['error', 'multi'],
+            curly: ['error', 'multi-line'],
             'react/require-default-props': 'off',
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'off',

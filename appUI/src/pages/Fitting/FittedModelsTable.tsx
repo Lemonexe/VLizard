@@ -11,8 +11,9 @@ export const FittedModelsTable: FC<FittedModelsTableProps> = ({ expandAll }) => 
     const { fitData, VLEModelDefs, VLEData } = useData();
 
     if (!fitData || !VLEModelDefs || !VLEData) return <Loader subject="fitting data" />;
-    if (fitData.length === 0)
+    if (fitData.length === 0) {
         return <EmptyData children="Add a binary VLE system and its vapor pressure models to get started."></EmptyData>;
+    }
 
     return (
         <Table>
