@@ -29,23 +29,15 @@ Prettier: `npm run prettier`
 
 ### Build
 1. Build the [python backend](appPy.md#build), then go back to `appUI` dir.
-2. Build Electron app: `npm run build`
+2. Build Electron app installer: `npm run build`
 
 #### Build for Windows
-No more is needed.
+Yields installer `.\releases\VLizard_$VERSION.exe`.  
+Portable app is also available in `.\releases\win-unpacked\` as a byproduct of the installer build process, but it is not distributed.
 
 #### Build for Linux
 
-Two targets are supported: the recommended `.deb` and the portable `.tar.xz`
-(may not run without installing unspecified additional dependencies).  
-The portable app is a byproduct of the deb installer.
-Though if you want to create it directly, skipping deb, add `--dir` parameter to `electron-builder`).  
-Then package it as follows:
-```
-pushd release
-tar -cJvf vlizard_2025.1.0_amd64.tar.xz --transform='s,^linux-unpacked,vlizard,' linux-unpacked
-popd
-```
+See [separate document](./build_linux.md) that describes both supported targets (`flatpak`, `.tar.xz`).
 
 #### Build for macOS
 N/A, TODO.

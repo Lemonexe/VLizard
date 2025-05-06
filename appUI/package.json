@@ -21,6 +21,7 @@
     "build:vite-main": "vite build --config vite.config.main.ts && vite build --config vite.config.preload.ts",
     "build:vite-renderer": "vite build --config vite.config.renderer.ts",
     "build:electron": "electron-builder",
+    "build:electron-portable": "electron-builder --dir",
     "tsc": "tsc",
     "prettier": "prettier --write \"src/**/*.{js,ts,mjs,cjs,jsx,tsx}\" \"electron/**/*.{js,ts,mjs,cjs,jsx,tsx}\"",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",

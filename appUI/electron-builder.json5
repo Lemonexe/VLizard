@@ -3,7 +3,7 @@
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "VLizard",
+  "appId": "cz.zby.jira.VLizard",
   "productName": "VLizard",
   "asar": true,
   "icon": "public/icon.png",
@@ -34,13 +34,20 @@
     "artifactName": "${productName}_${version}.${ext}"
   },
   "linux": {
-    "target": ["deb"],
-    "category": "Science"
+    "target": ["flatpak"],
+    "category": "Science",
+    "synopsis": "VLizard, a VLE wizard."
   },
   "nsis": {
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": false
+  },
+  "flatpak": {
+    "base": "org.electronjs.Electron2.BaseApp",
+    "baseVersion": "24.08",
+    "runtime": "org.freedesktop.Platform",
+    "runtimeVersion": "24.08"
   }
 }
