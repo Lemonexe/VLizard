@@ -6,7 +6,7 @@ export default defineConfig({
     build: {
         minify: false,
         outDir: 'dist',
-        target: 'chrome134',
+        target: 'chrome136', // https://www.electronjs.org/blog/electron-36-0#stack-changes
     },
     plugins: [react()],
     define: {

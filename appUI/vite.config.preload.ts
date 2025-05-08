@@ -7,7 +7,7 @@ export default defineConfig({
         ssr: true,
         outDir: 'dist-electron',
         assetsDir: '.',
-        target: 'chrome134',
+        target: 'chrome136', // https://www.electronjs.org/blog/electron-36-0#stack-changes
         lib: {
             entry: ['electron/preload.ts'],
             // ESM not supported for sandboxed & isolated preload https://www.electronjs.org/docs/latest/tutorial/esm#summary-esm-support-matrix

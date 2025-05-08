@@ -16,6 +16,8 @@ const PUBLIC_PATH = app.isPackaged ? DIST_PATH : path.join(ROOT_PATH, 'public');
 const isInstanceLocked = app.requestSingleInstanceLock();
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
+app.commandLine.appendSwitch('gtk-version', '3'); // workaround for Electron 36 on older linux https://github.com/electron/electron/issues/46538#issuecomment-2808806722
+
 // Parse the URL to extract the protocol and hostname
 const getRootUrl = (fullUrl: string) => {
     const { protocol, hostname } = new URL(fullUrl);
