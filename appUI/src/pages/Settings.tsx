@@ -23,58 +23,58 @@ import { spacingN } from '../contexts/MUITheme.tsx';
 import { p_units } from '../adapters/logic/UoM.ts';
 import { sanitizeNumStr } from '../adapters/logic/numbers.ts';
 
-type PatchConfigFn = (key: keyof Config, value: string | number | boolean) => void;
+type PatchConfigFn = (key: keyof Config, value: string | number | boolean) => Config;
+type SendFn = (formConfigOverride?: Config) => void;
+type FormProps = {
+    formConfig: Config;
+    patchConfig: PatchConfigFn;
+    send: SendFn;
+};
+
 type ChE = ChangeEvent<HTMLInputElement>;
 /**
  * HOF that returns a function that creates props for a numerical TextField for a given config key.
  * Cray innit?
  */
-type GeneratorFn<T> = (formConfig: Config, patchConfig: PatchConfigFn, handleBlur?: () => void) => T;
+type GeneratorFn<T> = (props: FormProps) => T;
 
 type CreateTFPropsFn = (key: keyof Config, isPercent?: boolean) => Partial<TextFieldProps>;
-const getCreateTFProps: GeneratorFn<CreateTFPropsFn> = (formConfig, patchConfig, send) => {
+const getCreateTFProps: GeneratorFn<CreateTFPropsFn> = ({ formConfig, patchConfig, send }) => {
     return (key, isPercent) => ({
         style: { marginTop: spacingN(0.5) },
         className: 'num-input',
         size: 'small',
         value: formConfig[key],
+        // don't send an API call with each typed character, only when writing is finished: onBlur or form onSubmit
         onChange: (e: ChE) => patchConfig(key, e.target.value),
-        onBlur: send,
+        onBlur: () => send(),
         slotProps: isPercent ? { input: { endAdornment: <span>%</span> } } : undefined,
     });
 };
 
 // same for Checkbox
 type CreateCBPropsFn = (key: keyof Config) => Partial<CheckboxProps>;
-const getCreateCBProps: GeneratorFn<CreateCBPropsFn> = (formConfig, patchConfig, send) => {
+const getCreateCBProps: GeneratorFn<CreateCBPropsFn> = ({ formConfig, patchConfig, send }) => {
     return (key) => ({
         checked: Boolean(formConfig[key]),
-        onChange: (e: ChE) => patchConfig(key, e.target.checked),
-        onBlur: send,
+        onChange: (e: ChE) => send(patchConfig(key, e.target.checked)),
     });
 };
 
 // same for Select
 type CreateSelectPropsFn = (key: keyof Config) => Partial<SelectProps>;
-const getCreateSelectProps: GeneratorFn<CreateSelectPropsFn> = (formConfig, patchConfig, send) => {
+const getCreateSelectProps: GeneratorFn<CreateSelectPropsFn> = ({ formConfig, patchConfig, send }) => {
     return (key) => ({
         size: 'small',
         sx: { ml: 2, mb: 1 },
         className: 'num-input',
         value: formConfig[key],
-        onChange: (e) => patchConfig(key, e.target.value as string),
-        onBlur: send,
+        onChange: (e) => send(patchConfig(key, e.target.value as string)),
     });
 };
 
-type TabProps = {
-    formConfig: Config;
-    patchConfig: PatchConfigFn;
-    send: () => void;
-};
-
-const CalcSettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
-    const createTFProps = getCreateTFProps(formConfig, patchConfig, send);
+const CalcSettings: FC<FormProps> = (props) => {
+    const createTFProps = getCreateTFProps(props);
     return (
         <Stack direction="column" gap={2.5} pt={3}>
             <div>
@@ -117,10 +117,10 @@ const CalcSettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
     );
 };
 
-const UISettings: FC<TabProps> = ({ formConfig, patchConfig, send }) => {
-    const createTFProps = getCreateTFProps(formConfig, patchConfig, send);
-    const createCBProps = getCreateCBProps(formConfig, patchConfig, send);
-    const createSlProps = getCreateSelectProps(formConfig, patchConfig, send);
+const UISettings: FC<FormProps> = (props) => {
+    const createTFProps = getCreateTFProps(props);
+    const createCBProps = getCreateCBProps(props);
+    const createSlProps = getCreateSelectProps(props);
     return (
         <Stack direction="column" gap={2.5} pt={3}>
             <div>
@@ -168,15 +168,21 @@ export const Settings: FC = () => {
 
     // TS is not accurate for formConfig, numbers will be turned to strings by MUI
     const [formConfig, setFormConfig] = useState<Config>({ ...initConfig });
-    const patchConfig: PatchConfigFn = (key, value) => setFormConfig((prev) => ({ ...prev, [key]: value }));
+    // patch form state, and return what will the new state be afterward
+    const patchConfig: PatchConfigFn = (key, value) => {
+        setFormConfig((prev) => ({ ...prev, [key]: value }));
+        return { ...formConfig, [key]: value };
+    };
 
-    const send = () => {
+    // validate & submit form, using config either from argument or from state
+    const send: SendFn = (formConfigOverride) => {
+        const configToSend = formConfigOverride === undefined ? formConfig : formConfigOverride;
         const patch: Record<string, number | string | boolean> = {};
         let isEmpty = true;
-        for (const k of Object.keys(formConfig)) {
+        for (const k of Object.keys(configToSend)) {
             const key = k as keyof Config;
             const initVal = initConfig[key];
-            const currVal = formConfig[key];
+            const currVal = configToSend[key];
             const wasItNumber = typeof initVal === 'number'; // if initVal was a number, a number is expected, so try to cast
             const castVal = wasItNumber && typeof currVal === 'string' ? Number(sanitizeNumStr(currVal)) : currVal;
             if (wasItNumber && isNaN(Number(castVal))) {
