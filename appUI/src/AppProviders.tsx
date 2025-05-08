@@ -7,6 +7,7 @@ import { ConfigContextProvider } from './contexts/ConfigContext.tsx';
 import { DataContextProvider } from './contexts/DataContext.tsx';
 import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
+import { UpdateAvailableModalWatcher } from './components/AppUpdate/UpdateAvailableModalWatcher.tsx';
 
 const staleTime = Infinity;
 const gcTime = 5 * 60 * 1000;
@@ -24,7 +25,10 @@ export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
                 <IsItUpWatcher>
                     <ErrorBoundary>
                         <ConfigContextProvider>
-                            <DataContextProvider>{children}</DataContextProvider>
+                            <DataContextProvider>
+                                <UpdateAvailableModalWatcher />
+                                {children}
+                            </DataContextProvider>
                         </ConfigContextProvider>
                     </ErrorBoundary>
                 </IsItUpWatcher>

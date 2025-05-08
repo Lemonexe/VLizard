@@ -4,8 +4,15 @@ import { getVaporModelsKey } from '../useVapor.ts';
 import { getPersistedFitsKey } from '../useFit.ts';
 import { getVLESystemsKey } from '../useVLE.ts';
 import { getConfigKey } from '../useConfigApi.ts';
+import { remotePackageJsonKey } from '../useAvailableAppUpdate.ts';
 
-const queryKeys: QueryKey[] = [getVaporModelsKey, getVLESystemsKey, getPersistedFitsKey, getConfigKey];
+const queryKeys: QueryKey[] = [
+    getVaporModelsKey,
+    getVLESystemsKey,
+    getPersistedFitsKey,
+    getConfigKey,
+    remotePackageJsonKey,
+];
 
 export const useInvalidateAllQueries = () => {
     const queryClient = useQueryClient();

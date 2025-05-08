@@ -1,22 +1,22 @@
 import { FC } from 'react';
 import { QuestionMark } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { LICENSE_URL, MANUAL_URL, REPO_URL } from '../adapters/io/URL.ts';
+import { trimPatchVersion } from '../adapters/semver.ts';
 import { DefaultLayout } from '../components/DefaultLayout.tsx';
+import { UpdateAvailableButton } from '../components/AppUpdate/UpdateAvailableButton.tsx';
 
 const currentYear = new Date().getFullYear();
 
-// display only major and minor version, not patch
-const DisplayedAppVersion = APP_VERSION.split('.').slice(0, 2).join('.');
-
 export const About: FC = () => (
     <DefaultLayout>
-        <h1>VLizard v{DisplayedAppVersion}</h1>
-        <Box my={2}>
+        <h1>VLizard v{trimPatchVersion(APP_VERSION)}</h1>
+        <Stack direction="row" my={2} spacing={2}>
+            <UpdateAvailableButton />
             <Button startIcon={<QuestionMark />} href={MANUAL_URL} variant="outlined">
                 Getting started
             </Button>
-        </Box>
+        </Stack>
         <p>Created by Jiří Zbytovský in 2023–{currentYear}.</p>
         <p>
             Hosted at <a href={REPO_URL}>Github repository</a> under the free <a href={LICENSE_URL}>MIT License</a>.

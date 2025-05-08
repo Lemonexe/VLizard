@@ -40,7 +40,6 @@ So click the "Perform analysis" icon:
 ![analysis icon](images/analysis_icon.png)
 
 A dialog appears with visualization of the vapor pressure model.  
-💡 Any dialog can be closed by clicking on X, the blurred background, or by pressing Escape.  
 💡 Any plot can be saved as vectorized `svg` image to your computer.
 
 Try editing a model via the pencil icon.  
