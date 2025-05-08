@@ -40,6 +40,8 @@ default_config_dict = {
     'van_Ness_max_mark': 10,
 
     ## UI
+    'notify_app_update': True,
+
     # whether to render chart elements
     'chart_title': True,
     'chart_legend': True,

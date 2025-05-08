@@ -18,6 +18,7 @@ export type Config = {
     UI_expandAll: boolean;
     UoM_p: string;
     UoM_T: string;
+    notify_app_update: boolean;
 };
 
 export type UpdateConfigRequest = Partial<Config>;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { useAvailableAppUpdate } from '../../adapters/api/useAvailableAppUpdate.ts';
 import { UpdateAvailableModal } from './UpdateAvailableModal.tsx';
 
@@ -8,13 +9,14 @@ export const UpdateAvailableModalWatcher = () => {
     const handleClose = () => setOpen(false);
 
     const availableAppUpdate = useAvailableAppUpdate();
+    const { notify_app_update } = useConfig();
 
     useEffect(() => {
-        if (!wasOpened && availableAppUpdate !== null) {
+        if (notify_app_update && !wasOpened && availableAppUpdate !== null) {
             setOpen(true);
             setWasOpened(true);
         }
-    }, [wasOpened, availableAppUpdate]);
+    }, [wasOpened, availableAppUpdate, notify_app_update]);
 
     return <UpdateAvailableModal open={open} handleClose={handleClose} isNotification />;
 };

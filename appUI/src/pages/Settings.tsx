@@ -125,6 +125,11 @@ const UISettings: FC<FormProps> = (props) => {
         <Stack direction="column" gap={2.5} pt={3}>
             <div>
                 <FormControlLabel
+                    control={<Checkbox {...createCBProps('notify_app_update')} />}
+                    label="Notify about new VLizard versions"
+                />
+                <br />
+                <FormControlLabel
                     control={<Checkbox {...createCBProps('UI_expandAll')} />}
                     label="Always expand all data subtables"
                 />
