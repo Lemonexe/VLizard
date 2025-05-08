@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { getNaturalDgts, roundByOrder, toSigDgts, truncateSigDgts } from './numbers';
 
-test('toSigDgts', () => {
+test(toSigDgts.name, () => {
     expect(toSigDgts(1, 1)).toBe('1');
     expect(toSigDgts(1)).toBe('1.000');
     expect(toSigDgts(1, 3)).toBe('1.00');
@@ -13,7 +13,7 @@ test('toSigDgts', () => {
     expect(toSigDgts(98765, 7)).toBe('98765.00');
 });
 
-test('truncateSigDgts', () => {
+test(truncateSigDgts.name, () => {
     expect(truncateSigDgts(1, 1)).toBe(1);
     expect(truncateSigDgts(1)).toBe(1);
     expect(truncateSigDgts(123.45, 8)).toBe(123.45);
@@ -27,7 +27,7 @@ test('truncateSigDgts', () => {
     expect(truncateSigDgts(err)).toBe(364.8);
 });
 
-test('getNaturalDgts', () => {
+test(getNaturalDgts.name, () => {
     expect(getNaturalDgts(1)).toBe(1);
     expect(getNaturalDgts(123)).toBe(3);
     expect(getNaturalDgts(123.45)).toBe(3);
@@ -35,7 +35,7 @@ test('getNaturalDgts', () => {
     expect(getNaturalDgts(1.234e9)).toBe(10);
 });
 
-test('roundByOrder', () => {
+test(roundByOrder.name, () => {
     expect(roundByOrder(1, 1)).toBe(0);
     expect(roundByOrder(1, 0)).toBe(1);
     expect(roundByOrder(1, -1)).toBe(1);

@@ -11,7 +11,7 @@ import {
 } from './spreadsheet.ts';
 import { toSigDgts } from './numbers.ts';
 
-test('generateEmptyCells', () => {
+test(generateEmptyCells.name, () => {
     expect(generateEmptyCells(0, 0)).toEqual([]);
     expect(generateEmptyCells(1, 0)).toEqual([[]]);
     expect(generateEmptyCells(0, 1)).toEqual([]);
@@ -22,7 +22,7 @@ test('generateEmptyCells', () => {
     ]);
 });
 
-test('transposeMatrix', () => {
+test(transposeMatrix.name, () => {
     expect(transposeMatrix([[1]])).toEqual([[1]]);
     expect(transposeMatrix([[1, 2, 3]])).toEqual([[1], [2], [3]]);
     expect(transposeMatrix([[1], [2], [3]])).toEqual([[1, 2, 3]]);
@@ -38,23 +38,23 @@ test('transposeMatrix', () => {
     ]);
 });
 
-test('matrixToSpreadsheetData', () => {
+test(matrixToSpreadsheetData.name, () => {
     expect(matrixToSpreadsheetData([[1e-7]])).toEqual([[{ value: 1e-7 }]]);
     expect(matrixToSpreadsheetData([[1, '', 3]])).toEqual([[{ value: 1 }, { value: '' }, { value: 3 }]]);
     expect(matrixToSpreadsheetData([[undefined, undefined]])).toEqual([[{}, {}]]);
 });
 
-test('spreadsheetDataToMatrix', () => {
+test(spreadsheetDataToMatrix.name, () => {
     expect(spreadsheetDataToMatrix([[{ value: 1 / 7 }], [{ value: '' }]])).toEqual([[1 / 7], ['']]);
 });
 
-test('matrixToNumerical', () => {
+test(matrixToNumerical.name, () => {
     expect(matrixToNumerical([[1]])).toEqual([[1]]);
     expect(matrixToNumerical([[1, '', 3.753]])).toEqual([[1, 0, 3.753]]);
     expect(matrixToNumerical([[undefined, undefined]])).toEqual([[NaN, NaN]]);
 });
 
-test('checkIsSpreadsheetDataWhole', () => {
+test(isSpreadsheetDataWhole.name, () => {
     expect(isSpreadsheetDataWhole([[{ value: 1 }]])).toBe(true);
     expect(isSpreadsheetDataWhole([[{ value: '' }]])).toBe(false);
     expect(isSpreadsheetDataWhole([[{ value: undefined }]])).toBe(false);
@@ -68,7 +68,7 @@ test('checkIsSpreadsheetDataWhole', () => {
     ).toBe(true);
 });
 
-test('filterEmptyRows', () => {
+test(filterEmptyRows.name, () => {
     expect(filterEmptyRows([])).toEqual([]);
     expect(filterEmptyRows([[{ value: 3 }, { value: 4 }]])).toEqual([[{ value: 3 }, { value: 4 }]]);
     expect(filterEmptyRows([[{ value: '' }, { value: undefined }]])).toEqual([]);
@@ -85,7 +85,7 @@ test('filterEmptyRows', () => {
     ]);
 });
 
-test('spreadsheetToSigDgts', () => {
+test(spreadsheetToSigDgts.name, () => {
     expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]])).toEqual([[{ value: toSigDgts(1 / 3) }]]);
     expect(spreadsheetToSigDgts([[{ value: 1 / 3 }]], 2)).toEqual([[{ value: toSigDgts(1 / 3, 2) }]]);
     expect(spreadsheetToSigDgts([[{ value: '' }, { value: undefined }, { value: 'asdf' }]], 2)).toEqual([
