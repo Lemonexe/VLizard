@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { Button, Stack } from '@mui/material';
+import { ChangeEvent, FC, useState } from 'react';
+import { Button, Stack, TextField } from '@mui/material';
 import { KeyboardDoubleArrowDown, KeyboardDoubleArrowUp } from '@mui/icons-material';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
@@ -15,10 +15,14 @@ export const Systems: FC = () => {
     const { VLEData } = useData();
     const showCollapseButton = VLEData && VLEData.length > 0;
 
+    const [filter, setFilter] = useState('');
+    const handleChangeFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.target.value);
+
     return (
         <DefaultLayout>
             <HeaderStack>
                 <h2>Binary systems data</h2>
+                <TextField label="Filter" value={filter} onChange={handleChangeFilter} size="small" />
                 <Stack direction="row" gap={1}>
                     {showCollapseButton && (
                         <Button
@@ -31,7 +35,7 @@ export const Systems: FC = () => {
                     <AddSystemButton />
                 </Stack>
             </HeaderStack>
-            <SystemsTable expandAll={expandAll} />
+            <SystemsTable expandAll={expandAll} filter={filter.trim()} />
         </DefaultLayout>
     );
 };
