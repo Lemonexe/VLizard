@@ -1,13 +1,14 @@
-import { FC, useMemo } from 'react';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { Alert, DialogContent } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { FC, useMemo } from 'react';
+
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 
 const columnLabels = ['x1', 'd ln gamma1', 'd ln gamma2', 'residual'];
 

@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useGammaTest } from '../../adapters/api/useTDTest.ts';
+
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { useGammaTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { GammaTestDialog } from './GammaTestDialog.tsx';
 
 export const useGammaTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {

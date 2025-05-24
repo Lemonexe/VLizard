@@ -1,12 +1,13 @@
 import { FC } from 'react';
-import { MemoryRouter as Router, Navigate, Route, Routes } from 'react-router';
-import { Home } from './pages/Home.tsx';
-import { Settings } from './pages/Settings.tsx';
+import { Navigate, Route, MemoryRouter as Router, Routes } from 'react-router';
+
+import { AppProviders } from './AppProviders.tsx';
 import { About } from './pages/About.tsx';
 import { Compounds } from './pages/Compounds/Compounds.tsx';
-import { Systems } from './pages/Systems/Systems.tsx';
 import { Fitting } from './pages/Fitting/Fitting.tsx';
-import { AppProviders } from './AppProviders.tsx';
+import { Home } from './pages/Home.tsx';
+import { Settings } from './pages/Settings.tsx';
+import { Systems } from './pages/Systems/Systems.tsx';
 
 export const App: FC = () => (
     <AppProviders>

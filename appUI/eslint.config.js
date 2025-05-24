@@ -3,6 +3,7 @@ import pluginJS from '@eslint/js';
 import pluginTS from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginImport from 'eslint-plugin-import';
 
 export default [
     pluginReact.configs.flat.recommended,
@@ -15,7 +16,9 @@ export default [
             globals: globals.browser,
         },
         plugins: {
+            react: pluginReact,
             'react-hooks': pluginReactHooks,
+            import: pluginImport,
         },
         rules: {
             '@typescript-eslint/no-use-before-define': 'error',
@@ -28,6 +31,16 @@ export default [
             'react/sort-comp': 'off',
             'react/react-in-jsx-scope': 'off',
             'react/no-children-prop': 'off',
+
+            'sort-imports': [1, { ignoreDeclarationSort: true }],
+            'import/order': [
+                'warn',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'type'],
+                    'newlines-between': 'always',
+                    alphabetize: { order: 'asc' },
+                },
+            ],
         },
         settings: { react: { version: 'detect' } },
     },

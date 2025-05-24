@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren } from 'react';
-import { DialogTitle, IconButton, Stack } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import { DialogTitle, IconButton, Stack } from '@mui/material';
+import { FC, PropsWithChildren } from 'react';
 
 type DialogTitleProps = PropsWithChildren<{
     handleClose: () => void;

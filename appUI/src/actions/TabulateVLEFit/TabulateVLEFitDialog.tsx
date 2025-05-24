@@ -1,15 +1,16 @@
-import { FC, useMemo } from 'react';
 import { DialogContent } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { FC, useMemo } from 'react';
+
 import { FitTabulateRequest, TabulatedDataset } from '../../adapters/api/types/fitTypes.ts';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { display_T_vec } from '../../adapters/logic/UoM.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
 
 type TabulateVLEFitDialogProps = DialogProps & { req: FitTabulateRequest; data: TabulatedDataset };
 

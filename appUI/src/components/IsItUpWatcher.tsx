@@ -1,7 +1,9 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
-import { ping, PING_INIT_INTERVAL, PING_INTERVAL } from '../adapters/api/ping.ts';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
+
+import { PING_INIT_INTERVAL, PING_INTERVAL, ping } from '../adapters/api/ping.ts';
 import { useIsInstanceLocked } from '../adapters/useIsInstanceLocked.ts';
+
 import { ErrorAlert } from './ErrorAlert.tsx';
 import { CenteredLoader } from './Loader.tsx';
 

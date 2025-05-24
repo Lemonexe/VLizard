@@ -1,12 +1,13 @@
-import { FC, ReactNode } from 'react';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { Box, DialogContent } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { FC, ReactNode } from 'react';
+
 import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
-import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { toFixed, toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 // prettier-ignore

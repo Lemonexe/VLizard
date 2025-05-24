@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useRKTest } from '../../adapters/api/useTDTest.ts';
+
 import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { useRKTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { RKTestDialog } from './RKTestDialog.tsx';
 
 export const useRKTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {

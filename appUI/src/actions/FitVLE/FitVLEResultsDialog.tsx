@@ -1,15 +1,16 @@
+import { Alert, Box, DialogContent } from '@mui/material';
 import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Alert, Box, DialogContent } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+
 import { FitAnalysisRequest, FitAnalysisResponse, PlottedDataset } from '../../adapters/api/types/fitTypes.ts';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { sigDgtsMetrics, sigDgtsParams, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 
 const fitQualityMetrics = ['Root mean square', 'Average absolute deviation'];

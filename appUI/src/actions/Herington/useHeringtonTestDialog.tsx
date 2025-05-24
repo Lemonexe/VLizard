@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useHeringtonTest } from '../../adapters/api/useTDTest.ts';
+
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { useHeringtonTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { HeringtonTestDialog } from './HeringtonTestDialog.tsx';
 
 export const useHeringtonTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {

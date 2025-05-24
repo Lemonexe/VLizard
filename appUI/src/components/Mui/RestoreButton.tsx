@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import { Replay } from '@mui/icons-material';
+import { FC } from 'react';
+
 import { DenseIconButton } from './DenseIconButton.tsx';
 
 type RestoreButtonProps = { onClick: () => void };

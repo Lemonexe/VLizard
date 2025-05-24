@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from 'react';
-import { Box, IconButton, MenuItem, Select, styled } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { input_p_vec, input_T_vec, input_x_vec, p_units } from '../../adapters/logic/UoM.ts';
+import { Box, IconButton, MenuItem, Select, styled } from '@mui/material';
+import { FC, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from 'react';
+
+import { input_T_vec, input_p_vec, input_x_vec, p_units } from '../../adapters/logic/UoM.ts';
 import { truncateSigDgts } from '../../adapters/logic/numbers.ts';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 

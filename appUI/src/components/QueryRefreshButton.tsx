@@ -1,7 +1,9 @@
-import { FC, useState } from 'react';
-import { Tooltip } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import { FC, useState } from 'react';
+
 import { useInvalidateAllQueries } from '../adapters/api/helpers/useInvalidateAllQueries.ts';
+
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
 
 export const QueryRefreshButton: FC = () => {

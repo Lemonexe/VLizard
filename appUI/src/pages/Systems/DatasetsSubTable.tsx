@@ -1,12 +1,14 @@
-import { FC } from 'react';
 import { Table, TableBody, TableHead, TableRow } from '@mui/material';
-import { DenseTableCell, DenseTableHeadCell } from '../../components/Mui/TableComponents.tsx';
-import { SystemIdentifier } from '../../adapters/api/types/common.ts';
+import { FC } from 'react';
+
 import { DatasetTable } from '../../adapters/api/types/VLETypes.ts';
+import { SystemIdentifier } from '../../adapters/api/types/common.ts';
+import { DenseTableCell, DenseTableHeadCell } from '../../components/Mui/TableComponents.tsx';
+
+import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
+import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
 import { PerformTDTestButton } from './buttons/PerformAnalysisButton.tsx';
 import { VLEAnalysisIconButton } from './buttons/TDTest/VLEAnalysisButton.tsx';
-import { EditDatasetButton } from './buttons/EditDatasetButton.tsx';
-import { DeleteDatasetButton } from './buttons/DeleteDatasetButton.tsx';
 
 type DatasetsSubTableProps = SystemIdentifier & { datasets: DatasetTable[] };
 

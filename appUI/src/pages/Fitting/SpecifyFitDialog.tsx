@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { QuestionMark } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -12,24 +12,25 @@ import {
     Select,
     Stack,
 } from '@mui/material';
-import { QuestionMark } from '@mui/icons-material';
+import { FC, useMemo, useState } from 'react';
+
+import { PerformFitVLE } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
+import { SystemIdentifier } from '../../adapters/api/types/common.ts';
+import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
 import { VLE_MODELS_URL } from '../../adapters/io/URL.ts';
-import { useData } from '../../contexts/DataContext.tsx';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import {
+    SpreadsheetData,
     isSpreadsheetDataWhole,
     localizeSpreadsheet,
     matrixToSpreadsheetData,
-    SpreadsheetData,
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
-import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { SystemIdentifier } from '../../adapters/api/types/common.ts';
-import { PersistedFit } from '../../adapters/api/types/fitTypes.ts';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
-import { PerformFitVLE } from '../../actions/FitVLE/useFitVLEResultsDialog.tsx';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
 
 type ValidationResults = { initialDs: string[]; invalidDs: string[] };
 const validateInitialDatasets = (initialDs: string[], systemDs: string[]): ValidationResults =>

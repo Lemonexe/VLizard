@@ -1,12 +1,14 @@
-import { FC, useEffect, useState } from 'react';
-import { Collapse, IconButton, TableRow } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Collapse, IconButton, TableRow } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
 import { CollapsibleTableCell, NoBorderCell } from '../../components/Mui/TableComponents.tsx';
 import { ValidatedCompoundName } from '../../components/dataViews/ValidatedCompoundName.tsx';
-import { PerformFitButton } from './buttons/PerformFitButton.tsx';
-import { FitsSubTable } from './FitsSubTable.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
-import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
+
+import { FitsSubTable } from './FitsSubTable.tsx';
+import { PerformFitButton } from './buttons/PerformFitButton.tsx';
 
 type FittedModelRowProps = { fitsForSystem: PersistedFitsForSystem; expandAll: boolean };
 

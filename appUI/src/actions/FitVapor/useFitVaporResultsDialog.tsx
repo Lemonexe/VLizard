@@ -1,7 +1,9 @@
 import { Dispatch, ReactElement, useCallback, useMemo, useState } from 'react';
-import { LoadingDialog } from '../../components/Loader.tsx';
-import { useVaporFit } from '../../adapters/api/useFit.ts';
+
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
+import { useVaporFit } from '../../adapters/api/useFit.ts';
+import { LoadingDialog } from '../../components/Loader.tsx';
+
 import { FitVaporResultsDialog } from './FitVaporResultsDialog.tsx';
 
 export const useFitVaporResultsDialog = () => {

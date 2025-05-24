@@ -1,4 +1,5 @@
 import { Component, PropsWithChildren } from 'react';
+
 import { ErrorAlert } from './ErrorAlert.tsx';
 
 interface ErrorBoundaryState {

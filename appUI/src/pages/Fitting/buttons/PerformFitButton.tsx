@@ -1,8 +1,9 @@
-import { FC, useState } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
 import { PostAdd } from '@mui/icons-material';
-import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
+import { IconButton, Tooltip } from '@mui/material';
+import { FC, useState } from 'react';
+
 import { useFitVLEResultsDialog } from '../../../actions/FitVLE/useFitVLEResultsDialog.tsx';
+import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
 import { SpecifyFitDialog } from '../SpecifyFitDialog.tsx';
 
 type PerformFitButtonProps = SystemIdentifier & { disabled: boolean };

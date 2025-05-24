@@ -1,7 +1,5 @@
-import { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
-import { useGetVaporModelDefs, useGetVaporModels } from '../adapters/api/useVapor.ts';
-import { useGetPersistedFits } from '../adapters/api/useFit.ts';
-import { useGetVLEModelDefs, useGetVLESystems } from '../adapters/api/useVLE.ts';
+import { FC, PropsWithChildren, createContext, useContext, useMemo } from 'react';
+
 import {
     DatasetTable,
     GetVLEModelDefsResponse,
@@ -9,8 +7,11 @@ import {
     VLEModelDef,
     VLESystem,
 } from '../adapters/api/types/VLETypes.ts';
-import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vaporTypes.ts';
 import { GetPersistedFitsResponse, PersistedFit } from '../adapters/api/types/fitTypes.ts';
+import { GetVaporModelDefsResponse, GetVaporModelsResponse, VaporModel } from '../adapters/api/types/vaporTypes.ts';
+import { useGetPersistedFits } from '../adapters/api/useFit.ts';
+import { useGetVLEModelDefs, useGetVLESystems } from '../adapters/api/useVLE.ts';
+import { useGetVaporModelDefs, useGetVaporModels } from '../adapters/api/useVapor.ts';
 import {
     findCompound,
     findDataset,

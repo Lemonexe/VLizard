@@ -1,7 +1,9 @@
-import { CellBase, Matrix } from 'react-spreadsheet';
 import { Dispatch, SetStateAction } from 'react';
-import { sanitizeNumStr, toSigDgts } from './numbers.ts';
+import { CellBase, Matrix } from 'react-spreadsheet';
+
 import { localizeNumStr } from '../locale.ts';
+
+import { sanitizeNumStr, toSigDgts } from './numbers.ts';
 
 // number is desired data type, but react-spreadsheet also has to represent empty cells
 // unfortunately it's not consistent, so `value` can be '' | undefined

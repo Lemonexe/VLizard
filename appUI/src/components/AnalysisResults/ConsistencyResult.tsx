@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import { Alert, Stack } from '@mui/material';
+import { FC } from 'react';
+
 import { AnalysisResult } from '../../adapters/api/types/common.ts';
 import { linesFromStrings } from '../../adapters/react.tsx';
 

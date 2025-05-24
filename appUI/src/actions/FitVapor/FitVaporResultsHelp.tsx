@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import { Box } from '@mui/material';
+import { FC } from 'react';
+
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
 export const FitVaporResultsHelp: FC = () => (

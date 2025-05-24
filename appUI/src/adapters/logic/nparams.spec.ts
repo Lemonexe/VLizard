@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { fromNamedParams, toNamedParams } from './nparams.ts';
 
 test(toNamedParams.name, () => {

@@ -1,7 +1,8 @@
-import { FC } from 'react';
 import { Button } from '@mui/material';
-import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
+import { FC } from 'react';
+
 import { useRKTestDialog } from '../../../../actions/RK/useRKTestDialog.tsx';
+import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 
 export const RKTestButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useRKTestDialog(props);

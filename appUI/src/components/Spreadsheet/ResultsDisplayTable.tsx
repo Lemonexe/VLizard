@@ -1,7 +1,8 @@
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Box, Button, Collapse } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Box, Button, Collapse } from '@mui/material';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+
 import { CellValueType, fromRows, makeReadOnly, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 
 export type ResultsDisplayTableProps = {

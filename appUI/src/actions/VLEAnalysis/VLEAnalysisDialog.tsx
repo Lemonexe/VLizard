@@ -1,15 +1,16 @@
-import { FC, useMemo } from 'react';
 import { Box, DialogContent, Stack } from '@mui/material';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
-import { display_p_vec, display_T_vec, display_p, display_T } from '../../adapters/logic/UoM.ts';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { FC, useMemo } from 'react';
+
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { display_T, display_T_vec, display_p, display_p_vec } from '../../adapters/logic/UoM.ts';
 import { toSigDgts } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 

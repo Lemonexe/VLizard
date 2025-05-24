@@ -1,4 +1,5 @@
-import { styled, TableCell } from '@mui/material';
+import { TableCell, styled } from '@mui/material';
+
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
 export const CollapsibleTableCell = styled(TableCell)({

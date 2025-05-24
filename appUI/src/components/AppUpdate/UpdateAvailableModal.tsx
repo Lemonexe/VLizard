@@ -1,12 +1,13 @@
-import { FC } from 'react';
 import { Download } from '@mui/icons-material';
 import { Button, Dialog, DialogActions, DialogContent, styled } from '@mui/material';
-import { LATEST_RELEASE_URL } from '../../adapters/io/URL.ts';
-import { DialogTitleWithX } from '../Mui/DialogTitle.tsx';
+import { FC } from 'react';
+
 import { useAvailableAppUpdate } from '../../adapters/api/useAvailableAppUpdate.ts';
-import { spacingN } from '../../contexts/MUITheme.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { LATEST_RELEASE_URL } from '../../adapters/io/URL.ts';
 import { trimPatchVersion } from '../../adapters/semver.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { spacingN } from '../../contexts/MUITheme.tsx';
+import { DialogTitleWithX } from '../Mui/DialogTitle.tsx';
 
 const PaddedTd = styled('td')({ paddingRight: spacingN(2) });
 

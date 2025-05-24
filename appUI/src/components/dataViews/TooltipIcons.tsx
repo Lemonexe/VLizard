@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { SvgIconOwnProps, Tooltip } from '@mui/material';
 import { Info, Report, Warning } from '@mui/icons-material';
+import { SvgIconOwnProps, Tooltip } from '@mui/material';
+import { FC } from 'react';
+
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
 export type TooltipIconProps = { title: string; color?: SvgIconOwnProps['color'] };

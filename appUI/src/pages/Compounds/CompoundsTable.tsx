@@ -1,8 +1,10 @@
-import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { FC } from 'react';
+
 import { Loader } from '../../components/Loader.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
 import { EmptyData } from '../../components/dataViews/EmptyData.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+
 import { CompoundRow } from './CompoundRow.tsx';
 
 type CompoundsTableProps = { filter: string };

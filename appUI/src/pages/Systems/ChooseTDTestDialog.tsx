@@ -1,16 +1,18 @@
-import { FC } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
 import { QuestionMark } from '@mui/icons-material';
-import { TEST_OVERVIEW_URL } from '../../adapters/io/URL.ts';
+import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
+import { FC } from 'react';
+
 import { DatasetIdentifier } from '../../adapters/api/types/common.ts';
+import { TEST_OVERVIEW_URL } from '../../adapters/io/URL.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { VLEAnalysisButton } from './buttons/TDTest/VLEAnalysisButton.tsx';
-import { SlopeTestButton } from './buttons/TDTest/SlopeTestButton.tsx';
-import { GammaTestButton } from './buttons/TDTest/GammaTestButton.tsx';
-import { RKTestButton } from './buttons/TDTest/RKTestButton.tsx';
-import { HeringtonTestButton } from './buttons/TDTest/HeringtonTestButton.tsx';
+
 import { FredenslundTestButton } from './buttons/TDTest/FredenslundTestButton.tsx';
+import { GammaTestButton } from './buttons/TDTest/GammaTestButton.tsx';
+import { HeringtonTestButton } from './buttons/TDTest/HeringtonTestButton.tsx';
+import { RKTestButton } from './buttons/TDTest/RKTestButton.tsx';
+import { SlopeTestButton } from './buttons/TDTest/SlopeTestButton.tsx';
+import { VLEAnalysisButton } from './buttons/TDTest/VLEAnalysisButton.tsx';
 import { VanNessTestButton } from './buttons/TDTest/VanNessTestButton.tsx';
 
 export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, handleClose, ...props }) => (

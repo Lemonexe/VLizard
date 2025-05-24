@@ -1,13 +1,14 @@
-import { FC, PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@mui/material';
-import { MUITheme } from './contexts/MUITheme.tsx';
-import { NotificationProvider } from './contexts/NotificationContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { FC, PropsWithChildren } from 'react';
+
+import { UpdateAvailableModalWatcher } from './components/AppUpdate/UpdateAvailableModalWatcher.tsx';
+import { ErrorBoundary } from './components/ErrorBoundary.tsx';
+import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ConfigContextProvider } from './contexts/ConfigContext.tsx';
 import { DataContextProvider } from './contexts/DataContext.tsx';
-import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
-import { ErrorBoundary } from './components/ErrorBoundary.tsx';
-import { UpdateAvailableModalWatcher } from './components/AppUpdate/UpdateAvailableModalWatcher.tsx';
+import { MUITheme } from './contexts/MUITheme.tsx';
+import { NotificationProvider } from './contexts/NotificationContext.tsx';
 
 const staleTime = Infinity;
 const gcTime = 5 * 60 * 1000;

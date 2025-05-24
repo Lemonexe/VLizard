@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useFredenslundTest } from '../../adapters/api/useTDTest.ts';
+
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
+import { useFredenslundTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { FredenslundTestDialog } from './FredenslundTestDialog.tsx';
 
 export const useFredenslundTestDialog = (props: FredenslundTestRequest): UseAnalysisDialogReturn => {

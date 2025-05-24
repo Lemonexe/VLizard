@@ -1,15 +1,16 @@
 import { expect, test } from 'vitest';
+
 import {
-    display_p,
-    display_p_vec,
     display_T,
     display_T_vec,
+    display_p,
+    display_p_vec,
     display_x,
     display_xy_vec,
-    input_p,
-    input_p_vec,
     input_T,
     input_T_vec,
+    input_p,
+    input_p_vec,
     input_x,
     input_x_vec,
 } from './UoM.ts';

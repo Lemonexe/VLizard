@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { getApiErrorMessage } from './getApiErrorMessage.ts';
+
 import { PushNotification } from '../../../contexts/NotificationContext.tsx';
+
+import { getApiErrorMessage } from './getApiErrorMessage.ts';
 
 /**
  * Wrapper around axios.get that destructures data or handles errors to push a notification

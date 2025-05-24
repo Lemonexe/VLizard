@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { hostName } from './helpers/hostName.ts';
 
 const PING_TIMEOUT = 2000; // [ms]

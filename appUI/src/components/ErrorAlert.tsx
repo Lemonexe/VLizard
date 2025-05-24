@@ -1,8 +1,10 @@
-import { FC } from 'react';
-import { Alert, Box, Button } from '@mui/material';
 import { Loop } from '@mui/icons-material';
-import { ContentContainer } from './Mui/ContentContainer.tsx';
+import { Alert, Box, Button } from '@mui/material';
+import { FC } from 'react';
+
 import { BUG_TRACKING_URL } from '../adapters/io/URL.ts';
+
+import { ContentContainer } from './Mui/ContentContainer.tsx';
 
 interface ErrorAlertProps {
     message: string;

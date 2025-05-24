@@ -1,6 +1,6 @@
 import { DatasetTable, GetVLEModelDefsResponse, GetVLESystemsResponse, VLESystem } from '../api/types/VLETypes.ts';
-import { GetVaporModelsResponse, VaporModel } from '../api/types/vaporTypes.ts';
 import { GetPersistedFitsResponse, PersistedFit } from '../api/types/fitTypes.ts';
+import { GetVaporModelsResponse, VaporModel } from '../api/types/vaporTypes.ts';
 
 export const listCompounds = (vaporData?: GetVaporModelsResponse): string[] =>
     vaporData?.map(({ compound }) => compound) ?? [];

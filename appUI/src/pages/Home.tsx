@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import { Box, Stack } from '@mui/material';
+import { FC } from 'react';
+
 import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 export const Home: FC = () => (

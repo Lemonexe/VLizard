@@ -1,10 +1,11 @@
-import { FC } from 'react';
 import { QuestionMark } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
+import { FC } from 'react';
+
 import { LICENSE_URL, MANUAL_URL, REPO_URL } from '../adapters/io/URL.ts';
 import { trimPatchVersion } from '../adapters/semver.ts';
-import { DefaultLayout } from '../components/DefaultLayout.tsx';
 import { UpdateAvailableButton } from '../components/AppUpdate/UpdateAvailableButton.tsx';
+import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 const currentYear = new Date().getFullYear();
 

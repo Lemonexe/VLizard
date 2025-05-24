@@ -1,12 +1,14 @@
-import { FC, useEffect, useState } from 'react';
-import { Collapse, IconButton, TableRow } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Collapse, IconButton, TableRow } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+
+import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
 import { CollapsibleTableCell, NoBorderCell } from '../../components/Mui/TableComponents.tsx';
 import { ValidatedCompoundName } from '../../components/dataViews/ValidatedCompoundName.tsx';
-import { VLESystem } from '../../adapters/api/types/VLETypes.ts';
-import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
+
 import { DatasetsSubTable } from './DatasetsSubTable.tsx';
 import { AddDatasetButton } from './buttons/AddDatasetButton.tsx';
+import { DeleteSystemButton } from './buttons/DeleteSystemButton.tsx';
 
 type SystemRowProps = { model: VLESystem; expandAll: boolean };
 

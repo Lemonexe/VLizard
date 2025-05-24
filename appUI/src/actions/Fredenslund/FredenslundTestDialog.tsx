@@ -1,13 +1,14 @@
-import { FC, useMemo } from 'react';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { Box, DialogContent } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { FC, useMemo } from 'react';
+
 import { FredenslundTestRequest, FredenslundTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
-import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { sigDgtsCrit, sigDgtsMetrics, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 const columnLabels = ['x1', 'δp', 'Δy1', 'Δy2'];

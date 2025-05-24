@@ -1,14 +1,15 @@
-import { FC, useMemo } from 'react';
 import { DialogContent } from '@mui/material';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
+import { FC, useMemo } from 'react';
+
 import { VanNessTestRequest, VanNessTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
-import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { toPercent } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 
 const columnLabels = ['x1', 'residual'];

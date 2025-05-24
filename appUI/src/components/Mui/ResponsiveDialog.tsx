@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { Dialog, DialogProps, useMediaQuery, useTheme } from '@mui/material';
+import { FC } from 'react';
 
 export const ResponsiveDialog: FC<DialogProps> = ({ children, maxWidth, ...props }) => {
     const theme = useTheme();

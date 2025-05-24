@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { useAvailableAppUpdate } from '../../adapters/api/useAvailableAppUpdate.ts';
-import { UpdateAvailableModal } from './UpdateAvailableModal.tsx';
-import { Button } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+
+import { useAvailableAppUpdate } from '../../adapters/api/useAvailableAppUpdate.ts';
+
+import { UpdateAvailableModal } from './UpdateAvailableModal.tsx';
 
 export const UpdateAvailableButton = () => {
     const [open, setOpen] = useState(false);

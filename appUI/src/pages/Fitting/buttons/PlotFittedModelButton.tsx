@@ -1,9 +1,10 @@
-import { FC } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
 import { AutoGraph } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { FC } from 'react';
+
+import { useFitVLEResultsDialog } from '../../../actions/FitVLE/useFitVLEResultsDialog.tsx';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../../adapters/api/types/fitTypes.ts';
-import { useFitVLEResultsDialog } from '../../../actions/FitVLE/useFitVLEResultsDialog.tsx';
 
 type PlotFittedModelButtonProps = SystemIdentifier & { fit: PersistedFit };
 

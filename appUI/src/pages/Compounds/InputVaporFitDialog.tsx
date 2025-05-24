@@ -1,22 +1,23 @@
-import { Dispatch, FC, useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
 import { TableView } from '@mui/icons-material';
-import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { Box, Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
+import { Dispatch, FC, useState } from 'react';
+
+import { useFitVaporResultsDialog } from '../../actions/FitVapor/useFitVaporResultsDialog.tsx';
 import { VaporModelDef } from '../../adapters/api/types/vaporTypes.ts';
-import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import {
+    SpreadsheetData,
     filterEmptyRows,
     generateEmptyCells,
     isSpreadsheetDataWhole,
-    SpreadsheetData,
     toNumMatrix,
     transposeMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
 import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
-import { useFitVaporResultsDialog } from '../../actions/FitVapor/useFitVaporResultsDialog.tsx';
-import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
+import { ErrorLabel } from '../../components/dataViews/TooltipIcons.tsx';
 
 const tableSpreadsheetHeaders = ['p/kPa', 'T/K'];
 

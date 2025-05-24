@@ -1,15 +1,16 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { DialogContent, InputAdornment, Stack, TextField, Tooltip } from '@mui/material';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
-import { display_p, display_T, input_p, input_T } from '../../adapters/logic/UoM.ts';
-import { useVaporQuery } from '../../adapters/api/useVapor.ts';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
+
 import { VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { useVaporQuery } from '../../adapters/api/useVapor.ts';
+import { display_T, display_p, input_T, input_p } from '../../adapters/logic/UoM.ts';
 import { sanitizeNumStr, toSigDgts } from '../../adapters/logic/numbers.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 type SubmitHandler = (e: FormEvent<HTMLFormElement>) => void;
 

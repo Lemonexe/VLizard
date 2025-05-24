@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
+
 import { useAvailableAppUpdate } from '../../adapters/api/useAvailableAppUpdate.ts';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
+
 import { UpdateAvailableModal } from './UpdateAvailableModal.tsx';
 
 export const UpdateAvailableModalWatcher = () => {

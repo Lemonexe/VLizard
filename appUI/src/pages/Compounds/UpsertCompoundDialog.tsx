@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { QuestionMark, TableView } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -14,26 +14,28 @@ import {
     Stack,
     TextField,
 } from '@mui/material';
-import { QuestionMark, TableView } from '@mui/icons-material';
-import { PS_MODELS_URL } from '../../adapters/io/URL.ts';
-import { useData } from '../../contexts/DataContext.tsx';
+import { FC, useMemo, useState } from 'react';
+
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
+import { PS_MODELS_URL } from '../../adapters/io/URL.ts';
+import { fileNameMaxLength, fileNameRegex } from '../../adapters/io/filenames.ts';
+import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import {
+    SpreadsheetData,
     isSpreadsheetDataWhole,
     localizeSpreadsheet,
     matrixToSpreadsheetData,
-    SpreadsheetData,
     toNumMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
-import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
-import { fileNameMaxLength, fileNameRegex } from '../../adapters/io/filenames.ts';
-import { useNotifications } from '../../contexts/NotificationContext.tsx';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
 import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadsheet.tsx';
-import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
+
 import { InputVaporFitDialog } from './InputVaporFitDialog.tsx';
 import { UpsertCompoundHelp } from './help/UpsertCompoundHelp.tsx';
 import { WagnerInfo } from './help/WagnerInfo.tsx';

@@ -1,25 +1,27 @@
-import { FC, useState } from 'react';
 import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
-import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
-import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
+import { FC, useState } from 'react';
+
+import { useVLEAnalysisDialog } from '../../actions/VLEAnalysis/useVLEAnalysisDialog.tsx';
+import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
 import {
+    SpreadsheetData,
     filterEmptyRows,
     fromRows,
     generateEmptyCells,
     isSpreadsheetDataWhole,
     localizeSpreadsheet,
-    SpreadsheetData,
     toNumMatrix,
     transposeMatrix,
 } from '../../adapters/logic/spreadsheet.ts';
-import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
-import { useVLEAnalysisDialog } from '../../actions/VLEAnalysis/useVLEAnalysisDialog.tsx';
-import { useNotifications } from '../../contexts/NotificationContext.tsx';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { RestoreButton } from '../../components/Mui/RestoreButton.tsx';
 import { TableSpreadsheet } from '../../components/Spreadsheet/TableSpreadsheet.tsx';
+import { SpreadsheetControls } from '../../components/SpreadsheetControls/SpreadsheetControls.tsx';
+import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+import { useNotifications } from '../../contexts/NotificationContext.tsx';
+
 import { useUpsertDatasetHeaders } from './useUpsertDatasetHeaders.tsx';
 
 const WarningNoCompound: FC = () => <WarningLabel title="Unknown compound (no vapor pressure model)." />;

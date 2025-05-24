@@ -1,7 +1,8 @@
-import { FC } from 'react';
-import { downloadSvgString } from '../../adapters/io/download.ts';
-import { Button } from '@mui/material';
 import { Download } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import { FC } from 'react';
+
+import { downloadSvgString } from '../../adapters/io/download.ts';
 
 export type DownloadChartButtonProps = {
     svgContent: string;

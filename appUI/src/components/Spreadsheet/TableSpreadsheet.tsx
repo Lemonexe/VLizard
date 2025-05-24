@@ -1,6 +1,8 @@
 import { Dispatch, FC, useEffect, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
+
 import { SpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+
 import { SpreadsheetWrapperProps } from './types.ts';
 
 type TableSpreadsheetProps = SpreadsheetWrapperProps & { setTouched?: Dispatch<boolean> };

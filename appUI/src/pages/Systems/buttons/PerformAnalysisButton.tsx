@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { FC, useState } from 'react';
+
 import { DatasetIdentifier } from '../../../adapters/api/types/common.ts';
 import { ChooseTDTestDialog } from '../ChooseTDTestDialog.tsx';
 

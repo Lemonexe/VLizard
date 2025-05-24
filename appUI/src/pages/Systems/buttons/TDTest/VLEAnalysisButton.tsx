@@ -1,8 +1,9 @@
-import { FC } from 'react';
-import { Button, IconButton, Tooltip } from '@mui/material';
 import { AutoGraph } from '@mui/icons-material';
-import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
+import { Button, IconButton, Tooltip } from '@mui/material';
+import { FC } from 'react';
+
 import { useVLEAnalysisDialog } from '../../../../actions/VLEAnalysis/useVLEAnalysisDialog.tsx';
+import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 
 export const VLEAnalysisButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useVLEAnalysisDialog(props);

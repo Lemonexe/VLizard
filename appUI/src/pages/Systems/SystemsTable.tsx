@@ -1,9 +1,11 @@
-import { FC } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { Loader } from '../../components/Loader.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
+import { FC } from 'react';
+
 import { GetVLESystemsResponse } from '../../adapters/api/types/VLETypes.ts';
+import { Loader } from '../../components/Loader.tsx';
 import { EmptyData } from '../../components/dataViews/EmptyData.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+
 import { SystemRow } from './SystemRow.tsx';
 
 type FilterVLEDataResult = {

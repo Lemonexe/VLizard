@@ -1,8 +1,10 @@
-import semver from 'semver';
 import { useQuery } from '@tanstack/react-query';
+import semver from 'semver';
+
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
-import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { REMOTE_PACKAGE_JSON_URL } from '../io/URL.ts';
+
+import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 
 export const remotePackageJsonKey = ['Remote app update info'];
 

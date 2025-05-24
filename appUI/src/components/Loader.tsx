@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { Dialog, DialogContent, Stack, styled } from '@mui/material';
 import { Loop } from '@mui/icons-material';
+import { Dialog, DialogContent, Stack, styled } from '@mui/material';
+import { FC } from 'react';
 
 const Jumper = styled('span')({
     display: 'inline-block',

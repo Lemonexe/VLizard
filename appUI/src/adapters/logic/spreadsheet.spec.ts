@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+
+import { toSigDgts } from './numbers.ts';
 import {
     filterEmptyRows,
     generateEmptyCells,
@@ -9,7 +11,6 @@ import {
     spreadsheetToSigDgts,
     transposeMatrix,
 } from './spreadsheet.ts';
-import { toSigDgts } from './numbers.ts';
 
 test(generateEmptyCells.name, () => {
     expect(generateEmptyCells(0, 0)).toEqual([]);

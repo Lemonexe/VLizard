@@ -1,16 +1,18 @@
+import { Box, Button, Collapse, DialogContent, Stack, styled } from '@mui/material';
 import { Dispatch, FC, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
-import { Box, Button, Collapse, DialogContent, Stack, styled } from '@mui/material';
-import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
-import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
-import { DialogProps } from '../../adapters/types/DialogProps.ts';
+
 import { VaporFitRequest, VaporFitResponse } from '../../adapters/api/types/fitTypes.ts';
-import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
-import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
-import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { sigDgtsMetrics, sigDgtsParams } from '../../adapters/logic/numbers.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
+import { DialogProps } from '../../adapters/types/DialogProps.ts';
+import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarnings.tsx';
+import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
+import { ExpandHelpButton } from '../../components/Mui/ExpandHelpButton.tsx';
+import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+
 import { FitVaporResultsHelp } from './FitVaporResultsHelp.tsx';
 
 const fitQualityMetrics = ['Root mean square', 'Average abs. deviation'];

@@ -1,10 +1,12 @@
-import { FC, useState } from 'react';
-import { Button } from '@mui/material';
 import { KeyboardDoubleArrowDown, KeyboardDoubleArrowUp } from '@mui/icons-material';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
-import { useData } from '../../contexts/DataContext.tsx';
+import { Button } from '@mui/material';
+import { FC, useState } from 'react';
+
 import { DefaultLayout } from '../../components/DefaultLayout.tsx';
 import { HeaderStack } from '../../components/Mui/HeaderStack.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+
 import { FittedModelsTable } from './FittedModelsTable.tsx';
 
 export const Fitting: FC = () => {

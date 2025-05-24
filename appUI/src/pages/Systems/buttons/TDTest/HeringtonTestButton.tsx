@@ -1,7 +1,8 @@
-import { FC } from 'react';
 import { Button } from '@mui/material';
-import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
+import { FC } from 'react';
+
 import { useHeringtonTestDialog } from '../../../../actions/Herington/useHeringtonTestDialog.tsx';
+import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 
 export const HeringtonTestButton: FC<DatasetIdentifier> = (props) => {
     const { perform, result } = useHeringtonTestDialog(props);

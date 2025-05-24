@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
-import { Button } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import { FC, useState } from 'react';
 
 type RestoreDataButtonProps = {
     handleRestoreData: () => void;

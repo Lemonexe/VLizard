@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useVLEAnalysis } from '../../adapters/api/useVLE.ts';
+
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
+import { useVLEAnalysis } from '../../adapters/api/useVLE.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { VLEAnalysisDialog } from './VLEAnalysisDialog.tsx';
 
 export const useVLEAnalysisDialog = (props: VLEAnalysisRequest): UseAnalysisDialogReturn => {

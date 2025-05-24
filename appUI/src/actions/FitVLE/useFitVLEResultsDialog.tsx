@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
-import { LoadingDialog } from '../../components/Loader.tsx';
-import { useVLEFit } from '../../adapters/api/useFit.ts';
+
 import { FitAnalysisRequest, FitAnalysisResponse } from '../../adapters/api/types/fitTypes.ts';
+import { useVLEFit } from '../../adapters/api/useFit.ts';
+import { LoadingDialog } from '../../components/Loader.tsx';
+
 import { FitVLEResultsDialog } from './FitVLEResultsDialog.tsx';
 
 export type PerformFitVLE = (props: FitAnalysisRequest) => void;

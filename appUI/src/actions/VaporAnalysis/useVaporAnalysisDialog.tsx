@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useVaporAnalysis } from '../../adapters/api/useVapor.ts';
+
 import { VaporAnalysisRequest, VaporAnalysisResponse } from '../../adapters/api/types/vaporTypes.ts';
+import { useVaporAnalysis } from '../../adapters/api/useVapor.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { VaporAnalysisDialog } from './VaporAnalysisDialog.tsx';
 
 export const useVaporAnalysisDialog = (props: VaporAnalysisRequest): UseAnalysisDialogReturn => {

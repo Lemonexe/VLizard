@@ -1,9 +1,11 @@
-import { FC } from 'react';
 import { Box, Stack } from '@mui/material';
+import { FC } from 'react';
+
 import { SetSpreadsheetData } from '../../adapters/logic/spreadsheet.ts';
+
 import { AddRowsButton } from './AddRowsButton.tsx';
-import { TrimButton } from './TrimButton.tsx';
 import { RestoreDataButton } from './RestoreDataButton.tsx';
+import { TrimButton } from './TrimButton.tsx';
 
 type SpreadsheetControlsProps = {
     setData: SetSpreadsheetData;

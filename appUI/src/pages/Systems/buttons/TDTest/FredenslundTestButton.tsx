@@ -1,8 +1,9 @@
-import { FC, FormEvent, useState } from 'react';
 import { Button, Stack, TextField } from '@mui/material';
+import { FC, FormEvent, useState } from 'react';
+
+import { useFredenslundTestDialog } from '../../../../actions/Fredenslund/useFredenslundTestDialog.tsx';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { useConfig } from '../../../../contexts/ConfigContext.tsx';
-import { useFredenslundTestDialog } from '../../../../actions/Fredenslund/useFredenslundTestDialog.tsx';
 
 export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
     const { default_legendre_order } = useConfig();

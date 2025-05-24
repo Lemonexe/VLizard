@@ -1,7 +1,8 @@
-import { createContext, FC, PropsWithChildren, useContext } from 'react';
-import { CenteredLoader } from '../components/Loader.tsx';
-import { useGetConfig } from '../adapters/api/useConfigApi.ts';
+import { FC, PropsWithChildren, createContext, useContext } from 'react';
+
 import { Config } from '../adapters/api/types/configTypes.ts';
+import { useGetConfig } from '../adapters/api/useConfigApi.ts';
+import { CenteredLoader } from '../components/Loader.tsx';
 
 export const ConfigContext = createContext<Config | null>(null);
 

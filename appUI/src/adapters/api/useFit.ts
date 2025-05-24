@@ -1,7 +1,11 @@
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
+
+import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
+import { hostName } from './helpers/hostName.ts';
 import {
     DeleteFitRequest,
     FitAnalysisRequest,
@@ -12,8 +16,6 @@ import {
     VaporFitRequest,
     VaporFitResponse,
 } from './types/fitTypes.ts';
-import { hostName } from './helpers/hostName.ts';
-import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 
 export const getPersistedFitsKey = ['VLE regressions data']; // also a description
 

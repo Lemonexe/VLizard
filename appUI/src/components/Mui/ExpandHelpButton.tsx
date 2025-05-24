@@ -1,6 +1,6 @@
-import { Dispatch, FC, SetStateAction } from 'react';
-import { IconButton } from '@mui/material';
 import { HelpOutline, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 export type ExpandHelpButtonProps = {
     infoOpen: boolean;

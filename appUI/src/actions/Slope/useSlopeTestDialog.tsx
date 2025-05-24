@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useState } from 'react';
-import { useSlopeTest } from '../../adapters/api/useTDTest.ts';
+
 import { SlopeTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { useSlopeTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
+
 import { SlopeTestDialog } from './SlopeTestDialog.tsx';
 
 export const useSlopeTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {

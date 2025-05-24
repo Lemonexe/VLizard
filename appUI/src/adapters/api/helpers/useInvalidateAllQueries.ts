@@ -1,10 +1,11 @@
 import { QueryKey, useQueryClient } from '@tanstack/react-query';
+
 import { useNotifications } from '../../../contexts/NotificationContext.tsx';
-import { getVaporModelsKey } from '../useVapor.ts';
+import { remotePackageJsonKey } from '../useAvailableAppUpdate.ts';
+import { getConfigKey } from '../useConfigApi.ts';
 import { getPersistedFitsKey } from '../useFit.ts';
 import { getVLESystemsKey } from '../useVLE.ts';
-import { getConfigKey } from '../useConfigApi.ts';
-import { remotePackageJsonKey } from '../useAvailableAppUpdate.ts';
+import { getVaporModelsKey } from '../useVapor.ts';
 
 const queryKeys: QueryKey[] = [
     getVaporModelsKey,

@@ -1,6 +1,8 @@
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
+import { hostName } from './helpers/hostName.ts';
 import {
     FredenslundTestRequest,
     FredenslundTestResponse,
@@ -12,7 +14,6 @@ import {
     VanNessTestRequest,
     VanNessTestResponse,
 } from './types/TDTestTypes.ts';
-import { hostName } from './helpers/hostName.ts';
 
 export const useGammaTest = () => {
     const onError = useNotifyErrorMessage();

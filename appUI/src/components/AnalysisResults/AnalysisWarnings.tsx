@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { AnalysisResult } from '../../adapters/api/types/common.ts';
 import { Alert, Stack } from '@mui/material';
+import { FC } from 'react';
+
+import { AnalysisResult } from '../../adapters/api/types/common.ts';
 
 export const AnalysisWarnings: FC<AnalysisResult> = ({ warnings }) => {
     return warnings.length > 0 ? (

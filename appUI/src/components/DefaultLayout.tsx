@@ -1,10 +1,12 @@
+import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
+import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
-import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
-import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
+
 import { useOpenDataDirectory } from '../adapters/api/useConfigApi.ts';
 import { useIsInstanceLocked } from '../adapters/useIsInstanceLocked.ts';
 import { spacingN } from '../contexts/MUITheme.tsx';
+
 import { ContentContainer } from './Mui/ContentContainer.tsx';
 import { DenseIconButton } from './Mui/DenseIconButton.tsx';
 import { QueryRefreshButton } from './QueryRefreshButton.tsx';

@@ -1,9 +1,11 @@
-import { FC } from 'react';
 import { TableCell, TableRow } from '@mui/material';
+import { FC } from 'react';
+
 import { VaporModel } from '../../adapters/api/types/vaporTypes.ts';
+
 import { DeleteCompoundButton } from './buttons/DeleteCompoundButton.tsx';
-import { PerformAnalysisButton } from './buttons/PerformAnalysisButton.tsx';
 import { EditCompoundButton } from './buttons/EditCompoundButton.tsx';
+import { PerformAnalysisButton } from './buttons/PerformAnalysisButton.tsx';
 
 type CompoundRowProps = { model: VaporModel };
 export const CompoundRow: FC<CompoundRowProps> = ({ model: { compound, model_name } }) => (

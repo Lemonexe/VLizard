@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
 import { Delete } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { FC } from 'react';
 
 type DeleteIconButtonProps = {
     onClick: () => void;

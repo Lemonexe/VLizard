@@ -1,7 +1,11 @@
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
 import { useNotifications } from '../../contexts/NotificationContext.tsx';
+
+import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
 import { useNotifyErrorMessage } from './helpers/getApiErrorMessage.ts';
+import { hostName } from './helpers/hostName.ts';
 import {
     DeleteVaporModelRequest,
     GetVaporModelDefsResponse,
@@ -12,8 +16,6 @@ import {
     VaporQueryRequest,
     VaporQueryResponse,
 } from './types/vaporTypes.ts';
-import { axiosGetWithHandling } from './helpers/axiosGetWithHandling.ts';
-import { hostName } from './helpers/hostName.ts';
 
 export const getVaporModelsKey = ['Pure compounds data']; // also a description
 

@@ -1,7 +1,9 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
-import { LoadingDialog } from '../../components/Loader.tsx';
-import { useTabulateVLEFit } from '../../adapters/api/useFit.ts';
+
 import { FitTabulateRequest, TabulatedDataset } from '../../adapters/api/types/fitTypes.ts';
+import { useTabulateVLEFit } from '../../adapters/api/useFit.ts';
+import { LoadingDialog } from '../../components/Loader.tsx';
+
 import { TabulateVLEFitDialog } from './TabulateVLEFitDialog.tsx';
 
 export const useTabulateVLEFitDialog = () => {

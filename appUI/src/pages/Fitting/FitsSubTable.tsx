@@ -1,12 +1,14 @@
-import { FC, useMemo } from 'react';
 import { Table, TableBody, TableRow } from '@mui/material';
+import { FC, useMemo } from 'react';
+
+import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
 import { DenseTableCell } from '../../components/Mui/TableComponents.tsx';
-import { PlotFittedModelButton } from './buttons/PlotFittedModelButton.tsx';
-import { TabulateModelButton } from './buttons/TabulateModelButton.tsx';
+import { useData } from '../../contexts/DataContext.tsx';
+
 import { AlterFittedModelButton } from './buttons/AlterFittedModelButton.tsx';
 import { DeleteFittedModelButton } from './buttons/DeleteFittedModelButton.tsx';
-import { PersistedFitsForSystem } from '../../adapters/api/types/fitTypes.ts';
-import { useData } from '../../contexts/DataContext.tsx';
+import { PlotFittedModelButton } from './buttons/PlotFittedModelButton.tsx';
+import { TabulateModelButton } from './buttons/TabulateModelButton.tsx';
 
 type FitsSubTableProps = { fitsForSystem: PersistedFitsForSystem };
 

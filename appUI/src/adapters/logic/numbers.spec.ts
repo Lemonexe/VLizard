@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { getNaturalDgts, roundByOrder, toSigDgts, truncateSigDgts } from './numbers';
 
 test(toSigDgts.name, () => {

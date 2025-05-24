@@ -1,11 +1,12 @@
-import { FC, FormEvent, useState } from 'react';
-import { Button, Dialog, DialogContent, IconButton, InputAdornment, Stack, TextField, Tooltip } from '@mui/material';
 import { QueryStats } from '@mui/icons-material';
-import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
+import { Button, Dialog, DialogContent, IconButton, InputAdornment, Stack, TextField, Tooltip } from '@mui/material';
+import { FC, FormEvent, useState } from 'react';
+
+import { useTabulateVLEFitDialog } from '../../../actions/TabulateVLEFit/useTabulateVLEFitDialog.tsx';
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
 import { PersistedFit } from '../../../adapters/api/types/fitTypes.ts';
-import { useTabulateVLEFitDialog } from '../../../actions/TabulateVLEFit/useTabulateVLEFitDialog.tsx';
 import { input_p } from '../../../adapters/logic/UoM.ts';
+import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 import { useConfig } from '../../../contexts/ConfigContext.tsx';
 
 type TabulateModelButtonProps = SystemIdentifier & { fit: PersistedFit };

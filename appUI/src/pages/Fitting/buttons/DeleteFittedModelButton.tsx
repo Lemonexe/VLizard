@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
-import { useDeleteFit } from '../../../adapters/api/useFit.ts';
+import { FC, useState } from 'react';
+
 import { SystemIdentifier } from '../../../adapters/api/types/common.ts';
+import { useDeleteFit } from '../../../adapters/api/useFit.ts';
 import { DeleteIconButton } from '../../../components/Mui/DeleteIconButton.tsx';
 import { DialogTitleWithX } from '../../../components/Mui/DialogTitle.tsx';
 
