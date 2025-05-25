@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 
 import { useVLEAnalysisDialog } from '../../actions/VLEAnalysis/useVLEAnalysisDialog.tsx';
 import { useUpsertVLEDataset } from '../../adapters/api/useVLE.ts';
+import { getFileNameValidationError } from '../../adapters/io/filenames.ts';
 import {
     SpreadsheetData,
     filterEmptyRows,
@@ -71,6 +72,9 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
         (isDataChanged() || !modifyingDataset) && findDataset(compound1, compound2, newDatasetName);
     const areCompoundsSame = () => compound1.length > 0 && compound1 === compound2;
 
+    const fileNameValidationError = getFileNameValidationError(datasetName);
+    const isNameValid = fileNameValidationError === null;
+
     // ACTIONS
     const restoreOrig = () => {
         if (origCompound1) setCompound1(origCompound1);
@@ -104,7 +108,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
     const isAnyFieldEmpty = !compound1 || !compound2 || !datasetName;
 
     // OVERALL ERROR CHECK
-    const isError = () => !isDataWhole || areCompoundsSame() || isAnyFieldEmpty;
+    const isError = () => !isDataWhole || areCompoundsSame() || isAnyFieldEmpty || !isNameValid;
 
     // MUTATION
     const pushNotification = useNotifications();
@@ -171,6 +175,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         {willOverwriteDataset(datasetName) && (
                             <WarningLabel title="This will overwrite an existing dataset." />
                         )}
+                        {fileNameValidationError && <ErrorLabel title={fileNameValidationError} />}
                     </Stack>
                     <Stack gap={1}>
                         {isDataChanged() && (

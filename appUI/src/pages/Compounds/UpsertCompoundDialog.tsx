@@ -18,7 +18,7 @@ import { FC, useMemo, useState } from 'react';
 
 import { useUpdateVaporModel } from '../../adapters/api/useVapor.ts';
 import { PS_MODELS_URL } from '../../adapters/io/URL.ts';
-import { fileNameMaxLength, fileNameRegex } from '../../adapters/io/filenames.ts';
+import { getFileNameValidationError } from '../../adapters/io/filenames.ts';
 import { fromNamedParams, toNamedParams } from '../../adapters/logic/nparams.ts';
 import {
     SpreadsheetData,
@@ -113,9 +113,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
     const willReplace = origCompound !== compound && compoundNames.includes(compound);
     const tempError = T_min >= T_max || isNaN(T_min) || isNaN(T_max);
     const antoineCError = model.includes('Antoine') && T_min + numData[2] <= 0;
-    const isValidFileName = fileNameRegex.test(compound);
-    const isValidLength = compound.length <= fileNameMaxLength;
-    const isNameValid = isValidFileName && isValidLength;
+    const fileNameValidationError = getFileNameValidationError(compound);
+    const isNameValid = fileNameValidationError === null;
 
     // OVERALL ERROR CHECK
     const isError = !compound || !model || tempError || !isDataWhole || !isNameValid || antoineCError;
@@ -144,10 +143,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                 </div>
                             )}
                             {willReplace && <WarningLabel title="This will overwrite existing compound." />}
-                            {compound && !isValidFileName && (
-                                <ErrorLabel title="Name invalid; must contain only letters, numbers and space _ , ." />
-                            )}
-                            {compound && !isValidLength && <ErrorLabel title="Name too long (max 50 characters)." />}
+                            {fileNameValidationError && <ErrorLabel title={fileNameValidationError} />}
                         </Stack>
                         <Stack direction="row" gap={1}>
                             <FormControl fullWidth className="medium-input">
