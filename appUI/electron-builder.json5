@@ -34,7 +34,10 @@
     "artifactName": "${productName}_${version}.${ext}"
   },
   "linux": {
-    "target": ["flatpak"],
+    "target": [
+      "flatpak",
+      // "deb"
+    ],
     "category": "Science",
     "synopsis": "VLizard, a VLE wizard."
   },

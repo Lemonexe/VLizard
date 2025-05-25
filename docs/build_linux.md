@@ -1,8 +1,9 @@
 ## Build for Linux
 
-Two targets are supported:
-1. `flatpak` _(recommended)_
+Three targets are supported, but only `flatpak` is recommended and officially distributed.
+1. Flatpak
 2. portable `.tar.xz` _(may not run without installing unspecified additional dependencies)_
+3. Debian apt package
 
 ### Flatpak build
 
@@ -34,3 +35,7 @@ Skip general build instructions, instead do the following:
 2. Build vite (main+preload): `build:vite-main`
 3. Build vite (renderer): `build:vite-renderer`
 4. Build Electron: `build:electron-portable`
+
+### Debian package build
+To build a Debian apt package, open `appUI/electron-builder.json5` and uncomment the line with `deb` target.  
+Then follow [general build instructions](../README.md#build), nothing else should be needed.

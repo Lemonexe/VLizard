@@ -22,8 +22,15 @@ cd appPy
 pip install --user pipenv
 pipenv install --dev
 ```
-In case of Linux, you may not be able to install `pipenv` into the global Python pre-installed on your system.
-In order to use the system Python, install pipenv via your package manager, e.g. `sudo apt install pipenv`.
+
+#### Linux setup
+You may not be able to install `pipenv` into the global Python pre-installed on your system.
+In order to use the system Python, install pipenv via your package manager.  
+Additional packages may be required, e.g. for Debian 13:
+```
+sudo apt install pipenv
+sudo apt install build-essential python3-dev gfortran libopenblas-dev  pkg-config libopenblas64-dev
+```
 
 ### Build
 Build has to be done natively on each respective platform: Windows, Linux, macOS.
