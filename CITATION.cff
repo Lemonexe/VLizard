@@ -10,6 +10,6 @@ authors:
     affiliation: Department of Organic Technology
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.13357211
+    value: 10.5281/zenodo.13357210
 repository-code: 'https://github.com/Lemonexe/VLizard'
 license: MIT
