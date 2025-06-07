@@ -47,7 +47,10 @@ def finish_plot(mode):
 def final_styles():
     """Apply final styles to plot before rendering."""
     ax = plt.gca()
-    ax.tick_params(direction='in') if cfg.chart_tick_marks else ax.tick_params(length=0)
+    if cfg.chart_tick_marks:
+        ax.tick_params(direction='in')
+    else:
+        ax.tick_params(length=0)
     if cfg.chart_grid: plt.grid(True)
 
     # hack to ensure square aspect ratio, see https://stackoverflow.com/a/57249253/19120862

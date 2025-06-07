@@ -1,3 +1,4 @@
+import numpy as np
 from matplotlib import pyplot as plt
 from src.TD.Fredenslund_test import Fredenslund_test
 from src.plot.plot_io import init_plot, finish_plot
@@ -12,6 +13,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.plot(self.x_tab, self.g_E_tab, '-g', label='Legendre model')
         plt.title(f'{self.get_title()}\n$g_E$')
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
         plt.legend()
@@ -25,6 +27,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$p$ residuals')
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$\\delta p$')
 
@@ -38,6 +41,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$y$ residuals')
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$\\Delta y$')
         plt.legend()

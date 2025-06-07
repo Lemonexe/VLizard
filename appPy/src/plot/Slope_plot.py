@@ -1,3 +1,4 @@
+import numpy as np
 from matplotlib import pyplot as plt
 from src.TD.Slope_test import Slope_test
 from src.plot.plot_io import init_plot, finish_plot
@@ -12,6 +13,7 @@ class Slope_plot(Slope_test):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$ resid')
 
@@ -25,6 +27,7 @@ class Slope_plot(Slope_test):
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$')
         plt.legend()

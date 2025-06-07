@@ -1,3 +1,4 @@
+import numpy as np
 from matplotlib import pyplot as plt
 from src.config import cfg
 from src.utils.UoM import convert_T
@@ -15,6 +16,8 @@ class VLE_Tabulation_plot(VLE_Tabulation):
         plt.plot([0, 1], [0, 1], ':k')
         plt.xlim(0, 1)
         plt.ylim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
+        plt.yticks(np.linspace(0.1, 1, 10))  # shared 0 tick for y and x
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title(f'Calculated xy diagram for {self.title}')
@@ -28,6 +31,7 @@ class VLE_Tabulation_plot(VLE_Tabulation):
         plt.plot(self.y_1, T_disp, '-r', label=f'dew {self.model_name}')
         plt.plot(self.x_1, T_disp, '-b', label=f'boil {self.model_name}')
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('x, y')
         plt.ylabel(f'T [{cfg.UoM_T}]')
         plt.title(f'Calculated Txy diagram for {self.title}')
@@ -44,6 +48,7 @@ class VLE_Tabulation_plot(VLE_Tabulation):
 
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$\\gamma$')
         plt.title(f'Calculated activity coefficients for {self.title}')
