@@ -47,6 +47,7 @@ default_config_dict = {
     'chart_title': True,
     'chart_legend': True,
     'chart_grid': False,
+    'chart_tick_marks': True,
     # chart default aspect ratio
     'chart_aspect_ratio': 1.0,
     # whether to expand all nodes in tree view

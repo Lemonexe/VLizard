@@ -140,6 +140,11 @@ const UISettings: FC<FormProps> = (props) => {
                 <FormControlLabel control={<Checkbox {...createCBProps('chart_legend')} />} label="Show chart legend" />
                 <br />
                 <FormControlLabel control={<Checkbox {...createCBProps('chart_grid')} />} label="Show chart grids" />
+                <br />
+                <FormControlLabel
+                    control={<Checkbox {...createCBProps('chart_tick_marks')} />}
+                    label="Show chart axes tick marks"
+                />
             </div>
 
             <div>
