@@ -22,7 +22,7 @@ class Slope_plot(Slope_test):
     def plot_derivations(self, mode):
         init_plot(mode)
 
-        plt.plot(self.x_1, self.d_ln_gamma_1, '^r', label='$d$ln$\\gamma_1$')
+        plt.plot(self.x_1, self.d_ln_gamma_1, 'Dr', label='$d$ln$\\gamma_1$')
         plt.plot(self.x_1, self.d_ln_gamma_2, 'vb', label='$d$ln$\\gamma_2$')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(self.get_title())

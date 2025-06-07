@@ -27,7 +27,7 @@ Notably, raw tabular data and model parameters are **not** converted (using stan
 Visual language of charts is following: **black** is main data series, **green** is calculated model.  
 Diamonds markers and full lines are used primarily. Auxiliary lines are dotted.  
 If dataseries for two components are displayed, then **red** for 1st component, **blue** for 2nd component.
-If those two correspond to more volatile and less volatile (as in case of VLE), then `^` and `v` markers will be used, respectively.
+If those two correspond to more volatile and less volatile (as in case of VLE), then `D` and `v` markers will be used, respectively.
 
 ### Files
 

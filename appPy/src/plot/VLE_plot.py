@@ -29,7 +29,7 @@ class VLE_plot(VLE):
         init_plot(mode)
         T_disp = convert_T(self.T)
         plt.plot(self.y_1, T_disp, 'Dr', label='dew')
-        plt.plot(self.x_1, T_disp, 'Db', label='boil')
+        plt.plot(self.x_1, T_disp, 'vb', label='boil')
         plt.xlim(0, 1)
         plt.xticks(np.linspace(0, 1, 11))
         plt.title(f'Txy diagram for {self.get_title()}')
@@ -43,7 +43,7 @@ class VLE_plot(VLE):
         """Plot diagram of activity coeffs per x."""
         init_plot(mode)
 
-        plt.plot(self.x_1, self.gamma_1, '^r', label='$\\gamma_1$')
+        plt.plot(self.x_1, self.gamma_1, 'Dr', label='$\\gamma_1$')
         plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
 
         plt.axhline(y=1, color='k', linestyle=':')

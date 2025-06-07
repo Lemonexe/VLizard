@@ -36,7 +36,7 @@ class Fredenslund_plot(Fredenslund_test):
     def plot_y_1_res(self, mode):
         init_plot(mode)
 
-        plt.plot(self.x_1, self.y_1_res, '^r', label='$y_1$')
+        plt.plot(self.x_1, self.y_1_res, 'Dr', label='$y_1$')
         plt.plot(self.x_1, self.y_2_res, 'vb', label='$y_2$')
         plt.axhline(y=0, color='k', linestyle=':')
         plt.title(f'{self.get_title()}\n$y$ residuals')
