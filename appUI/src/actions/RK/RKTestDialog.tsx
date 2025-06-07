@@ -1,5 +1,5 @@
 import { Box, DialogContent } from '@mui/material';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { RKTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
 import { sigDgtsCrit, toSigDgts } from '../../adapters/logic/numbers.ts';
@@ -7,8 +7,11 @@ import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
+import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
+
+const columnLabels = ['x1', 'ln y1/y2'];
 
 type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse };
 
@@ -16,6 +19,8 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
     const { rk_D_criterion } = useConfig();
     const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(rk_D_criterion)}`];
+
+    const dataColumns = useMemo(() => [data.x_1, data.curve], [data]);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -42,6 +47,9 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
                     </table>
                     <p>D criterion is {toSigDgts(rk_D_criterion, sigDgtsCrit)}</p>
                 </Box>
+
+                <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
+
                 <h4>Area integration plot</h4>
                 <PlotWithDownload svgContent={data.plot} fileName={`RK test chart ${label}`} />
             </DialogContent>

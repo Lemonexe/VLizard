@@ -27,6 +27,8 @@ export type RKTestResponse = ConclusiveTestResult & {
     curve_dif: number;
     curve_sum: number;
     plot: string;
+    x_1: number[];
+    curve: number[];
 };
 
 export type HeringtonTestResponse = ConclusiveTestResult & {
