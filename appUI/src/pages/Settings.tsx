@@ -154,6 +154,7 @@ const UISettings: FC<FormProps> = (props) => {
                 <Select {...createSlProps('UoM_T')}>
                     <MenuItem value="K" children="K" />
                     <MenuItem value="°C" children="°C" />
+                    <MenuItem value="°F" children="°F" />
                 </Select>
             </div>
 

@@ -16,6 +16,11 @@ def test_convert_T():
     arr_expect = arr - cst.C2K
     assert np.sum(abs(convert_T(arr) - arr_expect)) < 1e-8
 
+    cfg.UoM_T = '°F'
+    assert abs(convert_T(273.15) - 32) < 1e-4
+    assert abs(convert_T(273.15 + 37.7777777778) - 100) < 1e-4
+    assert abs(convert_T(373.15) - 212) < 1e-4
+
     cfg.UoM_T = 'what is this unit?'
     with pytest.raises(ValueError):
         convert_T(123)
@@ -40,6 +45,10 @@ def test_convert_p():
 
     cfg.UoM_p = 'MPA'
     assert convert_p(600) == 0.6
+
+    cfg.UoM_p = 'pSi'
+    assert np.abs(convert_p(200) - 29.007548) < 1e-4
+    assert np.abs(convert_p(cst.atm) - 14.6959487755) < 1e-4
 
     cfg.UoM_p = 'what is this unit?'
     with pytest.raises(ValueError):

@@ -5,6 +5,7 @@ consts_dict = {
 
     ## CONSTANTS
     'C2K': 273.15,  # [K]
+    'TF0': -5 / 9 * 459.67,  # 0 K in [°F]
     'R': 8.31446,  # [J/K/mol]
     'atm': 101.325,  # [kPa]
 

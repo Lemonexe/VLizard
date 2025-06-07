@@ -14,10 +14,22 @@ export const input_x_vec = (x_vec: number[], UoM: string) => x_vec.map((T) => in
 const K2C = (T: number) => T - 273.15;
 const C2K = (T: number) => T + 273.15;
 
+const TF0 = (-5 / 9) * 459.67; // 0 K in [°F]
+const F2K = (T: number) => (5 / 9) * T - TF0;
+const K2F = (T: number) => (9 / 5) * (T + TF0);
+
 // Convert temperature from K to specified UoM for display.
-export const display_T = (T: number, UoM: string) => (UoM === 'K' ? T : K2C(T));
+export const display_T = (T: number, UoM: string) => {
+    if (UoM === '°F') return K2F(T);
+    if (UoM === '°C') return K2C(T);
+    return T; // defaulting to K
+};
 // Convert temperature input from specified UoM to K.
-export const input_T = (T: number, UoM: string) => (UoM === 'K' ? T : C2K(T));
+export const input_T = (T: number, UoM: string) => {
+    if (UoM === '°F') return F2K(T);
+    if (UoM === '°C') return C2K(T);
+    return T; // defaulting to K
+};
 // Convert vectorized temperature from K to specified UoM for display.
 export const display_T_vec = (T_vec: number[], UoM: string) => T_vec.map((T) => display_T(T, UoM));
 // Convert vectorized temperature input from specified UoM to K.
@@ -25,7 +37,8 @@ export const input_T_vec = (T_vec: number[], UoM: string) => T_vec.map((T) => in
 
 /* PRESSURE */
 
-export const p_units = { Pa: 1000, mbar: 10, kPa: 1, bar: 0.01, MPa: 0.001 };
+// kPa is base; the ratio means "unit is this much kPa"
+export const p_units = { Pa: 1000, mbar: 10, kPa: 1, bar: 0.01, MPa: 0.001, psi: 0.1450377377 };
 type PressureUnitType = keyof typeof p_units;
 
 // Convert pressure from kPa to specified UoM for display.

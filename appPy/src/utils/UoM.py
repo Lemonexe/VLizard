@@ -1,7 +1,8 @@
 from src.config import cst
 from src.config import cfg
 
-p_units = {'Pa': 1000, 'mbar': 10, 'kPa': 1, 'bar': 0.01, 'MPa': 0.001}
+# kPa is base; the ratio means "unit is this much kPa"
+p_units = {'Pa': 1000, 'mbar': 10, 'kPa': 1, 'bar': 0.01, 'MPa': 0.001, 'psi': 0.1450377377}
 
 
 def convert_T(T):
@@ -15,6 +16,8 @@ def convert_T(T):
         return T
     if cfg.UoM_T.lower() == '°c':
         return T - cst.C2K
+    if cfg.UoM_T.lower() == '°f':
+        return 9 / 5 * (T + cst.TF0)
     raise ValueError(f'Unknown UoM_T: {cfg.UoM_T}')
 
 
