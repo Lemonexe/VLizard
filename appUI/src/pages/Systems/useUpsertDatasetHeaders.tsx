@@ -2,7 +2,14 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { Box, IconButton, MenuItem, Select, styled } from '@mui/material';
 import { FC, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from 'react';
 
-import { input_T_vec, input_p_vec, input_x_vec, p_units } from '../../adapters/logic/UoM.ts';
+import {
+    PressureUnitType,
+    TemperatureUnitType,
+    input_T_vec,
+    input_p_vec,
+    input_x_vec,
+    p_units,
+} from '../../adapters/logic/UoM.ts';
 import { truncateSigDgts } from '../../adapters/logic/numbers.ts';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
@@ -43,8 +50,8 @@ const HeaderBox = styled(Box)(({ theme }) => ({
 export const useUpsertDatasetHeaders = () => {
     // apparent indices chosen by the user for the original columns p, T, x1, y1
     const [columnsOrder, setColumnsOrder] = useState([0, 1, 2, 3]);
-    const [UoM_T, setUoM_T] = useState('K');
-    const [UoM_p, setUoM_p] = useState('kPa');
+    const [UoM_T, setUoM_T] = useState<TemperatureUnitType>('K');
+    const [UoM_p, setUoM_p] = useState<PressureUnitType>('kPa');
     const [UoM_x1, setUoM_x1] = useState('1');
     const [UoM_y1, setUoM_y1] = useState('1');
 

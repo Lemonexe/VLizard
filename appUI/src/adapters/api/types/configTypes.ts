@@ -1,3 +1,5 @@
+import { PressureUnitType, TemperatureUnitType } from '../../logic/UoM.ts';
+
 export type Config = {
     // Calculation settings
     gamma_abs_tol: number;
@@ -16,8 +18,8 @@ export type Config = {
     chart_grid: boolean;
     chart_aspect_ratio: boolean;
     UI_expandAll: boolean;
-    UoM_p: string;
-    UoM_T: string;
+    UoM_p: PressureUnitType;
+    UoM_T: TemperatureUnitType;
     notify_app_update: boolean;
 };
 
