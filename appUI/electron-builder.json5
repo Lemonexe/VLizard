@@ -3,7 +3,7 @@
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "cz.zby.jira.VLizard",
+  "appId": "cz.zby.jira.VLizard", // don't change this, it is necessary for flatpak, and guid for NSIS is generated from this
   "productName": "VLizard",
   "asar": true,
   "icon": "public/icon.png",
