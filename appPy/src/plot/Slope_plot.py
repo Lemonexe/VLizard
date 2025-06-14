@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from src.TD.Slope_test import Slope_test
-from src.plot.plot_io import init_plot, finish_plot
+from src.plot.plot_io import init_plot, finish_plot, x_dynamic_number_format
 
 
 class Slope_plot(Slope_test):
@@ -16,6 +16,7 @@ class Slope_plot(Slope_test):
         plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$ resid')
+        x_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -31,5 +32,6 @@ class Slope_plot(Slope_test):
         plt.xlabel('$x_1$')
         plt.ylabel('$d$ln$\\gamma$')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)

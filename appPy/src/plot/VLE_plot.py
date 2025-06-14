@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from src.config import cfg
 from src.utils.UoM import convert_T
 from src.TD.VLE import VLE
-from src.plot.plot_io import init_plot, finish_plot
+from src.plot.plot_io import init_plot, finish_plot, x_dynamic_number_format, y_dynamic_number_format
 
 
 class VLE_plot(VLE):
@@ -21,6 +21,8 @@ class VLE_plot(VLE):
         plt.title(f'xy diagram for {self.get_title()}')
         plt.xlabel('x')
         plt.ylabel('y')
+        x_dynamic_number_format()
+        y_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -36,6 +38,7 @@ class VLE_plot(VLE):
         plt.xlabel('x, y')
         plt.ylabel(f'T [{cfg.UoM_T}]')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -53,5 +56,6 @@ class VLE_plot(VLE):
         plt.xlabel('$x_1$')
         plt.ylabel('$\\gamma$')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)

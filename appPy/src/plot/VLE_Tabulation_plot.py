@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from src.config import cfg
 from src.utils.UoM import convert_T
 from src.fit.VLE_Tabulation import VLE_Tabulation
-from src.plot.plot_io import init_plot, finish_plot
+from src.plot.plot_io import init_plot, finish_plot, x_dynamic_number_format, y_dynamic_number_format
 
 
 class VLE_Tabulation_plot(VLE_Tabulation):
@@ -21,6 +21,8 @@ class VLE_Tabulation_plot(VLE_Tabulation):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title(f'Calculated xy diagram for {self.title}')
+        x_dynamic_number_format()
+        y_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -36,6 +38,7 @@ class VLE_Tabulation_plot(VLE_Tabulation):
         plt.ylabel(f'T [{cfg.UoM_T}]')
         plt.title(f'Calculated Txy diagram for {self.title}')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -53,5 +56,6 @@ class VLE_Tabulation_plot(VLE_Tabulation):
         plt.ylabel('$\\gamma$')
         plt.title(f'Calculated activity coefficients for {self.title}')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)

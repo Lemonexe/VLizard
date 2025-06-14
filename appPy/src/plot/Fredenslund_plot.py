@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from src.TD.Fredenslund_test import Fredenslund_test
-from src.plot.plot_io import init_plot, finish_plot
+from src.plot.plot_io import init_plot, finish_plot, x_dynamic_number_format
 
 
 class Fredenslund_plot(Fredenslund_test):
@@ -17,6 +17,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xlabel('$x_1$')
         plt.ylabel('$g_E$')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -30,6 +31,7 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xticks(np.linspace(0, 1, 11))
         plt.xlabel('$x_1$')
         plt.ylabel('$\\delta p$')
+        x_dynamic_number_format()
 
         return finish_plot(mode)
 
@@ -45,5 +47,6 @@ class Fredenslund_plot(Fredenslund_test):
         plt.xlabel('$x_1$')
         plt.ylabel('$\\Delta y$')
         plt.legend()
+        x_dynamic_number_format()
 
         return finish_plot(mode)

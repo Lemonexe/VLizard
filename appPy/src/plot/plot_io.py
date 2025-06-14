@@ -1,5 +1,5 @@
 import io
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, ticker
 # not explicitly used, pipenv runs fine without it, but it's needed for building the executable
 import matplotlib.backends.backend_svg  # pylint: disable=unused-import
 from src.config import cfg
@@ -61,3 +61,15 @@ def final_styles():
     # hide legend & title if requested
     if not cfg.chart_legend: plt.legend().set_visible(False)
     if not cfg.chart_title: plt.title(None)
+
+
+# custom axis number formatter function
+dynamic_number_format = lambda x, _pos: f"{int(x)}" if x == int(x) else f"{x:.1f}"
+
+
+def x_dynamic_number_format():
+    plt.gca().xaxis.set_major_formatter(ticker.FuncFormatter(dynamic_number_format))
+
+
+def y_dynamic_number_format():
+    plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(dynamic_number_format))
