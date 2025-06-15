@@ -1,5 +1,5 @@
 import { Box, DialogContent, Stack } from '@mui/material';
-import { FC, useMemo } from 'react';
+import { FC, PropsWithChildren, useMemo } from 'react';
 
 import { VLEAnalysisRequest, VLEAnalysisResponse } from '../../adapters/api/types/VLETypes.ts';
 import { display_T, display_T_vec, display_p, display_p_vec } from '../../adapters/logic/UoM.ts';
@@ -11,6 +11,43 @@ import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
+
+const Subtle = ({ children }: PropsWithChildren) => <span style={{ color: '#777' }}>{children}</span>;
+
+const DataHeadline = ({ data }: { data: VLEAnalysisResponse }) => {
+    const { UoM_T, UoM_p } = useConfig();
+    const avg_T = `mean T: ${toSigDgts(display_T(data.T_avg, UoM_T))} ${UoM_T}`;
+    const avg_p = `mean p: ${toSigDgts(display_p(data.p_avg, UoM_p))} ${UoM_p}`;
+
+    // prettier-ignore
+    if (data.is_isobaric === true) {
+        return (
+            <Box>
+                Data is <b>isobaric</b>.<br />
+                {avg_p}<br />
+                <Subtle children={avg_T} />
+            </Box>
+        );
+    }
+    // prettier-ignore
+    if (data.is_isobaric === false) {
+        return (
+            <Box>
+                Data is <b>isothermal</b>.<br />
+                {avg_T}<br />
+                <Subtle children={avg_p} />
+            </Box>
+        );
+    }
+    // prettier-ignore
+    return (
+        <Box>
+            Cannot determine if data is isobaric or isothermal!<br />
+            {avg_p}<br />
+            {avg_T}
+        </Box>
+    );
+};
 
 type VLEAnalysisDialogProps = DialogProps & { req: VLEAnalysisRequest; data: VLEAnalysisResponse };
 
@@ -44,11 +81,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
             <DialogContent>
                 <Stack gap={3}>
                     <AnalysisWarnings warnings={data.warnings} />
-                    <Box>
-                        Average temperature: {toSigDgts(display_T(data.T_avg, UoM_T))} {UoM_T}
-                        <br />
-                        Average pressure: {toSigDgts(display_p(data.p_avg, UoM_p))} {UoM_p}
-                    </Box>
+                    <DataHeadline data={data} />
                     <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
                     <h4 className="h-margin">xy plot</h4>
                     <PlotWithDownload svgContent={data.plot_xy} fileName={`xy chart ${label}`} />

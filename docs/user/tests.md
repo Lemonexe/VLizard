@@ -2,7 +2,7 @@
 
 [Back to User manual](manual.md)
 
-VLizard offers a wide range of tests for checking the thermodynamic consistency of your experimental VLE data.
+VLizard offers a wide range of tests for checking the thermodynamic consistency of your experimental VLE data (both isobaric and isothermal).
 This is not to be confused with generic _statistical analysis_, which is provided by many other software tools.
 On the other hand, thermodynamic _(TD)_ consistency examines compliance of experimental data with fundamental laws of thermodynamics.
 
@@ -63,6 +63,7 @@ Does not check thermodynamic consistency.
 
 - **Deprecated**. Use only if you are specifically required to!
 - Similar to Redlich-Kister test.
+- No support for isothermal data.
 
 ### Slope test
 

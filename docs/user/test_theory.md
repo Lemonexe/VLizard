@@ -20,6 +20,8 @@ We can use definition of excess Gibbs energy in dimensionless form (divided by $
 ```math
     \mathrm{d} g^\mathrm{E} = \frac{V_m^\mathrm{E}}{R T} \mathrm{d} p - \frac{H_m^\mathrm{E}}{R T^2} \mathrm{d} T + \ln \frac{\gamma_1}{\gamma_2} \mathrm{d} x_1
 ```
+This equation is generally valid for data with variant pressure and temperature.
+Either the pressure or the temperature dependent terms may be neglected for isothermal or isobaric data, respectively.
 
 ### Fredenslund test
 
@@ -136,9 +138,9 @@ Conventional criterion is used to formally accept or reject the data: $D < 10$.
     D = 100 \frac{|A - B|}{A+B}
 ```
 
-Usually, $V_m^\mathrm{E}$ is very small, so for isothermal data, the test is reliable.
+Usually, $V_m^\mathrm{E}$ is very small, so for _isothermal_ data, the test is reliable.
 
-But $H_m^\mathrm{E}$ is usually not negligible, so for isobaric data, the test is a gross approximation.
+But $H_m^\mathrm{E}$ is usually not negligible, so for _isobaric_ data, the test is a gross approximation.
 
 That's why it should be used only to reject the data when result is negative, but it has no meaning when positive, as per J. Wisniak.
 
@@ -153,7 +155,8 @@ A variation of Redlich-Kister test for isobaric data, which aims to replace the 
 The conventional criterion is then $|D-J| < 10$.
 
 Empirical parameter $J$ is not theoretically founded, and according to J. Wisniak, many systems do not conform to it.
-The test is therefore deprecated. 
+The test is therefore deprecated.
+It is also not supported for isothermal data (does not make sense, use the Redlich-Kister test instead).
 
 ### Slope test
 

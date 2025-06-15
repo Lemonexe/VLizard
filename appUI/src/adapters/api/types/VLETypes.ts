@@ -39,6 +39,7 @@ export type VLEAnalysisResponse = AnalysisResult &
         plot_gamma: string;
         p_avg: number;
         T_avg: number;
+        is_isobaric: boolean | null;
     };
 
 /* POST UPSERT */

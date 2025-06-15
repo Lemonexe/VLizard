@@ -3,6 +3,7 @@
 Welcome to the user manual for VLizard, a VLE wizard. 🧙‍♂️⚗🦎
 
 This document will quickly guide you through the process of using VLizard app for processing VLE data.  
+Both isobaric and isothermal VLE data are supported, though some features are only for isobaric data.  
 It does not cover all advanced features, but should be enough to get you started.  
 Please refer to other pages for advice on tests of thermodynamic consistency.
 
@@ -35,7 +36,7 @@ But let's start by visiting the **Pure compounds** page.
 
 Having a vapor pressure model available for each pure compound is a prerequisite for any kind of VLE data processing.
 
-I believe an example is worth a thousand words, so if your VLizard is freshly installed, there are example data from literature for ethanol & water.  
+If you have just freshly installed VLizard, there are example data from literature for ethanol & water.  
 So click the "Perform analysis" icon:
 ![analysis icon](images/analysis_icon.png)
 
@@ -45,14 +46,14 @@ A dialog appears with visualization of the vapor pressure model.
 Try editing a model via the pencil icon.  
 💡 This is fullscreen dialog, it can be closed only via buttons, not Escape key, so you don't accidentally lose progress. 
 
-You may also "Add a new model" at the top of the page, and fill the dialog similarly.
-In case you have obtained the model parameters elsewhere, enter them.
+You may also "Add a new model" at the top of the page, and fill the dialog similarly – enter the model parameters that you have available.
 Or, if you have experimental data for vapor pressure, you can "Perform fitting" – paste your data into the table and click "Optimize".
 
-Don't worry about the temperature range, it's only informative – calculations will warn you when you extrapolate too much, but not fail.  
+Don't worry about the temperature range, it's only informative – calculations will warn you when you extrapolate too much, but won't fail.  
 👉 After adding a model, it is recommended to do an perform analysis to sanity check it.
 
-Of course, any model can be deleted, but let's avoid for now, and proceed by visiting the **Binary systems** page.
+Of course, any model can be deleted.
+Let us now proceed to visit the **Binary systems** page.
 
 ### Adding VLE dataset
 
@@ -63,13 +64,15 @@ Look at one of the example datasets:
 Icon ![edit table icon](images/edit_table_icon.png) lets you edit the VLE data.  
 Icon ![visualize icon](images/visualize_icon.png) visualizes your data.   
 Icon ![analysis icon](images/analysis_icon.png) **is most important** – it opens a menu with a wide range of analyses.
+
+The analyses include visualization (same as above) and all the tests of thermodynamic consistency.  
 The help button leads to [overview of tests](tests.md) so you can learn more about them.
 
-Now you may enter your experimental VLE data
+Now you may enter your experimental VLE data, be it isobaric or isothermal.  
 Either "Add new" binary system, or you may add a dataset directly to an existing system via ![new table icon](images/new_table_icon.png)  
 💡 Is your table in a different format? No problem, just rearrange the column headers and pick your units of measure.
 
-✅ Now you may perform analysis for your VLE data – the most important feature!  
+Now you may perform analysis for your VLE data – the most important feature!
 
 ### Fitting thermodynamic models
 
@@ -78,7 +81,7 @@ You may skip this if you do not need to fit your VLE data with a thermodynamic m
 Note that it is required to perform the van Ness test of thermodynamic consistency.
 
 This page lists your binary systems, but there are no fitted models yet, so add one via ![new table icon](images/new_table_icon.png)  
-A dialog appears.
+A dialog appears:
 - Select the datasets to be fitted and a model of your choice (see [models overview](VLE_models.md)).
 - Initial parameters are provided, which you may modify if you wish.
 - Using the "Params to keep constant" selection, you may omit some of them from optimization → will be left as initial estimate.
@@ -94,15 +97,14 @@ Icon ![analysis icon](images/analysis_icon.png) to tabulate the model at arbitra
 
 There are some icons in the top bar we have not covered yet:
 
-- **Home** will get you to the welcome page. Not particularly useful.
+- **Home** will get you to the welcome page.
 - **Refresh** will refresh all vapor pressure models, VLE data and fitted models.
   - Use if you have manipulated the data manually _outside_ VLizard.
 - **Open data folder** opens the VLizard data, located in your Documents directory.
-  - Data is stored in `.tsv` files, which may be edited manually with Excel, but:
-    - ⚠ Edit at your own risk (the app expects a specific format, and could crash).
-    - Make a backup before editing files manually.
+  - Data is stored in `.tsv` files, which may be edited manually with Excel, but edit at your own risk!
+    - The app expects a specific format, and could crash, so make a backup before editing files manually.
     - Though moving, renaming or deleting files manually is generally safe.
-- **Settings** lets you tweak VLizard to your particular needs 🔧⚙️
+- **Settings** lets you tweak VLizard to your particular needs
 
 Note: the local data files are stored at following directories:
 - Windows: `C:\Users\%username%\Documents\VLizard\`
@@ -111,7 +113,7 @@ Note: the local data files are stored at following directories:
 
 ### Troubleshooting
 
-Oops, sometimes trouble happens!
+Having problems?
 Here are some general steps you can try.  
 If nothing helps, please report the bug 🐛 [using this contact](bug_tracking.md).
 
@@ -122,10 +124,11 @@ If nothing helps, please report the bug 🐛 [using this contact](bug_tracking.m
     - If there is no visible mistake, send the data along with bug report.
   - Please note that for Fitting, some failures are normal! Optimization simply does not always converge.
     - Try different initial params, or select different portion of your data.
-- If you encounter an error screen (toolbar not visible), the app is unusable 😱
+- If you encounter an error screen (toolbar not visible), the app is unfortunately unusable
   - `ctrl+R` refreshes the UI without having to restart whole app. 
   - But restart will be necessary for this error screen: `Lost connection to the Core server!`
-- `F12` or `ctrl+shift+I` will display the UI console. I'd like to ask you to copy any error you see there, and please send it along with a bug report. 
+- `F12` will display the app console. I'd like to ask you to copy any error you see there, and please send it along with a bug report. 
 
-In any case, keep in mind this a free open-source project.
-I am doing my best to make it functional and user-friendly, but it may not always be perfect 🙂
+In any case, please keep in mind this a free open-source project.
+I am doing my best to make it functional and user-friendly, but it may not always be perfect.
+Thank you for your understanding!

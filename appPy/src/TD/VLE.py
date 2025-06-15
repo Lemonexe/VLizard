@@ -17,7 +17,9 @@ class VLE(Result):
         dataset_name (str): name of dataset
         """
         super().__init__()
-        self.keys_to_serialize = ['p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2', 'ps_1', 'ps_2', 'p_avg', 'T_avg']
+        self.keys_to_serialize = [
+            'p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2', 'ps_1', 'ps_2', 'p_avg', 'T_avg', 'is_isobaric'
+        ]
         self.compound1 = compound1
         self.compound2 = compound2
         self.dataset_name = dataset_name
@@ -26,6 +28,7 @@ class VLE(Result):
 
         self.p_avg = np.mean(self.p)
         self.T_avg = np.mean(self.T)
+        self.is_isobaric = self.decide_isobaric()
 
         self.x_2 = 1 - self.x_1
         self.y_2 = 1 - self.y_1
@@ -44,6 +47,17 @@ class VLE(Result):
 
         self.gamma_1 = self.y_1 * self.p / self.x_1 / self.ps_1
         self.gamma_2 = self.y_2 * self.p / self.x_2 / self.ps_2
+
+    def decide_isobaric(self):
+        """
+        Decide if the dataset is isobaric, else isothermal, based on whichever quantity has larger coefficient of variation
+        """
+        p_std = np.std(self.p)
+        T_std = np.std(self.T)
+        if self.p_avg <= 0 or self.T_avg <= 0: return None
+        p_cv = p_std / self.p_avg
+        T_cv = T_std / self.T_avg
+        return p_cv < T_cv
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
