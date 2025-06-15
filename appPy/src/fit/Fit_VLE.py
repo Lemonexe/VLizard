@@ -77,11 +77,18 @@ class Fit_VLE(Fit):
         self.is_optimized = True
 
     def tabulate(self):
-        """Tabulate model using final params for each dataset."""
-        self.tabulated_datasets = [
-            VLE_Tabulation(self.model, self.params, self.compound1, self.compound2, vle.dataset_name, np.mean(vle.p))
-            for vle in self.dataset_VLEs
-        ]
+        """Tabulate model for each dataset using the final optimized params."""
+        self.tabulated_datasets = [self.__tabulate_VLE_dataset(vle) for vle in self.dataset_VLEs]
+
+    def __tabulate_VLE_dataset(self, vle):
+        """
+        Tabulate one VLE dataset using the final optimized params.
+
+        vle (VLE): VLE instance of this dataset.
+        """
+        p_spec = np.mean(vle.p) if vle.is_isobaric else None
+        T_spec = np.mean(vle.T) if not vle.is_isobaric else None
+        return VLE_Tabulation(self.model, self.params, self.compound1, self.compound2, p_spec, T_spec)
 
     def report(self):
         underline_echo(self.get_title())

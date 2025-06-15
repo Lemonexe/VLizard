@@ -82,18 +82,24 @@ def delete_VLE_fit_api():
 @fit_blueprint.post('/vle/tabulate')
 def fit_VLE_tabulate_api():
     """Tabulate existing VLE fitting at given pressure."""
-    param_schema = {'compound1': True, 'compound2': True, 'model_name': True, 'p': True}
+    param_schema = {'compound1': True, 'compound2': True, 'model_name': True, 'p_spec': False, 'T_spec': False}
     params = unpack_request_schema(request, param_schema)
 
-    pfit, model = get_persisted_fit_with_model(params['compound1'], params['compound2'], params['model_name'])
+    comp1 = params['compound1']
+    comp2 = params['compound2']
+    pfit, model = get_persisted_fit_with_model(comp1, comp2, params['model_name'])
     nparams = pfit['results']['nparams']
     model_params = [nparams[key] for key in model.param_names]
 
-    label = f'{params["p"]} kPa'
-    tab = VLE_Tabulation_plot(model, model_params, params['compound1'], params['compound2'], label, params['p'])
-    tab.keys_to_serialize.extend(['T', 'x_1', 'y_1', 'gamma_1', 'gamma_2'])
+    tab = VLE_Tabulation_plot(model, model_params, comp1, comp2, params['p_spec'], params['T_spec'])
+    tab.keys_to_serialize.extend(['p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2'])
     payload = tab.serialize()
     payload['xy_plot'] = tab.plot_xy(mode='svg')
-    payload['Txy_plot'] = tab.plot_Txy(mode='svg')
+
+    if tab.is_isobaric:
+        payload['Txy_plot'] = tab.plot_Txy(mode='svg')
+    else:
+        payload['pxy_plot'] = tab.plot_pxy(mode='svg')
+
     payload['gamma_plot'] = tab.plot_gamma(mode='svg')
     return payload

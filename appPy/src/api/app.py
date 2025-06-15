@@ -31,7 +31,7 @@ def handle_app_exception(err):
 @app.errorhandler(Exception)
 def handle_exception_default(err):
     """Handle all other exceptions verbosely (by default it'd just say 500 internal error)."""
-    return {'error': str(err)}, 500
+    return {'error': repr(err)}, 500
 
 
 # register modules and run the app

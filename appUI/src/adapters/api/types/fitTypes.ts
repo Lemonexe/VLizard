@@ -38,9 +38,12 @@ export type FitAnalysisRequest = MultipleDatasetsIdentifier & {
 
 export type PlottedDataset = AnalysisResult & {
     name: string;
-    p: number;
+    is_isobaric: boolean;
+    p_spec: number | null;
+    T_spec: number | null;
     xy_plot: string;
-    Txy_plot: string;
+    Txy_plot?: string;
+    pxy_plot?: string;
     gamma_plot: string;
 };
 
@@ -57,9 +60,21 @@ export type FitAnalysisResponse = AnalysisResult & {
     AAD_final: number | null;
 };
 
-export type FitTabulateRequest = SystemIdentifier & { model_name: string; p: number };
+export type FitTabulateRequest = SystemIdentifier & {
+    model_name: string;
+    p_spec?: number;
+    T_spec?: number;
+};
 
-type DatasetTabulation = { T: number[]; x_1: number[]; y_1: number[]; gamma_1: number[]; gamma_2: number[] };
+/* POST TABULATE VLE FIT */
+type DatasetTabulation = {
+    p: number[];
+    T: number[];
+    x_1: number[];
+    y_1: number[];
+    gamma_1: number[];
+    gamma_2: number[];
+};
 export type TabulatedDataset = PlottedDataset & DatasetTabulation;
 
 /* DELETE VLE FIT */

@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 
 import { FitAnalysisRequest, FitAnalysisResponse, PlottedDataset } from '../../adapters/api/types/fitTypes.ts';
+import { display_T, display_p } from '../../adapters/logic/UoM.ts';
 import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { sigDgtsMetrics, sigDgtsParams, toSigDgts } from '../../adapters/logic/numbers.ts';
 import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
@@ -11,6 +12,7 @@ import { AnalysisWarnings } from '../../components/AnalysisResults/AnalysisWarni
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
+import { useConfig } from '../../contexts/ConfigContext.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 
 const fitQualityMetrics = ['Root mean square', 'Average absolute deviation'];
@@ -20,14 +22,22 @@ type DatasetDisplayProps = {
     ds: PlottedDataset;
 };
 
+const DataHeadline = ({ ds }: { ds: PlottedDataset }) => {
+    const { UoM_T, UoM_p } = useConfig();
+    // unlike VLE parsed from data, the tabulated VLE is strictly either isobaric | isothermal (no indeterminate state)
+    if (ds.T_spec) return `mean T: ${toSigDgts(display_T(ds.T_spec, UoM_T))} ${UoM_T}`;
+    if (ds.p_spec) return `mean p: ${toSigDgts(display_p(ds.p_spec, UoM_p))} ${UoM_p}`;
+};
+
 const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
     <Box mt={8}>
         <h4 className="h-margin">
             Dataset <q>{ds.name}</q>
         </h4>
-        (mean pressure is {toSigDgts(ds.p)} kPa)
+        <DataHeadline ds={ds} />
         <PlotWithDownload svgContent={ds.xy_plot} fileName={`xy fit chart ${label} ${ds.name}`} />
-        <PlotWithDownload svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />
+        {ds.Txy_plot && <PlotWithDownload svgContent={ds.Txy_plot} fileName={`Txy fit chart ${label} ${ds.name}`} />}
+        {ds.pxy_plot && <PlotWithDownload svgContent={ds.pxy_plot} fileName={`pxy fit chart ${label} ${ds.name}`} />}
         <PlotWithDownload svgContent={ds.gamma_plot} fileName={`gamma fit chart ${label} ${ds.name}`} />
     </Box>
 );
