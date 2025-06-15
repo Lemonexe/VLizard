@@ -85,8 +85,18 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
                     <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />
                     <h4 className="h-margin">xy plot</h4>
                     <PlotWithDownload svgContent={data.plot_xy} fileName={`xy chart ${label}`} />
-                    <h4 className="h-margin">Txy plot</h4>
-                    <PlotWithDownload svgContent={data.plot_Txy} fileName={`Txy chart ${label}`} />
+                    {data.plot_Txy && (
+                        <>
+                            <h4 className="h-margin">Txy plot</h4>
+                            <PlotWithDownload svgContent={data.plot_Txy} fileName={`Txy chart ${label}`} />
+                        </>
+                    )}
+                    {data.plot_pxy && (
+                        <>
+                            <h4 className="h-margin">pxy plot</h4>
+                            <PlotWithDownload svgContent={data.plot_pxy} fileName={`pxy chart ${label}`} />
+                        </>
+                    )}
                     <h4 className="h-margin">Activity coefficients plot</h4>
                     <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma chart ${label}`} />
                 </Stack>

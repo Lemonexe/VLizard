@@ -45,7 +45,10 @@ def vle_analysis_api():
     vle = VLE_plot(*params.values())
     payload = vle.serialize()
     payload['plot_xy'] = vle.plot_xy(mode='svg')
-    payload['plot_Txy'] = vle.plot_Txy(mode='svg')
+    if vle.is_isobaric:
+        payload['plot_Txy'] = vle.plot_Txy(mode='svg')
+    else:
+        payload['plot_pxy'] = vle.plot_pxy(mode='svg')
     payload['plot_gamma'] = vle.plot_gamma(mode='svg')
     return payload
 

@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from src.config import cfg
-from src.utils.UoM import convert_T
+from src.utils.UoM import convert_T, convert_p
 from src.TD.VLE import VLE
 from src.plot.plot_io import init_plot, finish_plot, x_dynamic_number_format, y_dynamic_number_format
 
@@ -37,6 +37,22 @@ class VLE_plot(VLE):
         plt.title(f'Txy diagram for {self.get_title()}')
         plt.xlabel('x, y')
         plt.ylabel(f'T [{cfg.UoM_T}]')
+        plt.legend()
+        x_dynamic_number_format()
+
+        return finish_plot(mode)
+
+    def plot_pxy(self, mode):
+        """Plot p,x,y diagram."""
+        init_plot(mode)
+        p_disp = convert_p(self.p)
+        plt.plot(self.x_1, p_disp, 'vb', label='boil')
+        plt.plot(self.y_1, p_disp, 'Dr', label='dew')
+        plt.xlim(0, 1)
+        plt.xticks(np.linspace(0, 1, 11))
+        plt.title(f'pxy diagram for {self.get_title()}')
+        plt.xlabel('x, y')
+        plt.ylabel(f'p [{cfg.UoM_p}]')
         plt.legend()
         x_dynamic_number_format()
 

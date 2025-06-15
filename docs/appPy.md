@@ -54,14 +54,18 @@ Endpoints assume valid systems and datasets, UI must take care of that.
 CRUD controllers operate on `.tsv` files, which store user input data.
 Analyses are run via `POST` endpoints, which return json and also persist it in `.json` files as cache.
 
+### Development
+Unit tests: `pipenv run test`  
+Pylint: `pipenv run lint`  
+Prettier: `pipenv run prettier`
 
 #### CLI
-CLI commands are supported only on Windows (untested on other systems).
-Examples for CLI commands:
+Examples for CLI commands on Windows:
 ```
 pipenv run cli\slope --help
 pipenv run cli\vapor CHOL
 pipenv run cli\vle CPF CPOL
+pipenv run cli\vle CPF CPOL --txy --pxy -d 25kPa
 pipenv run cli\gamma CHF CHOL -d 25kPa --plot
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
@@ -75,7 +79,5 @@ pipenv run cli\fit EtOH H2O UNIQUAC --skip -d Kamihama2012,Voutsas2011 --xy --ga
 See [appPy/cli](../appPy/cli), where filenames correspond to commands;
 calling with `--help` will instruct you further.
 
-### Development
-Unit tests: `pipenv run test`  
-Pylint: `pipenv run lint`  
-Prettier: `pipenv run prettier`
+On Linux, write `pipenv run python cli/vle.py` instead of `pipenv run cli\vle`, assuming `python` is executable.  
+To render plots in CLI, you may need `sudo apt install python3-tk`.

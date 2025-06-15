@@ -35,7 +35,8 @@ export type VLEAnalysisResponse = AnalysisResult &
         ps_1: number[];
         ps_2: number[];
         plot_xy: string;
-        plot_Txy: string;
+        plot_Txy?: string;
+        plot_pxy?: string;
         plot_gamma: string;
         p_avg: number;
         T_avg: number;
