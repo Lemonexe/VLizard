@@ -26,7 +26,8 @@ default_config_dict = {
     # [%] when extrapolating vapor pressure, allow temp to be out bounds by = this * (vapor pressure fun temp interval)
     'T_bounds_rel_tol': 10,
     # [%] in Redlich-Kister test, data is inconsistent if D > this
-    'rk_D_criterion': 10,
+    'rk_D_criterion': 10,  # for isobaric data
+    'rk_D_criterion_isotherm': 2,  # for isothermal data
     # [%] in Herington test, data is inconsistent if |D-J| > this
     'herington_DJ_criterion': 10,
     # relative tolerance for integration error in Redlich-Kister

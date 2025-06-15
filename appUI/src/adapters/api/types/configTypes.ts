@@ -5,6 +5,7 @@ export type Config = {
     gamma_abs_tol: number;
     T_bounds_rel_tol: number;
     rk_D_criterion: number;
+    rk_D_criterion_isotherm: number;
     herington_DJ_criterion: number;
     rk_quad_rel_tol: number;
     fredenslund_criterion: number;

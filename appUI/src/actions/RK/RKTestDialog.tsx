@@ -9,7 +9,6 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { ResultsDisplayTable } from '../../components/Spreadsheet/ResultsDisplayTable.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
-import { useConfig } from '../../contexts/ConfigContext.tsx';
 
 const columnLabels = ['x1', 'ln y1/y2'];
 
@@ -17,8 +16,7 @@ type RKTestDialogProps = DialogProps & { req: TestRequest; data: RKTestResponse 
 
 export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const { rk_D_criterion } = useConfig();
-    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(rk_D_criterion)}`];
+    const reasons = [`|D| ${data.is_consistent ? '<=' : '>'} ${toSigDgts(data.D_criterion)}`];
 
     const dataColumns = useMemo(() => [data.x_1, data.curve], [data]);
 
@@ -45,7 +43,10 @@ export const RKTestDialog: FC<RKTestDialogProps> = ({ open, handleClose, req, da
                             </tr>
                         </tbody>
                     </table>
-                    <p>D criterion is {toSigDgts(rk_D_criterion, sigDgtsCrit)}</p>
+                    <p>
+                        D criterion is {toSigDgts(data.D_criterion, sigDgtsCrit)} (
+                        {data.is_isobaric ? 'isobaric' : 'isothermal'})
+                    </p>
                 </Box>
 
                 <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />

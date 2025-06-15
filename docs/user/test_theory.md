@@ -123,8 +123,9 @@ Conventional criterion is then used to formally accept or reject the data: $\Del
 
 ### Redlich-Kister test
 
-This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_m^\mathrm{E}$ (the pressure and temperature dependence):
-
+This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_m^\mathrm{E}$ (the pressure and temperature dependence).  
+Usually, $V_m^\mathrm{E}$ is very small, so for _isothermal_ data, the test is very reliable.  
+But $H_m^\mathrm{E}$ is usually not negligible, so for _isobaric_ data, the test is a gross approximation.
 ```math
     \int_{x_1=0}^{x_1=1} \ln \frac{\gamma_1}{\gamma_2} \mathrm{d} x_1 = 0
 ```
@@ -132,17 +133,15 @@ This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_
 The curve $\ln \gamma_1 / \gamma_2$ forms two areas $A$ and $B$, one above and one below the x-axis.  
 This is why Redlich-Kister & Herington tests are also generally called _"area tests"_.
 
-Conventional criterion is used to formally accept or reject the data: $D < 10$.
+Conventional criterion is used to formally accept or reject the data.
 
 ```math
     D = 100 \frac{|A - B|}{A+B}
 ```
 
-Usually, $V_m^\mathrm{E}$ is very small, so for _isothermal_ data, the test is reliable.
+For isothermal data, the criterion is $D < 2$ and the test is considered conclusive.
 
-But $H_m^\mathrm{E}$ is usually not negligible, so for _isobaric_ data, the test is a gross approximation.
-
-That's why it should be used only to reject the data when result is negative, but it has no meaning when positive, as per J. Wisniak.
+For isobaric data, the criterion is $D < 10$ and the test is considered inconclusive – it should be used only to reject the data when result is negative, but it has no meaning when positive, as per J. Wisniak.
 
 ### Herington test
 

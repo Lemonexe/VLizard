@@ -24,6 +24,8 @@ export type SlopeTestResponse = AnalysisResult & {
 
 export type RKTestResponse = ConclusiveTestResult & {
     D: number;
+    D_criterion: number; // differs for isothermal and isobaric data
+    is_isobaric: boolean | null;
     curve_dif: number;
     curve_sum: number;
     plot: string;

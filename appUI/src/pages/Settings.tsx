@@ -97,7 +97,13 @@ const CalcSettings: FC<FormProps> = (props) => {
             <div>
                 <strong>Redlich-Kister</strong>: % threshold for |D| <em>(data declared inconsistent when greater)</em>
                 <br />
+                Isobaric:
+                <br />
                 <TextField {...createTFProps('rk_D_criterion', true)} />
+                <br />
+                Isothermal:
+                <br />
+                <TextField {...createTFProps('rk_D_criterion_isotherm', true)} />
             </div>
             <div>
                 <strong>Herington</strong>: % threshold for |D-J| <em>(data declared inconsistent when greater)</em>
