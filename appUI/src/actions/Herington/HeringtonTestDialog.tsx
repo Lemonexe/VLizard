@@ -1,4 +1,4 @@
-import { Box, DialogContent } from '@mui/material';
+import { Alert, Box, DialogContent } from '@mui/material';
 import { FC } from 'react';
 
 import { HeringtonTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
@@ -20,7 +20,15 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
         <ResponsiveDialog maxWidth="md" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Herington test for {label}</DialogTitleWithX>
             <DialogContent>
-                <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
+                {data.isothermal_error ? (
+                    <Alert severity="error">
+                        Isothermal data detected, this test makes no sense!
+                        <br />
+                        Please use the Redlich-Kister test instead.
+                    </Alert>
+                ) : (
+                    <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
+                )}
                 <Box m={2} pb={2}>
                     <table>
                         <tbody>

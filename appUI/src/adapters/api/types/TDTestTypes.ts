@@ -35,6 +35,7 @@ export type HeringtonTestResponse = ConclusiveTestResult & {
     D: number;
     DJ: number;
     J: number;
+    isothermal_error: boolean;
 };
 
 export type FredenslundTestRequest = DatasetIdentifier & {

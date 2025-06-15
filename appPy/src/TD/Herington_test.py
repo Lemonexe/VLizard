@@ -15,9 +15,10 @@ class Herington_test(Area):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['D', 'J', 'DJ', 'is_consistent']
+        self.keys_to_serialize = ['D', 'J', 'DJ', 'is_consistent', 'isothermal_error']
 
         self.warn('Herington test is deprecated, results should be considered only advisory')
+        self.isothermal_error = self.is_isobaric == False
 
         T_min, T_max = np.min(self.T), np.max(self.T)
 
