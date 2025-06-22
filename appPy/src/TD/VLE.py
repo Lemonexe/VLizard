@@ -1,9 +1,11 @@
 import numpy as np
+from src.config import cfg
 from src.utils.io.echo import echo, underline_echo
 from src.utils.vector import serialize_cols
 from src.utils.io.tsv import matrix2tsv
 from src.utils.Result import Result
 from src.utils.datasets import get_dataset_VLE_data
+from src.utils.UoM import convert_T, convert_p
 from .Vapor import Vapor
 
 
@@ -61,6 +63,10 @@ class VLE(Result):
 
     def report(self):
         underline_echo(f'Activity coeffs for {self.get_title()}')
+        if self.is_isobaric is not None:
+            isobaric_label = f'isobaric at {convert_p(self.p_avg):.1f} {cfg.UoM_p}'
+            isothermal_label = f'isothermal at {convert_T(self.T_avg):.3g} {cfg.UoM_T}'
+            echo(f'data is {isobaric_label if self.is_isobaric else isothermal_label}')
         self.report_warnings()
 
         # pretty-print a table of following vectors
