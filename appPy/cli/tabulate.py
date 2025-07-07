@@ -31,7 +31,7 @@ def cli_tabulate(compound1, compound2, model_name, p, t, xy, txy, pxy, gamma):
 
     nparams = pfit['results']['nparams']
     params = [nparams[key] for key in model.param_names]
-    tab = VLE_Tabulation_plot(model, params, compound1, compound2, p, t)
+    tab = VLE_Tabulation_plot(model, params, compound1, compound2, p, t, None)
 
     if xy: tab.plot_xy(mode='ion')
     if txy: tab.plot_Txy(mode='ion')

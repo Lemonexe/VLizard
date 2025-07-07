@@ -40,10 +40,12 @@ def fit_VLE_api():
     # populate payload with SVG plots
     xy_plots = fit.plot_xy_model(mode='svg')
     Txy_plots = fit.plot_Txy_model(mode='svg')
+    pxy_plots = fit.plot_pxy_model(mode='svg')
     gamma_plots = fit.plot_gamma_model(mode='svg')
-    for (ds, xy, Txy, gamma) in zip(payload['tabulated_datasets'], xy_plots, Txy_plots, gamma_plots):
+    for (ds, xy, Txy, pxy, gamma) in zip(payload['tabulated_datasets'], xy_plots, Txy_plots, pxy_plots, gamma_plots):
         ds['xy_plot'] = xy
         ds['Txy_plot'] = Txy
+        ds['pxy_plot'] = pxy
         ds['gamma_plot'] = gamma
 
     return payload
@@ -91,7 +93,7 @@ def fit_VLE_tabulate_api():
     nparams = pfit['results']['nparams']
     model_params = [nparams[key] for key in model.param_names]
 
-    tab = VLE_Tabulation_plot(model, model_params, comp1, comp2, params['p_spec'], params['T_spec'])
+    tab = VLE_Tabulation_plot(model, model_params, comp1, comp2, params['p_spec'], params['T_spec'], None)
     tab.keys_to_serialize.extend(['p', 'T', 'x_1', 'y_1', 'gamma_1', 'gamma_2'])
     payload = tab.serialize()
     payload['xy_plot'] = tab.plot_xy(mode='svg')

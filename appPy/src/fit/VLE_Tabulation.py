@@ -9,7 +9,7 @@ from src.TD.Vapor import Vapor
 
 class VLE_Tabulation(Result):
 
-    def __init__(self, model, params, compound1, compound2, p_spec, T_spec):
+    def __init__(self, model, params, compound1, compound2, p_spec, T_spec, label):
         """
         Create isobaric tabulation of a VLE dataset using a thermodynamic model and its params
 
@@ -19,6 +19,7 @@ class VLE_Tabulation(Result):
         name (str): name of the tabulation
         p_spec (float): constant pressure for tabulation, exclusive with T [kPa]
         T_spec (float): constant temperature for tabulation, exclusive with p [K]
+        label (str or None): name of the tabulation
         """
         super().__init__()
         self.keys_to_serialize = ['p_spec', 'T_spec', 'is_isobaric', 'name']
@@ -32,11 +33,12 @@ class VLE_Tabulation(Result):
         self.model_name = model.display_name
         self.params = params
 
-        if self.is_isobaric:
-            label = f'{convert_p(self.p_spec):.1f} {cfg.UoM_p}'
-        else:
-            label = f'{convert_T(self.T_spec):.3g} {cfg.UoM_T}'
-        self.title = self.name = f'{model.display_name} at {label}'
+        if label is None:
+            if self.is_isobaric:
+                label = f'at {convert_p(self.p_spec):.1f} {cfg.UoM_p}'
+            else:
+                label = f'at {convert_T(self.T_spec):.3g} {cfg.UoM_T}'
+        self.title = self.name = f'{model.display_name} {label}'
 
         n = cst.x_points_smooth_plot
         self.x_1 = np.linspace(0, 1, n)

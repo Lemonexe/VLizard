@@ -42,8 +42,8 @@ export type PlottedDataset = AnalysisResult & {
     p_spec: number | null;
     T_spec: number | null;
     xy_plot: string;
-    Txy_plot?: string;
-    pxy_plot?: string;
+    Txy_plot: string | null;
+    pxy_plot: string | null;
     gamma_plot: string;
 };
 

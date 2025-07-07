@@ -22,11 +22,11 @@ model_list = ", ".join(supported_model_names)
 @click.option('-p', '--params', help='Comma-separated initial parameters, will ignore params saved in file')
 @click.option('-c', '--consts', help='Comma-separated names of parameters to be kept constant')
 @click.option('--xy', is_flag=True, help='Plot x,y diagram + regression')
-@click.option('--txy', is_flag=True, help='Plot T,x,y diagram + regression')
+@click.option('--ptxy', is_flag=True, help='Plot p,x,y or T,x,y diagram (automatically) + regression')
 @click.option('--gamma', is_flag=True, help='Plot activity coeff + regression')
 @click.option('--skip', is_flag=True, help='Skip optimization (use initial params for tabulation)')
 @click.option('--persist', is_flag=True, help='Persist result in yaml file')
-def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamma, skip, persist):
+def cli_fit(compound1, compound2, model, datasets, params, consts, xy, ptxy, gamma, skip, persist):
     """Fit binary VLE data with a given model, datasets, and optionally with specified initial parameters."""
 
     compound1, compound2 = validate_system_or_swap(compound1, compound2)
@@ -36,10 +36,12 @@ def cli_fit(compound1, compound2, model, datasets, params, consts, xy, txy, gamm
 
     if persist: persist_fit(fit)
 
-    if not (xy or txy or gamma): return
+    if not (xy or ptxy or gamma): return
     fit.tabulate()
     if xy: fit.plot_xy_model(mode='ion')
-    if txy: fit.plot_Txy_model(mode='ion')
+    if ptxy:
+        fit.plot_pxy_model(mode='ion')
+        fit.plot_Txy_model(mode='ion')
     if gamma: fit.plot_gamma_model(mode='ion')
     pause_to_keep_charts()
 

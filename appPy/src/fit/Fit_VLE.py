@@ -88,7 +88,7 @@ class Fit_VLE(Fit):
         """
         p_spec = np.mean(vle.p) if vle.is_isobaric else None
         T_spec = np.mean(vle.T) if not vle.is_isobaric else None
-        return VLE_Tabulation(self.model, self.params, self.compound1, self.compound2, p_spec, T_spec)
+        return VLE_Tabulation(self.model, self.params, self.compound1, self.compound2, p_spec, T_spec, vle.dataset_name)
 
     def report(self):
         underline_echo(self.get_title())
