@@ -50,6 +50,14 @@ type SpecifyFitDialogProps = DialogProps &
         currentFit?: PersistedFit;
     };
 
+const checkNRTL_c12_error = (model_name: string, data: SpreadsheetData): boolean => {
+    const isNRTL = ['NRTL', 'NRTL10'].includes(model_name);
+    if (!isNRTL) return false;
+    const c12 = Number(data[0][4]?.value ?? 0);
+    const absTol = 5e-2;
+    return Math.abs(c12) < absTol;
+};
+
 export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
     compound1,
     compound2,
@@ -112,6 +120,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
     };
 
     // OVERALL ERROR CHECK
+    const isNRTL_c12_error = checkNRTL_c12_error(model_name, data);
     const isError = !isDataWhole || !datasets.length;
 
     return (
@@ -197,6 +206,9 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                             columnLabels={columnLabels}
                         />
                     </Box>
+                )}
+                {isNRTL_c12_error && (
+                    <WarningLabel title="NRTL c_12 close to 0 does not make sense! It effectively reduces aij, bij to a single param (results will be strongly autocorrelated)." />
                 )}
                 {modelDef && !isDataWhole && (
                     <Box pt={2}>
