@@ -32,6 +32,8 @@ import { ParamsSpreadsheet } from '../../components/Spreadsheet/ParamsSpreadshee
 import { ErrorLabel, InfoLabel, WarningLabel } from '../../components/dataViews/TooltipIcons.tsx';
 import { useData } from '../../contexts/DataContext.tsx';
 
+import { WarningNRTL_c12 } from './components/WarningNRTL_c12.tsx';
+
 type ValidationResults = { initialDs: string[]; invalidDs: string[] };
 const validateInitialDatasets = (initialDs: string[], systemDs: string[]): ValidationResults =>
     initialDs.reduce<ValidationResults>(
@@ -207,9 +209,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                         />
                     </Box>
                 )}
-                {isNRTL_c12_error && (
-                    <WarningLabel title="NRTL c_12 close to 0 does not make sense! It effectively reduces aij, bij to a single param (results will be strongly autocorrelated)." />
-                )}
+                {isNRTL_c12_error && <WarningNRTL_c12 />}
                 {modelDef && !isDataWhole && (
                     <Box pt={2}>
                         <ErrorLabel title="Data is incomplete!" />
