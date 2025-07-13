@@ -2,8 +2,21 @@ import numpy as np
 from scipy.optimize import least_squares
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import cfg, cst
-from .VLE_models.van_Laar import van_Laar_with_error
+from .VLE_models.NRTL import log_NRTL10
 from .VLE import VLE
+
+
+def NRTL_with_error(*params, err_1, err_2):
+    """
+    Calculate activity coefficients using NRTL model with error terms on gamma_1(x_1=1), gamma_2(x_2=1).
+    Such offset is thermodynamically impossible, which is why calculating it is useful as a consistency test.
+
+    params (tuple): parameters of NRTL model, see log_NRTL10 for details
+    err_1, err_2 (float): offset of gamma_1(x_1=1), gamma_2(x_2=1) from 1
+    return (np.array): activity coefficients as [gamma_1, gamma_2]
+    """
+    ln_gamma = log_NRTL10(*params)
+    return np.exp(ln_gamma + np.array([err_1, err_2]))
 
 
 def weigh_by_x(x_1, resids):

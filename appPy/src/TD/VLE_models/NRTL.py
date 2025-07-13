@@ -3,9 +3,9 @@ from src.config import cst
 from .VLE_Model import VLE_Model
 
 
-def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
+def log_NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
     """
-    Calculate activity coefficients using NRTL model (full version with 10 parameters).
+    Calculate logarithm of activity coefficients using NRTL model (full version with 10 parameters).
 
     x_1 (float): mole fraction of compound1
     T (float): temperature [K]
@@ -32,11 +32,14 @@ def NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, d_12, e_12, e_21, f_12, f_21):
     den_21 = x_1 + x_2*G_21  # denominator with G_21
     ln_gamma_1 = x_2**2 * (tau_21 * (G_21 / den_21)**2 + tau_12*G_12/den_12/den_12)
     ln_gamma_2 = x_1**2 * (tau_12 * (G_12 / den_12)**2 + tau_21*G_21/den_21/den_21)
-    return np.exp([ln_gamma_1, ln_gamma_2])
+    return np.array([ln_gamma_1, ln_gamma_2])
 
+
+NRTL10 = lambda *params: np.exp(log_NRTL10(*params))
+"""Extended NRTL model (full version with 10 parameters), see log_NRTL10 for details."""
 
 NRTL = lambda *params: NRTL10(*params, 0, 0, 0, 0, 0)
-"""Simplified NRTL activity coefficient model with only first 5 parameters."""
+"""Simplified NRTL activity coefficient model with only first 5 parameters, see log_NRTL10 for details."""
 
 NRTL_params0 = np.array([1, 1, 100, 100, 0.3], dtype='float64')
 NRTL10_params0 = np.concatenate((NRTL_params0, np.zeros(5)))
