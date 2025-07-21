@@ -1,10 +1,53 @@
 import numpy as np
 from scipy.optimize import least_squares
+from scipy.interpolate import UnivariateSpline
+
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.config import cfg, cst
-from .VLE_models.van_Laar import van_Laar_with_error
+from .VLE_models.NRTL import log_NRTL10, NRTL_params0
 from .VLE import VLE
 
+def phi_virial2(V_m, x_1, B_1, B_12, B_2):
+    """
+    Calculate binary mixture fugacity coefficient using the integrated first-order virial equation.
+    This treats the gas phase mixture as a single pseudo-component.
+    """
+    x_2 = 1 - x_1
+    B_mix = x_1**2 * B_1 + 2 * x_1 * x_2 * B_12 + x_2**2 * B_2
+    return np.exp(B_mix * V_m)
+
+def NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
+    """
+    Calculate activity coefficients using NRTL model with error terms on gamma_1(x_1=1), gamma_2(x_2=1).
+    Such offset is thermodynamically impossible, which is why calculating it is useful as a consistency test.
+
+    See log_NRTL10 for details on parameters.
+    err_1, err_2 (float): offset of gamma_1(x_1=1), gamma_2(x_2=1) from 1
+    return (np.array): activity coefficients as [gamma_1, gamma_2]
+    """
+    ln_gamma_1, ln_gamma_2 = log_NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, 0, 0, 0, 0, 0)
+    ln_gamma_1 = ln_gamma_1 + err_1
+    ln_gamma_2 = ln_gamma_2 + err_2
+    return np.exp(np.array([ln_gamma_1, ln_gamma_2]))
+
+def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
+    """
+    aaa
+    """
+    gamma_1, gamma_2 = NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+    # integral of (z-1/p')dp' from 0 to p
+
+    # approximation of V_m using ideal gas law
+    V_m = p / cst.R * T
+    phi = phi_virial2(V_m, x_1, virB_1, virB_12, virB_2)
+    phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2) # here only virB_1 is effective
+    phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2) # here only virB_2 is effective
+
+    alpha_1 = gamma_1 * phi_1 / phi
+    alpha_2 = gamma_2 * phi_2 / phi
+
+    print(f'{np.mean(gamma_1):2f} {np.mean(gamma_2):2f} {np.mean(phi):2f} {np.mean(phi_1):2f} {np.mean(phi_2):2f}')
+    return np.array([alpha_1, alpha_2])
 
 def weigh_by_x(x_1, resids):
     """Weigh gammas residuals by mole fractions to accent data points in pure region."""
@@ -28,24 +71,66 @@ class Gamma_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['is_consistent', 'err_1', 'err_2', 'delta_gamma_1', 'delta_gamma_2']
 
-        gamma_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
-        p0_sign = np.sign(np.mean(gamma_M - 1))  # negative initial params if activity coefficients are
-        params0 = np.array([0.5 * p0_sign, 0.5 * p0_sign, 0, 0])  # initial [A_12, A_21, err_1, err_2]
+        x_1, p, T = self.x_1, self.p, self.T
+
+        # alpha_i = gamma_i * phi_i_sat / phi
+        # but VLE() does not consider vapor phase non-ideality, so the returned gamma can be considered alpha.
+        alpha_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
+        #p0_sign = np.sign(np.mean(alpha_M - 1))  # negative initial params if activity coefficients are TODO DELETE DIS
+        # initial [virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2]
+        params0 = np.concatenate((np.zeros(3), NRTL_params0, np.zeros(2)))
+
+        p_spline = UnivariateSpline(x_1, p)
+        T_spline = UnivariateSpline(x_1, T)
+        print(f'p(x1=1) = {p_spline(1)}')
+        print(f'p(x2=1) = {p_spline(0)}')
+        print(f'T(x1=1) = {T_spline(1)}')
+        print(f'T(x2=1) = {T_spline(0)}')
+
+        # p / cst.R * T
+        V_m_1 = p_spline(1) / cst.R * T_spline(1)
+        V_m_2 = p_spline(0) / cst.R * T_spline(0)
 
         # vector of residuals for least_squares
-        residual = lambda params: weigh_by_x(self.x_1, van_Laar_with_error(self.x_1, 0, *params) - gamma_M).flatten()
+        residual = lambda params: weigh_by_x(x_1, alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *params) - alpha_M).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
-        [_, _, self.err_1, self.err_2] = self.params = result.x
-        self.delta_gamma_1 = np.exp(self.err_1) - 1
-        self.delta_gamma_2 = np.exp(self.err_2) - 1
+
+        np.set_printoptions(precision=3)
+        print('alpha_M')
+        print(alpha_M)
+        print(alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *result.x))
+
+        [virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2] = result.x
+        self.err_1, self.err_2 = err_1, err_2
+        print(f'virB_1 = {virB_1}')
+        print(f'virB_12 = {virB_12}')
+        print(f'virB_2 = {virB_2}')
+
+        print(f'a_12 = {a_12}')
+        print(f'a_21 = {a_21}')
+        print(f'b_12 = {b_12}')
+        print(f'b_21 = {b_21}')
+        print(f'c_12 = {c_12}')
+        print(f'err_1 = {err_1}')
+        print(f'err_2 = {err_2}')
+
+        phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2)
+        phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2)
+
+        print(f'phi_1 = {phi_1}')
+        print(f'phi_2 = {phi_2}')
+
+        self.delta_gamma_1 = np.exp(self.err_1)
+        self.delta_gamma_2 = np.exp(self.err_2)
 
         abs_tol_1 = cfg.gamma_abs_tol / 100
         self.is_consistent = abs(self.err_2) <= abs_tol_1 and abs(self.err_1) <= abs_tol_1
 
         self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
-        self.gamma_tab_1, self.gamma_tab_2 = van_Laar_with_error(self.x_tab, 0, *self.params)
+        self.gamma_tab_i = NRTL_with_error(self.x_tab, 0, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+        self.gamma_tab_1, self.gamma_tab_2 = self.gamma_tab_i
 
     def get_title(self):
         return f'γ test for {super().get_title()}'
