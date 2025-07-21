@@ -18,8 +18,6 @@ def van_Laar(x_1, _T, A_12, A_21):
     return np.exp([ln_gamma_1, ln_gamma_2])
 
 
-"""The thermodynamically correct van Laar activity coefficient model without err_1, err_2."""
-
 van_Laar_model = VLE_Model(
     name='vanLaar',
     display_name='van Laar',

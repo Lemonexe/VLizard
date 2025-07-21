@@ -7,14 +7,16 @@ from src.config import cfg, cst
 from .VLE_models.NRTL import log_NRTL10, NRTL_params0
 from .VLE import VLE
 
+
 def phi_virial2(V_m, x_1, B_1, B_12, B_2):
     """
     Calculate binary mixture fugacity coefficient using the integrated first-order virial equation.
     This treats the gas phase mixture as a single pseudo-component.
     """
     x_2 = 1 - x_1
-    B_mix = x_1**2 * B_1 + 2 * x_1 * x_2 * B_12 + x_2**2 * B_2
+    B_mix = x_1**2 * B_1 + 2*x_1*x_2*B_12 + x_2**2 * B_2
     return np.exp(B_mix * V_m)
+
 
 def NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
     """
@@ -30,7 +32,9 @@ def NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
     gamma_2 = np.exp(ln_gamma_2) + err_2
     return np.array([gamma_1, gamma_2])
 
-def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
+
+def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1,
+                           err_2):
     """
     aaa
     """
@@ -40,14 +44,15 @@ def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_1
     # approximation of V_m using ideal gas law
     V_m = p / cst.R * T
     phi = phi_virial2(V_m, x_1, virB_1, virB_12, virB_2)
-    phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2) # here only virB_1 is effective
-    phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2) # here only virB_2 is effective
+    phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2)  # here only virB_1 is effective
+    phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2)  # here only virB_2 is effective
 
     alpha_1 = gamma_1 * phi_1 / phi
     alpha_2 = gamma_2 * phi_2 / phi
 
     print(f'{np.mean(gamma_1):2f} {np.mean(gamma_2):2f} {np.mean(phi):2f} {np.mean(phi_1):2f} {np.mean(phi_2):2f}')
     return np.array([alpha_1, alpha_2])
+
 
 def weigh_by_x(x_1, resids):
     """Weigh gammas residuals by mole fractions to accent data points in pure region."""
@@ -92,7 +97,9 @@ class Gamma_test(VLE):
         V_m_2 = p_spline(0) / cst.R * T_spline(0)
 
         # vector of residuals for least_squares
-        residual = lambda params: weigh_by_x(x_1, alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *params) - alpha_M).flatten()
+        residual = lambda params: weigh_by_x(x_1,
+                                             alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *params) - alpha_M
+                                             ).flatten()
 
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
@@ -116,8 +123,10 @@ class Gamma_test(VLE):
         print(f'err_1 = {err_1}')
         print(f'err_2 = {err_2}')
 
-        alpha_1, _alpha_2 = alpha_model_with_error(1, p_spline(1), T_spline(1), V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
-        _alpha_1, alpha_2 = alpha_model_with_error(0, p_spline(0), T_spline(0), V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+        alpha_1, _alpha_2 = alpha_model_with_error(1, p_spline(1), T_spline(1), V_m_1, V_m_2, virB_1, virB_12, virB_2,
+                                                   a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+        _alpha_1, alpha_2 = alpha_model_with_error(0, p_spline(0), T_spline(0), V_m_1, V_m_2, virB_1, virB_12, virB_2,
+                                                   a_12, a_21, b_12, b_21, c_12, err_1, err_2)
 
         print(f'alpha_1 = {alpha_1}')
         print(f'alpha_2 = {alpha_2}')
