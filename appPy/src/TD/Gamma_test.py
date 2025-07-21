@@ -26,9 +26,9 @@ def NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
     return (np.array): activity coefficients as [gamma_1, gamma_2]
     """
     ln_gamma_1, ln_gamma_2 = log_NRTL10(x_1, T, a_12, a_21, b_12, b_21, c_12, 0, 0, 0, 0, 0)
-    ln_gamma_1 = ln_gamma_1 + err_1
-    ln_gamma_2 = ln_gamma_2 + err_2
-    return np.exp(np.array([ln_gamma_1, ln_gamma_2]))
+    gamma_1 = np.exp(ln_gamma_1) + err_1
+    gamma_2 = np.exp(ln_gamma_2) + err_2
+    return np.array([gamma_1, gamma_2])
 
 def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
     """
@@ -69,7 +69,7 @@ class Gamma_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'err_1', 'err_2', 'delta_gamma_1', 'delta_gamma_2']
+        self.keys_to_serialize = ['is_consistent', 'delta_gamma_1', 'delta_gamma_2']
 
         x_1, p, T = self.x_1, self.p, self.T
 
@@ -103,10 +103,10 @@ class Gamma_test(VLE):
         print(alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *result.x))
 
         [virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2] = result.x
-        self.err_1, self.err_2 = err_1, err_2
-        print(f'virB_1 = {virB_1}')
+        self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
+        print(f'virB_1  = {virB_1}')
         print(f'virB_12 = {virB_12}')
-        print(f'virB_2 = {virB_2}')
+        print(f'virB_2  = {virB_2}')
 
         print(f'a_12 = {a_12}')
         print(f'a_21 = {a_21}')
@@ -116,17 +116,20 @@ class Gamma_test(VLE):
         print(f'err_1 = {err_1}')
         print(f'err_2 = {err_2}')
 
+        alpha_1, _alpha_2 = alpha_model_with_error(1, p_spline(1), T_spline(1), V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+        _alpha_1, alpha_2 = alpha_model_with_error(0, p_spline(0), T_spline(0), V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+
+        print(f'alpha_1 = {alpha_1}')
+        print(f'alpha_2 = {alpha_2}')
+
         phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2)
         phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2)
 
         print(f'phi_1 = {phi_1}')
         print(f'phi_2 = {phi_2}')
 
-        self.delta_gamma_1 = np.exp(self.err_1)
-        self.delta_gamma_2 = np.exp(self.err_2)
-
         abs_tol_1 = cfg.gamma_abs_tol / 100
-        self.is_consistent = abs(self.err_2) <= abs_tol_1 and abs(self.err_1) <= abs_tol_1
+        self.is_consistent = abs(self.delta_gamma_2) <= abs_tol_1 and abs(self.delta_gamma_1) <= abs_tol_1
 
         self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
         self.gamma_tab_i = NRTL_with_error(self.x_tab, 0, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
@@ -139,12 +142,9 @@ class Gamma_test(VLE):
         underline_echo(self.get_title())
         self.report_warnings()
 
-        err_1, err_2 = self.err_1, self.err_2
         dg_1, dg_2 = self.delta_gamma_1, self.delta_gamma_2
         echo(f'γ1(x1=1) = {(1 + dg_1):.3f}      |Δ| = {abs(dg_1*100):.1f}%')
         echo(f'γ2(x2=1) = {(1 + dg_2):.3f}      |Δ| = {abs(dg_2*100):.1f}%')
-        echo(f'E_1 = {err_1:.2e}')
-        echo(f'E_2 = {err_2:.2e}')
 
         template = lambda i, dg: f'NOT OK: γ{i}(x{i}=1) must be 1, but {abs(dg * 100):4.1f}% error was extrapolated (tolerance = {cfg.gamma_abs_tol}%)'
         abs_tol_1 = cfg.gamma_abs_tol / 100
