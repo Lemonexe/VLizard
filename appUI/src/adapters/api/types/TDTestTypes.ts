@@ -7,6 +7,8 @@ export type TestRequest = DatasetIdentifier;
 export type GammaTestResponse = ConclusiveTestResult & {
     delta_gamma_1: number;
     delta_gamma_2: number;
+    phi_1: number;
+    phi_2: number;
     plot: string;
 };
 

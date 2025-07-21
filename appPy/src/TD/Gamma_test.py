@@ -7,6 +7,13 @@ from src.config import cfg, cst
 from .VLE_models.NRTL import log_NRTL10, NRTL_params0
 from .VLE import VLE
 
+# TODO:
+# - what if gamma < 1, remove TODO DELETE DIS
+# - plot alpha instead of gamma
+# - refactor fns to methods
+# - UI
+# - code commentary
+
 
 def phi_virial2(V_m, x_1, B_1, B_12, B_2):
     """
@@ -36,7 +43,7 @@ def NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2):
 def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1,
                            err_2):
     """
-    aaa
+    Get alpha using NRTL model with error terms and virial equation for fugacity coefficients.
     """
     gamma_1, gamma_2 = NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
     # integral of (z-1/p')dp' from 0 to p
@@ -50,7 +57,6 @@ def alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, virB_1, virB_12, virB_2, a_1
     alpha_1 = gamma_1 * phi_1 / phi
     alpha_2 = gamma_2 * phi_2 / phi
 
-    print(f'{np.mean(gamma_1):2f} {np.mean(gamma_2):2f} {np.mean(phi):2f} {np.mean(phi_1):2f} {np.mean(phi_2):2f}')
     return np.array([alpha_1, alpha_2])
 
 
@@ -74,7 +80,7 @@ class Gamma_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'delta_gamma_1', 'delta_gamma_2']
+        self.keys_to_serialize = ['is_consistent', 'delta_gamma_1', 'delta_gamma_2', 'phi_1', 'phi_2']
 
         x_1, p, T = self.x_1, self.p, self.T
 
@@ -87,10 +93,6 @@ class Gamma_test(VLE):
 
         p_spline = UnivariateSpline(x_1, p)
         T_spline = UnivariateSpline(x_1, T)
-        print(f'p(x1=1) = {p_spline(1)}')
-        print(f'p(x2=1) = {p_spline(0)}')
-        print(f'T(x1=1) = {T_spline(1)}')
-        print(f'T(x2=1) = {T_spline(0)}')
 
         # p / cst.R * T
         V_m_1 = p_spline(1) / cst.R * T_spline(1)
@@ -104,45 +106,19 @@ class Gamma_test(VLE):
         result = least_squares(residual, params0)
         if result.status <= 0: return  # don't evaluate further if least_squares finished with 0 or -1 (error state)
 
-        np.set_printoptions(precision=3)
-        print('alpha_M')
-        print(alpha_M)
-        print(alpha_model_with_error(x_1, p, T, V_m_1, V_m_2, *result.x))
-
         [virB_1, virB_12, virB_2, a_12, a_21, b_12, b_21, c_12, err_1, err_2] = result.x
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
-        print(f'virB_1  = {virB_1}')
-        print(f'virB_12 = {virB_12}')
-        print(f'virB_2  = {virB_2}')
 
-        print(f'a_12 = {a_12}')
-        print(f'a_21 = {a_21}')
-        print(f'b_12 = {b_12}')
-        print(f'b_21 = {b_21}')
-        print(f'c_12 = {c_12}')
-        print(f'err_1 = {err_1}')
-        print(f'err_2 = {err_2}')
-
-        alpha_1, _alpha_2 = alpha_model_with_error(1, p_spline(1), T_spline(1), V_m_1, V_m_2, virB_1, virB_12, virB_2,
-                                                   a_12, a_21, b_12, b_21, c_12, err_1, err_2)
-        _alpha_1, alpha_2 = alpha_model_with_error(0, p_spline(0), T_spline(0), V_m_1, V_m_2, virB_1, virB_12, virB_2,
-                                                   a_12, a_21, b_12, b_21, c_12, err_1, err_2)
-
-        print(f'alpha_1 = {alpha_1}')
-        print(f'alpha_2 = {alpha_2}')
-
-        phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2)
-        phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2)
-
-        print(f'phi_1 = {phi_1}')
-        print(f'phi_2 = {phi_2}')
+        self.phi_1 = phi_virial2(V_m_1, 1, virB_1, virB_12, virB_2)
+        self.phi_2 = phi_virial2(V_m_2, 0, virB_1, virB_12, virB_2)
 
         abs_tol_1 = cfg.gamma_abs_tol / 100
         self.is_consistent = abs(self.delta_gamma_2) <= abs_tol_1 and abs(self.delta_gamma_1) <= abs_tol_1
 
         self.x_tab = np.linspace(0, 1, cst.x_points_smooth_plot)
-        self.gamma_tab_i = NRTL_with_error(self.x_tab, 0, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
-        self.gamma_tab_1, self.gamma_tab_2 = self.gamma_tab_i
+        self.T_tab = T_spline(self.x_tab)
+        gamma_tab_i = NRTL_with_error(self.x_tab, self.T_tab, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
+        self.gamma_tab_1, self.gamma_tab_2 = gamma_tab_i
 
     def get_title(self):
         return f'γ test for {super().get_title()}'
@@ -164,4 +140,8 @@ class Gamma_test(VLE):
 
         if self.is_consistent:
             ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {cfg.gamma_abs_tol}%)')
+        echo('')
+        echo('Details:')
+        echo(f'φ(x1=1) = {self.phi_1:.3f}')
+        echo(f'φ(x2=1) = {self.phi_2:.3f}')
         echo('')
