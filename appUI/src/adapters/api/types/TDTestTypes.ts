@@ -6,8 +6,6 @@ export type TestRequest = DatasetIdentifier;
 
 export type GammaTestResponse = ConclusiveTestResult & {
     nparams: NamedParams;
-    phi_1: number;
-    phi_2: number;
     plot_gamma: string;
     plot_phi: string;
 };

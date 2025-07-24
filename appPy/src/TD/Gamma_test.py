@@ -9,15 +9,11 @@ from src.config import cfg, cst
 from .VLE_models.NRTL import log_NRTL10, NRTL_params0
 from .VLE import VLE
 
-# TODO:
-# - UI
-# - code commentary
-
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
 default_const_param_names = ['c_12']
 
 
-def phi_virial2(V_m, x_1, B_1, B_12, B_2):
+def phi_virial(V_m, x_1, B_1, B_12, B_2):
     """
     Calculate binary mixture fugacity coefficient using the integrated first-order virial equation.
     This treats the gas phase mixture as a single pseudo-component.
@@ -56,9 +52,10 @@ class Gamma_test(VLE):
 
     def __init__(self, compound1, compound2, dataset_name, do_virial, c_12):
         """
-        Perform home-baked "gamma test" as object with results and methods for reporting & visualization.
-        The basis of the test is to see if γ1, γ2 goes to one if we extrapolate VLE data to pure compounds, as it must.
-        This is done by fitting modified van Laar model with error terms on the data, and evaluating the deviations from one.
+        Perform the original "Gamma offset test" as object with results and methods for reporting & visualization.
+        The basis of the test is to see if γ1, γ2 extends to one if we extrapolate VLE data to pure compounds, as it must.
+        This is done by fitting modified NRTL + virial model with error terms on the data, and evaluating the deviations from one.
+        The model is designed so that even with φ != 1, γ1, γ2 are still expected to extrapolate to one.
 
         compound1, compound2 (str): names of compounds
         dataset_name (str): name of dataset
@@ -66,7 +63,7 @@ class Gamma_test(VLE):
         c_12 (float or None): override for NRTL parameter c_12, which is always excluded from optimization
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'nparams', 'phi_1', 'phi_2']
+        self.keys_to_serialize = ['is_consistent', 'nparams']
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
         if c_12 is not None: params0[model_param_names.index('c_12')] = c_12
@@ -82,7 +79,6 @@ class Gamma_test(VLE):
         # the optimization itself
         var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
                                                                       const_param_names, model_param_names)
-
         result = least_squares(wrapped_fun, var_params0)
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         params = merge_params(result.x)
@@ -91,8 +87,8 @@ class Gamma_test(VLE):
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
 
         # final results for report
-        self.phi_1 = phi_virial2(self.V_m_1, 1, virB_1, virB_12, virB_2)
-        self.phi_2 = phi_virial2(self.V_m_2, 0, virB_1, virB_12, virB_2)
+        self.phi_1 = phi_virial(self.V_m_1, 1, virB_1, virB_12, virB_2)
+        self.phi_2 = phi_virial(self.V_m_2, 0, virB_1, virB_12, virB_2)
         abs_tol_1 = cfg.gamma_abs_tol / 100
         self.is_consistent = abs(self.delta_gamma_2) <= abs_tol_1 and abs(self.delta_gamma_1) <= abs_tol_1
 
@@ -102,7 +98,7 @@ class Gamma_test(VLE):
         T_spline = UnivariateSpline(self.x_1, self.T)
         T_tab = T_spline(self.x_tab)
         self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
-        self.phi_tab = phi_virial2(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
+        self.phi_tab = phi_virial(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
 
     def __get_full_residual(self, params):
         """
@@ -120,9 +116,9 @@ class Gamma_test(VLE):
         """
         gamma_1, gamma_2 = NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
 
-        phi = phi_virial2(V_m, x_1, virB_1, virB_12, virB_2)
-        phi_1 = phi_virial2(self.V_m_1, 1, virB_1, virB_12, virB_2)  # here only virB_1 is effective
-        phi_2 = phi_virial2(self.V_m_2, 0, virB_1, virB_12, virB_2)  # here only virB_2 is effective
+        phi = phi_virial(V_m, x_1, virB_1, virB_12, virB_2)
+        phi_1 = phi_virial(self.V_m_1, 1, virB_1, virB_12, virB_2)  # here only virB_1 is effective
+        phi_2 = phi_virial(self.V_m_2, 0, virB_1, virB_12, virB_2)  # here only virB_2 is effective
 
         alpha_1 = gamma_1 * phi_1 / phi
         alpha_2 = gamma_2 * phi_2 / phi

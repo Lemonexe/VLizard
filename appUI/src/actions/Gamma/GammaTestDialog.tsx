@@ -21,9 +21,13 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
     const abs_tol_1 = gamma_abs_tol / 100;
     const reasons = [];
     const commonMessage = ` ± ${toPercent(abs_tol_1, 1)}`;
+
+    const delta_gamma_1 = data.nparams.err_1;
+    const delta_gamma_2 = data.nparams.err_2;
+
     if (data.is_consistent) reasons.push('Both γi(xi=1) are close to 1');
-    if (Math.abs(data.delta_gamma_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
-    if (Math.abs(data.delta_gamma_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
+    if (Math.abs(delta_gamma_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
+    if (Math.abs(delta_gamma_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -31,21 +35,42 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <h4 className="h-margin">Results</h4>
+
+                <div>
+                    TODO
+                    <br />
+                    <span>
+                        c<sub>12</sub>: {data.nparams.c_12}
+                    </span>
+                    <br />
+                    <span>
+                        virial B<sub>1</sub>: {data.nparams.virB_1}
+                    </span>
+                    <br />
+                    <span>
+                        virial B<sub>12</sub>: {data.nparams.virB_12}
+                    </span>
+                    <br />
+                    <span>
+                        virial B<sub>2</sub>: {data.nparams.virB_2}
+                    </span>
+                </div>
+
                 <Box ml={3} mb={4}>
                     {/* prettier-ignore */}
                     <table>
                         <tbody>
                             <tr>
                                 <td width="75">{gamma_jsx(1)}(x<sub>1</sub>=1)</td>
-                                <td width="100">{toFixed(1 + data.delta_gamma_1)}</td>
+                                <td width="100">{toFixed(1 + delta_gamma_1)}</td>
                                 <td width="50">&Delta; {gamma_jsx(1)}</td>
-                                <td>{toPercentSigned(data.delta_gamma_1, 1)}</td>
+                                <td>{toPercentSigned(delta_gamma_1, 1)}</td>
                             </tr>
                             <tr>
                                 <td>{gamma_jsx(2)}(x<sub>2</sub>=1)</td>
-                                <td>{toFixed(1 + data.delta_gamma_2)}</td>
+                                <td>{toFixed(1 + delta_gamma_2)}</td>
                                 <td>&Delta; {gamma_jsx(2)}</td>
-                                <td>{toPercentSigned(data.delta_gamma_2, 1)}</td>
+                                <td>{toPercentSigned(delta_gamma_2, 1)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -54,7 +79,13 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     </p>
                 </Box>
                 <h4>Extrapolated activity coefficients plot</h4>
-                <PlotWithDownload svgContent={data.plot} fileName={`gamma test chart ${label}`} />
+                <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma test chart ${label}`} />
+                {data.plot_phi && (
+                    <>
+                        <h4>Fugacity coefficient model plot</h4>
+                        <PlotWithDownload svgContent={data.plot_phi} fileName={`gamma test chart ${label}`} />
+                    </>
+                )}
             </DialogContent>
         </ResponsiveDialog>
     );
