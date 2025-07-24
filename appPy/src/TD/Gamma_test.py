@@ -11,7 +11,6 @@ from .VLE import VLE
 
 # TODO:
 # - UI
-# - phi chart, not of just two values
 # - code commentary
 
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
@@ -96,6 +95,7 @@ class Gamma_test(VLE):
         T_spline = UnivariateSpline(self.x_1, self.T)
         T_tab = T_spline(self.x_tab)
         self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
+        self.phi_tab = phi_virial2(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
 
     def __get_full_residual(self, params):
         """

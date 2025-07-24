@@ -66,7 +66,7 @@ pipenv run cli\slope --help
 pipenv run cli\vapor CHOL
 pipenv run cli\vle CPF CPOL
 pipenv run cli\vle CPF CPOL --txy --pxy -d 25kPa
-pipenv run cli\gamma CHF CHOL -d 25kPa --plot
+pipenv run cli\gamma CHF CHOL -d 25kPa --gamma --phi
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res

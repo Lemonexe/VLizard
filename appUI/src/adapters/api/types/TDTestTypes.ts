@@ -1,15 +1,15 @@
-import { AnalysisResult, DatasetIdentifier } from './common.ts';
+import { AnalysisResult, DatasetIdentifier, NamedParams } from './common.ts';
 
 export type ConclusiveTestResult = AnalysisResult & { is_consistent: boolean };
 
 export type TestRequest = DatasetIdentifier;
 
 export type GammaTestResponse = ConclusiveTestResult & {
-    delta_gamma_1: number;
-    delta_gamma_2: number;
+    nparams: NamedParams;
     phi_1: number;
     phi_2: number;
-    plot: string;
+    plot_gamma: string;
+    plot_phi: string;
 };
 
 export type SlopeTestResponse = AnalysisResult & {
