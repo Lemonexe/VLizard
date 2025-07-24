@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from scipy.interpolate import UnivariateSpline
 
+from src.fit.utils import const_param_wrappers
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.config import cfg, cst
@@ -9,10 +10,11 @@ from .VLE_models.NRTL import log_NRTL10, NRTL_params0
 from .VLE import VLE
 
 # TODO:
-# - what if gamma < 1, remove TODO DELETE DIS
-#   - does not work, so try to fix c_12 first...
 # - UI
 # - code commentary
+
+model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
+const_param_names = ['c_12']
 
 
 def phi_virial2(V_m, x_1, B_1, B_12, B_2):
@@ -64,7 +66,6 @@ class Gamma_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['is_consistent', 'delta_gamma_1', 'delta_gamma_2', 'phi_1', 'phi_2']
 
-        # initial [a_12, a_21, b_12, b_21, c_12, virB_1, virB_12, virB_2, err_1, err_2]
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
 
         self.V_m = self.p / cst.R * self.T  # p / cst.R * T (ideal gas approximation to avoid transcendental equation)
@@ -72,9 +73,12 @@ class Gamma_test(VLE):
         self.V_m_1, self.V_m_2 = V_m_spline(1), V_m_spline(0)
 
         # the optimization itself
-        result = least_squares(self.__residual, params0)
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
+                                                                      const_param_names, model_param_names)
+
+        result = least_squares(wrapped_fun, var_params0)
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        params = result.x
+        params = merge_params(result.x)
         [virB_1, virB_12, virB_2, err_1, err_2] = params[5:]
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
 
@@ -91,7 +95,7 @@ class Gamma_test(VLE):
         T_tab = T_spline(self.x_tab)
         self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
 
-    def __residual(self, params):
+    def __get_full_residual(self, params):
         """
         Calculate residuals for least_squares optimization as difference between calculated alpha and experimental alpha.
         Note that VLE() does not consider vapor phase non-ideality, so the VLE.gamma is considered to be experimental alpha.
