@@ -11,6 +11,7 @@ from .VLE import VLE
 
 # TODO:
 # - UI
+# - phi chart, not of just two values
 # - code commentary
 
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
@@ -64,7 +65,7 @@ class Gamma_test(VLE):
         dataset_name (str): name of dataset
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'delta_gamma_1', 'delta_gamma_2', 'phi_1', 'phi_2']
+        self.keys_to_serialize = ['is_consistent', 'nparams', 'phi_1', 'phi_2']
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
 
@@ -79,6 +80,7 @@ class Gamma_test(VLE):
         result = least_squares(wrapped_fun, var_params0)
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         params = merge_params(result.x)
+        self.nparams = dict(zip(model_param_names, params))
         [virB_1, virB_12, virB_2, err_1, err_2] = params[5:]
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
 
