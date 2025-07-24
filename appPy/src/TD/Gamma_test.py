@@ -14,7 +14,7 @@ from .VLE import VLE
 # - code commentary
 
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
-const_param_names = ['c_12']
+default_const_param_names = ['c_12']
 
 
 def phi_virial2(V_m, x_1, B_1, B_12, B_2):
@@ -54,7 +54,7 @@ def weigh_by_x(x_1, resids):
 # perform simple test if γ1, γ2 extrapolates to 1 for pure compounds, as it must
 class Gamma_test(VLE):
 
-    def __init__(self, compound1, compound2, dataset_name):
+    def __init__(self, compound1, compound2, dataset_name, do_virial, c_12):
         """
         Perform home-baked "gamma test" as object with results and methods for reporting & visualization.
         The basis of the test is to see if γ1, γ2 goes to one if we extrapolate VLE data to pure compounds, as it must.
@@ -62,11 +62,18 @@ class Gamma_test(VLE):
 
         compound1, compound2 (str): names of compounds
         dataset_name (str): name of dataset
+        do_virial (bool): if True, use virial equation for fugacity coefficients, otherwise ideal gas
+        c_12 (float or None): override for NRTL parameter c_12, which is always excluded from optimization
         """
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['is_consistent', 'nparams', 'phi_1', 'phi_2']
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
+        if c_12 is not None: params0[model_param_names.index('c_12')] = c_12
+
+        const_param_names = default_const_param_names
+        # if ideal gas, virial params are not used
+        if not do_virial: const_param_names = const_param_names + ['virB_1', 'virB_12', 'virB_2']
 
         self.V_m = self.p / cst.R * self.T  # p / cst.R * T (ideal gas approximation to avoid transcendental equation)
         V_m_spline = UnivariateSpline(self.x_1, self.V_m)

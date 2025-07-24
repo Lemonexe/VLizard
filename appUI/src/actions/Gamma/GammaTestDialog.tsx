@@ -1,7 +1,7 @@
 import { Box, DialogContent } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
-import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { GammaTestRequest, GammaTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { toFixed, toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
@@ -13,7 +13,7 @@ import { useConfig } from '../../contexts/ConfigContext.tsx';
 // prettier-ignore
 const gamma_jsx = (i: ReactNode) => <><code>&gamma;</code><sub>{i}</sub></>
 
-type GammaTestDialogProps = DialogProps & { req: TestRequest; data: GammaTestResponse };
+type GammaTestDialogProps = DialogProps & { req: GammaTestRequest; data: GammaTestResponse };
 
 export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, req, data }) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;

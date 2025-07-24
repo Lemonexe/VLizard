@@ -6,6 +6,7 @@ import { hostName } from './helpers/hostName.ts';
 import {
     FredenslundTestRequest,
     FredenslundTestResponse,
+    GammaTestRequest,
     GammaTestResponse,
     HeringtonTestResponse,
     RKTestResponse,
@@ -18,7 +19,7 @@ import {
 export const useGammaTest = () => {
     const onError = useNotifyErrorMessage();
     return useMutation({
-        mutationFn: async (payload: TestRequest) => {
+        mutationFn: async (payload: GammaTestRequest) => {
             const { data } = await axios.post<GammaTestResponse>(hostName + '/td_test/gamma', payload);
             return data;
         },

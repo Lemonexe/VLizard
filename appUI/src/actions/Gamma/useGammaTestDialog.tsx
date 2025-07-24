@@ -1,12 +1,12 @@
 import { ReactElement, useCallback, useState } from 'react';
 
-import { GammaTestResponse, TestRequest } from '../../adapters/api/types/TDTestTypes.ts';
+import { GammaTestRequest, GammaTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
 import { useGammaTest } from '../../adapters/api/useTDTest.ts';
 import { UseAnalysisDialogReturn } from '../types.ts';
 
 import { GammaTestDialog } from './GammaTestDialog.tsx';
 
-export const useGammaTestDialog = (props: TestRequest): UseAnalysisDialogReturn => {
+export const useGammaTestDialog = (props: GammaTestRequest): UseAnalysisDialogReturn => {
     const [open, setOpen] = useState(false);
     const [elem, setElem] = useState<ReactElement | null>(null);
 

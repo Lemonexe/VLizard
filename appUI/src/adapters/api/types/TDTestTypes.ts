@@ -12,6 +12,11 @@ export type GammaTestResponse = ConclusiveTestResult & {
     plot_phi: string;
 };
 
+export type GammaTestRequest = TestRequest & {
+    do_virial: boolean;
+    c_12?: number;
+};
+
 export type SlopeTestResponse = AnalysisResult & {
     x_1: number[];
     d_ln_gamma_1: number[];
@@ -40,7 +45,7 @@ export type HeringtonTestResponse = ConclusiveTestResult & {
     isothermal_error: boolean;
 };
 
-export type FredenslundTestRequest = DatasetIdentifier & {
+export type FredenslundTestRequest = TestRequest & {
     legendre_order: number; // 3 | 4 | 5 actually, but TS doesn't really make life easier with number unions
 };
 
