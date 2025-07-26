@@ -86,7 +86,7 @@ class Gamma_test(VLE):
         # the optimization itself
         var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
                                                                       self.const_param_names, model_param_names)
-        result = least_squares(wrapped_fun, var_params0)
+        result = least_squares(wrapped_fun, var_params0, method='lm')
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         params = merge_params(result.x)
         self.nparams = dict(zip(model_param_names, params))
