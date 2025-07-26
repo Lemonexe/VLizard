@@ -7,7 +7,7 @@
   "homepage": "https://github.com/Lemonexe/VLizard",
   "description": "VLizard, a VLE wizard.",
   "private": true,
-  "version": "2025.2.0",
+  "version": "2025.3.0",
   "type": "module",
   "main": "dist-electron/main.js",
   "engines": {
