@@ -1,21 +1,28 @@
-import { Button, Checkbox, Stack, TextField } from '@mui/material';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
 import { FC, FormEvent, useMemo, useState } from 'react';
 
 import { useGammaTestDialog } from '../../../../actions/Gamma/useGammaTestDialog.tsx';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
 import { DialogProps } from '../../../../adapters/types/DialogProps.ts';
-import { ResponsiveDialog } from '../../../../components/Mui/ResponsiveDialog.tsx';
+import { DialogTitleWithX } from '../../../../components/Mui/DialogTitle.tsx';
+import { useData } from '../../../../contexts/DataContext.tsx';
 
-type GammaTestRequestDialog = DialogProps & { requestProps: DatasetIdentifier };
+const c_12InputStep = 0.01;
 
-const GammaTestRequestDialog = ({ requestProps, open, handleClose }: GammaTestRequestDialog) => {
+type GammaTestRequestDialog = DialogProps & { req: DatasetIdentifier };
+
+const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDialog) => {
+    const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
     const [do_virial, set_do_virial] = useState(false);
     const const_param_names = useMemo(
         () => ['c_12', ...(do_virial ? ['virB_1', 'virB_12', 'virB_2'] : [])],
         [do_virial],
     );
-    const [c_12, set_c_12] = useState<number | undefined>(undefined);
-    const { perform, result } = useGammaTestDialog({ ...requestProps, const_param_names, c_12 });
+    const { findVLEModelByName } = useData();
+    const default_c12 = findVLEModelByName('NRTL')?.nparams0.c_12;
+
+    const [c_12, set_c_12] = useState<number | undefined>(default_c12);
+    const { perform, result } = useGammaTestDialog({ ...req, const_param_names, c_12 });
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,40 +32,44 @@ const GammaTestRequestDialog = ({ requestProps, open, handleClose }: GammaTestRe
     return (
         <>
             {result}
-            <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
                 <form onSubmit={handleSubmit}>
-                    <Stack direction="column" gap={1}>
-                        <label>
-                            Use virial equation:
-                            <Checkbox checked={do_virial} onChange={(e) => set_do_virial(e.target.checked)} />
-                        </label>
+                    <DialogTitleWithX handleClose={handleClose}>Gamma offset test for {label}</DialogTitleWithX>
+                    <DialogContent>
+                        <Stack direction="column" gap={1}>
+                            <label>
+                                Use virial equation:
+                                <Checkbox checked={do_virial} onChange={(e) => set_do_virial(e.target.checked)} />
+                            </label>
 
-                        <label>
-                            <TextField
-                                type="number"
-                                size="small"
-                                label={
-                                    <>
-                                        c<sub>12</sub>
-                                    </>
-                                }
-                                slotProps={{ htmlInput: { step: 0.05 } }}
-                                value={c_12 ?? ''}
-                                onChange={(e) => set_c_12(e.target.value ? parseFloat(e.target.value) : undefined)}
-                            />
-                        </label>
-
+                            <label>
+                                <TextField
+                                    type="number"
+                                    size="small"
+                                    label={
+                                        <>
+                                            NRTL C<sub>12</sub>
+                                        </>
+                                    }
+                                    slotProps={{ htmlInput: { step: c_12InputStep } }}
+                                    value={c_12 ?? ''}
+                                    onChange={(e) => set_c_12(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                />
+                            </label>
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions>
                         <Button type="submit" variant="contained">
                             Run
                         </Button>
-                    </Stack>
+                    </DialogActions>
                 </form>
-            </ResponsiveDialog>
+            </Dialog>
         </>
     );
 };
 
-export const GammaTestButton: FC<DatasetIdentifier> = (requestProps) => {
+export const GammaTestButton: FC<DatasetIdentifier> = (reqProps) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -66,7 +77,7 @@ export const GammaTestButton: FC<DatasetIdentifier> = (requestProps) => {
             <Button variant="contained" onClick={() => setOpen(true)}>
                 Gamma offset test
             </Button>
-            <GammaTestRequestDialog requestProps={requestProps} open={open} handleClose={() => setOpen(false)} />
+            <GammaTestRequestDialog req={reqProps} open={open} handleClose={() => setOpen(false)} />
         </>
     );
 };
