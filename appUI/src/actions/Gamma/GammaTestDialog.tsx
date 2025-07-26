@@ -1,8 +1,11 @@
 import { Box, DialogContent } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
+import Spreadsheet from 'react-spreadsheet';
 
 import { GammaTestRequest, GammaTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
+import { fromNamedParams } from '../../adapters/logic/nparams.ts';
 import { toFixed, toPercent, toPercentSigned } from '../../adapters/logic/numbers.ts';
+import { makeReadOnly, matrixToSpreadsheetData, spreadsheetToSigDgts } from '../../adapters/logic/spreadsheet.ts';
 import { DialogProps } from '../../adapters/types/DialogProps.ts';
 import { ConsistencyResult } from '../../components/AnalysisResults/ConsistencyResult.tsx';
 import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
@@ -29,32 +32,23 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
     if (Math.abs(delta_gamma_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
     if (Math.abs(delta_gamma_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
 
+    const { columnLabels, paramsSpreadsheetData } = useMemo(() => {
+        const nparams = { ...data.nparams };
+        delete nparams.err_1;
+        delete nparams.err_2;
+        const [paramNames, paramsValues] = fromNamedParams(nparams);
+        return {
+            columnLabels: paramNames,
+            paramsSpreadsheetData: makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData([paramsValues]))),
+        };
+    }, [data.nparams]);
+
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Gamma offset test for {label}</DialogTitleWithX>
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <h4 className="h-margin">Results</h4>
-
-                <div>
-                    TODO
-                    <br />
-                    <span>
-                        c<sub>12</sub>: {data.nparams.c_12}
-                    </span>
-                    <br />
-                    <span>
-                        virial B<sub>1</sub>: {data.nparams.virB_1}
-                    </span>
-                    <br />
-                    <span>
-                        virial B<sub>12</sub>: {data.nparams.virB_12}
-                    </span>
-                    <br />
-                    <span>
-                        virial B<sub>2</sub>: {data.nparams.virB_2}
-                    </span>
-                </div>
 
                 <Box ml={3} mb={4}>
                     {/* prettier-ignore */}
@@ -78,7 +72,11 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                         Criterion for |&Delta; {gamma_jsx('i')}| is {toPercent(abs_tol_1, 1)}
                     </p>
                 </Box>
-                <h4>Extrapolated activity coefficients plot</h4>
+
+                <h4 className="h-margin">Fitted model parameters</h4>
+                <Spreadsheet data={paramsSpreadsheetData} columnLabels={columnLabels} />
+
+                <h4 className="h-margin">Extrapolated activity coefficients plot</h4>
                 <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma test chart ${label}`} />
                 {data.plot_phi && (
                     <>
