@@ -11,6 +11,7 @@ from .VLE import VLE
 
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
 default_const_param_names = ['c_12']
+count_active_params = lambda const_param_names: len(model_param_names) - len(const_param_names)
 
 
 def phi_virial(V_m, x_1, B_1, B_12, B_2):
@@ -63,10 +64,17 @@ class Gamma_test(VLE):
         c_12 (float or None): override for NRTL parameter c_12, which is always excluded from optimization
         """
         super().__init__(compound1, compound2, dataset_name)
-        self.keys_to_serialize = ['is_consistent', 'nparams']
+        self.keys_to_serialize = ['is_consistent', 'nparams', 'is_isobaric', 'n_data_points', 'n_active_params']
+        self.const_param_names = const_param_names
+        self.n_active_params = count_active_params(const_param_names)
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
         if c_12 is not None: params0[model_param_names.index('c_12')] = c_12
+
+        self.n_data_points = len(self.x_1)
+        self.__process_const_param_names()
+        if 'b_12' in self.const_param_names: params0[model_param_names.index('b_12')] = 0
+        if 'b_21' in self.const_param_names: params0[model_param_names.index('b_21')] = 0
 
         self.V_m = self.p / cst.R * self.T  # p / cst.R * T (ideal gas approximation to avoid transcendental equation)
         V_m_spline = UnivariateSpline(self.x_1, self.V_m)
@@ -74,7 +82,7 @@ class Gamma_test(VLE):
 
         # the optimization itself
         var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
-                                                                      const_param_names, model_param_names)
+                                                                      self.const_param_names, model_param_names)
         result = least_squares(wrapped_fun, var_params0)
         if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
         params = merge_params(result.x)
@@ -95,6 +103,34 @@ class Gamma_test(VLE):
         T_tab = T_spline(self.x_tab)
         self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
         self.phi_tab = phi_virial(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
+
+    def __process_const_param_names(self):
+        # temperature-dependent NRTL terms not relevant for isothermal VLE, that is OK!
+        if not self.is_isobaric:
+            self.const_param_names += ['b_12', 'b_21']
+
+        # not enough points? Try auto-disabling virial
+        virial_enabled = any(x not in self.const_param_names for x in ['virB_1', 'virB_12', 'virB_2'])
+        if virial_enabled and self.n_data_points <= count_active_params(self.const_param_names):
+            self.const_param_names += ['virB_1', 'virB_12', 'virB_2']
+            self.warn('Virial equation was disabled (not enough data points)')
+
+        # not enough points? Try disabling temperature-dependent NRTL terms even for isobaric
+        # Since they can't be disabled manually, disable also when barely enough data points to prevent warning.
+        if self.is_isobaric and self.n_data_points <= count_active_params(self.const_param_names):
+            self.const_param_names += ['b_12', 'b_21']
+            self.warn('b_12 and b_21 NRTL parameters were excluded from optimization (not enough data points)')
+
+        self.const_param_names = list(set(self.const_param_names))  # dedupe
+        self.n_active_params = count_active_params(self.const_param_names)
+
+        if self.n_active_params == self.n_data_points:
+            self.warn(
+                f'{self.n_active_params} parameters optimized on {self.n_data_points} data points: overfitting is likely!'
+            )
+
+        if self.n_data_points < self.n_active_params:
+            raise AppException('Not enough data points, 4 are required at the very least.')
 
     def __get_full_residual(self, params):
         """

@@ -1,5 +1,6 @@
-import { Box, DialogContent } from '@mui/material';
-import { FC, ReactNode, useMemo } from 'react';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Box, Button, Collapse, DialogContent } from '@mui/material';
+import { FC, ReactNode, useMemo, useState } from 'react';
 import Spreadsheet from 'react-spreadsheet';
 
 import { GammaTestRequest, GammaTestResponse } from '../../adapters/api/types/TDTestTypes.ts';
@@ -12,6 +13,45 @@ import { DialogTitleWithX } from '../../components/Mui/DialogTitle.tsx';
 import { ResponsiveDialog } from '../../components/Mui/ResponsiveDialog.tsx';
 import { PlotWithDownload } from '../../components/charts/PlotWithDownload.tsx';
 import { useConfig } from '../../contexts/ConfigContext.tsx';
+
+type DetailsSectionProps = { data: GammaTestResponse };
+
+const DetailsSection: FC<DetailsSectionProps> = ({ data }) => {
+    const { columnLabels, paramsSpreadsheetData } = useMemo(() => {
+        const nparams = { ...data.nparams };
+        delete nparams.err_1;
+        delete nparams.err_2;
+        const [paramNames, paramsValues] = fromNamedParams(nparams);
+        return {
+            columnLabels: paramNames,
+            paramsSpreadsheetData: makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData([paramsValues]))),
+        };
+    }, [data.nparams]);
+
+    const [detailsVisible, setDetailsVisible] = useState(false);
+    const handleToggle = () => setDetailsVisible((prevOpen) => !prevOpen);
+
+    return (
+        <>
+            <Button
+                onClick={handleToggle}
+                variant="outlined"
+                startIcon={detailsVisible ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            >
+                {detailsVisible ? 'Hide' : 'Show'} details
+            </Button>
+
+            <Collapse in={detailsVisible} timeout="auto">
+                <h4 className="h-margin">Fitted model parameters</h4>
+                <p>
+                    {data.n_data_points} data points, {data.n_active_params} active model parameters.
+                </p>
+                {data.is_isobaric === false && <p>Data is isothermal, b_12 and b_21 were excluded from optimization</p>}
+                <Spreadsheet data={paramsSpreadsheetData} columnLabels={columnLabels} />
+            </Collapse>
+        </>
+    );
+};
 
 // prettier-ignore
 const gamma_jsx = (i: ReactNode) => <><code>&gamma;</code><sub>{i}</sub></>
@@ -31,17 +71,6 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
     if (data.is_consistent) reasons.push('Both γi(xi=1) are close to 1');
     if (Math.abs(delta_gamma_1) > abs_tol_1) reasons.push('γ1(x1=1) must be 1' + commonMessage);
     if (Math.abs(delta_gamma_2) > abs_tol_1) reasons.push('γ2(x2=1) must be 1' + commonMessage);
-
-    const { columnLabels, paramsSpreadsheetData } = useMemo(() => {
-        const nparams = { ...data.nparams };
-        delete nparams.err_1;
-        delete nparams.err_2;
-        const [paramNames, paramsValues] = fromNamedParams(nparams);
-        return {
-            columnLabels: paramNames,
-            paramsSpreadsheetData: makeReadOnly(spreadsheetToSigDgts(matrixToSpreadsheetData([paramsValues]))),
-        };
-    }, [data.nparams]);
 
     return (
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
@@ -73,8 +102,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                     </p>
                 </Box>
 
-                <h4 className="h-margin">Fitted model parameters</h4>
-                <Spreadsheet data={paramsSpreadsheetData} columnLabels={columnLabels} />
+                <DetailsSection data={data} />
 
                 <h4 className="h-margin">Extrapolated activity coefficients plot</h4>
                 <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma test chart ${label}`} />
