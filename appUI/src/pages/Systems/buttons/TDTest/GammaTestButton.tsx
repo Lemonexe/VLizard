@@ -3,6 +3,7 @@ import { FC, FormEvent, useMemo, useState } from 'react';
 
 import { useGammaTestDialog } from '../../../../actions/Gamma/useGammaTestDialog.tsx';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
+import { TEST_THEORY_URL } from '../../../../adapters/io/URL.ts';
 import { DialogProps } from '../../../../adapters/types/DialogProps.ts';
 import { DialogTitleWithX } from '../../../../components/Mui/DialogTitle.tsx';
 import { WarningLabel } from '../../../../components/dataViews/TooltipIcons.tsx';
@@ -12,6 +13,8 @@ const c_12InputStep = 0.01;
 const c_12absMin = c_12InputStep; // threshold for detecting zero value in c_12 input
 
 type GammaTestRequestDialog = DialogProps & { req: DatasetIdentifier };
+
+const helpURL = `${TEST_THEORY_URL}#gamma-offset-test`;
 
 const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDialog) => {
     const [doVirial, setDoVirial] = useState(false);
@@ -68,6 +71,9 @@ const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDial
                     <DialogActions>
                         <Button type="submit" variant="contained">
                             Run
+                        </Button>
+                        <Button href={helpURL} variant="outlined">
+                            Help
                         </Button>
                     </DialogActions>
                 </form>

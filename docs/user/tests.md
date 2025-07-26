@@ -49,7 +49,8 @@ A simple quick check if the VLE data aligns with vapor pressure models.
 Does not check thermodynamic consistency.
 - Can be done as first step, or to diagnose why other tests fail.
 - Has conventional criteria to formally accept or reject the data.
-- Can only be used if there are enough data points near pure compositions!
+- Provides two partial results for both near-pure compositions
+  - Those are valid only if there are enough points in the near-pure regions.
 
 ### Redlich-Kister test
 

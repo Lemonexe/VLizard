@@ -108,18 +108,25 @@ The gamma offset test does examine thermodynamic consistency, though not using G
 The activity coefficients must always be 1 for pure components, so it is just a simple check to see if $\gamma_i(x_i = 1) = 1$.  
 If that's not the case, then the VLE data does not align with the vapor pressure models for pure components.
 
-A modified van Laar equation is used, which includes the error, or "offset" parameter $E_i$:
+A modified NRTL equation is used, which includes the error, or "offset" parameter $\Delta \gamma_i$:
 
 ```math
-    \ln \gamma_1 = A_{12} \left(\frac{A_{21} x_2}{A_{12} x_1 + A_{21} x_2}\right)^2 + E_1
+    \gamma_1 = \gamma_{1,N}(x_1, T) + \Delta \gamma_1
 ```
 ```math
-    \ln \gamma_2 = A_{21} \left(\frac{A_{12} x_1}{A_{12} x_1 + A_{21} x_2}\right)^2 + E_2
+    \gamma_2 = \gamma_{2,N}(x_1, T) + \Delta \gamma_2
+```
+Where $\gamma_{i,N}$ is the NRTL model activity coefficient for pure component $i$.
+
+Additionally, vapor phase equation of state is modelled using a 1st order virial equation.
+Mixture is modelled as a single pseudocomponent, with fugacity coefficient $\phi$ calculated via three parameters:
+```math
+    \ln \phi = V_m (x_1^2 B_1 + 2 x_1 x_2 B_{12} + x_2^2 B_2)
 ```
 
-Both residuals are respectively weighted by $x_1$, $x_2$, so that both $E_1$ and $E_2$ are biased towards the pure regions, and accurately reflect them.
+Both residuals are respectively weighted by $x_1$, $x_2$, so that both $\Delta \gamma_1$ and $\Delta \gamma_2$ are biased towards the pure regions, and accurately reflect them.
 
-Conventional criterion is then used to formally accept or reject the data: $\Delta \gamma_i < 1.5 %$, where $\Delta \gamma_i = \delta \gamma_i = e^{E_i} - 1$.
+Conventional criterion is then used to formally accept or reject the data: $\Delta \gamma_i < 1.5 %$.
 
 ### Redlich-Kister test
 
