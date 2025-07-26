@@ -67,6 +67,7 @@ pipenv run cli\vapor CHOL
 pipenv run cli\vle CPF CPOL
 pipenv run cli\vle CPF CPOL --txy --pxy -d 25kPa
 pipenv run cli\gamma CHF CHOL -d 25kPa --gamma --phi
+pipenv run cli\gamma CHF CHOL -d 25kPa --c12 0.4 -c c_12,virB_1,virB_2,virB_12
 pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
 pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
 pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res

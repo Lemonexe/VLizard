@@ -15,7 +15,7 @@ common_schema = {'compound1': True, 'compound2': True, 'dataset': True}
 @td_test_blueprint.post('/gamma')
 def gamma_test_api():
     """Perform gamma test & return analysis result for given system and a single dataset."""
-    schema = dict(common_schema, do_virial=True, c_12=False)
+    schema = dict(common_schema, const_param_names=True, c_12=False)
     params = unpack_request_schema(request, schema)
     gamma = Gamma_plot(*params.values())
     payload = gamma.serialize()

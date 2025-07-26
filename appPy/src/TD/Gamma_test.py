@@ -50,7 +50,7 @@ def weigh_by_x(x_1, resids):
 # perform simple test if γ1, γ2 extrapolates to 1 for pure compounds, as it must
 class Gamma_test(VLE):
 
-    def __init__(self, compound1, compound2, dataset_name, do_virial, c_12):
+    def __init__(self, compound1, compound2, dataset_name, const_param_names, c_12):
         """
         Perform the original "Gamma offset test" as object with results and methods for reporting & visualization.
         The basis of the test is to see if γ1, γ2 extends to one if we extrapolate VLE data to pure compounds, as it must.
@@ -59,7 +59,7 @@ class Gamma_test(VLE):
 
         compound1, compound2 (str): names of compounds
         dataset_name (str): name of dataset
-        do_virial (bool): if True, use virial equation for fugacity coefficients, otherwise ideal gas
+        const_param_names (list of str): names of parameters to be kept constant during optimization.
         c_12 (float or None): override for NRTL parameter c_12, which is always excluded from optimization
         """
         super().__init__(compound1, compound2, dataset_name)
@@ -67,10 +67,6 @@ class Gamma_test(VLE):
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
         if c_12 is not None: params0[model_param_names.index('c_12')] = c_12
-
-        const_param_names = default_const_param_names
-        # if ideal gas, virial params are not used
-        if not do_virial: const_param_names = const_param_names + ['virB_1', 'virB_12', 'virB_2']
 
         self.V_m = self.p / cst.R * self.T  # p / cst.R * T (ideal gas approximation to avoid transcendental equation)
         V_m_spline = UnivariateSpline(self.x_1, self.V_m)
@@ -145,6 +141,10 @@ class Gamma_test(VLE):
 
         if self.is_consistent:
             ok_echo(f'OK, both γi(xi=1) are close to 1 (tolerance = {cfg.gamma_abs_tol}%)')
+        echo('')
+        echo('Final params:')
+        for (name, value) in self.nparams.items():
+            echo(f'{name:>8} = {value:.3g}')
         echo('')
         echo('Details:')
         echo(f'φ(x1=1) = {self.phi_1:.3f}')

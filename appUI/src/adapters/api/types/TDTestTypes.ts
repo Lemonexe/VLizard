@@ -11,7 +11,7 @@ export type GammaTestResponse = ConclusiveTestResult & {
 };
 
 export type GammaTestRequest = TestRequest & {
-    do_virial: boolean;
+    const_param_names: string[];
     c_12?: number;
 };
 
