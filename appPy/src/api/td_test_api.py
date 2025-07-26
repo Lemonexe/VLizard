@@ -20,7 +20,7 @@ def gamma_test_api():
     gamma = Gamma_plot(*params.values())
     payload = gamma.serialize()
     payload['plot_gamma'] = gamma.plot_gamma_model(mode='svg')
-    payload['plot_phi'] = gamma.plot_phi_model(mode='svg')
+    if gamma.virial_enabled: payload['plot_phi'] = gamma.plot_phi_model(mode='svg')
     return payload
 
 

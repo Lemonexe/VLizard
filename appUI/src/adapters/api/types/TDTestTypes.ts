@@ -7,7 +7,7 @@ export type TestRequest = DatasetIdentifier;
 export type GammaTestResponse = ConclusiveTestResult & {
     nparams: NamedParams;
     plot_gamma: string;
-    plot_phi: string;
+    plot_phi?: string;
     is_isobaric: boolean | null;
     n_data_points: number;
     n_active_params: number;

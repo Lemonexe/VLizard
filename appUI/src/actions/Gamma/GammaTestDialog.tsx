@@ -107,8 +107,12 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                 <h4 className="h-margin">Extrapolated activity coefficients plot</h4>
                 <PlotWithDownload svgContent={data.plot_gamma} fileName={`gamma test chart ${label}`} />
 
-                <h4>Fugacity coefficient model plot</h4>
-                <PlotWithDownload svgContent={data.plot_phi} fileName={`gamma test chart ${label}`} />
+                {data.plot_phi && (
+                    <>
+                        <h4>Fugacity coefficient model plot</h4>
+                        <PlotWithDownload svgContent={data.plot_phi} fileName={`gamma test chart ${label}`} />
+                    </>
+                )}
             </DialogContent>
         </ResponsiveDialog>
     );

@@ -12,6 +12,7 @@ from .VLE import VLE
 model_param_names = ['a_12', 'a_21', 'b_12', 'b_21', 'c_12', 'virB_1', 'virB_12', 'virB_2', 'err_1', 'err_2']
 default_const_param_names = ['c_12']
 count_active_params = lambda const_param_names: len(model_param_names) - len(const_param_names)
+is_virial_enabled = lambda const_param_names: any(x not in const_param_names for x in ['virB_1', 'virB_12', 'virB_2'])
 
 
 def phi_virial(V_m, x_1, B_1, B_12, B_2):
@@ -66,13 +67,15 @@ class Gamma_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = ['is_consistent', 'nparams', 'is_isobaric', 'n_data_points', 'n_active_params']
         self.const_param_names = const_param_names
-        self.n_active_params = count_active_params(const_param_names)
+        self.n_active_params = count_active_params(const_param_names)  # will be updated later
+        self.virial_enabled = is_virial_enabled(const_param_names)
 
         params0 = np.concatenate((NRTL_params0, np.zeros(5)))
         if c_12 is not None: params0[model_param_names.index('c_12')] = c_12
 
         self.n_data_points = len(self.x_1)
         self.__process_const_param_names()
+        self.virial_enabled = is_virial_enabled(const_param_names)
         if 'b_12' in self.const_param_names: params0[model_param_names.index('b_12')] = 0
         if 'b_21' in self.const_param_names: params0[model_param_names.index('b_21')] = 0
 
@@ -108,8 +111,7 @@ class Gamma_test(VLE):
             self.const_param_names += ['b_12', 'b_21']
 
         # not enough points? Try auto-disabling virial
-        virial_enabled = any(x not in self.const_param_names for x in ['virB_1', 'virB_12', 'virB_2'])
-        if virial_enabled and self.n_data_points <= count_active_params(self.const_param_names):
+        if self.virial_enabled and self.n_data_points <= count_active_params(self.const_param_names):
             self.const_param_names += ['virB_1', 'virB_12', 'virB_2']
             self.warn('Virial equation was disabled (not enough data points)')
 
