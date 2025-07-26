@@ -91,8 +91,6 @@ class Gamma_test(VLE):
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
 
         # final results for report
-        self.phi_1 = phi_virial(self.V_m_1, 1, virB_1, virB_12, virB_2)
-        self.phi_2 = phi_virial(self.V_m_2, 0, virB_1, virB_12, virB_2)
         abs_tol_1 = cfg.gamma_abs_tol / 100
         self.is_consistent = abs(self.delta_gamma_2) <= abs_tol_1 and abs(self.delta_gamma_1) <= abs_tol_1
 
@@ -181,8 +179,4 @@ class Gamma_test(VLE):
         echo('Final params:')
         for (name, value) in self.nparams.items():
             echo(f'{name:>8} = {value:.3g}')
-        echo('')
-        echo('Details:')
-        echo(f'φ(x1=1) = {self.phi_1:.3f}')
-        echo(f'φ(x2=1) = {self.phi_2:.3f}')
         echo('')
