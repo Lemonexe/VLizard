@@ -13,15 +13,18 @@ type GammaTestRequestDialog = DialogProps & { req: DatasetIdentifier };
 
 const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDialog) => {
     const label = `${req.compound1}-${req.compound2} ${req.dataset}`;
-    const [do_virial, set_do_virial] = useState(false);
-    const const_param_names = useMemo(
-        () => ['c_12', ...(do_virial ? ['virB_1', 'virB_12', 'virB_2'] : [])],
-        [do_virial],
-    );
+    const [doVirial, setDoVirial] = useState(false);
     const { findVLEModelByName } = useData();
-    const default_c12 = findVLEModelByName('NRTL')?.nparams0.c_12;
+    const getDefault_c12 = () => findVLEModelByName('NRTL')?.nparams0.c_12;
 
-    const [c_12, set_c_12] = useState<number | undefined>(default_c12);
+    const [c_12, set_c_12] = useState<number | undefined>(getDefault_c12);
+
+    const const_param_names = useMemo(() => {
+        const names = ['c_12']; // always excluded from optimization
+        if (!doVirial) names.push('virB_1', 'virB_12', 'virB_2'); // exclude virial parameters if not enabled
+        return names;
+    }, [doVirial]);
+
     const { perform, result } = useGammaTestDialog({ ...req, const_param_names, c_12 });
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -39,7 +42,7 @@ const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDial
                         <Stack direction="column" gap={1}>
                             <label>
                                 Use virial equation:
-                                <Checkbox checked={do_virial} onChange={(e) => set_do_virial(e.target.checked)} />
+                                <Checkbox checked={doVirial} onChange={(e) => setDoVirial(e.target.checked)} />
                             </label>
 
                             <label>
