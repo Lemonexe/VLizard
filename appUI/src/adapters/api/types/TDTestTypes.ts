@@ -1,15 +1,21 @@
-import { AnalysisResult, DatasetIdentifier } from './common.ts';
+import { AnalysisResult, DatasetIdentifier, NamedParams } from './common.ts';
 
 export type ConclusiveTestResult = AnalysisResult & { is_consistent: boolean };
 
 export type TestRequest = DatasetIdentifier;
 
 export type GammaTestResponse = ConclusiveTestResult & {
-    err_1: number;
-    err_2: number;
-    delta_gamma_1: number;
-    delta_gamma_2: number;
-    plot: string;
+    nparams: NamedParams;
+    plot_gamma: string;
+    plot_phi: string;
+    is_isobaric: boolean | null;
+    n_data_points: number;
+    n_active_params: number;
+};
+
+export type GammaTestRequest = TestRequest & {
+    const_param_names: string[];
+    c_12?: number;
 };
 
 export type SlopeTestResponse = AnalysisResult & {
@@ -40,7 +46,7 @@ export type HeringtonTestResponse = ConclusiveTestResult & {
     isothermal_error: boolean;
 };
 
-export type FredenslundTestRequest = DatasetIdentifier & {
+export type FredenslundTestRequest = TestRequest & {
     legendre_order: number; // 3 | 4 | 5 actually, but TS doesn't really make life easier with number unions
 };
 
