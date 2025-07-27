@@ -12,8 +12,8 @@ class Gamma_plot(Gamma_test, VLE_plot):
 
         self.plot_gamma(mode=None)
 
-        plt.plot(self.x_tab, self.alpha_tab_1, '-r', label='$\\alpha_1$ model')
-        plt.plot(self.x_tab, self.alpha_tab_2, '-b', label='$\\alpha_2$ model')
+        plt.plot(self.x_tab, self.alpha_tab_1, '-r', label='$K_1$ model')
+        plt.plot(self.x_tab, self.alpha_tab_2, '-b', label='$K_2$ model')
         plt.legend()
 
         return finish_plot(mode)
