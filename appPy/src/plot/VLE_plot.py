@@ -63,14 +63,14 @@ class VLE_plot(VLE):
         init_plot(mode)
 
         plt.plot(self.x_1, self.gamma_1, 'Dr', label='$\\gamma_1$')
-        plt.plot(self.x_1, self.gamma_2, 'vg', label='$\\gamma_2$')
+        plt.plot(self.x_1, self.gamma_2, 'vb', label='$\\gamma_2$')
 
         plt.axhline(y=1, color='k', linestyle=':')
         plt.xlim(0, 1)
         plt.xticks(np.linspace(0, 1, 11))
         plt.title(f'Activity coefficients for {self.get_title()}')
-        plt.xlabel('Mole fraction of compound 1')
-        plt.ylabel('Activity coefficients $\\gamma_i$')
+        plt.xlabel('$x_1$')
+        plt.ylabel('$\\gamma$')
         plt.legend()
         x_dynamic_number_format()
 
