@@ -7,7 +7,7 @@ Three targets are supported, but only `flatpak` is recommended and officially di
 
 ### Flatpak build
 
-Follow [general build instructions](../README.md#build).
+Follow [general build instructions](appUI.md#build).
 
 In order to build the flatpak installer, you may need to install: 
 ```
