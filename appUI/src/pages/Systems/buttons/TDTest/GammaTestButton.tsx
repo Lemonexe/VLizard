@@ -1,5 +1,5 @@
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
-import { FC, FormEvent, useMemo, useState } from 'react';
+import { FC, FormEvent, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGammaTestDialog } from '../../../../actions/Gamma/useGammaTestDialog.tsx';
 import { DatasetIdentifier } from '../../../../adapters/api/types/common.ts';
@@ -15,6 +15,11 @@ const c_12absMin = c_12InputStep; // threshold for detecting zero value in c_12 
 type GammaTestRequestDialog = DialogProps & { req: DatasetIdentifier };
 
 const helpURL = `${TEST_THEORY_URL}#gamma-offset-test`;
+
+const HackyAutofocusWhenMounted = ({ inputRef }: { inputRef: RefObject<HTMLFormElement | null> }) => {
+    useEffect(() => inputRef.current?.focus(), []);
+    return null;
+};
 
 const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDialog) => {
     const [doVirial, setDoVirial] = useState(false);
@@ -35,7 +40,12 @@ const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDial
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         perform();
+        handleClose();
     };
+
+    const inputRef = useRef<HTMLFormElement>(null);
+
+    if (!open) return result;
 
     return (
         <>
@@ -62,7 +72,9 @@ const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDial
                                 slotProps={{ htmlInput: { step: c_12InputStep } }}
                                 value={c_12 ?? ''}
                                 onChange={(e) => set_c_12(e.target.value ? parseFloat(e.target.value) : undefined)}
+                                inputRef={inputRef}
                             />
+                            <HackyAutofocusWhenMounted inputRef={inputRef} />
                             {isNearZero && (
                                 <WarningLabel title="C12 shouldn't be close to 0 (results will be autocorrelated)!" />
                             )}
