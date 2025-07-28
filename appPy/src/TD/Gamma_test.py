@@ -83,12 +83,11 @@ class Gamma_test(VLE):
         V_m_spline = UnivariateSpline(self.x_1, self.V_m)
         self.V_m_1, self.V_m_2 = V_m_spline(1), V_m_spline(0)
 
-        # the optimization itself
-        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
-                                                                      self.const_param_names, model_param_names)
-        result = least_squares(wrapped_fun, var_params0, method='lm')
-        if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
-        params = merge_params(result.x)
+        # the optimization itself, first with ideal gas
+        params = self.__optimize(params0, self.const_param_names + ['virB_1', 'virB_12', 'virB_2'])
+        # use the ideal gas results as initial estimate for virial optimization, otherwise it's quite unstable
+        if self.virial_enabled: params = self.__optimize(params, self.const_param_names)
+
         self.nparams = dict(zip(model_param_names, params))
         [virB_1, virB_12, virB_2, err_1, err_2] = params[5:]
         self.delta_gamma_1, self.delta_gamma_2 = err_1, err_2
@@ -104,6 +103,13 @@ class Gamma_test(VLE):
         T_tab = T_spline(self.x_tab)
         self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
         self.phi_tab = phi_virial(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
+
+    def __optimize(self, params0, const_param_names):
+        var_params0, wrapped_fun, merge_params = const_param_wrappers(self.__get_full_residual, params0,
+                                                                      const_param_names, model_param_names)
+        result = least_squares(wrapped_fun, var_params0, method='lm')
+        if result.status <= 0: raise AppException(f'Optimization failed with status {result.status}: {result.message}')
+        return merge_params(result.x)
 
     def __process_const_param_names(self):
         # temperature-dependent NRTL terms not relevant for isothermal VLE, that is OK!
