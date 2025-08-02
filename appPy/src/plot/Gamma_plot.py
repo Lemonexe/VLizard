@@ -23,6 +23,7 @@ class Gamma_plot(Gamma_test, VLE_plot):
 
         plt.plot(self.x_tab, self.phi_tab, '-k', label='$\\phi$ model')
         plt.xlim(0, 1)
+        plt.ylim(0)
         plt.xticks(np.linspace(0, 1, 11))
         plt.title(f'Fugacity coefficient diagram for {self.get_title()}')
         plt.xlabel('$x_1$')
