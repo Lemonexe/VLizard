@@ -56,7 +56,8 @@ class Gamma_test(VLE):
         """
         Perform the original "Gamma offset test" as object with results and methods for reporting & visualization.
         The basis of the test is to see if γ1, γ2 extends to one if we extrapolate VLE data to pure compounds, as it must.
-        This is done by fitting modified NRTL + virial model with error terms on the data, and evaluating the deviations from one.
+        This is done by fitting modified NRTL + virial model with error terms on the data, and evaluating extrapolated deviations from 1
+        The model calculates K_1, K_2, the "overall non-ideality factor of component i", see definition in Gamma_test.__K_model
         The model is designed so that even with φ != 1, γ1, γ2 are still expected to extrapolate to one.
 
         compound1, compound2 (str): names of compounds
@@ -101,7 +102,7 @@ class Gamma_test(VLE):
         V_m_tab = V_m_spline(self.x_tab)
         T_spline = UnivariateSpline(self.x_1, self.T)
         T_tab = T_spline(self.x_tab)
-        self.alpha_tab_1, self.alpha_tab_2 = self.__alpha_model(self.x_tab, T_tab, V_m_tab, *params)
+        self.K_tab_1, self.K_tab_2 = self.__K_model(self.x_tab, T_tab, V_m_tab, *params)
         self.phi_tab = phi_virial(V_m_tab, self.x_tab, virB_1, virB_12, virB_2)
 
     def __optimize(self, params0, const_param_names):
@@ -140,17 +141,17 @@ class Gamma_test(VLE):
 
     def __get_full_residual(self, params):
         """
-        Calculate residuals for least_squares optimization as difference between calculated alpha and experimental alpha.
-        Note that VLE() does not consider vapor phase non-ideality, so the VLE.gamma is considered to be experimental alpha.
+        Calculate residuals for least_squares optimization as difference between calculated K and experimental K.
+        Note that VLE() does not consider vapor phase non-ideality, so the VLE.gamma is considered to be experimental K.
         """
-        alpha_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
-        raw_residuals = self.__alpha_model(self.x_1, self.T, self.V_m, *params) - alpha_M
+        K_M = np.vstack([self.gamma_1, self.gamma_2])  # serialize both dependent variables
+        raw_residuals = self.__K_model(self.x_1, self.T, self.V_m, *params) - K_M
         return weigh_by_x(self.x_1, raw_residuals).flatten()
 
-    def __alpha_model(self, x_1, T, V_m, a_12, a_21, b_12, b_21, c_12, virB_1, virB_12, virB_2, err_1, err_2):
+    def __K_model(self, x_1, T, V_m, a_12, a_21, b_12, b_21, c_12, virB_1, virB_12, virB_2, err_1, err_2):
         """
-        Get alpha using NRTL model with error terms and virial equation for fugacity coefficients,
-        where alpha_i = gamma_i * phi_i_sat / phi
+        Get K using NRTL model with error terms and virial equation for fugacity coefficients,
+        where K_i = gamma_i * phi_i_sat / phi
         """
         gamma_1, gamma_2 = NRTL_with_error(x_1, T, a_12, a_21, b_12, b_21, c_12, err_1, err_2)
 
@@ -158,10 +159,10 @@ class Gamma_test(VLE):
         phi_1 = phi_virial(self.V_m_1, 1, virB_1, virB_12, virB_2)  # here only virB_1 is effective
         phi_2 = phi_virial(self.V_m_2, 0, virB_1, virB_12, virB_2)  # here only virB_2 is effective
 
-        alpha_1 = gamma_1 * phi_1 / phi
-        alpha_2 = gamma_2 * phi_2 / phi
+        K_1 = gamma_1 * phi_1 / phi
+        K_2 = gamma_2 * phi_2 / phi
 
-        return np.array([alpha_1, alpha_2])
+        return np.array([K_1, K_2])
 
     def get_title(self):
         return f'γ test for {super().get_title()}'
