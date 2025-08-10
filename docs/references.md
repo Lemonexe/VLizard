@@ -26,6 +26,6 @@ Following literature sources were used for creation of this software:
   - van Laar, Margules: Perry's Chemical Engineers' Handbook 8th edition, 4th book
 - Dev data
   - VLE data for EtOH–H2O: [Voutsas 2011](https://doi.org/10.1016/j.fluid.2011.06.009), [Kamihama 2012](https://dx.doi.org/10.1021/je2008704)
-  - Antoine params for EtOH, H2O: [Aspen Plus v11](https://www.aspentech.com/products/engineering/aspen-plus)
+  - Antoine params for EtOH, H2O: [Aspen Plus v14.5](https://www.aspentech.com/products/engineering/aspen-plus)
 
 †: _the exact equation form adheres to [Aspen Plus](https://www.aspentech.com/products/engineering/aspen-plus) documentation_
