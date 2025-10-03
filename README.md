@@ -12,11 +12,11 @@ A free open-source toolbox for advanced processing of VLE (vapor-liquid equilibr
 
 ## Development
 
-Prefer listening over reading documentation? No problem, [here's a 3 minute demo](https://drive.google.com/file/d/1BY5ER9d8al4iYIa0OSvPQxuiorSwq9Jj/view?usp=sharing) showcasing VLizard from tech perspective.
+Prefer listening over reading documentation? No problem, [here's a 3 minute technical overview](https://drive.google.com/file/d/1BY5ER9d8al4iYIa0OSvPQxuiorSwq9Jj/view?usp=sharing) showcasing VLizard from tech perspective.
 
 The project is a monorepo consisting of:
 - [Python Core+Backend+CLI](docs/appPy.md)
-- [Typescript Frontend](docs/appUI.md)
+- [Typescript/React Frontend](docs/appUI.md)
 
 Conventions upheld across this repo are summarized [here](docs/conventions.md).  
 Credits for literature & software resources [here](docs/references.md).
