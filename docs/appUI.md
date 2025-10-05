@@ -1,6 +1,6 @@
-## Typescript frontend
+## Typescript/React frontend
 
-Or `appUI` for short, is a Typescript application which provides a GUI for the [Python backend](appPy.md).
+Or `appUI` for short, is an Electron application written in Typescript, which provides a GUI for the [Python backend](appPy.md).
 
 Uses `npm` for dependency management, see [package.json](../appUI/package.json).
 

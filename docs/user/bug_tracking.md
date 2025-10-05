@@ -11,7 +11,7 @@ Please include following information in you report:
 - Operating system
 - Description of the bug, ideally with some of the following:
   - steps to reproduce
-  - data files which cause the bug _("Open fata folder" at top bar)_
   - screenshots or videos
+  - data files, if the bug presents only with specific data _("Open data folder" at top bar)_
 
 Thank you for helping me improve the app stability by reporting bugs!

@@ -3,16 +3,14 @@
 [Back to User manual](manual.md)
 
 VLizard offers a wide range of tests for checking the thermodynamic consistency of your experimental VLE data (both isobaric and isothermal).
-This is not to be confused with generic _statistical analysis_, which is provided by many other software tools.
-On the other hand, thermodynamic _(TD)_ consistency examines compliance of experimental data with fundamental laws of thermodynamics.
-
-Most of these tests are based on the Gibbs-Duhem equation _(G-D)_, which, however, is mathematically difficult to be applied directly in its general form.
-A multitude of testing procedures have been proposed by various authors, each using a different approach to simplify or approximate G-D.
+This is not to be confused with generic _statistical analysis_, which is provided by many other software tools,
+while thermodynamic consistency examines compliance of experimental data with fundamental laws of thermodynamics.
+Most of these procedures are based on the Gibbs-Duhem equation _(G-D)_, with different approaches to its simplification or approximation
+(the partial differential equation is inconvenient for direct application).
 That means there can be no single test to guarantee the correctness of your data, but a combination of several tests, each with different scope and limitations, can help you identify systematic errors in your data.
 
 This document covers only practical aspects of individual tests.
-Theory is briefly explained in [Theoretical background](test_theory.md) document, but for more detailed information, please refer to literature, such as a comprehensive
-[2017 review by J. Wisniak et al.](https://doi.org/10.1016/j.jct.2016.10.038)
+Theory is briefly explained in [Theoretical background](test_theory.md) document.
 Alternatively, see [all literary sources](../references.md) for VLizard.
 
 ## Which test to choose?
@@ -45,15 +43,17 @@ It then examines if G-D is valid **between data & model**.
 
 ### Gamma offset test
 
-A simple quick check if the VLE data aligns with vapor pressure models.
-Does not check thermodynamic consistency.
+[A novel procedure](https://doi.org/10.1021/acsomega.5c04650) based on activity coefficient definition rather than G-D,
+which detects if the VLE data aligns with vapor pressure models (a necessary condition for thermodynamic consistency).
 - Can be done as first step, or to diagnose why other tests fail.
 - Has conventional criteria to formally accept or reject the data.
 - Provides two partial results for both near-pure compositions
   - Those are valid only if there are enough points in the near-pure regions.
+- Support for either ideal gas or non-ideal gas EOS.
 
 ### Redlich-Kister test
 
+One of the oldest and most well-known tests based on G-D in an integral form.
 - Has conventional criteria to formally accept or reject the data.
 - Can be reliably used for **isothermal data**.
 - For **isobaric data** it is a gross approximation.
@@ -62,14 +62,15 @@ Does not check thermodynamic consistency.
 
 ### Herington test
 
+An empirical extension of the Redlich-Kister test.
 - **Deprecated**. Use only if you are specifically required to!
-- Similar to Redlich-Kister test.
+- Very similar to Redlich-Kister test.
 - No support for isothermal data.
 
 ### Slope test
 
 - Evaluates individual points.
-- For internal use only.
-  - No conventional criteria at all, only visual inspection of outlying points.
-- Very sensitive to random errors, but then gives no information on thermodynamic consistency.
+- Suitable only for internal research.
+  - No conventional criteria are available, only visual inspection of outlying points.
+- Very sensitive to random errors (obscures the information on thermodynamic consistency).
   - Particularly prone to errors near edges of measured range.

@@ -128,6 +128,8 @@ Both residuals are respectively weighted by $x_1$, $x_2$, so that both $\Delta \
 
 Conventional criterion is then used to formally accept or reject the data: $\Delta \gamma_i < 1.5 %$.
 
+Note that this procedure is an original research by the VLizard author, see [the published article](https://doi.org/10.1021/acsomega.5c04650) for more details.
+
 ### Redlich-Kister test
 
 This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_m^\mathrm{E}$ (the pressure and temperature dependence).  
