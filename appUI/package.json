@@ -37,7 +37,6 @@
     "axios": "^1.11.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router": "^7.7.1",
     "react-spreadsheet": "^0.10.1",
     "scheduler": "^0.26.0",
     "semver": "^7.7.2"

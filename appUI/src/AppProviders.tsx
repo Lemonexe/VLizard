@@ -8,6 +8,7 @@ import { IsItUpWatcher } from './components/IsItUpWatcher.tsx';
 import { ConfigContextProvider } from './contexts/ConfigContext.tsx';
 import { DataContextProvider } from './contexts/DataContext.tsx';
 import { MUITheme } from './contexts/MUITheme.tsx';
+import { NavigationContextProvider } from './contexts/NavigationContext.tsx';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
 
 const staleTime = Infinity;
@@ -27,8 +28,10 @@ export const AppProviders: FC<PropsWithChildren> = ({ children }) => (
                     <ErrorBoundary>
                         <ConfigContextProvider>
                             <DataContextProvider>
-                                <UpdateAvailableModalWatcher />
-                                {children}
+                                <NavigationContextProvider>
+                                    <UpdateAvailableModalWatcher />
+                                    {children}
+                                </NavigationContextProvider>
                             </DataContextProvider>
                         </ConfigContextProvider>
                     </ErrorBoundary>
