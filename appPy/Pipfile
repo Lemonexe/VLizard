@@ -18,6 +18,8 @@ pylint = "*"
 pytest = "*"
 pyinstaller = "*"
 pytest-mock = "*"
+click = "*"
+pywin32-ctypes = "*"
 
 [requires]
 python_version = "3.11"
