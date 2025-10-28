@@ -68,7 +68,7 @@ export const DataContextProvider: FC<PropsWithChildren> = ({ children }) => {
             listFitsForSystem: (comp1, comp2) => listFitsForSystem(comp1, comp2, fitData),
             findVLEModelByName: (model_name) => findVLEModelByName(model_name, VLEModelDefs),
         };
-    }, [vaporData, VLEData, fitData, vaporDefs]);
+    }, [vaporData, VLEData, fitData, vaporDefs, VLEModelDefs]);
 
     return <DataContext.Provider value={providerValue}>{children}</DataContext.Provider>;
 };
