@@ -22,7 +22,7 @@ click = "*"
 pywin32-ctypes = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.12"
 
 [scripts]
 start = "pipenv run python serve.py port=37137"

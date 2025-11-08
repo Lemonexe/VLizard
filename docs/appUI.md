@@ -1,7 +1,6 @@
 ## Typescript/React frontend
 
-Or `appUI` for short, is an Electron application written in Typescript, which provides a GUI for the [Python backend](appPy.md).
-
+Or `appUI` for short, is an Electron application written in Typescript, which provides a GUI for the [Python backend](appPy.md).  
 Uses `npm` for dependency management, see [package.json](../appUI/package.json).
 
 It is mainly built upon Electron runtime, Electron-builder packager, Vite bundler, React framework, and MUI material library.
@@ -14,6 +13,7 @@ The installed app runs python backend silently as a child process.
 ⚠ All commands shall be run in `appUI` directory!
 ```
 cd appUI
+nvm i # or manually install nodeJS version as per the file .nvmrc
 npm i
 ```
 

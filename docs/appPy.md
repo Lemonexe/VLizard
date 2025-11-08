@@ -1,35 +1,29 @@
 ## Python backend
 
 Or `appPy` for short, is a python application which does the heavy lifting –
-all algorithms for thermodynamic consistency tests, non-linear regression and the fitting models are implemented here.
-
+all algorithms for thermodynamic consistency tests, non-linear regression and the fitting models are implemented here.  
 Uses `pipenv` for dependency management, see [Pipfile](../appPy/Pipfile) _(also specifies python version)_.
 
 I/O is provided either mainly via **Flask server** _(for Electron app)_,
-or alternatively **CLI** _(for local development, may be outdated)_.
-
+or alternatively **CLI** _(for local development, may be outdated)_.  
 The server application can be built as a single executable binary using `pyinstaller`.
 The binary is then packed together with the Electron app, running silently as its child process.
 See [Typescript frontend](appUI.md) for build process of the Electron app.
 
-Regardless of how do you run `appPy`, user data is always read from directors `~\Documents\VLizard`, analogically on Windows, Linux, macOS respectively. 
+Regardless of how do you run `appPy`, user data is always read from directors `~/Documents/VLizard`, analogically on Windows, Linux, macOS respectively. 
 
 
 ### Setup
 ⚠ All commands shall be run in `appPy` directory!
 ```
 cd appPy
+
+pyenv install $(cat .python-version)
+pyenv local $(cat .python-version)
+# (or manually install python version as per the file .python-version)
+
 pip install --user pipenv
 pipenv install --dev
-```
-
-#### Linux setup
-You may not be able to install `pipenv` into the global Python pre-installed on your system.
-In order to use the system Python, install pipenv via your package manager.  
-Additional packages may be required, e.g. for Debian 13:
-```
-sudo apt install pipenv
-sudo apt install build-essential python3-dev gfortran libopenblas-dev  pkg-config libopenblas64-dev
 ```
 
 ### Build
@@ -45,8 +39,8 @@ exit
 #### Flask server
 Run production server: `pipenv run start`  
 Run development server: `pipenv run dev` _(has hot reload)_  
-Run built production server: `.\dist\VLizard_server.exe`  
-Uses port 37137 by default _(an arbitrary number)_.    
+Run built production server: `.\dist\VLizard_server.exe` or `./dist/VLizard_server`  
+Uses port 37137 by default.
 
 See [http/](../http) for API documentation (as IntelliJ http files).  
 
@@ -60,26 +54,25 @@ Pylint: `pipenv run lint`
 Prettier: `pipenv run prettier`
 
 #### CLI
-Examples for CLI commands on Windows:
+Examples for CLI commands on Linux (on Windows, write `\` instead of `/`):
 ```
-pipenv run cli\slope --help
-pipenv run cli\vapor CHOL
-pipenv run cli\vle CPF CPOL
-pipenv run cli\vle CPF CPOL --txy --pxy -d 25kPa
-pipenv run cli\gamma CHF CHOL -d 25kPa --gamma --phi
-pipenv run cli\gamma CHF CHOL -d 25kPa --c12 0.4 -c c_12,virB_1,virB_2,virB_12
-pipenv run cli\rk CHF CHOL -d 25kPa,40kPa --plot
-pipenv run cli\herington CHF CHOL -d 25kPa,40kPa
-pipenv run cli\fredenslund CHF CHOL -d 25kPa --ge --res
-pipenv run cli\fit CPF CPOL vanLaar -d 25kPa --ptxy --persist
-pipenv run cli\tabulate CPOL CPF vanLaar -p 33 --txy
-pipenv run cli\tabulate CPOL CPF vanLaar -t 321 --pxy
-pipenv run cli\vn CPOL CPF vanLaar -d 25kPa --plot
-pipenv run cli\fit CHOL CHF NRTL -d 10kPa,25kPa,40kPa --xy --ptxy --gamma -c c_12
-pipenv run cli\fit EtOH H2O UNIQUAC --skip -d Kamihama2012,Voutsas2011 --xy --gamma -p 1.972,1.4,2.10547,0.92,2.0046,-2.4936,-728.9705,756.9477
+pipenv shell
+python cli/slope.py --help
+python cli/vapor.py CHOL
+python cli/vle.py CPF CPOL
+python cli/vle.py CPF CPOL --txy --pxy -d 25kPa
+python cli/gamma.py CHF CHOL -d 25kPa --gamma --phi
+python cli/gamma.py CHF CHOL -d 25kPa --c12 0.4 -c c_12,virB_1,virB_2,virB_12
+python cli/rk.py CHF CHOL -d 25kPa,40kPa --plot
+python cli/herington.py CHF CHOL -d 25kPa,40kPa
+python cli/fredenslund.py CHF CHOL -d 25kPa --ge --res
+python cli/fit.py CPF CPOL vanLaar -d 25kPa --ptxy --persist
+python cli/tabulate.py CPOL CPF vanLaar -p 33 --txy
+python cli/tabulate.py CPOL CPF vanLaar -t 321 --pxy
+python cli/vn.py CPOL CPF vanLaar -d 25kPa --plot
+python cli/fit.py CHOL CHF NRTL -d 10kPa,25kPa,40kPa --xy --ptxy --gamma -c c_12
+python cli/fit.py EtOH H2O UNIQUAC --skip -d Kamihama2012,Voutsas2011 --xy --gamma -p 1.972,1.4,2.10547,0.92,2.0046,-2.4936,-728.9705,756.9477
+exit
 ```
 See [appPy/cli](../appPy/cli), where filenames correspond to commands;
 calling with `--help` will instruct you further.
-
-On Linux, write `pipenv run python cli/vle.py` instead of `pipenv run cli\vle`, assuming `python` is executable.  
-To render plots in CLI, you may need `sudo apt install python3-tk`.
