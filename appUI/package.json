@@ -7,7 +7,7 @@
   "homepage": "https://github.com/Lemonexe/VLizard",
   "description": "VLizard, a VLE wizard.",
   "private": true,
-  "version": "2025.3.0",
+  "version": "2025.4.0",
   "type": "module",
   "main": "dist-electron/main.js",
   "engines": {
@@ -22,6 +22,7 @@
     "build:vite-renderer": "vite build --config vite.config.renderer.ts",
     "build:electron": "electron-builder",
     "build:electron-portable": "electron-builder --dir",
+    "validate": "npm run tsc && npm run prettier && npm run lint:fix && npm run test",
     "tsc": "tsc",
     "prettier": "prettier --write \"src/**/*.{js,ts,mjs,cjs,jsx,tsx}\" \"electron/**/*.{js,ts,mjs,cjs,jsx,tsx}\"",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
