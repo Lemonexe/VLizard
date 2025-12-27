@@ -50,6 +50,7 @@ export type FredenslundTestRequest = TestRequest & {
     legendre_order: number; // 3 | 4 | 5 actually, but TS doesn't really make life easier with number unions
 };
 
+type AutocorrelationKey = 'dw_p' | 'dw_y_1' | 'dw_y_2' | 'vn_p' | 'vn_y_1' | 'vn_y_2';
 export type FredenslundTestResponse = ConclusiveTestResult & {
     legendre_order: number;
     p_res_avg: number;
@@ -62,6 +63,7 @@ export type FredenslundTestResponse = ConclusiveTestResult & {
     plot_g_E: string;
     plot_p_res: string;
     plot_y_1_res: string;
+    autocorrelation: Record<AutocorrelationKey, number>;
 };
 
 export type VanNessTestRequest = DatasetIdentifier & { model_name: string };

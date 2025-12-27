@@ -3,6 +3,7 @@ from scipy.optimize import curve_fit
 from src.utils.io.echo import echo, ok_echo, err_echo, underline_echo
 from src.utils.errors import AppException
 from src.utils.math.legendre import get_g_E_poly, get_d_g_E_poly, get_ordered_array_fun
+from src.utils.math.autocorrelation import durbin_watson, von_neumann
 from src.config import cfg, cst
 from .VLE import VLE
 
@@ -20,7 +21,7 @@ class Fredenslund_test(VLE):
         super().__init__(compound1, compound2, dataset_name)
         self.keys_to_serialize = [
             'is_consistent', 'legendre_order', 'p_res_avg', 'y_1_res_avg', 'y_2_res_avg', 'x_1', 'p_res', 'y_1_res',
-            'y_2_res'
+            'y_2_res', 'autocorrelation'
         ]
         x_1, gamma_1, x_2, gamma_2 = self.x_1, self.gamma_1, self.x_2, self.gamma_2
         p, ps_1, ps_2, y_1, y_2 = self.p, self.ps_1, self.ps_2, self.y_1, self.y_2
@@ -72,6 +73,19 @@ class Fredenslund_test(VLE):
         self.p_res = (p-p_cal) / p
         self.y_1_res = y_1 - y_1_cal
         self.y_2_res = y_2 - y_2_cal
+        self.autocorrelation = {
+            'dw_p': durbin_watson(self.p_res),
+            'dw_y_1': durbin_watson(self.y_1_res),
+            'dw_y_2': durbin_watson(self.y_2_res),
+            'vn_p': von_neumann(self.p_res),
+            'vn_y_1': von_neumann(self.y_1_res),
+            'vn_y_2': von_neumann(self.y_2_res)
+        }
+        autocorrelation_avg = np.abs(2 - np.mean(np.array(list(self.autocorrelation.values()))))
+        if autocorrelation_avg >= cst.autocorrelation_warning_threshold:
+            self.warn(
+                'Detected strong autocorrelation of residuals (non-randomness). See Durbin–Watson & von Neumann statistics.'
+            )
 
         # calculate average y, p residuals [%]
         self.p_res_avg = np.mean(abs(self.p_res)) * 100

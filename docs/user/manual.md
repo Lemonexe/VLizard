@@ -124,7 +124,7 @@ If nothing helps, please report the bug 🐛 [using this contact](bug_tracking.m
     - If there is no visible mistake, send the data along with bug report.
   - Please note that for Fitting, some failures are normal! Optimization simply does not always converge.
     - Try different initial params, or select different portion of your data.
-- If you encounter an error screen (toolbar not visible), the app is unfortunately unusable
+- If you encounter an error covering the whole screen (toolbar not visible), the app is unfortunately unusable
   - `ctrl+R` refreshes the UI without having to restart whole app. 
   - But restart will be necessary for this error screen: `Lost connection to the Core server!`
 - `F12` will display the app console. I'd like to ask you to copy any error you see there, and please send it along with a bug report. 

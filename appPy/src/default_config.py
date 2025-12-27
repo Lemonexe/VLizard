@@ -10,6 +10,7 @@ consts_dict = {
     'atm': 101.325,  # [kPa]
 
     ## APP BEHAVIOR
+    'autocorrelation_warning_threshold': 1,  # distance from 2 to emit a warning
     'cli_fg_ok': 'green',
     'cli_fg_err': 'bright_red',
     'cli_fg_warn': 'yellow',
