@@ -60,5 +60,11 @@ export const MUITheme = createTheme({
                 },
             },
         },
+        MuiTooltip: {
+            defaultProps: {
+                // otherwise it's very annoying when you move mouse from one icon to the next one
+                enterNextDelay: 600,
+            },
+        },
     },
 });
