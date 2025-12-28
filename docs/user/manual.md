@@ -1,4 +1,4 @@
-## VLizard user manual
+# VLizard user manual
 
 Welcome to the user manual for VLizard, a VLE wizard. 🧙‍♂️⚗🦎
 
@@ -7,7 +7,7 @@ Both isobaric and isothermal VLE data are supported, though some features are on
 It does not cover all advanced features, but should be enough to get you started.  
 Please refer to other pages for advice on tests of thermodynamic consistency.
 
-#### Other documentation pages
+### Other documentation pages
 - [Quick overview of tests](tests.md)
 - [Theoretical background on tests](test_theory.md)
 - [Vapor pressure models](ps_models.md)
@@ -15,7 +15,7 @@ Please refer to other pages for advice on tests of thermodynamic consistency.
 - [Literary references](../references.md)
 - [Bug tracking](bug_tracking.md)
 
-#### Content
+### Content
 1. [First navigation](#first-navigation)
 2. [Adding Pure compounds](#adding-pure-compounds)
 3. [Adding VLE dataset](#adding-vle-dataset)
@@ -23,7 +23,7 @@ Please refer to other pages for advice on tests of thermodynamic consistency.
 5. [Other features](#other-features)
 6. [Troubleshooting](#troubleshooting)
 
-### First navigation
+## First navigation
 
 After opening the app, you should see the welcome page, and most importantly, the navigation top bar:
 
@@ -32,7 +32,7 @@ After opening the app, you should see the welcome page, and most importantly, th
 The (?) icon will lead to this manual.
 But let's start by visiting the **Pure compounds** page.
 
-### Adding Pure compounds
+## Adding Pure compounds
 
 Having a vapor pressure model available for each pure compound is a prerequisite for any kind of VLE data processing.
 
@@ -55,7 +55,7 @@ Don't worry about the temperature range, it's only informative – calculations 
 Of course, any model can be deleted.
 Let us now proceed to visit the **Binary systems** page.
 
-### Adding VLE dataset
+## Adding VLE dataset
 
 All binary systems are listed here.
 Each system can have multiple datasets, and you can fold/expand them using arrows.
@@ -74,7 +74,7 @@ Either "Add new" binary system, or you may add a dataset directly to an existing
 
 Now you may perform analysis for your VLE data – the most important feature!
 
-### Fitting thermodynamic models
+## Fitting thermodynamic models
 
 The only remaining feature to be described is the  **Fitting** page.
 You may skip this if you do not need to fit your VLE data with a thermodynamic model. 
@@ -93,7 +93,7 @@ After a successful fitting, you shall see the model persisted in the list.
 Icon ![visualize icon](images/visualize_icon.png) to display fitting again (tabulates model through original data).  
 Icon ![analysis icon](images/analysis_icon.png) to tabulate the model at arbitrary pressure.
 
-### Other features
+## Other features
 
 There are some icons in the top bar we have not covered yet:
 
@@ -111,7 +111,7 @@ Note: the local data files are stored at following directories:
 - macOS: `~/Documents/VLizard/`
 - Linux: `~/Documents/VLizard/`
 
-### Troubleshooting
+## Troubleshooting
 
 Having problems?
 Here are some general steps you can try.  

@@ -1,4 +1,4 @@
-## Overview of thermodynamic consistency tests
+# Overview of thermodynamic consistency tests
 
 [Back to User manual](manual.md)
 
@@ -22,8 +22,10 @@ The most versatile test, it should always be performed.
   - Has conventional metrics for $\overline{\delta p}$, $\overline{\Delta y}$ to formally accept or reject the data.
 - Can evaluate **individual points**
   - The distribution of the residuals shows outlying points.
-- You may also look at the distribution of the residuals, which should be random, with no trends.
-  - If there are visible trends, there is a systematic error _(though if metrics are within acceptable limits, the error is also small)_.
+- Provides a secondary results: Durbin–Watson and von Neumann statistics are available to quantify non-randomness
+  - Both should be 2 for perfectly random residuals (no autocorrelation)
+  - Distribution of the residuals can also be visually inspected for clusters and trends.
+  - If the statistics fail, or trends are visible, there is a systematic error _(though if metrics are within acceptable limits, the error is also small → acceptable)_.
 - Cannot be used for small number of data points, 5 is the absolute minimum, but more are recommended.
 - It is well theoretically supported.
 

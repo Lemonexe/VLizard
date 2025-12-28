@@ -1,15 +1,15 @@
-## Vapor pressure models
+# Vapor pressure models
 
 [Back to User manual](manual.md)
 
 Functions of $p=\mathrm{f}(T)$  
 where $p$ is vapor pressure [kPa] and $T$ is temperature [K].
 
-#### Content
+### Content
 1. [Antoine](#antoine-extended)
 2. [Wagner](#wagner)
 
-### Antoine (extended)
+## Antoine (extended)
 
 ```math
     \ln p = A + \frac{B}{T + C} + D T + E \ln T + F T^G
@@ -17,13 +17,13 @@ where $p$ is vapor pressure [kPa] and $T$ is temperature [K].
 
 The basic Antoine is the same, but with only first 3 parameters $A,B,C$, the rest are zero.
 
-#### Params table
+### Params table
 
 |       | $A$    | $B$      | $C$ | $D$ | $E$           | $F$           | $G$ |
 |-------|--------|----------|-----|-----|---------------|---------------|-----|
 | _UoM_ | ln kPa | ln kPa·K | K   | 1/K | ln kPa / ln K | ln kPa · K^-G | 1   |
 
-#### Antoine parameters conversion
+### Antoine parameters conversion
 
 When importing parameters from external source, it is imperative to carefully check the formula they use!  
 Unfortunately, there is no single convention for the equation format, various software and literature sources use different definitions.
@@ -56,7 +56,7 @@ If multiple transformations are needed, apply them in the order as listed above.
   - $B = B' \cdot \ln 10 + \ln 100$
   - $C = C$
 
-### Wagner
+## Wagner
 
 ```math
     \ln p = \ln p_c + \frac{A \tau + B \tau^{1.5} + C \tau^{2.5} + D \tau^5}{1-\tau}
@@ -66,7 +66,7 @@ Where $\tau = 1 - T/T_c$.
 Note that $p_c$ is critical pressure [kPa] and $T_c$ is critical temperature [K].  
 If you want to use parameter optimization on experimental data, the critical values **must** be provided and won't be optimized.
 
-#### Params table
+### Params table
 
 |          | $A$ | $B$ | $C$ | $D$ | $p_c$ | $T_c$ |
 |----------|-----|-----|-----|-----|-------|-------|
