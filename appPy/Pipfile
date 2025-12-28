@@ -20,6 +20,7 @@ pyinstaller = "*"
 pytest-mock = "*"
 click = "*"
 pywin32-ctypes = "*"
+pefile = "*"
 
 [requires]
 python_version = "3.12"
