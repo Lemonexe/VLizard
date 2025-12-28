@@ -1,4 +1,4 @@
-## Theoretical background for thermodynamic consistency tests
+# Theoretical background for thermodynamic consistency tests
 
 [Back to User manual](manual.md)
 
@@ -8,7 +8,7 @@ For more detailed theoretical explanation, please refer to literature, such as a
 [2017 review by J. Wisniak et al.](https://doi.org/10.1016/j.jct.2016.10.038)
 Alternatively, see [all literary sources](../references.md) for VLizard.
 
-### Basis
+## Basis
 
 The Gibbs-Duhem equation _(G-D)_ is used for most of the tests.
 This is the most general form:
@@ -23,7 +23,7 @@ We can use definition of excess Gibbs energy in dimensionless form (divided by $
 This equation is generally valid for data with variant pressure and temperature.
 Either the pressure or the temperature dependent terms may be neglected for isothermal or isobaric data, respectively.
 
-### Fredenslund test
+## Fredenslund test
 
 The idea here is that VLE data ($p$, $T$, $x$, $y$) together with vapor pressure models is an overdetermined system in its nature.
 In Fredenslund test, the data is fitted with a model, but not directly – the data is first reduced using $g^\mathrm{E}$.
@@ -67,7 +67,30 @@ The same is done for $y_2$ as for $y_1$.
 
 All must be within acceptable limits, which is 1 %.
 
-### van Ness test
+### Residuals distribution
+
+The distribution of $p, y_1, y_2$ residuals presents a secondary criterion to evaluate the data set.  
+The distribution should best be random; if there are trends or clusters (can be visually inspected), it signifies a systematic error.
+
+The Durbin–Watson statistic and the von Neumann statistic are available to quantify the autocorrelation (non-randomness).
+Both should be 2 for perfectly random residuals, while values 0 and 4 mean total autocorrelation.
+Most likely you will see values between 0 and 2 (trends and clusters).
+Values between 2 and 4 signify point-wise oscillation, a phenomenon not expected in VLE data.
+
+Note that if the main test criterion passes, but the residuals are strongly autocorrelated, this does not mean inconsistency,
+merely that the systematic error is demonstrable, but it is negligible in size.
+
+The Durbin–Watson and the von Neumann statistics are calculated as follows, where $r_j$ is residual of point $j$:
+
+```math
+    \mathrm{DW} = \frac{ \sum_{j=2}^N (r_j - r_{j-1})^2 }{ \sum_{j=1}^N r_j^2 } 
+```
+
+```math
+    \mathrm{vN} = \frac{ \sum_{j=2}^N (r_j - r_{j-1})^2 }{ \sum_{j=1}^N (r_j-\overline{r})^2 } 
+```
+
+## van Ness test
 
 By deriving $g^\mathrm{E}$ and substituting G-D we get:
 
@@ -102,7 +125,7 @@ Finally, the root mean square of the residuals is calculated:
 
 Instead of a single threshold to formally accept or reject the data, the van Ness test assigns a conventional index from 1 to 10, where 1 is perfect, 5 is doubtful and 10 is unacceptable, for a more nuanced evaluation.
 
-### Gamma offset test
+## Gamma offset test
 
 The gamma offset test does examine thermodynamic consistency, though not using G-D, but only the _definition of activity_.  
 The activity coefficients must always be 1 for pure components, so it is just a simple check to see if $\gamma_i(x_i = 1) = 1$.  
@@ -130,7 +153,7 @@ Conventional criterion is then used to formally accept or reject the data: $\Del
 
 Note that this procedure is an original research by the VLizard author, see [the published article](https://doi.org/10.1021/acsomega.5c04650) for more details.
 
-### Redlich-Kister test
+## Redlich-Kister test
 
 This test uses G-D in integral form, while disregarding $V_m^\mathrm{E}$ and $H_m^\mathrm{E}$ (the pressure and temperature dependence).  
 Usually, $V_m^\mathrm{E}$ is very small, so for _isothermal_ data, the test is very reliable.  
@@ -152,7 +175,7 @@ For isothermal data, the criterion is $D < 2$ and the test is considered conclus
 
 For isobaric data, the criterion is $D < 10$ and the test is considered inconclusive – it should be used only to reject the data when result is negative, but it has no meaning when positive, as per J. Wisniak.
 
-### Herington test
+## Herington test
 
 A variation of Redlich-Kister test for isobaric data, which aims to replace the temperature dependence with an empirical parameter: 
 
@@ -166,7 +189,7 @@ Empirical parameter $J$ is not theoretically founded, and according to J. Wisnia
 The test is therefore deprecated.
 It is also not supported for isothermal data (does not make sense, use the Redlich-Kister test instead).
 
-### Slope test
+## Slope test
 
 At first glance, this is the most mathematically straightforward test.
 Just like the Redlich-Kister test, the pressure and temperature dependence is disregarded.

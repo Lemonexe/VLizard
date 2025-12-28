@@ -4,6 +4,7 @@ from .autocorrelation import durbin_watson, von_neumann
 # linear line values (total autocorrelation)
 fixture_linear_positive = np.linspace(-22, +22, num=55)
 fixture_linear_negative = np.linspace(17, 3, num=66)
+fixture_alternating = np.tile(np.array([1, -1]), 250)  # perfectly oscillating values (negative autocorrelation)
 abs_tol_lin = 0.01  # expected to be quite perfect
 
 # eighty uniformly distributed random numbers from -1 to 1
@@ -38,6 +39,7 @@ def test_durbin_watson():
     print("\n")
     assert abs(0 - durbin_watson(fixture_linear_positive)) < abs_tol_lin
     assert abs(0 - durbin_watson(fixture_linear_negative)) < abs_tol_lin
+    assert abs(4 - durbin_watson(fixture_alternating)) < abs_tol_lin
     assert abs(2 - durbin_watson(fixture_random)) < abs_tol_rnd
     assert abs(2 - durbin_watson(fixture_random_normal)) < abs_tol_rnd
 
@@ -45,5 +47,6 @@ def test_durbin_watson():
 def test_von_neumann():
     assert abs(0 - von_neumann(fixture_linear_positive)) < abs_tol_lin
     assert abs(0 - von_neumann(fixture_linear_negative)) < abs_tol_lin
+    assert abs(4 - von_neumann(fixture_alternating)) < abs_tol_lin
     assert abs(2 - von_neumann(fixture_random)) < abs_tol_rnd
     assert abs(2 - von_neumann(fixture_random_normal)) < abs_tol_rnd

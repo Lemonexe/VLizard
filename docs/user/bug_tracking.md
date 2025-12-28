@@ -1,4 +1,4 @@
-## VLizard bug reporting
+# VLizard bug reporting
 
 In case you encounter a bug in VLizard app, please report it to the author:
 

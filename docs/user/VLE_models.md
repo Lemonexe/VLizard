@@ -1,17 +1,17 @@
-## VLE models
+# VLE models
 
 [Back to User manual](manual.md)
 
 Functions of $(\gamma_1, \gamma_2) = \mathrm{f}(x_1, T)$, where $\gamma_i$ is activity coefficient,  
 $x_1$ is mole fraction, $T$ is temperature [K] and $t$ is temperature [°C].
 
-#### Content
+### Content
 1. [Margules](#margules)
 2. [van Laar](#van-laar)
 3. [NRTL (extended)](#nrtl-extended)
 4. [UNIQUAC (extended)](#uniquac-extended)
 
-### Margules
+## Margules
 
 ```math
     \ln \gamma_1 = x_2^2 \left( A_{12} + 2 x_1 (A_{21}-A_{12}) \right)
@@ -22,7 +22,7 @@ $x_1$ is mole fraction, $T$ is temperature [K] and $t$ is temperature [°C].
 
 Both parameters $A_{12}$ and $A_{21}$ are symmetric and dimensionless.
 
-### van Laar
+## van Laar
 
 ```math
     \ln \gamma_1 = A_{12} \left( \frac{A_{21} x_2}{A_{12} x_1 + A_{21} x_2} \right)^2
@@ -33,7 +33,7 @@ Both parameters $A_{12}$ and $A_{21}$ are symmetric and dimensionless.
 
 Both parameters $A_{12}$ and $A_{21}$ are symmetric and dimensionless.
 
-### NRTL (extended)
+## NRTL (extended)
 
 The basic NRTL is the same, but with only first 5 parameters $a_{12} a_{21} b_{12} b_{21} c_{12}$, the rest are zero. 
 
@@ -61,7 +61,7 @@ Where $G_{ij}$ and $\tau_{ij}$ are intermediately calculated as:
     \alpha_{21} = \alpha_{12} = c_{12} + d_{12} t
 ```
 
-#### Params table
+### Params table
 
 | _symbol_ | $a_{12}$ | $a_{21}$ | $b_{12}$ | $b_{21}$ | $c_{12}$ | $d_{12}$ | $e_{12}$ | $e_{21}$ | $f_{12}$ | $f_{21}$ |
 |----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
@@ -69,7 +69,7 @@ Where $G_{ij}$ and $\tau_{ij}$ are intermediately calculated as:
 
 Note: $c$ and $d$ are symmetric, the rest are not.
 
-### UNIQUAC (extended)
+## UNIQUAC (extended)
 
 The basic UNIQUAC is the same, but with only first 8 parameters $q_1 q_2 r_1 r_2 a_{12} a_{21} b_{12} b_{21}$, the rest are zero.
 
@@ -136,7 +136,7 @@ Binary interaction terms are calculated as follows:
     s_2 = \theta_1 \tau_{12} + \theta_2
 ```
 
-#### Params table
+### Params table
 
 | _symbol_ | $q_1$ | $q_2$ | $r_1$ | $r_2$ | $a_{12}$ | $a_{21}$ | $b_{12}$ | $b_{21}$ | $c_{12}$ | $c_{21}$ | $d_{12}$ | $d_{21}$ | $e_{12}$ |
 |----------|-------|-------|-------|-------|----------|----------|----------|----------|----------|----------|----------|----------|----------|

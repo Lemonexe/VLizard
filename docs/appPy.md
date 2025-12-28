@@ -1,4 +1,4 @@
-## Python backend
+# Python backend
 
 Or `appPy` for short, is a python application which does the heavy lifting –
 all algorithms for thermodynamic consistency tests, non-linear regression and the fitting models are implemented here.  
@@ -13,7 +13,7 @@ See [Typescript frontend](appUI.md) for build process of the Electron app.
 Regardless of how do you run `appPy`, user data is always read from directors `~/Documents/VLizard`, analogically on Windows, Linux, macOS respectively. 
 
 
-### Setup
+## Setup
 ⚠ All commands shall be run in `appPy` directory!
 ```
 cd appPy
@@ -26,7 +26,7 @@ pip install --user pipenv
 pipenv install --dev
 ```
 
-### Build
+## Build
 Build has to be done natively on each respective platform: Windows, Linux, macOS.
 ```
 pipenv shell
@@ -34,9 +34,9 @@ pyinstaller --onefile --name VLizard_server serve.py
 exit
 ```
 
-### Local run
+## Local run
 
-#### Flask server
+### Flask server
 Run production server: `pipenv run start`  
 Run development server: `pipenv run dev` _(has hot reload)_  
 Run built production server: `.\dist\VLizard_server.exe` or `./dist/VLizard_server`  
@@ -48,12 +48,12 @@ Endpoints assume valid systems and datasets, UI must take care of that.
 CRUD controllers operate on `.tsv` files, which store user input data.
 Analyses are run via `POST` endpoints, which return json and also persist it in `.json` files as cache.
 
-### Development
+## Development
 Unit tests: `pipenv run test`  
 Pylint: `pipenv run lint`  
 Prettier: `pipenv run prettier`
 
-#### CLI
+### CLI
 Examples for CLI commands on Linux (on Windows, write `\` instead of `/`):
 ```
 pipenv shell
