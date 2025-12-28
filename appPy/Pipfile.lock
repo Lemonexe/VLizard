@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a65259e0f7e42dabe3fb40c90bd0fef627c94cddeff1d8a80c7627b95ae1e90e"
+            "sha256": "230bbc96462d0d9ad60df80304fafc7350a88809f7459413d864b6753f63cc20"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -833,6 +833,14 @@
             ],
             "markers": "python_full_version >= '3.10.0'",
             "version": "==7.0.0"
+        },
+        "macholib": {
+            "hashes": [
+                "sha256:da1a3fa8266e30f0ce7e97c6a54eefaae8edd1e5f86f3eb8b95457cae90265ea",
+                "sha256:f408c93ab2e995cd2c46e34fe328b130404be143469e41bc366c807448979362"
+            ],
+            "index": "pypi",
+            "version": "==1.16.4"
         },
         "mccabe": {
             "hashes": [

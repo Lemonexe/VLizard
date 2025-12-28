@@ -21,6 +21,7 @@ pytest-mock = "*"
 click = "*"
 pywin32-ctypes = "*"
 pefile = "*"
+macholib = "*"
 
 [requires]
 python_version = "3.12"

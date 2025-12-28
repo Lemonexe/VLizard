@@ -9,7 +9,7 @@ const getBinaryFile = () => {
     const platform = os.platform();
     if (platform === 'win32') return 'VLizard_server.exe';
     if (platform === 'linux') return 'VLizard_server';
-    // if (platform === 'darwin') return 'macOS';
+    if (platform === 'darwin') return 'VLizard_server';
     return '';
 };
 
