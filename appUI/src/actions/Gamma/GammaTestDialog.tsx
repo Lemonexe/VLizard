@@ -54,7 +54,7 @@ const DetailsSection: FC<DetailsSectionProps> = ({ data }) => {
 };
 
 // prettier-ignore
-const gamma_jsx = (i: ReactNode) => <><code>&gamma;</code><sub>{i}</sub></>
+const gamma_jsx = (i: ReactNode) => <><code>&gamma;</code><sub>{i}</sub></>;
 
 type GammaTestDialogProps = DialogProps & { req: GammaTestRequest; data: GammaTestResponse };
 
