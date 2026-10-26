@@ -20,7 +20,7 @@ type ConsistencyResultProps = AnalysisResult & SummaryProps;
 
 export const ConsistencyResult: FC<ConsistencyResultProps> = ({ warnings, is_consistent, is_warning, reasons }) => {
     return (
-        <Stack gap={1}>
+        <Stack sx={{ gap: 1 }}>
             {warnings.map((message) => (
                 <Alert key={message} severity="warning" children={message} />
             ))}

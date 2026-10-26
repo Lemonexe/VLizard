@@ -21,7 +21,7 @@ export const ChooseTDTestDialog: FC<DialogProps & DatasetIdentifier> = ({ open, 
             Analysis for {props.compound1}-{props.compound2} {props.dataset}
         </DialogTitleWithX>
         <DialogContent>
-            <Stack direction="column" gap={1} px={5} py={1}>
+            <Stack direction="column" sx={{ gap: 1, px: 5, py: 1 }}>
                 <VLEAnalysisButton {...props} />
                 <Button startIcon={<QuestionMark />} href={TEST_OVERVIEW_URL} variant="outlined" sx={{ my: 2 }}>
                     Which test to choose

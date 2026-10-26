@@ -126,8 +126,8 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                     {isEdit ? 'Edit' : 'Add'} vapor pressure model
                 </DialogTitleWithX>
                 <DialogContent>
-                    <Stack direction="column" gap={2} pt={1}>
-                        <Stack direction="row" gap={1} alignItems="center">
+                    <Stack direction="column" sx={{ gap: 2, pt: 1 }}>
+                        <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                             <TextField
                                 label="Compound name"
                                 variant="outlined"
@@ -145,7 +145,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                             {willReplace && <WarningLabel title="This will overwrite existing compound." />}
                             {fileNameValidationError && <ErrorLabel title={fileNameValidationError} />}
                         </Stack>
-                        <Stack direction="row" gap={1}>
+                        <Stack direction="row" sx={{ gap: 1 }}>
                             <FormControl fullWidth className="medium-input">
                                 <InputLabel id="model">Model type</InputLabel>
                                 <Select
@@ -171,7 +171,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         {modelDef && (
                             <Box>
                                 <span>Temperature bounds of model validity (in Kelvin)</span>
-                                <Stack direction="row" gap={1} alignItems="center" pt={1}>
+                                <Stack direction="row" sx={{ gap: 1, alignItems: 'center', pt: 1 }}>
                                     <TextField
                                         type="number"
                                         label="min"
@@ -196,7 +196,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                         )}
                         {antoineCError && <ErrorLabel title="For Antoine, min temp must be greater than -C" />}
                         {modelDef && (
-                            <Box mt={3}>
+                            <Box sx={{ mt: 3 }}>
                                 <h4>
                                     Model parameters <ExpandHelpButton infoOpen={infoOpen} setInfoOpen={setInfoOpen} />
                                 </h4>
@@ -211,7 +211,7 @@ export const UpsertCompoundDialog: FC<UpsertCompoundDialogProps> = ({ origCompou
                                     columnLabels={columnLabels}
                                     forceUpdateVersion={forceUpdateVersion}
                                 />
-                                <Box mt={1}>
+                                <Box sx={{ mt: 1 }}>
                                     <Button
                                         onClick={handleOpenFitting}
                                         variant="outlined"

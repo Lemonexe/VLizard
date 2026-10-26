@@ -12,7 +12,7 @@ const currentYear = new Date().getFullYear();
 export const About: FC = () => (
     <DefaultLayout>
         <h1>VLizard v{trimPatchVersion(APP_VERSION)}</h1>
-        <Stack direction="row" my={2} spacing={2}>
+        <Stack direction="row" spacing={2} sx={{ my: 2 }}>
             <UpdateAvailableButton />
             <Button startIcon={<QuestionMark />} href={MANUAL_URL} variant="outlined">
                 Getting started

@@ -14,7 +14,7 @@ type SpreadsheetControlsProps = {
 };
 
 export const SpreadsheetControls: FC<SpreadsheetControlsProps> = ({ setData, showRestoreData, handleRestoreData }) => (
-    <Stack direction="column" gap={1}>
+    <Stack direction="column" sx={{ gap: 1 }}>
         <Box>
             <AddRowsButton setData={setData} />
         </Box>

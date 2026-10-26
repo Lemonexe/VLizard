@@ -1,4 +1,4 @@
-import { HelpOutline, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { HelpOutlined, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { Dispatch, FC, SetStateAction } from 'react';
 
@@ -9,7 +9,7 @@ export type ExpandHelpButtonProps = {
 
 export const ExpandHelpButton: FC<ExpandHelpButtonProps> = ({ infoOpen, setInfoOpen }) => (
     <IconButton onClick={() => setInfoOpen((prev) => !prev)}>
-        <HelpOutline />
+        <HelpOutlined />
         {infoOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
     </IconButton>
 );

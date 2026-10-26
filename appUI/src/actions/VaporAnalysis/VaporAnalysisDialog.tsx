@@ -81,7 +81,7 @@ export const VaporAnalysisDialog: FC<VaporAnalysisDialogProps> = ({ data, open, 
 
                 <PlotWithDownload svgContent={data.plot} fileName={`chart ${data.compound} ${data.model_name}`} />
 
-                <Stack direction="row" gap={1} mt={2} mb={1} alignItems="center">
+                <Stack direction="row" sx={{ gap: 1, mt: 2, mb: 1, alignItems: 'center' }}>
                     <h4>Quick query:</h4>
                     <form onSubmit={handleQuery_T}>
                         <TextField

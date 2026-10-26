@@ -29,7 +29,7 @@ export const HeringtonTestDialog: FC<HeringtonTestDialogProps> = ({ open, handle
                 ) : (
                     <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 )}
-                <Box m={2} pb={2}>
+                <Box sx={{ m: 2, pb: 2 }}>
                     <table>
                         <tbody>
                             <tr>

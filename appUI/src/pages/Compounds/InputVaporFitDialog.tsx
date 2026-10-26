@@ -62,12 +62,12 @@ export const InputVaporFitDialog: FC<InputVaporFitProps> = ({
                 <DialogContent>
                     <p>Enter your measured pressure &amp; temperature data points and optimize the model parameters.</p>
 
-                    <Stack direction="row" gap={2} mt={4}>
+                    <Stack direction="row" sx={{ gap: 2, mt: 4 }}>
                         <TableSpreadsheet columnLabels={tableSpreadsheetHeaders} data={data} setData={setData} />
                         <SpreadsheetControls setData={setData} showRestoreData={false} />
                     </Stack>
                     {!isDataWhole && data.length > 1 && (
-                        <Box pt={2}>
+                        <Box sx={{ pt: 2 }}>
                             <ErrorLabel title="Data is incomplete!" />
                         </Box>
                     )}

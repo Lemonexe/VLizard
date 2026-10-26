@@ -79,7 +79,7 @@ export const VLEAnalysisDialog: FC<VLEAnalysisDialogProps> = ({ open, handleClos
         <ResponsiveDialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitleWithX handleClose={handleClose}>Visualize data for {label}</DialogTitleWithX>
             <DialogContent>
-                <Stack gap={3}>
+                <Stack sx={{ gap: 3 }}>
                     <AnalysisWarnings warnings={data.warnings} />
                     <DataHeadline data={data} />
                     <ResultsDisplayTable rawDataColumns={dataColumns} columnLabels={columnLabels} />

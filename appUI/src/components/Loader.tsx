@@ -35,7 +35,7 @@ export const Loader: FC<LoaderProps> = ({ subject }) => (
 );
 
 export const CenteredLoader: FC<LoaderProps> = ({ subject }) => (
-    <Stack justifyContent="center" alignItems="center" height="100vh">
+    <Stack sx={{ justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <Loader subject={subject} />
     </Stack>
 );

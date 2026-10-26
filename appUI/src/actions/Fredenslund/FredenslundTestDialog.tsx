@@ -44,7 +44,7 @@ export const FredenslundTestDialog: FC<FredenslundTestDialogProps> = ({ open, ha
             <DialogContent>
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <h4 className="h-margin">Results</h4>
-                <Box ml={2} mb={4}>
+                <Box sx={{ ml: 2, mb: 4 }}>
                     <p>
                         Using Legendre polynomial of order <strong>{data.legendre_order}</strong>
                     </p>

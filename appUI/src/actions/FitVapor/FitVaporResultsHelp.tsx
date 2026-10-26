@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { spacingN } from '../../contexts/MUITheme.tsx';
 
 export const FitVaporResultsHelp: FC = () => (
-    <Box ml={4}>
+    <Box sx={{ ml: 4 }}>
         Two optimization methods are employed:
         <ul style={{ marginBottom: 0, marginTop: spacingN(1) }}>
             <li>

@@ -5,7 +5,7 @@ import { DownloadChartButton, DownloadChartButtonProps } from './DownloadChartBu
 import { RawHtmlRenderer } from './RawHtmlRenderer.tsx';
 
 export const PlotWithDownload: FC<DownloadChartButtonProps> = ({ svgContent, fileName }) => (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{ alignItems: 'center' }}>
         <RawHtmlRenderer rawHtml={svgContent} />
         <DownloadChartButton svgContent={svgContent} fileName={fileName} />
     </Stack>

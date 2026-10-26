@@ -5,7 +5,7 @@ import { DefaultLayout } from '../components/DefaultLayout.tsx';
 
 export const Home: FC = () => (
     <DefaultLayout>
-        <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center', mb: 2 }}>
             <img src="icon.png" width={128} alt="VLizard logo" />
             <Box>
                 <h1>Welcome to VLizard</h1>

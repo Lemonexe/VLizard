@@ -25,7 +25,7 @@ export const Systems: FC = () => {
             <HeaderStack>
                 <h2>Binary systems data</h2>
                 <TextField label="Filter" value={filter} onChange={handleChangeFilter} size="small" />
-                <Stack direction="row" gap={1}>
+                <Stack direction="row" sx={{ gap: 1 }}>
                     {showCollapseButton && (
                         <Button
                             variant="text"

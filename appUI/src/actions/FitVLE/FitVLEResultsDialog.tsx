@@ -30,7 +30,7 @@ const DataHeadline = ({ ds }: { ds: PlottedDataset }) => {
 };
 
 const DatasetDisplay: FC<DatasetDisplayProps> = ({ label, ds }) => (
-    <Box mt={8}>
+    <Box sx={{ mt: 8 }}>
         <h4 className="h-margin">
             Dataset <q>{ds.name}</q>
         </h4>

@@ -79,7 +79,7 @@ export const GammaTestDialog: FC<GammaTestDialogProps> = ({ open, handleClose, r
                 <ConsistencyResult warnings={data.warnings} is_consistent={data.is_consistent} reasons={reasons} />
                 <h4 className="h-margin">Results</h4>
 
-                <Box ml={3} mb={4}>
+                <Box sx={{ ml: 3, mb: 4 }}>
                     {/* prettier-ignore */}
                     <table>
                         <tbody>

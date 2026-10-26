@@ -77,7 +77,7 @@ const getCreateSelectProps: GeneratorFn<CreateSelectPropsFn> = ({ formConfig, pa
 const CalcSettings: FC<FormProps> = (props) => {
     const createTFProps = getCreateTFProps(props);
     return (
-        <Stack direction="column" gap={2.5} pt={3}>
+        <Stack direction="column" sx={{ gap: 2.5, pt: 3 }}>
             <div>
                 Tolerance for exceeding model temperature bounds, otherwise warning <em>(% of temp interval)</em>
                 <br />
@@ -129,7 +129,7 @@ const UISettings: FC<FormProps> = (props) => {
     const createCBProps = getCreateCBProps(props);
     const createSlProps = getCreateSelectProps(props);
     return (
-        <Stack direction="column" gap={2.5} pt={3}>
+        <Stack direction="column" sx={{ gap: 2.5, pt: 3 }}>
             <div>
                 <FormControlLabel
                     control={<Checkbox {...createCBProps('notify_app_update')} />}

@@ -9,7 +9,7 @@ import { WarningTooltip } from './TooltipIcons.tsx';
 export const ValidatedCompoundName: FC<CompoundIdentifier> = ({ compound }) => {
     const { compoundNames } = useData();
     return (
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{ alignItems: 'center' }}>
             <span>{compound}</span>
             {!compoundNames.includes(compound) && <WarningTooltip title="Unknown compound (no vapor pressure model)" />}
         </Stack>

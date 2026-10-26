@@ -17,7 +17,7 @@ type DialogTitleProps = PropsWithChildren<{
 
 export const DialogTitleWithX: FC<DialogTitleProps> = ({ children, handleClose }) => (
     <DialogTitle>
-        <ConstrainedStack direction="row" justifyContent="space-between" alignItems="center">
+        <ConstrainedStack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
             <ConstrainedSpan>{children}</ConstrainedSpan>
             <IconButton onClick={handleClose}>
                 <Close color="action" />

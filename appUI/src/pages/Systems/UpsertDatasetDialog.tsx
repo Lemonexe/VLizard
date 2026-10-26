@@ -142,8 +142,8 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     : `Add a new dataset (${modifyingSystem ? 'existing' : 'new'} binary system)`}
             </DialogTitleWithX>
             <DialogContent>
-                <Stack direction="column" gap={2} pt={1}>
-                    <Stack direction="row" gap={1} alignItems="center">
+                <Stack direction="column" sx={{ gap: 2, pt: 1 }}>
+                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                         <Autocomplete
                             options={compoundNames}
                             inputValue={compound1}
@@ -153,7 +153,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         />
                         {isUnknownCompound(compound1) && <WarningNoCompound />}
                     </Stack>
-                    <Stack direction="row" gap={1} alignItems="center">
+                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                         <Autocomplete
                             options={compoundNames}
                             inputValue={compound2}
@@ -163,7 +163,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         />
                         {isUnknownCompound(compound2) && <WarningNoCompound />}
                     </Stack>
-                    <Stack direction="row" gap={1} alignItems="center">
+                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                         <TextField
                             label="Dataset name"
                             variant="outlined"
@@ -177,7 +177,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                         )}
                         {fileNameValidationError && <ErrorLabel title={fileNameValidationError} />}
                     </Stack>
-                    <Stack gap={1}>
+                    <Stack sx={{ gap: 1 }}>
                         {isDataChanged() && (
                             <div>
                                 <InfoLabel title="One of the above was changed (data will be saved as new). Restore?" />
@@ -206,10 +206,10 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     You may reorganize order of columns or units of measurement, so that the headers match your data
                     source:
                 </p>
-                <Stack direction="row" gap={1} pb={2}>
+                <Stack direction="row" sx={{ gap: 1, pb: 2 }}>
                     {headerComponents}
                 </Stack>
-                <Stack direction="row" gap={2}>
+                <Stack direction="row" sx={{ gap: 2 }}>
                     <TableSpreadsheet
                         columnLabels={columnLabels}
                         data={data}
@@ -224,7 +224,7 @@ export const UpsertDatasetDialog: FC<UpsertDatasetDialogProps> = ({
                     />
                 </Stack>
                 {!isDataWhole && data.length > 1 && (
-                    <Box pt={2}>
+                    <Box sx={{ pt: 2 }}>
                         <ErrorLabel title="Data is incomplete!" />
                     </Box>
                 )}

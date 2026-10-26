@@ -54,7 +54,7 @@ const GammaTestRequestDialog = ({ req, open, handleClose }: GammaTestRequestDial
                 <form onSubmit={handleSubmit}>
                     <DialogTitleWithX handleClose={handleClose}>Gamma offset test specification</DialogTitleWithX>
                     <DialogContent>
-                        <Stack direction="column" gap={1}>
+                        <Stack direction="column" sx={{ gap: 1 }}>
                             <label>
                                 Use virial equation:
                                 <Checkbox checked={doVirial} onChange={(e) => setDoVirial(e.target.checked)} />

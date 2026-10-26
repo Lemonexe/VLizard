@@ -11,7 +11,7 @@ const FAILURES_THRESHOLD = 3;
 
 const MainInstanceError: FC = () => <ErrorAlert message="Lost connection to the Core server! 😱" />;
 const SecondaryInstanceError: FC = () => (
-    <Stack justifyContent="center" alignItems="center" height="100vh">
+    <Stack sx={{ justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <p>You have opened multiple VLizard windows, but closed the main one.</p>
         <p>Working with multiple windows is totally fine, but the main one has to keep running for the others.</p>
         <p>

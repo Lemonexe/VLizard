@@ -1,4 +1,4 @@
-import { FolderOpen, HelpOutline, Home, Settings } from '@mui/icons-material';
+import { FolderOpen, HelpOutlined, Home, Settings } from '@mui/icons-material';
 import { AppBar, Button, Stack, Toolbar, Tooltip } from '@mui/material';
 import { FC, PropsWithChildren } from 'react';
 
@@ -43,7 +43,7 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                     <Button color="inherit" onClick={() => navigate('fitting')}>
                         Fitting
                     </Button>
-                    <Stack flexGrow={1} alignItems="center">
+                    <Stack sx={{ flexGrow: 1, alignItems: 'center' }}>
                         {isInstLocked ? null : <SecondaryInstanceWarning />}
                     </Stack>
                     <QueryRefreshButton />
@@ -59,7 +59,7 @@ export const DefaultLayout: FC<PropsWithChildren> = ({ children }) => {
                     </Tooltip>
                     <Tooltip title="ABOUT">
                         <DenseIconButton onClick={() => navigate('about')} edge="end" color="inherit">
-                            <HelpOutline />
+                            <HelpOutlined />
                         </DenseIconButton>
                     </Tooltip>
                 </Toolbar>

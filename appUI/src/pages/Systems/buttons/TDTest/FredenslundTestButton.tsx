@@ -23,7 +23,7 @@ export const FredenslundTestButton: FC<DatasetIdentifier> = (props) => {
         </Button>
     ) : (
         <form onSubmit={handleSubmit}>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
                 <TextField
                     type="number"
                     label="Legendre polynomial order"

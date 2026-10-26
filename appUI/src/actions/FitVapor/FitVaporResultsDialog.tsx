@@ -86,7 +86,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                 <h4 className="h-margin">Fitted model parameters</h4>
                 <Spreadsheet data={paramsSpreadsheetData} columnLabels={paramNames} rowLabels={rowLabels} />
                 <h4 className="h-margin">What to do with the results?</h4>
-                <Stack direction="row" gap={2} mb={2}>
+                <Stack direction="row" sx={{ gap: 2, mb: 2 }}>
                     <NormalCaseButton variant="contained" color="error" onClick={handleClose}>
                         Reject
                     </NormalCaseButton>
@@ -102,7 +102,7 @@ export const FitVaporResultsDialog: FC<FitVaporResultsDialogProps> = ({
                     )}
                     <ExpandHelpButton infoOpen={infoOpen} setInfoOpen={setInfoOpen} />
                 </Stack>
-                <Box mb={3}>
+                <Box sx={{ mb: 3 }}>
                     <Collapse in={infoOpen}>
                         <FitVaporResultsHelp />
                     </Collapse>

@@ -55,7 +55,7 @@ export const TabulateModelButton: FC<TabulateModelButtonProps> = ({ compound1, c
                 </DialogTitleWithX>
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
-                        <Stack direction="row" gap={1}>
+                        <Stack direction="row" sx={{ gap: 1 }}>
                             <TextField
                                 value={raw_p}
                                 onChange={handleChange_p}

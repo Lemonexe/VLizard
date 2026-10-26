@@ -17,8 +17,8 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ message }) => (
         <Alert severity="error" sx={{ my: 2 }}>
             Oops! Something went wrong.
         </Alert>
-        <Box mx={1}>
-            <Box my={6}>
+        <Box sx={{ mx: 1 }}>
+            <Box sx={{ my: 6 }}>
                 <b>Cause:</b> {message}
             </Box>
             <p>

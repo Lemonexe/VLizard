@@ -131,11 +131,11 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                 {isEdit ? 'Alter the' : 'Perform new'} model fitting for {compound1}-{compound2}
             </DialogTitleWithX>
             <DialogContent>
-                <Stack direction="column" gap={2} pt={1}>
+                <Stack direction="column" sx={{ gap: 2, pt: 1 }}>
                     {invalidDs.length > 0 && (
                         <WarningLabel title={`Missing datasets shall be removed: ${invalidDs.join(', ')}`} />
                     )}
-                    <Stack direction="row" gap={1} alignItems="center">
+                    <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                         <FormControl fullWidth className="medium-input">
                             <InputLabel id="datasets">Datasets</InputLabel>
                             <Select
@@ -152,7 +152,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                         </FormControl>
                         {datasets.length === 0 && <ErrorLabel title="No datasets selected!" />}
                     </Stack>
-                    <Stack direction="row" gap={1}>
+                    <Stack direction="row" sx={{ gap: 1 }}>
                         <FormControl fullWidth className="medium-input">
                             <InputLabel id="model">Model type</InputLabel>
                             <Select
@@ -172,7 +172,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                         </IconButton>
                     </Stack>
                     {modelDef && (
-                        <Stack direction="row" gap={1} alignItems="center">
+                        <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                             <FormControl fullWidth className="medium-input">
                                 <InputLabel id="keepConstant">Params to keep constant</InputLabel>
                                 <Select
@@ -197,7 +197,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                     )}
                 </Stack>
                 {modelDef && (
-                    <Box pt={3}>
+                    <Box sx={{ pt: 3 }}>
                         <p>
                             <strong>Model parameters</strong>
                         </p>
@@ -211,7 +211,7 @@ export const SpecifyFitDialog: FC<SpecifyFitDialogProps> = ({
                 )}
                 {isNRTL_c12_error && <WarningNRTL_c12 />}
                 {modelDef && !isDataWhole && (
-                    <Box pt={2}>
+                    <Box sx={{ pt: 2 }}>
                         <ErrorLabel title="Data is incomplete!" />
                     </Box>
                 )}

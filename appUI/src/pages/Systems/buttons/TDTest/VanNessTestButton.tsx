@@ -48,7 +48,7 @@ export const VanNessTestButton: FC<DatasetIdentifier> = (props) => {
         </Button>
     ) : (
         <form onSubmit={handleSubmit}>
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
                 <FormControl fullWidth className="medium-input">
                     <InputLabel id={inputLabelId}>Model</InputLabel>
                     <Select
