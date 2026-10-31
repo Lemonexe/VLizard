@@ -1,10 +1,10 @@
 [project]
 name = "vlizard-backend"
 version = "0.0.0"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.14,<3.15"
 dependencies = [
     "numpy",
-    "scipy~=1.13.1",
+    "scipy>=1.18.1,<1.19",  # scipy.odr is removed in 1.19; migrate vapor fitting before lifting this cap.
     "click",
     "flask",
     "pyyaml",

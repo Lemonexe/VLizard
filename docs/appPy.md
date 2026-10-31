@@ -5,7 +5,7 @@ all algorithms for thermodynamic consistency tests, non-linear regression and th
 Uses [uv](https://docs.astral.sh/uv/) for dependencies and project Python management.
 Dependencies and named tasks are declared in [pyproject.toml](../appPy/pyproject.toml),
 resolved versions are committed in [uv.lock](../appPy/uv.lock), and the exact Python
-3.12 patch is pinned in [.python-version](../appPy/.python-version).
+3.14 patch is pinned in [.python-version](../appPy/.python-version).
 
 I/O is provided either mainly via **Flask server** _(for Electron app)_,
 or alternatively **CLI** _(for local development, may be outdated)_.  
