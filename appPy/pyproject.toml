@@ -1,3 +1,42 @@
+[project]
+name = "vlizard-backend"
+version = "0.0.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "scipy~=1.13.1",
+    "click",
+    "flask",
+    "pyyaml",
+    "waitress",
+    "matplotlib",
+]
+
+[dependency-groups]
+dev = [
+    "yapf",
+    "pylint",
+    "pytest",
+    "pyinstaller",
+    "pytest-mock",
+    "click",
+    "pywin32-ctypes",
+    "pefile",
+    "macholib",
+    "taskipy",
+]
+
+[tool.uv]
+package = false
+python-preference = "only-managed"
+
+[tool.taskipy.tasks]
+start = "python serve.py port=37137"
+dev = "python serve_dev.py port=37137 debug"
+prettier = "yapf -i -r src cli"
+lint = "pylint src cli --disable=C"
+test = "pytest src"
+
 # pyproject.toml
 [tool.pytest.ini_options]
 minversion = "7.3"

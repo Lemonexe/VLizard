@@ -1,6 +1,6 @@
 import io
 from matplotlib import pyplot as plt, ticker
-# not explicitly used, pipenv runs fine without it, but it's needed for building the executable
+# Explicit import needed when building the executable with PyInstaller.
 import matplotlib.backends.backend_svg  # pylint: disable=unused-import
 from src.config import cfg
 

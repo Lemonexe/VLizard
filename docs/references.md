@@ -1,6 +1,6 @@
 ## Software resources
 
-- pip packages in [Pipfile](../appPy/Pipfile)
+- Python packages in [pyproject.toml](../appPy/pyproject.toml) and [uv.lock](../appPy/uv.lock)
 - npm packages in [package.json](../appUI/package.json)
 - [Open Sans font](https://fonts.google.com/specimen/Open+Sans)
 - Cool [custom icon](../appUI/public/icon.png) generated using [Stable Diffusion](https://stablediffusionweb.com/) and [Pixel It](https://giventofly.github.io/pixelit/)
