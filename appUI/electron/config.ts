@@ -1,1 +1,1 @@
-export const allowedOrigins = new Set(['https://github.com']);
+export const allowedOrigins = new Set(['https://github.com', 'https://doi.org']);

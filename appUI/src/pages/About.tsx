@@ -18,7 +18,10 @@ export const About: FC = () => (
                 Getting started
             </Button>
         </Stack>
-        <p>Created by Jiří Zbytovský in 2023–{currentYear}.</p>
+        <p>
+            Created by Jiří Zbytovský in 2023–{currentYear} and featured in an{' '}
+            <a href="https://doi.org/10.1021/acsomega.5c04650">ACS Omega article</a>.
+        </p>
         <p>
             Hosted at <a href={REPO_URL}>Github repository</a> under the free <a href={LICENSE_URL}>MIT License</a>.
         </p>
